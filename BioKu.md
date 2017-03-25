@@ -12,3 +12,4 @@ develope milestones:
 4) manage bio-materials
 5) search tool
 6) visualization using d3
+7) reminder/to-do

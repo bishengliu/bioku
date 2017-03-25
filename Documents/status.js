@@ -241,4 +241,7 @@ var box =
 
 //need to think about switch containers for maintanance
 //swtich tower, shelf, box and sample (cross boxes)
-//a simple reminders
+
+//a simple reminders/to do
+//email the node
+//remind
