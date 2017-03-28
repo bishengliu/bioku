@@ -6,7 +6,7 @@ var roles =
     { "id": 1, "role": "Admin"},  //full access
     { "id": 2, "role": "PI" }, //group access    
     { "id": 3, "role": "Researcher" }, //researher
-    { "id": 4, "role": "student" } //readonly access
+    { "id": 4, "role": "Student" } //readonly access
 ];
 
 var admins = [
@@ -104,6 +104,7 @@ var boxesInContainers =
 [
     {
         "containerId":0, //pk
+        "groupId": [], //pk
         "boxes": 
         [
             {
@@ -111,35 +112,41 @@ var boxesInContainers =
                 "postion": { "tower": 0, "shelf": 0, "box": 0 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }, 
             {
                 "id": 1,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 1 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             },
             {
                 "id": 2,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 2 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }, 
             {
                 "id": 3,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 3 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             },
             {
                 "id": 4,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 4 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }
         ]
     },
     {
         "containerId": 1,//pk
+        "groupId": [], //pk
         "boxes": 
         [
             {
@@ -147,30 +154,35 @@ var boxesInContainers =
                 "postion": { "tower": 0, "shelf": 0, "box": 0 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }, 
             {
                 "id": 6,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 1 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             },
             {
                 "id": 7,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 2 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }, 
             {
                 "id": 8,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 3 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             },
             {
                 "id": 9,//pk
                 "postion": { "tower": 0, "shelf": 0, "box": 4 },
                 "code39": null, //for scanner barcode
                 "QRCode": null, //QR code
+                "researhcers": [1]
             }
         ]
     }

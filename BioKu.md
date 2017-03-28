@@ -7,9 +7,10 @@ redux
 
 develope milestones:
 1) model design
-2) user registration
-3) manage container
-4) manage bio-materials
-5) search tool
-6) visualization using d3
-7) reminder/to-do
+2) build required back-end REST API using Django/Python
+3) user registration
+4) manage container
+5) manage bio-materials
+6) search tool
+7) visualization using d3
+8) reminder/to-do
