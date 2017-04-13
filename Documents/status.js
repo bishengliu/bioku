@@ -19,6 +19,7 @@ var groups =
 [
     {
         "id": 1, //pk
+        "group":"Bisheng Liu",
         "PI" :'BL',
         "PIName" :'Bisheng Liu',
         "avatar": "", //image, optional
@@ -31,6 +32,7 @@ var groups =
     },
     {
         "id": 2, //pk
+        "group":"Jos Jonkers",
         "PI" :'JJ',
         "PIName" :'Jos Jonkers',
         "avatar": "", //image, optional
