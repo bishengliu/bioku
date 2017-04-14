@@ -5,29 +5,22 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
-import { ForgetPasswordComponent } from './forget-password/forget-password.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminComponent } from './admin/admin.component';
 
 //routing
 import { RouterModule, Routes } from '@angular/router';
+
 //routes
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'forget-password', component: ForgetPasswordComponent},
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    RegisterComponent,
-    ForgetPasswordComponent,
-    ChangePasswordComponent,
-    UserProfileComponent
+    AdminComponent
   ],
   imports: [
     BrowserModule,
