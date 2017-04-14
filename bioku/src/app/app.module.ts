@@ -10,6 +10,16 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
+//routing
+import { RouterModule, Routes } from '@angular/router';
+//routes
+const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent},
+  {path: 'register', component: RegisterComponent},
+  {path: 'forget-password', component: ForgetPasswordComponent},
+]
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +32,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    //routers
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
