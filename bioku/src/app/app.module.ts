@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+//symantic -ui
+//https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
+import {SuiModule} from 'ng2-semantic-ui';
 //routing
 import { RouterModule} from '@angular/router';
 //app root routes
@@ -17,6 +19,7 @@ import { RegisterComponent } from './account/register/register.component';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './account/login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +30,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     RegisterComponent,
     ChangePasswordComponent,
     ProfileComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    //symantic -ui
+    SuiModule,
     //register root routers
     RouterModule.forRoot(routes)
   ],
