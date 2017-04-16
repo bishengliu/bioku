@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators} from '@angular/forms';
 import{AlertService} from '../../_services/AlertService';
+import { AppSetting} from '../../_config/AppSetting';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,12 +12,15 @@ import{AlertService} from '../../_services/AlertService';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  appName: string;
 
-  constructor(fb: FormBuilder, private alertService: AlertService) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(AppSetting) appSetting: any ) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
+    //app name
+    this.appName = appSetting.NAME;
   }
 
   onSubmit(value: any): void{

@@ -11,6 +11,7 @@ import { RouterModule} from '@angular/router';
 import { routes } from './_routes/root-routes';
 //providers
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
+import {AppSettingProvider} from './_providers/AppSettingProvider';
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -52,7 +53,7 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     //register root routers
     RouterModule.forRoot(routes)
   ],
-  providers: [AlertServiceProvider],
+  providers: [AlertServiceProvider, AppSettingProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
