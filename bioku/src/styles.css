@@ -4,13 +4,18 @@ font-family: 'Lato-Regular';
 src: url('./fonts/Lato/Lato-Regular.ttf')  format('truetype');
 font-weight: normal;
 }
-/*
-body{
-    font-family: Lato-Regular;
-}
-*/
+
 body{
     height: 100%;
     overflow-x: hidden;
     padding: 0!important;
+}
+
+/*footer*/
+@media (min-height: 320px) {
+  .ui.footer.form-page { /* Increased specificity for SO snippet priority */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 }
