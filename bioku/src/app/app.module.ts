@@ -22,7 +22,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './account/login/login.component';
 import { HomeHeaderComponent } from './home/home-header/home-header.component';
 import { HomeFooterComponent } from './home/home-footer/home-footer.component';
-import { HomeAboutComponent } from './home/home-about/home-about.component';
 import { HomeFeaturesComponent } from './home/home-features/home-features.component';
 
 @NgModule({
@@ -38,7 +37,6 @@ import { HomeFeaturesComponent } from './home/home-features/home-features.compon
     LoginComponent,
     HomeHeaderComponent,
     HomeFooterComponent,
-    HomeAboutComponent,
     HomeFeaturesComponent,
   ],
   imports: [

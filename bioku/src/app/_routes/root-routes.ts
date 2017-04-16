@@ -5,7 +5,6 @@ import { AccountComponent } from '../account/account.component';
 import { RegisterComponent } from '../account/register/register.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 import { LoginComponent } from '../account/login/login.component';
-import { HomeAboutComponent } from '../home/home-about/home-about.component';
 import { HomeFeaturesComponent } from '../home/home-features/home-features.component';
 //routing
 import { Routes } from '@angular/router';
@@ -15,7 +14,6 @@ import { accountRoutes } from '../account/_routes/account-routes';
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
-  {path: 'about', component: HomeAboutComponent},
   {path: 'features', component: HomeFeaturesComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},

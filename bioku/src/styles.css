@@ -1,15 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 @font-face {
-font-family: 'Lato-Regular';
-src: url('./fonts/Lato/Lato-Regular.ttf')  format('truetype');
-font-weight: normal;
+  font-family: 'Lato';
+  src: url('./fonts/Lato/Lato-Regular.ttf')  format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Pacifico';
+  src: url('./fonts/Pacifico/Pacifico-Regular.ttf')  format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./fonts/Rubik/Rubik-Regular.ttf')  format('truetype');
+  font-weight: normal;
 }
 
 body{
+    font-family: Rubik, Lato!important;
     height: 100%;
     overflow-x: hidden;
     padding: 0!important;
-    background-color: #FFF888;
+    background-color: #FCF5F2;
 }
 
 /*footer*/
@@ -18,5 +31,12 @@ body{
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding: 0px;
+    /*background: #537489;*/
+    font-size: 80%;
   }
+}
+
+.bioku-header{
+  font-family: Pacifico, Rubik, Lato!important;
 }
