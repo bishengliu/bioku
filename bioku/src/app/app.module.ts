@@ -9,7 +9,8 @@ import {SuiModule} from 'ng2-semantic-ui';
 import { RouterModule} from '@angular/router';
 //app root routes
 import { routes } from './_routes/root-routes';
-
+//providers
+import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +24,7 @@ import { LoginComponent } from './account/login/login.component';
 import { HomeHeaderComponent } from './home/home-header/home-header.component';
 import { HomeFooterComponent } from './home/home-footer/home-footer.component';
 import { HomeFeaturesComponent } from './home/home-features/home-features.component';
+import { AlertComponent } from './_helpers/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { HomeFeaturesComponent } from './home/home-features/home-features.compon
     HomeHeaderComponent,
     HomeFooterComponent,
     HomeFeaturesComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { HomeFeaturesComponent } from './home/home-features/home-features.compon
     //register root routers
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [AlertServiceProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
