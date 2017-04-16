@@ -1,20 +1,43 @@
 <app-home-header></app-home-header>
-<div class="ui raised segment">
-  <h2 class="ui header"> Login to Bioku</h2>
-  <form [formGroup]="loginForm" class="ui form" (ngSubmit)="loginForm.valid && onSubmit(loginForm.value)">
-    <div class="field" [class.error]="loginForm.controls['username'].invalid && loginForm.controls['username'].touched">
-      <label for="username">Username</label>  
-      <input type="text" id="username" [formControl]="loginForm.controls['username']">
-      <div *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
-    </div>
-    <div class="field" [class.error]="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
-      <label for="password">Password</label>
-      <input type="password" id="password" [formControl]="loginForm.controls['password']">
-      <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="ui mini negative message"><p>Password is required</p></div>
-    </div>
-    <button type="submit" class="ui teal button" [ngClass]="{disabled: loginForm.invalid}">
-      <i class="icon user"></i>
-      Login</button>
-  </form>
+
+<div class="ui one column stackable center aligned page grid huge-padding">
+   <div class="column eight wide">     
+       <div class="center floated column">
+         <!--form header-->
+          <h2 class="ui header teal image">
+            <img>
+            <div class="content">Log-in to Bioku</div>
+          </h2>
+          <!--form-->
+          <form [formGroup]="loginForm" class="ui large form" (ngSubmit)="loginForm.valid && onSubmit(loginForm.value)">
+            <div class="ui stacked segment">
+              <div class="field" [class.error]="loginForm.controls['username'].invalid && loginForm.controls['username'].touched">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input type="text" id="username" [formControl]="loginForm.controls['username']" placeholder="Username">
+                </div>
+                <div *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
+              </div>
+              <div class="field" [class.error]="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" id="password" [formControl]="loginForm.controls['password']" placeholder="Password">
+                </div>  
+                <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="ui mini negative message"><p>Password is required</p></div>
+              </div>
+              <button type="submit" class="ui fluid teal button" [ngClass]="{disabled: loginForm.invalid}">
+                <i class="icon sign in"></i>
+                Login
+              </button>
+            </div>
+          </form>
+          <!--sign up-->
+          <div class="ui message">
+              New to BioKu? <a [routerLink]="['../register']">Sign Up</a>
+          </div>
+      </div>
+   </div>
 </div>
+
+
 <app-home-footer></app-home-footer>

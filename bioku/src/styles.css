@@ -40,3 +40,7 @@ body{
 .bioku-header{
   font-family: Pacifico, Rubik, Lato!important;
 }
+
+.huge-padding{
+  padding-top: 150px !important;
+}
