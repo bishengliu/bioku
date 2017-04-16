@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 //symantic -ui
 //https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
@@ -42,6 +42,7 @@ import { HomeFeaturesComponent } from './home/home-features/home-features.compon
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     //symantic -ui
     SuiModule,
