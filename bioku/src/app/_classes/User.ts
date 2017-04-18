@@ -5,7 +5,7 @@ export class User{
     first_name: string;
     last_name: string;
     photo_url: string;
-    telephone?: number;
+    telephone: number;
     roles: Array<string>;
-    groups: number; //later will be different type
+    groups: Array<number>; //later will be different type
 }
