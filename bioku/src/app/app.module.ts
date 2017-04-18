@@ -12,6 +12,9 @@ import { routes } from './_routes/root-routes';
 //providers
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
+//redux
+import { StoreProviders } from './_providers/ReduxProviders';
+
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -54,7 +57,11 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     //register root routers
     RouterModule.forRoot(routes),
   ],
-  providers: [AlertServiceProvider, AppSettingProvider],
+  providers: [
+    AlertServiceProvider, 
+    AppSettingProvider,
+    StoreProviders,
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
