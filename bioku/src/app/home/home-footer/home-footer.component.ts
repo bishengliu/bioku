@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AppSetting} from '../../_config/AppSetting';
+import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 @Component({
   selector: 'app-home-footer',
   templateUrl: './home-footer.component.html',
@@ -8,10 +9,10 @@ import { AppSetting} from '../../_config/AppSetting';
 export class HomeFooterComponent implements OnInit {
   appName: string;
   appVersion: string;
-  constructor(@Inject(AppSetting) appSetting: any) { 
+  constructor(@Inject(APP_CONFIG) private appSetting: any) { 
     //app name
-    this.appName = appSetting.NAME;
-    this.appVersion = appSetting.VERSION;
+    this.appName = this.appSetting.NAME;
+    this.appVersion = this.appSetting.VERSION;
   }
 
   ngOnInit() {

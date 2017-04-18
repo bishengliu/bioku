@@ -1,5 +1,6 @@
 import { AppSetting} from '../_config/AppSetting';
+import {InjectionToken} from '@angular/core';
 
-export var AppSettingProvider: Array<any>= [
-    {provide: AppSetting, useValue: AppSetting}
-]
+export let APP_CONFIG = new InjectionToken<Object>("root-config");
+
+export var AppSettingProvider = {provide: APP_CONFIG, useValue: AppSetting};

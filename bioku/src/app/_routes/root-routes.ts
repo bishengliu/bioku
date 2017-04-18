@@ -1,3 +1,5 @@
+//root routes
+//all sub routes must bw registered here before use
 
 import { HomeComponent } from '../home/home.component';
 import { AdminComponent } from '../admin/admin.component';
