@@ -23,10 +23,11 @@ export class LoginComponent implements OnInit {
     this.appName = appSetting.NAME;
   }
 
-  onSubmit(value: any): void{
+  onSubmit(values: any): void{
     this.alertService.success('form posted!');
     console.log(this.loginForm);
-    console.log(value); 
+    console.log(values);
+    
   }
 
   ngOnInit() {

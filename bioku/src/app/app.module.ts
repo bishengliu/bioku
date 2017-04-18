@@ -27,6 +27,7 @@ import { HomeFooterComponent } from './home/home-footer/home-footer.component';
 import { HomeFeaturesComponent } from './home/home-features/home-features.component';
 import { AlertComponent } from './_helpers/alert/alert.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +52,7 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     //symantic -ui
     SuiModule,
     //register root routers
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
   ],
   providers: [AlertServiceProvider, AppSettingProvider],
   bootstrap: [AppComponent]
