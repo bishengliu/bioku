@@ -1,18 +1,18 @@
 import { Action } from 'redux';
-import { AuthStatus } from './login_state';
+import { AuthState } from './login_state';
 import { User } from '../../_classes/User';
 import {LOGIN_CONSTANTS as C } from './login_constants';
 import {SetAuthUserAction, SetAuthTokenAction} from './login_actions';
 
 //initial auth status
-const initialState: AuthStatus = {
+const initialState: AuthState = {
     authUser: null,
     token: null
 }
 
 //define reducers
-export const AuthReducer = 
-function (state: AuthStatus = initialState, action: Action): AuthStatus {
+export const authReducer = 
+function (state: AuthState = initialState, action: Action): AuthState {
     switch(action.type){
         case C.SET_AUTH_USER:
             //set auth user

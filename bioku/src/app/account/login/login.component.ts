@@ -6,9 +6,9 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 //redux
 import {AuthStore} from '../../_providers/ReduxProviders';
-import {AuthStatus} from '../../_redux/login/login_state';
+import {AuthState} from '../../_redux/login/login_state';
 import {LOGIN_CONSTANTS as C } from '../../_redux/login/login_constants';
-import {SetAuthUserAction, SetAuthTokenAction, SetAuthUserActionCreator, SetAuthTokenActionCreator} from '../../_redux/login/login_actions';
+import {SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator, setAuthTokenActionCreator, userAuthActionAsync} from '../../_redux/login/login_actions';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   appName: string;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) appSetting: any, @Inject(AuthStore) private authStore: Store<AuthStatus>) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
@@ -34,27 +34,7 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm);
     console.log(values);
     //use redux-chunk
-
-    //hard-coded test of redux
-    //authUser
-    let authUser = {
-    id: 1,
-    name: 'bisheng',
-    first_name: 'Bisheng',
-    last_name: 'Liu',
-    photo_url: 'url',
-    telephone: 12345,
-    roles: ['Admin', 'PI'],
-    groups: [1, 2],
-    }
-    let setAuthUserAction: SetAuthUserAction = SetAuthUserActionCreator(authUser);
-    this.authStore.dispatch(setAuthUserAction);
-
-    //token
-    let setAuthTokenAction: SetAuthTokenAction = SetAuthTokenActionCreator('dwegergrtebhsfjksahdwkjflhw');
-    this.authStore.dispatch(setAuthTokenAction);
-
-
+    this.authStore.dispatch(userAuthActionAsync('Bisheng', 'Liu'));
     
   }
 
