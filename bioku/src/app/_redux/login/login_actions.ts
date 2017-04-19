@@ -1,5 +1,8 @@
-import { Action, ActionCreator } from 'redux';
+import { Action, ActionCreator, Dispatch } from 'redux';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import {Observable} from 'rxjs';
 import {LOGIN_CONSTANTS as C } from './login_constants';
+import { AuthState } from './login_state';
 import {User} from '../../_classes/User';
  
 
@@ -37,32 +40,38 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 });
 
 //with thunk
-export const userAuthActionAsync = (username: string, password: string) => (dispatch, getState) =>{
+export const userAuthActionAsync = (http: Http, appSetting: any, username: string, password: string) => (dispatch: Dispatch<AuthState>, getState) =>{
 
-    let authUser = {
-    id: 1,
-    name: 'bisheng',
-    first_name: 'Bisheng',
-    last_name: 'Liu',
-    photo_url: 'url',
-    telephone: 12345,
-    roles: ['Admin', 'PI'],
-    groups: [1, 2],
-    }
+    //url to get token for authentication
+    const token_url: string = appSetting.URL + appSetting.TOKEN_URL;
+    //url for get auth user details
+    const user_detail: string  = appSetting.URL + appSetting.AUTH_USER;
+    //request the token
+    //data
+    let body: string = JSON.stringify({'username': username, 'password': password});
+    //let body = {'username': username, 'password': password};
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    http.post(token_url, body, options)
+        .map((response: Response) =>response.json())         
+        .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+        .subscribe((data)=>{
+            let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data);
+            dispatch(setAuthTokenAction);
 
-    setTimeout(()=>{
-        console.log("set user");
-        let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator(authUser);
-        dispatch(setAuthUserAction);
-        console.log(getState())
-    }, 2000)
+            if (getState().token){
 
-    setTimeout(()=>{
-        console.log("set token");
-        let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator('dwegergrtebhsfjksahdwkjflhw');
-        dispatch(setAuthTokenAction);
-        console.log(getState())
-    }, 5000)
-
-    console.log(getState())
+                let authUser = {
+                id: 1,
+                name: 'bisheng',
+                first_name: 'Bisheng',
+                last_name: 'Liu',
+                photo_url: 'url',
+                telephone: 12345,
+                roles: ['Admin', 'PI'],
+                groups: [1, 2],
+                }
+                let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator(authUser);
+                dispatch(setAuthUserAction)}
+        })
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators} from '@angular/forms';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {Store} from 'redux';
 import{AlertService} from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   appName: string;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
@@ -34,8 +35,8 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm);
     console.log(values);
     //use redux-chunk
-    this.authStore.dispatch(userAuthActionAsync('Bisheng', 'Liu'));
-    
+    this.authStore.dispatch(userAuthActionAsync(this.http, this.appSetting, values.username, values.password));
+
   }
 
   ngOnInit() {
