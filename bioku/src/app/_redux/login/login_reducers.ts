@@ -1,14 +1,13 @@
 import { Action } from 'redux';
 import { AuthState } from './login_state';
+import { AppState } from '../root/state';
+import { initialAppState } from '../root/state';
 import { User } from '../../_classes/User';
 import {LOGIN_CONSTANTS as C } from './login_constants';
 import {SetAuthUserAction, SetAuthTokenAction} from './login_actions';
 
 //initial auth status
-const initialState: AuthState = {
-    authUser: null,
-    token: null
-}
+const initialState: AuthState = initialAppState.authInfo;
 
 //define reducers
 export const authReducer = 

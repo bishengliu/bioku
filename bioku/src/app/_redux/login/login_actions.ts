@@ -2,7 +2,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {Observable} from 'rxjs';
 import {LOGIN_CONSTANTS as C } from './login_constants';
-import { AuthState } from './login_state';
+import { AppState } from '../root/state';
 import {User} from '../../_classes/User';
 import {LoginService} from '../../_services/LoginService';
 import{AlertService} from '../../_services/AlertService';
@@ -41,7 +41,7 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 });
 
 //with thunk
-export const userAuthActionAsync = (loginService: LoginService, username: string, password: string, alertService: AlertService) => (dispatch: Dispatch<AuthState>, getState) =>{
+export const userAuthActionAsync = (loginService: LoginService, username: string, password: string, alertService: AlertService) => (dispatch: Dispatch<AppState>, getState) =>{
         //auth user
         loginService.authUser(username, password)
         .subscribe(
@@ -51,7 +51,7 @@ export const userAuthActionAsync = (loginService: LoginService, username: string
                 let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
                 dispatch(setAuthTokenAction);
             }          
-            if (getState().token){
+            if (getState().authInfo && getState().authInfo.token){
                 let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
                 dispatch(setAuthUserAction)
             };             

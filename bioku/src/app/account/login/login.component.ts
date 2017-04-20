@@ -9,8 +9,8 @@ import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import {LoginService} from '../../_services/LoginService';
 import {User} from '../../_classes/User';
 //redux
-import {AuthStore} from '../../_providers/ReduxProviders';
-import {AuthState} from '../../_redux/login/login_state';
+import {AppStore} from '../../_providers/ReduxProviders';
+import {AppState} from '../../_redux/root/state';
 import {LOGIN_CONSTANTS as C } from '../../_redux/login/login_constants';
 import {SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator, setAuthTokenActionCreator, userAuthActionAsync} from '../../_redux/login/login_actions';
 
@@ -26,16 +26,15 @@ export class LoginComponent implements OnInit {
   isLogin: boolean = false;
   user: User = null;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>, private router: Router) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore: Store<AppState>, private router: Router) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
     //app name
     this.appName = appSetting.NAME;
-
     //subscribe store state changes
-    authStore.subscribe(()=> this.updateState());
+    appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
 
@@ -43,13 +42,15 @@ export class LoginComponent implements OnInit {
     //console.log(this.loginForm);
     //console.log(values);
     //use redux-chunk call async action
-    this.authStore.dispatch(userAuthActionAsync(this.loginService, values.username, values.password, this.alertService));
+    this.appStore.dispatch(userAuthActionAsync(this.loginService, values.username, values.password, this.alertService));
   }
 
   updateState(){
-    let state= this.authStore.getState()
-    this.user = state.authUser;
-    this.isLogin = state.token? true: false;
+    let state= this.appStore.getState()
+    if(state.authInfo){
+      this.user = state.authInfo.authUser;
+    this.isLogin = state.authInfo.token? true: false;
+    }
     if(this.isLogin){
       this.router.navigate(['home']);
     }
