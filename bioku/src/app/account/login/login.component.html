@@ -9,7 +9,7 @@
             <div class="content">Log-in to {{appName}}</div>
           </h2>
           <!--form-->
-          <form [formGroup]="loginForm" class="ui large form" (ngSubmit)="loginForm.valid && onSubmit(loginForm.value)">
+          <form [formGroup]="loginForm" class="ui large form" (ngSubmit)="loginForm.valid && onLogin(loginForm.value)">
             <div class="ui stacked segment">
               <div class="field" [class.error]="loginForm.controls['username'].invalid && loginForm.controls['username'].touched">
                 <div class="ui left icon input">

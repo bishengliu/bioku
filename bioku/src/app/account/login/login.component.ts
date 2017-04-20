@@ -5,6 +5,8 @@ import {Store} from 'redux';
 import{AlertService} from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import {LoginService} from '../../_services/LoginService';
+import {User} from '../../_classes/User';
 //redux
 import {AuthStore} from '../../_providers/ReduxProviders';
 import {AuthState} from '../../_redux/login/login_state';
@@ -20,25 +22,34 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   appName: string;
+  isLogin: boolean = false;
+  user: User = null;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AuthStore) private authStore: Store<AuthState>) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
     //app name
     this.appName = appSetting.NAME;
+
+    //subscribe store state changes
+    authStore.subscribe(()=> this.updateState());
+    this.updateState();
   }
 
-  onSubmit(values: any): void{
-    this.alertService.success('form posted!');
+  onLogin(values: any): void{
     //console.log(this.loginForm);
     //console.log(values);
-    //use redux-chunk
-    this.authStore.dispatch(userAuthActionAsync(this.http, this.appSetting, values.username, values.password));
-    console.log(this.authStore.getState());
+    //use redux-chunk call async action
+    this.authStore.dispatch(userAuthActionAsync(this.loginService, values.username, values.password, this.alertService));
   }
 
+  updateState(){
+    let state= this.authStore.getState()
+    this.user = state.authUser;
+    this.isLogin = state.token? true: false;
+  }
   ngOnInit() {
   }
 

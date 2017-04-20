@@ -12,6 +12,7 @@ import { routes } from './_routes/root-routes';
 //providers
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
+import {APIServiceProviders} from './_providers/APIServiceProviders';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 
@@ -61,6 +62,7 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     AlertServiceProvider, 
     AppSettingProvider,
     StoreProviders,
+    APIServiceProviders
     ],
   bootstrap: [AppComponent]
 })
