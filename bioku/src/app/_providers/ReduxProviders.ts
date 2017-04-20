@@ -1,12 +1,5 @@
 import {InjectionToken} from '@angular/core';
-/*
-//provider token
-export const AuthStore = new InjectionToken<any>("login.store");
-//auth store instance to be injected
-import {authStore} from '../_redux/login/login_store';
-//interface is not used for di, which is not available at runtime
-// use InjectionToken
-*/
+
 //provider token
 export const AppStore = new InjectionToken<any>("app.store");
 //auth store instance to be injected
