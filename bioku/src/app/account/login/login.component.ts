@@ -32,11 +32,11 @@ export class LoginComponent implements OnInit {
 
   onSubmit(values: any): void{
     this.alertService.success('form posted!');
-    console.log(this.loginForm);
-    console.log(values);
+    //console.log(this.loginForm);
+    //console.log(values);
     //use redux-chunk
     this.authStore.dispatch(userAuthActionAsync(this.http, this.appSetting, values.username, values.password));
-
+    console.log(this.authStore.getState());
   }
 
   ngOnInit() {
