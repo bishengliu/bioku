@@ -14,7 +14,7 @@ export class LogAppStateService{
         let appState = this.appStore.getState();
         let appPartialState: AppPartialState ={ authInfo: null};
         for (let k in appState){
-            if (k !== 'appLogs'){
+            if (k !== 'appLogs'){ //HARD CODE OBJECT KEY HERE
                 appPartialState[k] = appState[k];
             }
         }        
