@@ -2,10 +2,13 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {Observable} from 'rxjs';
 import {REDUX_CONSTANTS as C } from '../root/constants';
-import { AppState } from '../root/state';
+import { AppState, AppPartialState } from '../root/state';
 import {User} from '../../_classes/User';
 import {LoginService} from '../../_services/LoginService';
 import{AlertService} from '../../_services/AlertService';
+import {LogAppStateService} from '../../_services/LogAppStateService';
+import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
+
 
 //SET_AUTH_USER
 export interface SetAuthUserAction extends Action {
@@ -41,15 +44,22 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 });
 
 //with thunk
-export const userAuthActionAsync = (loginService: LoginService, username: string, password: string, alertService: AlertService) => (dispatch: Dispatch<AppState>, getState) =>{
+export const userAuthActionAsync = (loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => (dispatch: Dispatch<AppState>, getState) =>{
         //auth user
         loginService.authUser(username, password)
         .subscribe(
             (data)=>{
             if(data.token.token){
+                //get state: apppartialstate
+                let preState: AppPartialState = logAppStateService.getAppPartialState();
                 //dispatch set auth token action
                 let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
                 dispatch(setAuthTokenAction);
+                //get state: apppartialstate
+                let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                let message: string = 'obtaining user token from server.'
+                //logger the reducx action
+                logAppStateService.log(setAuthTokenAction.type, preState, nextState, message);
             }          
             if (getState().authInfo && getState().authInfo.token){
                 let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));

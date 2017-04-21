@@ -12,7 +12,7 @@ function (state: Array<AppLog> = initialLogState, action: Action): Array<AppLog>
         case C.LOG_APP_STATE:
             let logInfo = <LoggerAction>action;
             return Object.assign({}, ...state, {
-                action: C.LOG_APP_STATE,
+                action: logInfo.action,
                 timestamp: logInfo.timestamp,
                 preState: logInfo.preState,
                 nextState: logInfo.nextState,

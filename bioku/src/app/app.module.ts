@@ -15,7 +15,7 @@ import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
-
+import { LogerProvider } from './_providers/LogAppStateProvider';
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -62,7 +62,8 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     AlertServiceProvider, 
     AppSettingProvider,
     StoreProviders,
-    APIServiceProviders
+    APIServiceProviders,
+    LogerProvider
     ],
   bootstrap: [AppComponent]
 })

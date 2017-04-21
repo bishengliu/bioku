@@ -1,5 +1,4 @@
 import {InjectionToken} from '@angular/core';
-
 //provider token
 export const AppStore = new InjectionToken<any>("app.store");
 //auth store instance to be injected
@@ -9,5 +8,6 @@ import {appStore} from '../_redux/root/store';
 
 export const StoreProviders: Array<any> = [
     //login
-    { provide: AppStore, useValue: appStore }
+    { provide: AppStore, useValue: appStore },   
 ];
+
