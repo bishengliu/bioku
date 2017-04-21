@@ -11,13 +11,17 @@ function (state: Array<AppLog> = initialLogState, action: Action): Array<AppLog>
     switch(action.type){
         case C.LOG_APP_STATE:
             let logInfo = <LoggerAction>action;
-            return Object.assign({}, ...state, {
+            let nState = state.slice();
+            let nLog: AppLog = {
                 action: logInfo.action,
                 timestamp: logInfo.timestamp,
                 preState: logInfo.preState,
                 nextState: logInfo.nextState,
                 message: logInfo.message
-            });
+            }
+            nState.push(nLog); //add to the list
+            return nState;
+            
         default:
             return state;
     }

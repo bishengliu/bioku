@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     let state= this.appStore.getState()
     if(state.authInfo){
       this.user = state.authInfo.authUser;
-    this.isLogin = state.authInfo.token? true: false;
+      this.isLogin = state.authInfo.token? true: false;
     }
     if(this.isLogin){
       this.router.navigate(['home']);

@@ -49,31 +49,48 @@ export const userAuthActionAsync = (loginService: LoginService, username: string
         loginService.authUser(username, password)
         .subscribe(
             (data)=>{
-            if(data.token.token){
+                if(data.token.token){
+                    //get state: apppartialstate
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();
+
+                    //dispatch set auth token action
+                    let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
+                    dispatch(setAuthTokenAction);
+
+                    //get state: apppartialstate
+                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                    let message: string = 'obtaining user token from server.'
+                    //logger the redux action
+                    logAppStateService.log(setAuthTokenAction.type, preState, nextState, message);
+                }          
+                if (getState().authInfo && getState().authInfo.token){
+                    //get state: apppartialstate
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();
+
+                    //dispatch action
+                    let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
+                    dispatch(setAuthUserAction);
+
+                    //get state: apppartialstate
+                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                    let message: string = 'obtaining user details from server.'
+                    //logger the reducx action
+                    logAppStateService.log(setAuthUserAction.type, preState, nextState, message);
+                };             
+            },
+            (error)=>{
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
-                //dispatch set auth token action
-                let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
-                dispatch(setAuthTokenAction);
-                //get state: apppartialstate
-                let nextState: AppPartialState = logAppStateService.getAppPartialState();
-                let message: string = 'obtaining user token from server.'
-                //logger the reducx action
-                logAppStateService.log(setAuthTokenAction.type, preState, nextState, message);
-            }          
-            if (getState().authInfo && getState().authInfo.token){
-                let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
-                dispatch(setAuthUserAction)
-            };             
-        },
-        (error)=>{
-            console.log(error);
-            //error
-            alertService.error('Login Failed!');
-        },
-        ()=>{
-            //success
-            alertService.success('Login Success!');
-        }
+                let nextState: AppPartialState = preState;
+                let message: string = 'User login failed: ' + (error || 'server error!') ;
+                logAppStateService.log('USER LOGIN', preState, nextState, message);
+                console.log(error);
+                //error
+                alertService.error('Login Failed!');
+            },
+            ()=>{
+                //success
+                alertService.success('Login Success!');
+            }
         );
 }

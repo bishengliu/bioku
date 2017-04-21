@@ -23,7 +23,7 @@ export class LoginService{
 
         return this.http.post(token_url, body, options)
             .map((response: Response) =>response.json())
-            .do(data=>{console.log(data)}) //token object
+            //.do(data=>{console.log(data)}) //token object
             //merge obserable to further request user info
             .mergeMap( (token_obj: any) => {
                 //token_obj = {'token': '', 'user': 1}
@@ -37,12 +37,12 @@ export class LoginService{
                 //return the new obserable
                 return this.http.get(user_detail, options)
                             .map((response: Response) =>response.json())
-                            .do(user_obj=>{console.log(user_obj)})  //user object
+                            //.do(user_obj=>{console.log(user_obj)})  //user object
                             .map((user_obj: any) => {
                                 return {'user': user_obj, 'token': token_obj}; //combined object
                             });
             })
-            .do(data=>{console.log(data)})         
+            //.do(data=>{console.log(data)})         
             .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 } 

@@ -13,10 +13,13 @@ export class LogAppStateService{
     getAppPartialState(): AppPartialState{
         let appState = this.appStore.getState();
         let appPartialState: AppPartialState ={ authInfo: null};
-        appPartialState.authInfo = appState.authInfo;
+        for (let k in appState){
+            if (k !== 'appLogs'){
+                appPartialState[k] = appState[k];
+            }
+        }        
         return appPartialState;
     }
-
     log(action: string, preState: AppPartialState, nextState: AppPartialState, message: string): void{
         let loggerAction: LoggerAction = loggerActionCreator(action, preState, nextState, message);
         this.appStore.dispatch(loggerAction);
