@@ -1,7 +1,7 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {Observable} from 'rxjs';
-import {LOGIN_CONSTANTS as C } from './login_constants';
+import {REDUX_CONSTANTS as C } from '../root/constants';
 import { AppState } from '../root/state';
 import {User} from '../../_classes/User';
 import {LoginService} from '../../_services/LoginService';

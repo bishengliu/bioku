@@ -1,20 +1,19 @@
 import {User} from '../../_classes/User';
 import {AuthState} from '../login/login_state';
-import {LoggerState} from '../logger/logger_state';
 import {AppLog} from '../../_classes/Logger';
 
-export interface AppState{
+export interface AppPartialState{
     //auth user 
     authInfo: AuthState;
-    
+}
 
-
-
+export interface AppState extends AppPartialState{
     //logs
-    logs: LoggerState;
+    appLogs: Array<AppLog>;
 }
 
 
+//define initial state
 export const initialAppState: AppState = {
     //auth user
     authInfo: {
@@ -22,5 +21,5 @@ export const initialAppState: AppState = {
         token: null
     },
     //logs
-    logs: new LoggerState(),
+    appLogs: <AppLog[]>[]
 }

@@ -1,9 +1,9 @@
-import {AppState} from '../_redux/root/state';
+import {AppPartialState} from '../_redux/root/state';
 
 export class AppLog{
     action: string;
     timestamp: Date;
-    preState: AppState;
-    nextState: AppState;
+    preState: AppPartialState;
+    nextState: AppPartialState;
     message: string;
 }

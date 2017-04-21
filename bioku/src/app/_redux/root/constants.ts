@@ -1,0 +1,12 @@
+export const REDUX_CONSTANTS = {
+    //login
+    SET_AUTH_USER: "SET_AUTH_USER",
+    UNSET_AUTH_USER: "UNSET_AUTH_USER",
+    SET_TOKEN: "SET_TOKEN",
+    UNSET_TOKEN: "UNSET_TOKEN",
+
+
+
+    //logger
+    LOG_APP_STATE:'LOG_APP_STATE',
+}
