@@ -8,6 +8,7 @@ import { AppState, AppPartialState } from '../_redux/root/state';
 //import redux action, actionCreator and reducer from login redux
 import {unsetAuthUserActionCreator, unsetTokenActionCreator} from '../_redux/login/login_actions';
 
+@Injectable()
 export class LogoutService{
     constructor(@Inject(AppStore) private appStore, private logAppStateService: LogAppStateService){};
 

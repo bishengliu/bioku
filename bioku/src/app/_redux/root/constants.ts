@@ -7,6 +7,6 @@ export const REDUX_CONSTANTS = {
 
 
 
-    //logger
+    //logger 
     LOG_APP_STATE:'LOG_APP_STATE',
 }
