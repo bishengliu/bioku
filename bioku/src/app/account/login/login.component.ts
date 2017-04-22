@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators} from '@angular/forms';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import {Store} from 'redux';
 import { Router} from '@angular/router';
 import{AlertService} from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
   isLogin: boolean = false;
   user: User = null;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore: Store<AppState>, private router: Router, private logAppStateService: LogAppStateService) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]

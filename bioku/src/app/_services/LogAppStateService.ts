@@ -1,14 +1,14 @@
 //service to log redux action and state
 import { Injectable, Inject } from '@angular/core';
 import {AppPartialState, AppState } from '../_redux/root/state';
-import { Store } from 'redux';
+import { createStore } from 'redux';
 import {AppStore }from '../_providers/ReduxProviders';
 
 import {LoggerAction, loggerActionCreator} from '../_redux/logger/logger_actions';
 
 @Injectable()
 export class LogAppStateService{
-    constructor(@Inject(AppStore) private appStore: Store<AppState>){}
+    constructor(@Inject(AppStore) private appStore){}
     //get AppPartialState
     getAppPartialState(): AppPartialState{
         let appState = this.appStore.getState();

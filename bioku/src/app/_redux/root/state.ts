@@ -9,7 +9,7 @@ export interface AppPartialState{
 
 export interface AppState extends AppPartialState{
     //logs
-    appLogs: Array<AppLog>; //DON'T CHANGE THE NAME OF THIS
+    appLogs: Array<AppLog>; //DON'T CHANGE THE NAME OF THIS, REQUIRED BY LogAppStateService
 }
 
 
