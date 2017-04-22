@@ -44,7 +44,10 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 });
 
 //with thunk
-export const userAuthActionAsync = (loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => (dispatch: Dispatch<AppState>, getState) =>{
+export const userAuthActionAsync = 
+(loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => 
+    (dispatch: Dispatch<AppState>, getState) =>
+    {
         //auth user
         loginService.authUser(username, password)
         .subscribe(
@@ -93,4 +96,4 @@ export const userAuthActionAsync = (loginService: LoginService, username: string
                 alertService.success('Login Success!');
             }
         );
-}
+    }
