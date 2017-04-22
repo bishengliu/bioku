@@ -1,6 +1,80 @@
 <app-home-header></app-home-header>
 <app-alert></app-alert>
-<p>
-  register works!
-</p>
+<div class="ui one column stackable center aligned page grid huge-padding">
+   <div class="column eight wide">     
+       <div class="center floated column">
+         <!--form header-->
+          <h2 class="ui header teal image">
+            <img>
+            <div class="content">Join {{appName}}</div>
+          </h2>
+          <!--form-->
+          <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)">
+            <div class="ui stacked segment">
+              <div class="field" [class.error]="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input type="text" id="username" [formControl]="registerForm.controls['username']" placeholder="Username">
+                </div>
+                <div *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['password1'].invalid && registerForm.controls['password1'].touched">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" id="password1" [formControl]="registerForm.controls['password1']" placeholder="Password">
+                </div>  
+                <div *ngIf="registerForm.controls['password1'].hasError('required') && registerForm.controls['password1'].touched" class="ui mini negative message"><p>Password is required</p></div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['password2'].invalid && registerForm.controls['password2'].touched">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" id="password2" [formControl]="registerForm.controls['password2']" placeholder="Password Again">
+                </div>  
+                <div *ngIf="registerForm.controls['password2'].hasError('required') && registerForm.controls['password2'].touched" class="ui mini negative message"><p>Password is required</p></div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
+                <div class="ui left icon input">
+                  <i class="mail icon"></i>
+                  <input type="email" id="email" [formControl]="registerForm.controls['email']" placeholder="Email">
+                </div>
+                <div *ngIf="registerForm.controls['email'].hasError('required') && registerForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['first_name'].invalid && registerForm.controls['first_name'].touched">
+                <div class="ui left icon input">
+                  <i class="keyboard icon"></i>
+                  <input type="text" id="first_name" [formControl]="registerForm.controls['first_name']" placeholder="First Name">
+                </div>
+                <div *ngIf="registerForm.controls['first_name'].hasError('required') && registerForm.controls['first_name'].touched" class="ui mini negative message">First Name is required</div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['last_name'].invalid && registerForm.controls['last_name'].touched">
+                <div class="ui left icon input">
+                  <i class="keyboard icon"></i>
+                  <input type="text" id="last_name" [formControl]="registerForm.controls['last_name']" placeholder="Last Name">
+                </div>
+                <div *ngIf="registerForm.controls['last_name'].hasError('required') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="birthday icon"></i>
+                  <input type="text" id="birth_date" [formControl]="registerForm.controls['birth_date']" placeholder="Birth Date">
+                </div>
+              </div>
+              <div class="field" [class.error]="registerForm.controls['telephone'].invalid && registerForm.controls['telephone'].touched">
+                <div class="ui left icon input">
+                  <i class="call icon"></i>
+                  <input type="text" id="telephone" [formControl]="registerForm.controls['telephone']" placeholder="Telephone">
+                </div>
+                <div *ngIf="registerForm.controls['telephone'].invalid && registerForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
+              </div>
+              <button type="submit" class="ui fluid teal button" [ngClass]="{ disabled: registerForm.invalid }">
+                <i class="icon add user"></i>
+                Sign Up
+              </button>
+              
+            </div>
+          </form>
+                  
+      </div>
+   </div>
+</div>
 <app-home-footer></app-home-footer>
