@@ -13,6 +13,8 @@ import { routes } from './_routes/root-routes';
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
+//custom form validators
+import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
@@ -63,7 +65,8 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     AppSettingProvider,
     StoreProviders,
     APIServiceProviders,
-    LogerProvider
+    LogerProvider,
+    CustomFormValidatorsProvider,
     ],
   bootstrap: [AppComponent]
 })

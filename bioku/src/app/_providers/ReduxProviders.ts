@@ -7,7 +7,6 @@ import {appStore} from '../_redux/root/store';
 // use InjectionToken
 
 export const StoreProviders: Array<any> = [
-    //login
     { provide: AppStore, useValue: appStore },   
 ];
 
