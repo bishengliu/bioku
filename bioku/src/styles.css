@@ -28,7 +28,7 @@ body{
 /*footer*/
 @media (min-height: 320px) {
   .ui.footer.form-page { /* Increased specificity for SO snippet priority */
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     padding: 0px;
@@ -44,3 +44,29 @@ body{
 .huge-padding{
   padding-top: 100px !important;
 }
+.hidden{
+  display: none;
+}
+
+/*
+.footer{
+    background: #537489;
+    color: white;
+    font-size: 80%;
+}
+
+.navbar-fixed-bottom{
+    bottom: 0;
+    margin-bottom: 0;
+    border-width: 1px 0 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+@media (min-width: 768px){
+  .navbar-fixed-bottom{
+    border-radius: 0;
+  }
+}
+*/

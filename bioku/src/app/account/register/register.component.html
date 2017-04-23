@@ -38,6 +38,7 @@
                   <input type="email" id="email" [formControl]="registerForm.controls['email']" placeholder="Email">
                 </div>
                 <div *ngIf="registerForm.controls['email'].hasError('required') && registerForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
+                <div *ngIf="registerForm.controls['email'].hasError('email') && registerForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
               </div>
               <div class="field" [class.error]="registerForm.controls['first_name'].invalid && registerForm.controls['first_name'].touched">
                 <div class="ui left icon input">
@@ -45,6 +46,7 @@
                   <input type="text" id="first_name" [formControl]="registerForm.controls['first_name']" placeholder="First Name">
                 </div>
                 <div *ngIf="registerForm.controls['first_name'].hasError('required') && registerForm.controls['first_name'].touched" class="ui mini negative message">First Name is required</div>
+                <div *ngIf="registerForm.controls['last_name'].invalid && registerForm.controls['last_name'].touched" class="ui mini negative message">First Name is invalid</div>
               </div>
               <div class="field" [class.error]="registerForm.controls['last_name'].invalid && registerForm.controls['last_name'].touched">
                 <div class="ui left icon input">
@@ -52,7 +54,18 @@
                   <input type="text" id="last_name" [formControl]="registerForm.controls['last_name']" placeholder="Last Name">
                 </div>
                 <div *ngIf="registerForm.controls['last_name'].hasError('required') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
+                <div *ngIf="registerForm.controls['last_name'].invalid && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
               </div>
+
+              <div class="field" [class.error]="registerForm.controls['photo'].invalid && registerForm.controls['photo'].touched">
+                <div class="ui left icon input right action">
+                  <i class="user icon"></i>
+                  <input type="text" id="photo_name" readonly placeholder="Photo">
+                  <!--<a class="ui tag label">Photo</a>-->
+                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="registerForm.controls['photo']" placeholder="Photo" class="hidden"></label>
+                </div>
+              </div>
+
               <div class="field">
                 <div class="ui left icon input">
                   <i class="birthday icon"></i>
