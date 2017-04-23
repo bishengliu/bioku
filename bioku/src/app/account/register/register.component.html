@@ -10,6 +10,8 @@
           </h2>
           <!--form-->
           <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)">
+            <div *ngIf="registerForm.invalid && registerForm.touched" class="ui mini negative message"><p>Form is invalid</p></div>
+
             <div class="ui stacked segment">
               <div class="field" [class.error]="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
                 <div class="ui left icon input">
@@ -25,8 +27,13 @@
                   <input type="password" id="password1" [formControl]="registerForm.controls['password1']" placeholder="Password">
                 </div>  
                 <div *ngIf="registerForm.controls['password1'].hasError('required') && registerForm.controls['password1'].touched" class="ui mini negative message"><p>Password is required</p></div>
+                <!--
                 <div *ngIf="registerForm.controls['password1'].hasError('passwordInvalid') && registerForm.controls['password1'].touched" class="ui mini negative message">
                   <p>Password must contains at least: 1 uppercase letter, 2 lowercase letters, 2 digits and must be longer than 8 characters.</p>
+                </div>
+                -->
+                <div *ngIf="registerForm.controls['password1'].value !==registerForm.controls['password2'] && (registerForm.controls['password1'].touched && registerForm.controls['password2'].touched)" class="ui mini negative message">
+                  <p>Passwords don't match</p>
                 </div>
               </div>
               <div class="field" [class.error]="registerForm.controls['password2'].invalid && registerForm.controls['password2'].touched">
@@ -37,6 +44,9 @@
                 <div *ngIf="registerForm.controls['password2'].hasError('required') && registerForm.controls['password2'].touched" class="ui mini negative message"><p>Password is required</p></div>
                 <div *ngIf="registerForm.controls['password2'].hasError('passwordInvalid') && registerForm.controls['password2'].touched" class="ui mini negative message">
                   <p>Password must contains at least: 1 uppercase letter, 2 lowercase letters, 2 digits and must be longer than 8 characters.</p>
+                </div>
+                <div *ngIf="registerForm.controls['password1'].value !==registerForm.controls['password2'] && (registerForm.controls['password1'].touched && registerForm.controls['password2'].touched)" class="ui mini negative message">
+                  <p>Passwords don't match</p>
                 </div>
               </div>
               <div class="field" [class.error]="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
@@ -67,10 +77,12 @@
               <div class="field" [class.error]="registerForm.controls['photo'].invalid && registerForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
                   <i class="user icon"></i>
-                  <input type="text" id="photo_name" readonly placeholder="Photo">
+                  <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}">
                   <!--<a class="ui tag label">Photo</a>-->
-                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="registerForm.controls['photo']" placeholder="Photo" class="hidden"></label>
+                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="registerForm.controls['photo']" placeholder="Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
                 </div>
+                <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
 
               <div class="field">

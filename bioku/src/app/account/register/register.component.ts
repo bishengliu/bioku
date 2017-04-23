@@ -26,6 +26,11 @@ export class RegisterComponent implements OnInit {
   appName: string;
   isRegistered: boolean = false;
   user: User = null;
+  //for photo upload
+  file: File;
+  photo_name: string;
+  photo_is2Large: Boolean = false;
+  photo_isSupported: Boolean = true;
 
   constructor(fb: FormBuilder, private alertService: AlertService, 
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators) 
@@ -51,10 +56,31 @@ export class RegisterComponent implements OnInit {
     
   }
 
+  validatePhotoUpload(event: EventTarget) {
+        let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+        let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+        let files: FileList = target.files;
+        this.file = files[0];
+        //console.log(this.file);
+        this.photo_name = this.file.name;
+        //check file size
+        let size = this.file.size / 1024 / 1024
+        if (parseInt(size.toFixed(2)) > 10) {
+            this.photo_is2Large = true;
+        }
+        //check image format
+        if (this.file.type !== "image/png" && this.file.type  !== "image/jpeg" && this.file.type  !== "image/bmp" && this.file.type  !== "image/gif") {
+            this.photo_isSupported =  false;
+        }
+        console.log([this.photo_is2Large, this.photo_isSupported]);
+    }
+
+
   onRegister(values: any): void{
     console.log(this.registerForm);
     console.log(values);
   }
+
 
   updateState(){
     let state= this.appStore.getState()
