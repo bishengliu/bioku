@@ -33,6 +33,29 @@ export class CustomFormValidators{
                 if(!control.value || control.value.length === 0 || control.value ==""){
                     return null;
                 }
+                 new Observable((obs: any) =>{
+                    control
+                    .valueChanges
+                    .debounceTime(400)
+                    .flatMap(value =>{
+                        const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
+                        let body: string = JSON.stringify({'query': 'username', 'value': control.value});
+                        let headers = new Headers({ 'Content-Type': 'application/json' });
+                        let options = new RequestOptions({ headers: headers });
+                        return this.http.post(find_user_detail_url, body, options)})
+                    .map((response: Response) =>response.json())
+                    .map(data=>{ return { usernameAsyncInvalid: <Boolean>data.matched }; })
+                    .catch((error:any) => Observable.throw({ usernameAsyncInvalid: true }))
+                    .subscribe(
+                            (data: {[s: string]: Boolean}) => data),
+                            ()=>{ 
+                                obs.next({ usernameAsyncInvalid: true });
+                                obs.complete();
+                            };
+                })
+                
+                https://auth0.com/blog/angular2-series-forms-and-custom-validation/
+                /*
                 clearTimeout(this.validTimeout);
                 this.validTimeout = setTimeout(()=>{
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
@@ -41,11 +64,14 @@ export class CustomFormValidators{
                     let options = new RequestOptions({ headers: headers });
                     this.http.post(find_user_detail_url, body, options)
                         .map((response: Response) =>response.json())
-                        .catch((error:any) => Observable.throw({'usernameAsyncInvalid': true }))                  
+                        .catch((error:any) => Observable.throw({ usernameAsyncInvalid: true }))                  
                         .subscribe(
-                            (data: {[s: string]: Boolean}) => { return {'usernameAsyncInvalid': data.matched}; }
-                            ,()=>{ return {'usernameAsyncInvalid': true }; });
-                }, 2000);                                  
+                            (data: {[s: string]: Boolean}) => { return { usernameAsyncInvalid: data.matched }; },
+                            ()=>{ return { usernameAsyncInvalid: true }; });
+                }, 2000); 
+                */
+
+
             };
         };
     //async email
@@ -63,10 +89,10 @@ export class CustomFormValidators{
                     let options = new RequestOptions({ headers: headers });
                     this.http.post(find_user_detail_url, body, options)
                         .map((response: Response) =>response.json())
-                        .catch((error:any) => Observable.throw({'emailAsyncInvalid': true }))                  
+                        .catch((error:any) => Observable.throw({ emailAsyncInvalid: true }))                  
                         .subscribe(
-                            (data: {[s: string]: Boolean}) => { return {'emailAsyncInvalid': data.matched}; }
-                            ,()=>{ return {'emailAsyncInvalid': true }; });
+                            (data: {[s: string]: Boolean}) => { return { emailAsyncInvalid: data.matched }; },
+                            ()=>{ return { emailAsyncInvalid: true }; });
                 }, 2000);                                  
             };
         };
@@ -76,7 +102,7 @@ export class CustomFormValidators{
         {
             //let password_pattern = new RegExp("^(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9].*[0-9]).{8,}$");
             if(!control.value.match(/(?=.*[A-Z])(?=.*[a-z].*[a-z])(?=.*[0-9].*[0-9]).{8,}$/)){
-                return {passwordInvalid: true}
+                return { passwordInvalid: true}
             }
         }
     }

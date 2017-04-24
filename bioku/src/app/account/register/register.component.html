@@ -20,7 +20,7 @@
                 </div>
                 <div *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
                 <div *ngIf="registerForm.controls['username'].hasError('usernameInvalid') && registerForm.controls['username'].touched" class="ui mini negative message">Username is invalid</div>
-                <div *ngIf="registerForm.controls['username'].hasError('usernameAsyncInvalid') && registerForm.controls['username'].touched" class="ui mini negative message">Username already taken</div>
+                <div *ngIf="registerForm.controls['username'].touched && registerForm.controls.username.errors.usernameAsyncInvalid" class="">Username already taken</div>
               </div>
               <div class="field" [class.error]="registerForm.controls['password1'].invalid && registerForm.controls['password1'].touched">
                 <div class="ui left icon input">
@@ -28,11 +28,6 @@
                   <input type="password" id="password1" [formControl]="registerForm.controls['password1']" placeholder="Password">
                 </div>  
                 <div *ngIf="registerForm.controls['password1'].hasError('required') && registerForm.controls['password1'].touched" class="ui mini negative message"><p>Password is required</p></div>
-                <!--
-                <div *ngIf="registerForm.controls['password1'].hasError('passwordInvalid') && registerForm.controls['password1'].touched" class="ui mini negative message">
-                  <p>Password must contains at least: 1 uppercase letter, 2 lowercase letters, 2 digits and must be longer than 8 characters.</p>
-                </div>
-                -->
                 <div *ngIf="(registerForm.controls['password1'].value !== registerForm.controls['password2'].value) && (registerForm.controls['password1'].touched && registerForm.controls['password2'].touched)" class="ui mini negative message">
                   <p>Passwords don't match</p>
                 </div>
@@ -86,14 +81,6 @@
                 <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                 <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
-              <!--
-              <div class="field">
-                <div class="ui left icon input">
-                  <i class="birthday icon"></i>
-                  <input type="text" id="birth_date" [formControl]="registerForm.controls['birth_date']" placeholder="Birth Date">
-                </div>
-              </div>              
-              -->
               <div class="field">
                 <div class="ui left icon input">
                   <i class="birthday icon" id="birth_date"></i>

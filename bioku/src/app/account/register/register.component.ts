@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
   constructor(fb: FormBuilder, private alertService: AlertService, 
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators){ 
-    //validator patterns
+    //formGroup
     this.registerForm = fb.group({
       'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator(), this.cValidators.usernameAsyncValidator()])],
       'email': ['', Validators.compose([Validators.required, Validators.email, , this.cValidators.emailAsyncValidator()])],
@@ -103,10 +103,9 @@ export class RegisterComponent implements OnInit {
         }
   }
 
-
   onRegister(values: any): void{
-      //console.log(this.registerForm);
-      //console.log(values);
+      console.log(this.registerForm);
+      console.log(values);
       this.registerService.registerUser(values).subscribe(
           (data)=>{
             console.log(data);
