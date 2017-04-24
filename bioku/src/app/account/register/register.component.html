@@ -20,6 +20,7 @@
                 </div>
                 <div *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
                 <div *ngIf="registerForm.controls['username'].hasError('usernameInvalid') && registerForm.controls['username'].touched" class="ui mini negative message">Username is invalid</div>
+                <div *ngIf="!registerForm.controls['username'].hasError('usernameAsyncFound') && registerForm.controls['username'].touched" class="ui mini negative message">Username already taken</div>
               </div>
               <div class="field" [class.error]="registerForm.controls['password1'].invalid && registerForm.controls['password1'].touched">
                 <div class="ui left icon input">
@@ -56,6 +57,7 @@
                 </div>
                 <div *ngIf="registerForm.controls['email'].hasError('required') && registerForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
                 <div *ngIf="registerForm.controls['email'].hasError('email') && registerForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
+                <div *ngIf="!registerForm.controls['email'].hasError('emailAsyncFound') && registerForm.controls['email'].touched" class="ui mini negative message">Email already taken</div>
               </div>
               <div class="field" [class.error]="registerForm.controls['first_name'].invalid && registerForm.controls['first_name'].touched">
                 <div class="ui left icon input">

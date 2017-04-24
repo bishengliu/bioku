@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
   { 
     //validator patterns
     this.registerForm = fb.group({
-      'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator()])],
+      'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator(), this.cValidators.usernameAsyncValidator()])],
       'email': ['', Validators.compose([Validators.required, Validators.email])],
       'password1': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],
       'password2': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],

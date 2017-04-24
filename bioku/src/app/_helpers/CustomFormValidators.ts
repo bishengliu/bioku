@@ -1,10 +1,16 @@
 
 import {FormControl, Validators} from '@angular/forms';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { AppSetting} from '../_config/AppSetting';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class CustomFormValidators{
-    constructor(){}
+    constructor(private http:Http,  @Inject(APP_CONFIG) private appSetting: any){}
+
+    private validTimeout;
 
     //validator username
     usernameValidator() {
@@ -20,6 +26,52 @@ export class CustomFormValidators{
             }
         }
     }
+    //async validation
+    usernameAsyncValidator(){
+        return (control: FormControl): {[s: string]: Boolean} => {
+                //not reuired
+                if(!control.value || control.value.length === 0 || control.value ==""){
+                    return null;
+                }
+                clearTimeout(this.validTimeout);
+                this.validTimeout = setTimeout(()=>{
+                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
+                    let body: string = JSON.stringify({'query': 'username', 'value': control.value});
+                    let headers = new Headers({ 'Content-Type': 'application/json' });
+                    let options = new RequestOptions({ headers: headers });
+                    this.http.post(find_user_detail_url, body, options)
+                        .map((response: Response) =>response.json())
+                        .do((data)=>(console.log(data)))
+                        .catch((error:any) => Observable.throw(null))                  
+                        .subscribe(
+                            (data: {[s: string]: Boolean}) => { return {'usernameAsyncFound': data.matched}; }
+                            ,()=>{ return {'usernameAsyncFound': false }; });
+                }, 2000);                                  
+            };
+        };
+    //async email
+    emailAsyncValidator(){
+        return (control: FormControl): {[s: string]: Boolean} => {
+                //not reuired
+                if(!control.value || control.value.length === 0 || control.value ==""){
+                    return null;
+                }
+                clearTimeout(this.validTimeout);
+                this.validTimeout = setTimeout(()=>{
+                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
+                    let body: string = JSON.stringify({'query': 'email', 'value': control.value});
+                    let headers = new Headers({ 'Content-Type': 'application/json' });
+                    let options = new RequestOptions({ headers: headers });
+                    this.http.post(find_user_detail_url, body, options)
+                        .map((response: Response) =>response.json())
+                        .do((data)=>(console.log(data)))
+                        .catch((error:any) => Observable.throw(null))                  
+                        .subscribe(
+                            (data: {[s: string]: Boolean}) => { return {'emailAsyncFound': data.matched}; }
+                            ,()=>{ return {'emailAsyncFound': false }; });
+                }, 2000);                                  
+            };
+        };
     //validate password
     passwordValidator(){
         return (control: FormControl): {[s: string]: Boolean}=>
