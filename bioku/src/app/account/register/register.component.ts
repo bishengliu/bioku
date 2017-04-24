@@ -8,6 +8,8 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { LoginService } from '../../_services/LoginService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { User } from '../../_classes/User';
+//mydatepicker
+import {IMyOptions} from 'mydatepicker';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -31,6 +33,16 @@ export class RegisterComponent implements OnInit {
   photo_name: string;
   photo_is2Large: Boolean = false;
   photo_isSupported: Boolean = true;
+
+  //mydatepicker
+  private myDatePickerOptions: IMyOptions = {
+        // other options...
+        dateFormat: 'dd/mm/yyyy',
+        openSelectorTopOfInput: true,
+        showSelectorArrow: false,
+        editableDateField: false,
+        openSelectorOnInputClick: true,
+  };
 
   constructor(fb: FormBuilder, private alertService: AlertService, 
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators) 
@@ -56,7 +68,25 @@ export class RegisterComponent implements OnInit {
     
   }
 
-  validatePhotoUpload(event: EventTarget) {
+  //my datepicker
+  setDate(): void {
+        // Set today date using the setValue function
+        let date = new Date();
+        this.registerForm.setValue({birth_date: {
+        date: {
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate()}
+        }});
+    }
+
+    clearDate(): void {
+        // Clear the date using the setValue function
+        this.registerForm.setValue({birth_date: ''});
+    }
+
+    //check upload photo
+    validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
         let files: FileList = target.files;
@@ -73,20 +103,20 @@ export class RegisterComponent implements OnInit {
             this.photo_isSupported =  false;
         }
         console.log([this.photo_is2Large, this.photo_isSupported]);
-    }
+      }
 
 
-  onRegister(values: any): void{
-    console.log(this.registerForm);
-    console.log(values);
-  }
+      onRegister(values: any): void{
+        console.log(this.registerForm);
+        console.log(values);
+      }
 
 
-  updateState(){
-    let state= this.appStore.getState()
-  }
+      updateState(){
+        let state= this.appStore.getState()
+      }
 
-  ngOnInit() {
-  }
+      ngOnInit() {
+      }
 
 }

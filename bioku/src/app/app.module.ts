@@ -15,6 +15,8 @@ import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 //custom form validators
 import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
+//mydatepicker
+import { MyDatePickerModule } from 'mydatepicker';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
@@ -57,6 +59,8 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     HttpModule,
     //symantic -ui
     SuiModule,
+    //mydatepicker
+    MyDatePickerModule,
     //register root routers
     RouterModule.forRoot(routes),
   ],
