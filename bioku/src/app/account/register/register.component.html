@@ -9,7 +9,7 @@
             <div class="content">Join {{appName}}</div>
           </h2>
           <!--form-->
-          <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)">
+          <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)" enctype="multipart/form-data">
             <div *ngIf="registerForm.invalid && registerForm.touched" class="ui mini negative message"><p>Form is invalid</p></div>
 
             <div class="ui stacked segment">

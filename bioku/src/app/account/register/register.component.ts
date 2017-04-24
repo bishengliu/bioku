@@ -6,14 +6,16 @@ import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { LoginService } from '../../_services/LoginService';
+import { RegisterService } from '../../_services/RegisterService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { User } from '../../_classes/User';
 //mydatepicker
 import {IMyOptions} from 'mydatepicker';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
-import { AppState } from '../../_redux/root/state';
+import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
+//REDUX
 
 //custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
@@ -41,12 +43,11 @@ export class RegisterComponent implements OnInit {
         openSelectorTopOfInput: true,
         showSelectorArrow: false,
         editableDateField: false,
-        openSelectorOnInputClick: true,
-  };
+        openSelectorOnInputClick: true};
 
   constructor(fb: FormBuilder, private alertService: AlertService, 
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators) 
-  { 
+              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
+              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators){ 
     //validator patterns
     this.registerForm = fb.group({
       'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator(), this.cValidators.usernameAsyncValidator()])],
@@ -57,15 +58,13 @@ export class RegisterComponent implements OnInit {
       'last_name': ['', Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'birth_date': ['', ],
       'photo': ['', ],
-      'telephone': ['', this.cValidators.telephoneValidator()],
-    });
+      'telephone': ['', this.cValidators.telephoneValidator()]});
     
     //app name
     this.appName = appSetting.NAME;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
-    
   }
 
   //my datepicker
@@ -78,15 +77,15 @@ export class RegisterComponent implements OnInit {
             month: date.getMonth() + 1,
             day: date.getDate()}
         }});
-    }
+  }
 
-    clearDate(): void {
+  clearDate(): void {
         // Clear the date using the setValue function
         this.registerForm.setValue({birth_date: ''});
-    }
+  }
 
-    //check upload photo
-    validatePhotoUpload(event: EventTarget) {
+  //check upload photo
+  validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
         let files: FileList = target.files;
@@ -102,21 +101,34 @@ export class RegisterComponent implements OnInit {
         if (this.file.type !== "image/png" && this.file.type  !== "image/jpeg" && this.file.type  !== "image/bmp" && this.file.type  !== "image/gif") {
             this.photo_isSupported =  false;
         }
-        console.log([this.photo_is2Large, this.photo_isSupported]);
-      }
+  }
 
 
-      onRegister(values: any): void{
-        console.log(this.registerForm);
-        console.log(values);
-      }
+  onRegister(values: any): void{
+      //console.log(this.registerForm);
+      //console.log(values);
+      this.registerService.registerUser(values).subscribe(
+          (data)=>{
+            console.log(data);
+            if(data.detail){
+              this.isRegistered = true;
+              //loger redux
+              //get state: apppartialstate
+              let preState: AppPartialState = this.logAppStateService.getAppPartialState();
+              //get state: apppartialstate
+              let nextState: AppPartialState = this.logAppStateService.getAppPartialState();
+              let message: string = 'the new user registered!'
+              //logger the redux action
+              this.logAppStateService.log('REGISTER USER', preState, nextState, message);
 
+              this.router.navigate(['login']);
+            }
+          },
+      ()=>{ this.isRegistered = false;},
+      ()=>{});
+  }
 
-      updateState(){
-        let state= this.appStore.getState()
-      }
+  updateState(){ let state= this.appStore.getState();}
 
-      ngOnInit() {
-      }
-
+  ngOnInit() {}
 }
