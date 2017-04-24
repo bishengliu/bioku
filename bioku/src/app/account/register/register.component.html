@@ -10,8 +10,9 @@
           </h2>
           <!--form-->
           <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)" enctype="multipart/form-data">
+            <!--
             <div *ngIf="registerForm.invalid && registerForm.touched" class="ui mini negative message"><p>Form is invalid</p></div>
-
+            -->
             <div class="ui stacked segment">
               <div class="field" [class.error]="registerForm.controls['username'].invalid && registerForm.controls['username'].touched">
                 <div class="ui left icon input">
@@ -20,7 +21,9 @@
                 </div>
                 <div *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched" class="ui mini negative message">Username is required</div>
                 <div *ngIf="registerForm.controls['username'].hasError('usernameInvalid') && registerForm.controls['username'].touched" class="ui mini negative message">Username is invalid</div>
-                <div *ngIf="registerForm.controls['username'].touched && registerForm.controls.username.errors.usernameAsyncInvalid" class="">Username already taken</div>
+                <div *ngIf="registerForm.controls['username'].touched && registerForm.controls['username'].hasError('usernameAsyncInvalid')" class="ui mini negative message">Username already taken</div>
+ 
+                
               </div>
               <div class="field" [class.error]="registerForm.controls['password1'].invalid && registerForm.controls['password1'].touched">
                 <div class="ui left icon input">
@@ -95,7 +98,7 @@
                 </div>
                 <div *ngIf="registerForm.controls['telephone'].hasError('telephoneInvalid') && registerForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
               </div>
-              <button type="submit" class="ui fluid teal button" [ngClass]="{ disabled: registerForm.invalid }">
+              <button type="submit" class="ui fluid teal button">
                 <i class="icon add user"></i>
                 Sign Up
               </button>

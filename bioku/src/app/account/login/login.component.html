@@ -25,7 +25,7 @@
                 </div>  
                 <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="ui mini negative message"><p>Password is required</p></div>
               </div>
-              <button type="submit" class="ui fluid teal button" [ngClass]="{disabled: loginForm.invalid}">
+              <button type="submit" class="ui fluid teal button">
                 <i class="icon sign in"></i>
                 Login
               </button>

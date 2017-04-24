@@ -50,8 +50,8 @@ export class RegisterComponent implements OnInit {
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators){ 
     //formGroup
     this.registerForm = fb.group({
-      'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator(), this.cValidators.usernameAsyncValidator()])],
-      'email': ['', Validators.compose([Validators.required, Validators.email, , this.cValidators.emailAsyncValidator()])],
+      'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator()]), this.cValidators.usernameAsyncValidator()],
+      'email': ['', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator()],
       'password1': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],
       'password2': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],
       'first_name': ['', Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],

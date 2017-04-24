@@ -5,6 +5,7 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { AppSetting} from '../_config/AppSetting';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class CustomFormValidators{
@@ -28,74 +29,79 @@ export class CustomFormValidators{
     }
     //async validation
     usernameAsyncValidator(){
-        return (control: FormControl): {[s: string]: Boolean} => {
+        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
                 //not reuired
                 if(!control.value || control.value.length === 0 || control.value ==""){
-                    return null;
-                }
-                 new Observable((obs: any) =>{
-                    control
-                    .valueChanges
-                    .debounceTime(400)
-                    .flatMap(value =>{
-                        const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-                        let body: string = JSON.stringify({'query': 'username', 'value': control.value});
-                        let headers = new Headers({ 'Content-Type': 'application/json' });
-                        let options = new RequestOptions({ headers: headers });
-                        return this.http.post(find_user_detail_url, body, options)})
-                    .map((response: Response) =>response.json())
-                    .map(data=>{ return { usernameAsyncInvalid: <Boolean>data.matched }; })
-                    .catch((error:any) => Observable.throw({ usernameAsyncInvalid: true }))
-                    .subscribe(
-                            (data: {[s: string]: Boolean}) => data),
-                            ()=>{ 
-                                obs.next({ usernameAsyncInvalid: true });
-                                obs.complete();
-                            };
-                })
+                    return Observable.throw(null);
+                };
                 
-                https://auth0.com/blog/angular2-series-forms-and-custom-validation/
-                /*
-                clearTimeout(this.validTimeout);
-                this.validTimeout = setTimeout(()=>{
+                return new Observable(observer=>{
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
                     let body: string = JSON.stringify({'query': 'username', 'value': control.value});
                     let headers = new Headers({ 'Content-Type': 'application/json' });
                     let options = new RequestOptions({ headers: headers });
-                    this.http.post(find_user_detail_url, body, options)
+
+                    control.valueChanges
+                        .debounceTime(2000)
+                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
                         .map((response: Response) =>response.json())
-                        .catch((error:any) => Observable.throw({ usernameAsyncInvalid: true }))                  
-                        .subscribe(
-                            (data: {[s: string]: Boolean}) => { return { usernameAsyncInvalid: data.matched }; },
-                            ()=>{ return { usernameAsyncInvalid: true }; });
-                }, 2000); 
-                */
-
-
+                        .catch((error:any) => { 
+                            observer.next({usernameAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({usernameAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({usernameAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({usernameAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe               
+                }); //end new Observable 
             };
-        };
+    };               
     //async email
     emailAsyncValidator(){
-        return (control: FormControl): {[s: string]: Boolean} => {
+        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
                 //not reuired
                 if(!control.value || control.value.length === 0 || control.value ==""){
-                    return null;
+                    return Observable.throw(null);
                 }
-                clearTimeout(this.validTimeout);
-                this.validTimeout = setTimeout(()=>{
+
+                return new Observable(observer=>{
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
                     let body: string = JSON.stringify({'query': 'email', 'value': control.value});
                     let headers = new Headers({ 'Content-Type': 'application/json' });
                     let options = new RequestOptions({ headers: headers });
-                    this.http.post(find_user_detail_url, body, options)
+
+                    control.valueChanges
+                        .debounceTime(2000)
+                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
                         .map((response: Response) =>response.json())
-                        .catch((error:any) => Observable.throw({ emailAsyncInvalid: true }))                  
-                        .subscribe(
-                            (data: {[s: string]: Boolean}) => { return { emailAsyncInvalid: data.matched }; },
-                            ()=>{ return { emailAsyncInvalid: true }; });
-                }, 2000);                                  
+                        .catch((error:any) => { 
+                            observer.next({ emailAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({ emailAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({ emailAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({ emailAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe               
+                }); //end new Observable 
             };
-        };
+    };
+
     //validate password
     passwordValidator(){
         return (control: FormControl): {[s: string]: Boolean}=>
