@@ -13,6 +13,7 @@ export class CustomFormValidators{
 
     private validTimeout;
 
+    //sync validators, 2nd parameter
     //validator username
     usernameValidator() {
         return (control: FormControl): {[s: string]: Boolean} => 
@@ -27,81 +28,7 @@ export class CustomFormValidators{
             }
         }
     }
-    //async validation
-    usernameAsyncValidator(){
-        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
-                //not reuired
-                if(!control.value || control.value.length === 0 || control.value ==""){
-                    return Observable.throw(null);
-                };
-                
-                return new Observable(observer=>{
-                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-                    let body: string = JSON.stringify({'query': 'username', 'value': control.value});
-                    let headers = new Headers({ 'Content-Type': 'application/json' });
-                    let options = new RequestOptions({ headers: headers });
-
-                    control.valueChanges
-                        .debounceTime(2000)
-                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
-                        .map((response: Response) =>response.json())
-                        .catch((error:any) => { 
-                            observer.next({usernameAsyncInvalid: true });
-                            observer.complete();
-                            return Observable.throw({usernameAsyncInvalid: true });      
-                        })
-                        .subscribe(data=>{
-                            if (data && <Boolean>data.matched){
-                                observer.next({usernameAsyncInvalid: true });
-                                observer.complete();} 
-                            else{
-                                observer.next(null);
-                                observer.complete();}
-                          },
-                          ()=>{observer.next({usernameAsyncInvalid: true });
-                                observer.complete();
-                          });   //end subscribe               
-                }); //end new Observable 
-            };
-    };               
-    //async email
-    emailAsyncValidator(){
-        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
-                //not reuired
-                if(!control.value || control.value.length === 0 || control.value ==""){
-                    return Observable.throw(null);
-                }
-
-                return new Observable(observer=>{
-                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-                    let body: string = JSON.stringify({'query': 'email', 'value': control.value});
-                    let headers = new Headers({ 'Content-Type': 'application/json' });
-                    let options = new RequestOptions({ headers: headers });
-
-                    control.valueChanges
-                        .debounceTime(2000)
-                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
-                        .map((response: Response) =>response.json())
-                        .catch((error:any) => { 
-                            observer.next({ emailAsyncInvalid: true });
-                            observer.complete();
-                            return Observable.throw({ emailAsyncInvalid: true });      
-                        })
-                        .subscribe(data=>{
-                            if (data && <Boolean>data.matched){
-                                observer.next({ emailAsyncInvalid: true });
-                                observer.complete();} 
-                            else{
-                                observer.next(null);
-                                observer.complete();}
-                          },
-                          ()=>{observer.next({ emailAsyncInvalid: true });
-                                observer.complete();
-                          });   //end subscribe               
-                }); //end new Observable 
-            };
-    };
-
+    
     //validate password
     passwordValidator(){
         return (control: FormControl): {[s: string]: Boolean}=>
@@ -143,7 +70,6 @@ export class CustomFormValidators{
         }
     }
     
-
     //telephone, need to be improved
     telephoneValidator(){
         return (control: FormControl): {[s: string]: Boolean} => 
@@ -157,5 +83,81 @@ export class CustomFormValidators{
             }
         }
     }
+
+    //async validators, must be the 3rd parameter
+    //async validation
+    usernameAsyncValidator(){
+        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
+                //not reuired
+                if(!control.value || control.value.length === 0 || control.value ==""){
+                    return Observable.throw(null);
+                };
+                
+                return new Observable(observer=>{
+                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
+                    let body: string = JSON.stringify({'query': 'username', 'value': control.value});
+                    let headers = new Headers({ 'Content-Type': 'application/json' });
+                    let options = new RequestOptions({ headers: headers });
+
+                    control.valueChanges
+                        .debounceTime(1000)
+                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
+                        .map((response: Response) =>response.json())
+                        .catch((error:any) => { 
+                            observer.next({usernameAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({usernameAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({usernameAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({usernameAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe               
+                }); //end new Observable 
+            };
+    };               
+    //async email
+    emailAsyncValidator(){
+        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
+                //not reuired
+                if(!control.value || control.value.length === 0 || control.value ==""){
+                    return Observable.throw(null);
+                }
+
+                return new Observable(observer=>{
+                    const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
+                    let body: string = JSON.stringify({'query': 'email', 'value': control.value});
+                    let headers = new Headers({ 'Content-Type': 'application/json' });
+                    let options = new RequestOptions({ headers: headers });
+
+                    control.valueChanges
+                        .debounceTime(1000)
+                        .flatMap(value => this.http.post(find_user_detail_url, body, options))
+                        .map((response: Response) =>response.json())
+                        .catch((error:any) => { 
+                            observer.next({ emailAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({ emailAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({ emailAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({ emailAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe               
+                }); //end new Observable 
+            };
+    };
 }
 
