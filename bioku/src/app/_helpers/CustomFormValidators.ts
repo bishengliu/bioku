@@ -41,11 +41,10 @@ export class CustomFormValidators{
                     let options = new RequestOptions({ headers: headers });
                     this.http.post(find_user_detail_url, body, options)
                         .map((response: Response) =>response.json())
-                        .do((data)=>(console.log(data)))
-                        .catch((error:any) => Observable.throw(null))                  
+                        .catch((error:any) => Observable.throw({'usernameAsyncInvalid': true }))                  
                         .subscribe(
-                            (data: {[s: string]: Boolean}) => { return {'usernameAsyncFound': data.matched}; }
-                            ,()=>{ return {'usernameAsyncFound': false }; });
+                            (data: {[s: string]: Boolean}) => { return {'usernameAsyncInvalid': data.matched}; }
+                            ,()=>{ return {'usernameAsyncInvalid': true }; });
                 }, 2000);                                  
             };
         };
@@ -64,11 +63,10 @@ export class CustomFormValidators{
                     let options = new RequestOptions({ headers: headers });
                     this.http.post(find_user_detail_url, body, options)
                         .map((response: Response) =>response.json())
-                        .do((data)=>(console.log(data)))
-                        .catch((error:any) => Observable.throw(null))                  
+                        .catch((error:any) => Observable.throw({'emailAsyncInvalid': true }))                  
                         .subscribe(
-                            (data: {[s: string]: Boolean}) => { return {'emailAsyncFound': data.matched}; }
-                            ,()=>{ return {'emailAsyncFound': false }; });
+                            (data: {[s: string]: Boolean}) => { return {'emailAsyncInvalid': data.matched}; }
+                            ,()=>{ return {'emailAsyncInvalid': true }; });
                 }, 2000);                                  
             };
         };
