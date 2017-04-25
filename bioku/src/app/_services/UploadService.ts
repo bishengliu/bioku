@@ -48,7 +48,6 @@ private progress: number;
 
 /*
 
-
 import {Component } from 'angular2/core';
 import {UploadService} from './app.service';
 
