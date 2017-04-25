@@ -30,34 +30,60 @@
 </div>
 
 <!-- sidebar -->
-<ng-sidebar-container>
+<ng-sidebar-container id="small_card">
     <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
+        <a class="item">
+            <i class="sign out icon"></i>Sign Out
+        </a>
         <div *ngIf="isLogin" class="ui red raised card">
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
             </div>
             <div class="content">            
                 <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
+                <a><span class="ui right floated"><i class="icon setting"></i></span></a>
                 <a class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</a>
                 <div class="meta">
                     <!--<span class="date"><i class="user icon"></i> {{user.first_name +" "+ user.last_name}}</span>-->
-                    <span class="date"><i class="mail icon"></i> {{user.email}}</span>
-                    <span *ngIf="user.telephone" class="date"><i class="call icon"></i> {{user.telephone}}</span>
-                </div>
-                <div class="meta">
-                    <span>Roles(s): {{roles}}</span>
-                </div>
-                <div class="meta">
-                    <span>Groups: {{groups}}</span>
-                </div> 
+                    <span class=""><i class="mail icon"></i> {{user.email}}</span>
+                    <span *ngIf="user.telephone" class=""><i class="call icon"></i> {{user.telephone}}</span>
+                    <span *ngIf="user.birth_date" class=""><i class="birthday icon"></i> {{user.birth_date}}</span>
+                </div>  
+                <div class="meta" *ngIf="roles">
+                    <span>{{roles}}</span>
+                </div>         
+            </div>
+            <div class="extra content" *ngIf="groups">
+                <p>{{groups}}</p>
+            </div>
+            <div class="ui bottom attached button">
+                <i class="lock icon"></i>Change Password
             </div>
         </div>
-        <!--
-        <div class="extra content">
-            <div class="meta">
-                <span>Groups: {{groups}}</span>
-            </div>                
+        <!--groups and list all the researchers in the group when hoeving the image-->
+        <div *ngIf="isLogin" class="ui teal raised card">
+            <div *ngIf="user.profile.photo" class="image">                
+                <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
+            </div>
+            <div class="content">            
+                <a><span class="ui right floated"><i class="icon setting"></i></span></a>
+                <a class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</a>
+                <div class="meta">
+                    <!--<span class="date"><i class="user icon"></i> {{user.first_name +" "+ user.last_name}}</span>-->
+                    <span class=""><i class="mail icon"></i> {{user.email}}</span>
+                    <span *ngIf="user.telephone" class=""><i class="call icon"></i> {{user.telephone}}</span>
+                    <span *ngIf="user.birth_date" class=""><i class="birthday icon"></i> {{user.birth_date}}</span>
+                </div>  
+                <div class="meta" *ngIf="roles">
+                    <span>{{roles}}</span>
+                </div>         
+            </div>
+            <div class="extra content" *ngIf="groups">
+                <p>{{groups}}</p>
+            </div>
         </div>
+
+        <!--
         <a class="item">
             <i class="home icon"></i>Home
         </a>
