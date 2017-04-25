@@ -17,7 +17,7 @@ private progress: number;
   private makeFileRequest (url: string, files: File[]): Observable<any> {
     return Observable.create(observer => {
         let formData: FormData = new FormData(),
-            xhr: XMLHttpRequest = new XMLHttpRequest();
+        xhr: XMLHttpRequest = new XMLHttpRequest();
 
         for (let i = 0; i < files.length; i++) {
             formData.append("uploads[]", files[i], files[i].name);

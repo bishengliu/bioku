@@ -36,13 +36,12 @@ export class RegisterComponent implements OnInit {
   appName: string;
   isRegistered: boolean = false;
 
-  /*
   //for photo upload
   file: File;
   photo_name: string;
   photo_is2Large: Boolean = false;
   photo_isSupported: Boolean = true;
-  */
+  
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
         // other options...
@@ -90,28 +89,71 @@ export class RegisterComponent implements OnInit {
         // Clear the date using the setValue function
         this.registerForm.setValue({birth_date: ''});
   }
-  /*
+  
   //check upload photo
   validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
         let files: FileList = target.files;
         this.file = files[0];
-        //console.log(this.file);
+        console.log(this.file);
         this.photo_name = this.file.name;
         //check file size
         let size = this.file.size / 1024 / 1024
         if (parseInt(size.toFixed(2)) > 10) {
             this.photo_is2Large = true;
         }
+        else{
+          this.photo_is2Large = false;
+        }
         //check image format
         if (this.file.type !== "image/png" && this.file.type  !== "image/jpeg" && this.file.type  !== "image/bmp" && this.file.type  !== "image/gif") {
             this.photo_isSupported =  false;
         }
+        else{
+          this.photo_isSupported =  true;
+        }
   }
-  */
+  
   onRegister(values: any): void{
-    this.appStore.dispatch(registerActionAsync(values, this.registerService, this.http, this.logAppStateService, this.alertService));
+    let obj = {
+            username : values.username,
+            email : values.email,
+            password1 : values.password1,
+            password2 : values.password2,
+            first_name : values.first_name,
+            last_name : values.last_name,
+            //birth_date : '2017-05-01',
+            birth_date : values.birth_date.date.year + '-'+ values.birth_date.date.month + '-'+ values.birth_date.date.day,
+            telephone : values.telephone };
+        //url for get auth user details
+    const register_url: string  = this.appSetting.URL + this.appSetting.REGISTER_USER;
+    //let headers = new Headers({ 'Content-Type': 'multipart/form-data' });
+    //let options = new RequestOptions({ headers: headers });
+    console.log(obj);
+    console.log(this.file);
+    let formData: FormData = new FormData();
+    formData.append("obj", JSON.stringify(obj));
+    formData.append("file", this.file, this.file.name);
+    /*
+    let xhr: XMLHttpRequest = new XMLHttpRequest();
+    xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+    xhr.setRequestHeader("Cache-Control", "no-cache");
+    xhr.setRequestHeader("Cache-Control", "no-store");
+    xhr.setRequestHeader("Pragma", "no-cache");
+    xhr.open('POST', register_url, true);
+    xhr.send(formData);
+    */
+    this.http.post(register_url, formData)
+              .map(res => res.json())
+              .catch(error => Observable.throw(error))
+             .subscribe(data => {
+                console.log('uploaded and processed files');
+            },
+            error => console.log(error),
+            () => {});
+    //this.appStore.dispatch(registerActionAsync(values, this.registerService, this.http, this.logAppStateService, this.alertService));
+
   }
 
   updateState(){ 

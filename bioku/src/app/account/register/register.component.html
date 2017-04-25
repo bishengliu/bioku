@@ -71,7 +71,8 @@
                 <div *ngIf="registerForm.controls['last_name'].hasError('required') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
                 <div *ngIf="registerForm.controls['last_name'].hasError('humanNameInvalid') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
               </div>
-              <!--
+
+
               <div class="field" [class.error]="registerForm.controls['photo'].invalid && registerForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
                   <i class="user icon"></i>
@@ -81,7 +82,8 @@
                 <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                 <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
-              -->
+
+
               <div class="field">
                 <div class="ui left icon input">
                   <i class="birthday icon" id="birth_date"></i>
