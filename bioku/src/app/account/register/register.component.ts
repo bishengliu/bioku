@@ -16,6 +16,7 @@ import {IMyOptions} from 'mydatepicker';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
+import { registerActionAsync } from '../../_redux/login/login_actions';
 //access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
@@ -34,7 +35,6 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   appName: string;
   isRegistered: boolean = false;
-  user: User = null;
 
   /*
   //for photo upload
@@ -111,31 +111,17 @@ export class RegisterComponent implements OnInit {
   }
   */
   onRegister(values: any): void{
-      console.log(this.registerForm);
-      console.log(values);
-
-      this.registerService.registerUser(values).subscribe(
-          (data)=>{
-            console.log(data);
-            if(data.detail){
-              this.isRegistered = true;
-              //loger redux
-              //get state: apppartialstate
-              let preState: AppPartialState = this.logAppStateService.getAppPartialState();
-              //get state: apppartialstate
-              let nextState: AppPartialState = this.logAppStateService.getAppPartialState();
-              let message: string = 'the new user registered!'
-              //logger the redux action
-              this.logAppStateService.log('REGISTER USER', preState, nextState, message);
-
-              this.router.navigate(['login']);
-            }
-          },
-      ()=>{ this.isRegistered = false;},
-      ()=>{});
+    this.appStore.dispatch(registerActionAsync(values, this.registerService, this.http, this.logAppStateService, this.alertService));
   }
 
-  updateState(){ let state= this.appStore.getState();}
+  updateState(){ 
+    let state= this.appStore.getState();
+    if(state.authInfo){
+       let isLogin = state.authInfo.token? true: false;
+      if(isLogin){
+      this.router.navigate(['home']);}
+    } 
+  }
 
   ngOnInit() {}
 }

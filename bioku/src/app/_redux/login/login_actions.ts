@@ -7,6 +7,7 @@ import {User} from '../../_classes/User';
 import {LoginService} from '../../_services/LoginService';
 import{AlertService} from '../../_services/AlertService';
 import {LogAppStateService} from '../../_services/LogAppStateService';
+import { RegisterService } from '../../_services/RegisterService';
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
 
@@ -46,8 +47,8 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 //with thunk
 export const userAuthActionAsync = 
 (loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => 
-    (dispatch: Dispatch<AppState>, getState) =>
-    {
+(dispatch: Dispatch<AppState>, getState) =>
+{
         //auth user
         loginService.authUser(username, password)
         .subscribe(
@@ -96,4 +97,53 @@ export const userAuthActionAsync =
                 alertService.success('Login Success!');
             }
         );
-    }
+}
+
+
+//register action
+export const registerActionAsync =
+(values:any, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    registerService.registerUser(values).subscribe(
+            (data)=> {
+                console.log(data);
+                if(data.detail){
+                    //loger redux
+                    //get state: apppartialstate
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();
+                    console.log(preState);
+                    //dispatch set auth token action
+                    //dispatch set token              
+                    let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token.token);
+                    dispatch(setAuthTokenAction);
+
+                    //displath set authUser
+                    if('user' in data && data.user){
+                        let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
+                        dispatch(setAuthUserAction);
+                    }
+                    
+                    //get state: apppartialstate
+                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                    let message: string = 'the new user registered!'
+                    //logger the redux action
+                    logAppStateService.log('REGISTER USER', preState, nextState, message);            
+                }
+            },
+            (error)=>{
+                //get state: apppartialstate
+                let preState: AppPartialState = logAppStateService.getAppPartialState();
+                let nextState: AppPartialState = preState;
+                let message: string = 'User Register failed: ' + (error || 'server error!') ;
+                logAppStateService.log('USER REGISTRATION', preState, nextState, message);
+                console.log(error);
+                //error
+                alertService.error('Register Failed!');
+            },
+            ()=>{
+                //success
+                alertService.success('Register Success!', true);
+            }
+    )
+}
