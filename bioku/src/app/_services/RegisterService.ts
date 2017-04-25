@@ -8,24 +8,10 @@ import {APP_CONFIG} from '../_providers/AppSettingProvider';
 @Injectable()
 export class RegisterService{
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any){}
-    registerUser(values){
-        let obj = {
-            username : values.username,
-            email : values.email,
-            password1 : values.password1,
-            password2 : values.password2,
-            first_name : values.first_name,
-            last_name : values.last_name,
-            //birth_date : '2017-05-01',
-            birth_date : values.birth_date.date.year + '-'+ values.birth_date.date.month + '-'+ values.birth_date.date.day,
-            telephone : values.telephone };
+    registerUser(formData: FormData){        
         //url for get auth user details
-        const register_url: string  = this.appSetting.URL + this.appSetting.REGISTER_USER;
-        let body: string = JSON.stringify(obj);
-        //let body = {'username': username, 'password': password};
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(register_url, body, options)
+        const register_url: string  = this.appSetting.URL + this.appSetting.REGISTER_USER;       
+        return this.http.post(register_url, formData) //do provide header accorrding to django
                    .map((response: Response) =>response.json())
                    //get the authUser using mergeMap
                    .mergeMap(data=>{
@@ -36,6 +22,7 @@ export class RegisterService{
                        if (!token || !user_pk){
                             return data; };
                        //get the auth user
+
                        let headers = new Headers({ 'Authorization': 'Token '+ token });
                        let options = new RequestOptions({ headers: headers });
                        const user_detail: string  = this.appSetting.URL + this.appSetting.AUTH_USER;
@@ -48,6 +35,6 @@ export class RegisterService{
                             .catch((error:any) => Observable.of({'token': token_obj, 'detail': detail}));
                    })
                    .do(data=>{console.log(data)})
-                   .catch((error:any) => Observable.throw('Server error'));
+                   .catch((error:any) => Observable.throw(error));
     }
 }

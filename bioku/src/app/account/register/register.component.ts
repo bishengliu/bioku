@@ -128,31 +128,19 @@ export class RegisterComponent implements OnInit {
             telephone : values.telephone };
         //url for get auth user details
     const register_url: string  = this.appSetting.URL + this.appSetting.REGISTER_USER;
-    //let headers = new Headers({ 'Content-Type': 'multipart/form-data' });
-    //let options = new RequestOptions({ headers: headers });
-    console.log(obj);
-    console.log(this.file);
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
-    formData.append("file", this.file, this.file.name);
+    if (this.file){
+      formData.append("file", this.file, this.file.name);
+    }
     /*
-    let xhr: XMLHttpRequest = new XMLHttpRequest();
-    xhr.setRequestHeader('Content-Type', 'multipart/form-data')
-    xhr.setRequestHeader("Cache-Control", "no-cache");
-    xhr.setRequestHeader("Cache-Control", "no-store");
-    xhr.setRequestHeader("Pragma", "no-cache");
-    xhr.open('POST', register_url, true);
-    xhr.send(formData);
+    for multiple file upload
+      for(var i = 0; i < files.length; i++){
+            formData.append(files[i].name, files[i], files[i].filename);
+        }
+
     */
-    this.http.post(register_url, formData)
-              .map(res => res.json())
-              .catch(error => Observable.throw(error))
-             .subscribe(data => {
-                console.log('uploaded and processed files');
-            },
-            error => console.log(error),
-            () => {});
-    //this.appStore.dispatch(registerActionAsync(values, this.registerService, this.http, this.logAppStateService, this.alertService));
+    this.appStore.dispatch(registerActionAsync(formData, this.registerService, this.http, this.logAppStateService, this.alertService));
 
   }
 

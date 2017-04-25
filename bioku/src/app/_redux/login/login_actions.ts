@@ -102,10 +102,10 @@ export const userAuthActionAsync =
 
 //register action
 export const registerActionAsync =
-(values:any, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(formData:FormData, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
-    registerService.registerUser(values).subscribe(
+    registerService.registerUser(formData).subscribe(
             (data)=> {
                 console.log(data);
                 if(data.detail){
