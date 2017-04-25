@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 //symantic -ui
 //https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
+//sidebar: https://www.npmjs.com/package/ng-sidebar
+import { SidebarModule } from 'ng-sidebar';
+
 import {SuiModule} from 'ng2-semantic-ui';
 //routing
 import { RouterModule} from '@angular/router';
@@ -61,6 +64,8 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     SuiModule,
     //mydatepicker
     MyDatePickerModule,
+    //sidebar
+    SidebarModule.forRoot(),
     //register root routers
     RouterModule.forRoot(routes),
   ],
