@@ -6,7 +6,7 @@
          <!--form header-->
           <h2 class="ui header teal image">
             <img>
-            <div class="content">Log-in to {{appName}}</div>
+            <div class="content">Login to {{appName}}</div>
           </h2>
           <!--form-->
           <form [formGroup]="loginForm" class="ui large form" (ngSubmit)="loginForm.valid && onLogin(loginForm.value)">
@@ -32,7 +32,7 @@
             </div>
           </form>
           <!--sign up-->
-          <div class="ui message">
+          <div class="ui message mini">
               New to {{appName}}? <a [routerLink]="['../register']">Sign Up</a>
           </div>
       </div>

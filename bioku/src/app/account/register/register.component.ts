@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators} from '@angular/forms';
-import { Http } from '@angular/http';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Observable } from 'rxjs';
 import { Router} from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
@@ -15,7 +16,8 @@ import {IMyOptions} from 'mydatepicker';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-//REDUX
+//access dom
+import {ElementRef, ViewChild} from '@angular/core';
 
 //custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
@@ -26,16 +28,21 @@ import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 })
 export class RegisterComponent implements OnInit {
 
+  //access dom
+  //@ViewChild('photoUpload') el:ElementRef;
+
   registerForm: FormGroup;
   appName: string;
   isRegistered: boolean = false;
   user: User = null;
+
+  /*
   //for photo upload
   file: File;
   photo_name: string;
   photo_is2Large: Boolean = false;
   photo_isSupported: Boolean = true;
-
+  */
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
         // other options...
@@ -47,7 +54,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(fb: FormBuilder, private alertService: AlertService, 
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
-              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators){ 
+              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http){ 
     //formGroup
     this.registerForm = fb.group({
       'username': ['', Validators.compose([Validators.required, this.cValidators.usernameValidator()]), this.cValidators.usernameAsyncValidator()],
@@ -83,7 +90,7 @@ export class RegisterComponent implements OnInit {
         // Clear the date using the setValue function
         this.registerForm.setValue({birth_date: ''});
   }
-
+  /*
   //check upload photo
   validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
@@ -102,10 +109,11 @@ export class RegisterComponent implements OnInit {
             this.photo_isSupported =  false;
         }
   }
-
+  */
   onRegister(values: any): void{
       console.log(this.registerForm);
       console.log(values);
+
       this.registerService.registerUser(values).subscribe(
           (data)=>{
             console.log(data);
