@@ -21,20 +21,20 @@
             <i class="sign in icon"></i>
             Log In
         </a>
-        <a [routerLink]="['../register']" class="ui inverted basic button">
+        <a *ngIf="!isLogin" [routerLink]="['../register']" class="ui inverted basic button">
             <i class="add user icon"></i>
             Sign Up
         </a>
-        <a (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
+        <a *ngIf="isLogin" (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
     </div>
 </div>
 
 <!-- sidebar -->
 <ng-sidebar-container id="small_card">
     <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
-        <a class="item">
-            <i class="sign out icon"></i>Sign Out
-        </a>
+        <!-- logout -->
+        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
+
         <div *ngIf="isLogin" class="ui red raised card">
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
@@ -84,6 +84,7 @@
         </div>
 
         <!--
+
         <a class="item">
             <i class="home icon"></i>Home
         </a>

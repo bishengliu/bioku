@@ -30,6 +30,7 @@ export class HomeHeaderComponent implements OnInit {
 
   Logout(){
     this.logoutService.logOut();
+    this._opened = false;
   }
   
   updateState(){
@@ -37,6 +38,7 @@ export class HomeHeaderComponent implements OnInit {
     if(state.authInfo){      
       this.user = state.authInfo.authUser;
       this.isLogin = state.authInfo.token? true: false;
+      
       if(this.isLogin){
         //rolels
         let rArray = (this.user && this.user.roles) ? this.user.roles : [];
@@ -56,6 +58,7 @@ export class HomeHeaderComponent implements OnInit {
           this.groups = this.groups.slice(0, -2);
         }        
       }
+      
     }
   }
 
