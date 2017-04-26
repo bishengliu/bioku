@@ -18,7 +18,7 @@ function (state: AuthState = initialState, action: Action): AuthState {
             //set auth user
             const user: User = (<SetAuthUserAction>action).authUser;
             return {
-                authUser: user,
+                authUser: Object.assign({}, state.authUser, user),
                 authGroup: state.authGroup,
                 token: state.token
             }   
@@ -31,11 +31,11 @@ function (state: AuthState = initialState, action: Action): AuthState {
                 token: token
             }
         case C.UNSET_AUTH_USER:
-            //clear auth user, logout
+            //clear auth user
             return {
                 authUser: null,
                 authGroup: state.authGroup,
-                token: null
+                token: state.token
             }
         case C.UNSET_TOKEN:
             //unset token
@@ -45,11 +45,11 @@ function (state: AuthState = initialState, action: Action): AuthState {
                 token: null
             }
         case C.SET_GROUP_DETAILS:
-            const group: Group = (<SetAuthGroupAction>action).authGroup;
+            const groups: Array<Group> = (<SetAuthGroupAction>action).authGroup;
             //set group details
             return {
                 authUser: state.authUser,
-                authGroup: group,
+                authGroup: groups,
                 token: state.token
             }
         case C.UNSET_GROUP_DETAILS:

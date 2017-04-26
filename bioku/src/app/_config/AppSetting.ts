@@ -10,4 +10,6 @@ export const AppSetting = {
     'FIND_USER_DETAILS':'/api/users/search/',
     //user register
     'REGISTER_USER': '/api/users/register/',
+    //find my groups with researchers
+    'AUTH_GROUPS':'/api/groups/mygroups/'
 }

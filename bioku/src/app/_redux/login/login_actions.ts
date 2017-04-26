@@ -47,13 +47,13 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
 
 //SET_GROUP_DETAILS
 export interface SetAuthGroupAction extends Action {
-    authGroup: Group;
+    authGroup: Array<Group>;
 }
 
 export const setAuthGroupActionCreator: ActionCreator<SetAuthGroupAction> = 
-(group: Group) => ({
+(groups: Array<Group>) => ({
     type: C.SET_GROUP_DETAILS,
-    authGroup: group
+    authGroup: groups
 });
 //UNSET_GROUP_DETAILS
 export const unSetAuthGroupActionCreator: ActionCreator<Action> = 
@@ -80,27 +80,25 @@ export const userAuthActionAsync =
                     let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
                     dispatch(setAuthTokenAction);
 
+                    if (getState().authInfo && getState().authInfo.token && 'user' in data && data.user){
+                        
+                        //dispatch action
+                        let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
+                        dispatch(setAuthUserAction);
+
+                        //dispatch authGroup
+                        let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+                        dispatch(setAuthGroupAction);
+                    };
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
-                    let message: string = 'obtaining user token from server.'
+                    let message: string = 'user login success!';
                     //logger the redux action
-                    logAppStateService.log(setAuthTokenAction.type, preState, nextState, message);
+                    logAppStateService.log('USER LOGIN', preState, nextState, message);
                 }          
-                if (getState().authInfo && getState().authInfo.token){
-                    //get state: apppartialstate
-                    let preState: AppPartialState = logAppStateService.getAppPartialState();
-
-                    //dispatch action
-                    let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
-                    dispatch(setAuthUserAction);
-
-                    //get state: apppartialstate
-                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
-                    let message: string = 'obtaining user details from server.'
-                    //logger the reducx action
-                    logAppStateService.log(setAuthUserAction.type, preState, nextState, message);
-                };
-                //dispatch authGroup
+                
+                
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////
             },
             (error)=>{
@@ -132,8 +130,7 @@ export const registerActionAsync =
                 if(data.detail){
                     //loger redux
                     //get state: apppartialstate
-                    let preState: AppPartialState = logAppStateService.getAppPartialState();
-                    console.log(preState);
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();                   
                     //dispatch set auth token action
                     //dispatch set token              
                     let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token.token);
@@ -145,11 +142,12 @@ export const registerActionAsync =
                         dispatch(setAuthUserAction);
                     }
                     //dispatch authGroup
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+                    dispatch(setAuthGroupAction);
 
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
-                    let message: string = 'the new user registered!'
+                    let message: string = 'new user registered!'
                     //logger the redux action
                     logAppStateService.log('REGISTER USER', preState, nextState, message);            
                 }

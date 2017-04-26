@@ -4,6 +4,6 @@ import {Group} from '../../_classes/Group';
 export interface AuthState{
     authUser: User;
     token: string;
-    authGroup: Group;
+    authGroup: Array<Group>;
 }
 
