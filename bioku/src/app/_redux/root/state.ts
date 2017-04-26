@@ -1,4 +1,5 @@
 import {User} from '../../_classes/User';
+import {Group} from '../../_classes/Group';
 import {AuthState} from '../login/login_state';
 import {AppLog} from '../../_classes/Logger';
 
@@ -18,6 +19,7 @@ export const initialAppState: AppState = {
     //auth user
     authInfo: {
         authUser: null,
+        authGroup: null,
         token: null
     },
     //logs

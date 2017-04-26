@@ -6,7 +6,7 @@ import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AppState, AppPartialState } from '../_redux/root/state';
 
 //import redux action, actionCreator and reducer from login redux
-import {unsetAuthUserActionCreator, unsetTokenActionCreator} from '../_redux/login/login_actions';
+import {unsetAuthUserActionCreator, unsetTokenActionCreator, unSetAuthGroupActionCreator} from '../_redux/login/login_actions';
 
 @Injectable()
 export class LogoutService{
@@ -22,7 +22,9 @@ export class LogoutService{
         //remvoe the authUser
         let unsetAuthUserAction = unsetAuthUserActionCreator();
         this.appStore.dispatch(unsetAuthUserAction);
-
+        //remove the authGroup
+        let unSetAuthGroupAction = unSetAuthGroupActionCreator();
+        this.appStore.dispatch(unSetAuthGroupAction);
         //get next state: apppartialstate
         let nextState: AppPartialState = this.logAppStateService.getAppPartialState();
         let message: string = 'Logout auth user.'

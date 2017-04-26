@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {REDUX_CONSTANTS as C } from '../root/constants';
 import { AppState, AppPartialState } from '../root/state';
 import {User} from '../../_classes/User';
+import {Group, GroupInfo} from '../../_classes/Group';
 import {LoginService} from '../../_services/LoginService';
 import{AlertService} from '../../_services/AlertService';
 import {LogAppStateService} from '../../_services/LogAppStateService';
@@ -44,6 +45,24 @@ export const unsetTokenActionCreator: ActionCreator<Action> =
     type: C.UNSET_TOKEN
 });
 
+//SET_GROUP_DETAILS
+export interface SetAuthGroupAction extends Action {
+    authGroup: Group;
+}
+
+export const setAuthGroupActionCreator: ActionCreator<SetAuthGroupAction> = 
+(group: Group) => ({
+    type: C.SET_GROUP_DETAILS,
+    authGroup: group
+});
+//UNSET_GROUP_DETAILS
+export const unSetAuthGroupActionCreator: ActionCreator<Action> = 
+() => ({
+    type: C.UNSET_GROUP_DETAILS
+});
+
+
+
 //with thunk
 export const userAuthActionAsync = 
 (loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => 
@@ -80,7 +99,9 @@ export const userAuthActionAsync =
                     let message: string = 'obtaining user details from server.'
                     //logger the reducx action
                     logAppStateService.log(setAuthUserAction.type, preState, nextState, message);
-                };             
+                };
+                //dispatch authGroup
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
             },
             (error)=>{
                 //get state: apppartialstate
@@ -99,7 +120,7 @@ export const userAuthActionAsync =
         );
 }
 
-
+//WITH THUNK
 //register action
 export const registerActionAsync =
 (formData:FormData, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
@@ -118,12 +139,14 @@ export const registerActionAsync =
                     let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token.token);
                     dispatch(setAuthTokenAction);
 
-                    //displath set authUser
+                    //dispatch set authUser
                     if('user' in data && data.user){
                         let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
                         dispatch(setAuthUserAction);
                     }
-                    
+                    //dispatch authGroup
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'the new user registered!'

@@ -1,6 +1,6 @@
 //research group
-import {User } from './User';
-export class GroupInfo{
+import { User } from './User';
+export interface GroupInfo{
     pk: number;
     group_name: string;
     pi: string;

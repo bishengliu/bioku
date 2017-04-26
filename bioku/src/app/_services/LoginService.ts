@@ -42,7 +42,9 @@ export class LoginService{
                                 return {'user': user_obj, 'token': token_obj}; //combined object
                             });
             })
+            //mergeMap to return
+            // {'user': data.user, 'token': data.token, 'group': group_obj}
             //.do(data=>{console.log(data)})         
             .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
-} 
+}

@@ -3,8 +3,9 @@ import { AuthState } from './login_state';
 import { AppState } from '../root/state';
 import { initialAppState } from '../root/state';
 import { User } from '../../_classes/User';
+import {Group} from '../../_classes/Group';
 import {REDUX_CONSTANTS as C } from '../root/constants';
-import {SetAuthUserAction, SetAuthTokenAction} from './login_actions';
+import {SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction} from './login_actions';
 
 //initial auth status
 const initialState: AuthState = initialAppState.authInfo;
@@ -18,6 +19,7 @@ function (state: AuthState = initialState, action: Action): AuthState {
             const user: User = (<SetAuthUserAction>action).authUser;
             return {
                 authUser: user,
+                authGroup: state.authGroup,
                 token: state.token
             }   
         case C.SET_TOKEN:
@@ -25,19 +27,37 @@ function (state: AuthState = initialState, action: Action): AuthState {
             const token: string = (<SetAuthTokenAction>action).token;
             return {
                 authUser: state.authUser,
+                authGroup: state.authGroup,
                 token: token
             }
         case C.UNSET_AUTH_USER:
             //clear auth user, logout
             return {
                 authUser: null,
+                authGroup: state.authGroup,
                 token: null
             }
         case C.UNSET_TOKEN:
             //unset token
             return {
                 authUser: state.authUser,
+                authGroup: state.authGroup,
                 token: null
+            }
+        case C.SET_GROUP_DETAILS:
+            const group: Group = (<SetAuthGroupAction>action).authGroup;
+            //set group details
+            return {
+                authUser: state.authUser,
+                authGroup: group,
+                token: state.token
+            }
+        case C.UNSET_GROUP_DETAILS:
+            //unset group
+            return {
+                authUser: state.authUser,
+                authGroup: null,
+                token: state.token
             }
         default:
             return state;
