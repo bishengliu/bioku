@@ -42,46 +42,83 @@
             <div class="content">            
                 <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
                 <a><span class="ui right floated"><i class="icon setting"></i></span></a>
-                <a class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</a>
+                <span class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</span>
                 <div class="meta">
-                    <!--<span class="date"><i class="user icon"></i> {{user.first_name +" "+ user.last_name}}</span>-->
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
-                    <span *ngIf="user.telephone" class=""><i class="call icon"></i> {{user.telephone}}</span>
-                    <span *ngIf="user.birth_date" class=""><i class="birthday icon"></i> {{user.birth_date}}</span>
+                    <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>
+                    <span *ngIf="user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
                 </div>  
-                <div class="meta" *ngIf="roles">
-                    <span>{{roles}}</span>
+                <div class="meta" *ngIf="user.roles">
+                    <span *ngFor="let r of user.roles">{{r}}</span>
                 </div>         
             </div>
+            <!--
             <div class="extra content" *ngIf="groups">
                 <p>{{groups}}</p>
             </div>
+            -->
             <div class="ui bottom attached button">
                 <i class="lock icon"></i>Change Password
             </div>
         </div>
         <!--groups and list all the researchers in the group when hoeving the image-->
-        <div *ngIf="isLogin" class="ui teal raised card">
-            <div *ngIf="user.profile.photo" class="image">                
-                <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
-            </div>
-            <div class="content">            
-                <a><span class="ui right floated"><i class="icon setting"></i></span></a>
-                <a class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</a>
-                <div class="meta">
-                    <!--<span class="date"><i class="user icon"></i> {{user.first_name +" "+ user.last_name}}</span>-->
-                    <span class=""><i class="mail icon"></i> {{user.email}}</span>
-                    <span *ngIf="user.telephone" class=""><i class="call icon"></i> {{user.telephone}}</span>
-                    <span *ngIf="user.birth_date" class=""><i class="birthday icon"></i> {{user.birth_date}}</span>
-                </div>  
-                <div class="meta" *ngIf="roles">
-                    <span>{{roles}}</span>
-                </div>         
-            </div>
-            <div class="extra content" *ngIf="groups">
-                <p>{{groups}}</p>
+        <div *ngIf="isLogin">
+            <div class="ui teal raised card" *ngFor="let group of groups">
+                <!--group info-->
+                <div class="content">             
+                    <span class="ui blue image label">
+                        <img class="ui avatar image" src="{{appUrl+group.photo}}">{{group.group_name}} ({{group.pi}})
+                    </span>  
+                    
+                    <div class="meta">
+                        <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
+                        <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
+                        <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br>
+                        <div *ngIf="group.assistants">
+                            <span class="ui red empty circular label" *ngFor="let assist of group.assistants">
+                                {{assist.user.first_name}} ({{assist.user.email}})
+                            </span> 
+                            <!--
+                                <img class="ui avatar image" src="{{appUrl+group.photo}}">
+                                <span *ngFor="let assist of group.assistants"><img src="{{appUrl+assist.user.profile.photo}}" class="ui avatar image">{{assist.user.first_name}} ({{assist.user.email}})</span>-->
+                        </div>
+                    </div>           
+                </div>
+                <div class="extra content" *ngIf="group.researchers">
+                    <div class="meta">
+                        <table class="ui very basic collapsing celled table">
+                        <tr *ngFor="let r of group.researchers">
+                        <td>                           
+                                <div class="left floated author">
+                                    <img src="{{appUrl+r.user.profile.photo}}" class="ui avatar image">
+                                    <span class="">{{r.user.first_name}} ({{r.user.email}})</span>                          
+                                </div>
+                        </td>
+                            <!--
+                            <td>
+                                <div *ngFor="let r of assist.user.roles">
+                                    <div class="ui red horizontal label">{{r}}</div>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div *ngFor="let g of assist.user.groups">
+                                    <div class="ui teal tag label">{{g.group}}</div>
+                                </div>
+                            </td>
+                            -->
+                        </tr>
+                        </table>
+                    </div>                               
+                </div>
+                <!--assistant-->
+                <!--members-->
+                <div class="extra content" >
+                    <p></p>
+                </div>
             </div>
         </div>
+
 
         <!--
 

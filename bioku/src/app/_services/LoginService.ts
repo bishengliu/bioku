@@ -65,7 +65,7 @@ export class LoginService{
             })
             //mergeMap to return
             // {'user': data.user, 'token': data.token, 'groups': group_obj}
-            .do(data=>{console.log(data)})         
+            //.do(data=>{console.log(data)})         
             .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 }
