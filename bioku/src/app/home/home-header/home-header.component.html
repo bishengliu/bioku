@@ -2,8 +2,8 @@
     <div class="ui right icon secondary inverted pointing menu">
         <a [routerLink]="['../home']" class="active item"><i class="home icon"></i> Home</a>
         <a [routerLink]="['../home']" class="item"><i class="block layout icon"></i> Features</a>
-        <a *ngIf="isLogin" (click)="_toggleSidebar()" class="ui teal button right item">
-            <i *ngIf="!user.profile.photo" class="user icon"></i>
+        <a *ngIf="isLogin" (click)="_toggleSidebar()" class="right item">
+            <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
@@ -30,11 +30,11 @@
 </div>
 
 <!-- sidebar -->
+<div class="account-sidebar">
 <ng-sidebar-container sidebarClass="">
     <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
         <div class="">
-        <!-- logout -->
-        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>        
+        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>                      
         <div *ngIf="isLogin" class="ui red raised card">
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
@@ -66,7 +66,7 @@
                         <i class="group icon"></i> GROUP 
                     </button>
                     <button class="ui disabled button brown">
-                        <img class="ui avatar image" src="{{appUrl+group.photo}}"> {{group.pi}}
+                        <img *ngIf="group.photo" class="ui avatar image" src="{{appUrl+group.photo}}"> {{group.pi}}
                     </button>
                     <button class="ui button" *ngIf="group.email===user.email">
                         <i class="ui red icon setting"></i>
@@ -84,7 +84,7 @@
                     <div><a class="ui teal tag mini label right floated">assistants</a></div>
                     <div class="ui circular small labels">
                         <span class="ui label" *ngFor="let assit of group.assistants">
-                            <img src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
+                            <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
                             <span>{{assit.user.first_name}}</span>
                         </span>                        
                     </div>  
@@ -95,7 +95,7 @@
                     <div class="fluid" style="clear:both;"></div>
                     <div class="ui circular small labels">
                         <span class="ui label" *ngFor="let r of group.researchers">
-                            <img src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
+                            <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                             <span>{{r.user.first_name}}</span>
                         </span>                        
                     </div>  
@@ -107,3 +107,4 @@
         </div>
     </ng-sidebar>
 </ng-sidebar-container>
+</div>
