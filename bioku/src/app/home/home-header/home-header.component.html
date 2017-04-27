@@ -17,7 +17,7 @@
     </div>
     <div class="ui divider"></div>
     <div>
-        <a [routerLink]="['../login']" class="ui teal button">
+        <a *ngIf="!isLogin" [routerLink]="['../login']" class="ui teal button">
             <i class="sign in icon"></i>
             Log In
         </a>
@@ -30,19 +30,19 @@
 </div>
 
 <!-- sidebar -->
-<ng-sidebar-container id="small_card">
+<ng-sidebar-container sidebarClass="">
     <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
+        <div class="">
         <!-- logout -->
-        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
-
+        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>        
         <div *ngIf="isLogin" class="ui red raised card">
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
             </div>
             <div class="content">            
                 <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
-                <a><span class="ui right floated"><i class="icon setting"></i></span></a>
-                <span class="header">{{user.username}} ({{user.first_name +" "+ user.last_name}})</span>
+                <a class="ui blue circular button icon right floated"><i class="icon setting"></i></a>
+                <span class="header">{{user.first_name +" "+ user.last_name}} ({{user.username}})</span>
                 <div class="meta">
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
                     <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>
@@ -52,85 +52,58 @@
                     <span *ngFor="let r of user.roles">{{r}}</span>
                 </div>         
             </div>
-            <!--
-            <div class="extra content" *ngIf="groups">
-                <p>{{groups}}</p>
-            </div>
-            -->
             <div class="ui bottom attached button">
                 <i class="lock icon"></i>Change Password
             </div>
         </div>
+
         <!--groups and list all the researchers in the group when hoeving the image-->
         <div *ngIf="isLogin">
-            <div class="ui teal raised card" *ngFor="let group of groups">
+            <div class="ui blue raised card" *ngFor="let group of groups">
                 <!--group info-->
-                <div class="content">             
-                    <span class="ui blue image label">
-                        <img class="ui avatar image" src="{{appUrl+group.photo}}">{{group.group_name}} ({{group.pi}})
-                    </span>  
-                    
+                <div class="ui icon buttons attached mini">
+                    <button class="ui disabled button blue">
+                        <i class="group icon"></i> GROUP 
+                    </button>
+                    <button class="ui disabled button brown">
+                        <img class="ui avatar image" src="{{appUrl+group.photo}}"> {{group.pi}}
+                    </button>
+                    <button class="ui button" *ngIf="group.email===user.email">
+                        <i class="ui red icon setting"></i>
+                    </button>
+                </div>
+                <div class="content">                                
                     <div class="meta">
                         <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
                         <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
                         <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br>
-                        <div *ngIf="group.assistants">
-                            <span class="ui red empty circular label" *ngFor="let assist of group.assistants">
-                                {{assist.user.first_name}} ({{assist.user.email}})
-                            </span> 
-                            <!--
-                                <img class="ui avatar image" src="{{appUrl+group.photo}}">
-                                <span *ngFor="let assist of group.assistants"><img src="{{appUrl+assist.user.profile.photo}}" class="ui avatar image">{{assist.user.first_name}} ({{assist.user.email}})</span>-->
-                        </div>
                     </div>           
                 </div>
-                <div class="extra content" *ngIf="group.researchers">
-                    <div class="meta">
-                        <table class="ui very basic collapsing celled table">
-                        <tr *ngFor="let r of group.researchers">
-                        <td>                           
-                                <div class="left floated author">
-                                    <img src="{{appUrl+r.user.profile.photo}}" class="ui avatar image">
-                                    <span class="">{{r.user.first_name}} ({{r.user.email}})</span>                          
-                                </div>
-                        </td>
-                            <!--
-                            <td>
-                                <div *ngFor="let r of assist.user.roles">
-                                    <div class="ui red horizontal label">{{r}}</div>
-                                </div>
-                            </td>
-                            
-                            <td>
-                                <div *ngFor="let g of assist.user.groups">
-                                    <div class="ui teal tag label">{{g.group}}</div>
-                                </div>
-                            </td>
-                            -->
-                        </tr>
-                        </table>
-                    </div>                               
-                </div>
                 <!--assistant-->
+                <div class="extra content" *ngIf="group.assistants">
+                    <div><a class="ui teal tag mini label right floated">assistants</a></div>
+                    <div class="ui circular small labels">
+                        <span class="ui label" *ngFor="let assit of group.assistants">
+                            <img src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
+                            <span>{{assit.user.first_name}}</span>
+                        </span>                        
+                    </div>  
+                </div>
                 <!--members-->
-                <div class="extra content" >
-                    <p></p>
+                <div class="extra content" *ngIf="group.researchers">
+                    <a class="ui orange tag mini label right floated">members</a>
+                    <div class="fluid" style="clear:both;"></div>
+                    <div class="ui circular small labels">
+                        <span class="ui label" *ngFor="let r of group.researchers">
+                            <img src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
+                            <span>{{r.user.first_name}}</span>
+                        </span>                        
+                    </div>  
                 </div>
             </div>
         </div>
-
-
-        <!--
-
-        <a class="item">
-            <i class="home icon"></i>Home
-        </a>
-        <a class="item">
-            <i class="block layout icon"></i>Topics
-        </a>
-        <a class="item">
-            <i class="smile icon"></i>Friends
-        </a>
-        -->
+        <!-- logout -->
+        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
+        </div>
     </ng-sidebar>
 </ng-sidebar-container>

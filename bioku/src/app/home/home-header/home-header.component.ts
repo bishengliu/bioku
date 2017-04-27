@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router} from '@angular/router';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { LogoutService } from '../../_services/LogoutService';
@@ -18,11 +19,12 @@ export class HomeHeaderComponent implements OnInit {
   isLogin: boolean = false;
   user: User = null;
   groups: Array<Group> = null;
+  router: Router
   
   //groups: string = "";
   private _opened: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, router: Router) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
@@ -34,7 +36,7 @@ export class HomeHeaderComponent implements OnInit {
     this.logoutService.logOut();
     this._opened = false;
   }
-  
+
   updateState(){
     let state= this.appStore.getState()
     if(state.authInfo){      

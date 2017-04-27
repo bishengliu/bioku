@@ -79,3 +79,7 @@ body{
 #birth_date{
   z-index: 9999;
 }
+
+.ng-sidebar{
+  overflow: hidden !important;
+}
