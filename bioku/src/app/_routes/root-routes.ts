@@ -14,9 +14,7 @@ import { accountRoutes } from '../account/_routes/account-routes';
 
 //app root routes
 export const routes: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
-  {path: 'features', component: HomeFeaturesComponent},
+  {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},

@@ -25,6 +25,10 @@
             <i class="add user icon"></i>
             Sign Up
         </a>
+        <a *ngIf="isLogin" [routerLink]="['../user']" class="ui inverted basic button">
+            <i class="add user icon"></i>
+            Profile
+        </a>
         <a *ngIf="isLogin" (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
     </div>
 </div>

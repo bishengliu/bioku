@@ -19,12 +19,10 @@ export class HomeHeaderComponent implements OnInit {
   isLogin: boolean = false;
   user: User = null;
   groups: Array<Group> = null;
-  router: Router
   
-  //groups: string = "";
   private _opened: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, router: Router) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private router: Router) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
