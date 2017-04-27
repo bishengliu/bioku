@@ -1,7 +1,6 @@
 <div class="ui vertical inverted masthead center aligned segment">
     <div class="ui right icon secondary inverted pointing menu">
-        <a [routerLink]="['../home']" class="active item"><i class="home icon"></i> Home</a>
-        <a [routerLink]="['../home']" class="item"><i class="block layout icon"></i> Features</a>
+        <a [routerLink]="['']" class="active item"><i class="home icon"></i> Home</a>
         <a *ngIf="isLogin" (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
@@ -26,7 +25,7 @@
             Sign Up
         </a>
         <a *ngIf="isLogin" [routerLink]="['../user']" class="ui inverted basic button">
-            <i class="add user icon"></i>
+            <i class="user icon"></i>
             Profile
         </a>
         <a *ngIf="isLogin" (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
@@ -45,7 +44,7 @@
             </div>
             <div class="content">            
                 <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
-                <a class="ui blue circular button icon right floated"><i class="icon setting"></i></a>
+                <a [routerLink]="['../user']" class="ui blue circular button icon right floated"><i class="icon setting"></i></a>
                 <span class="header">{{user.first_name +" "+ user.last_name}} ({{user.username}})</span>
                 <div class="meta">
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
@@ -56,9 +55,9 @@
                     <span *ngFor="let r of user.roles">{{r}}</span>
                 </div>         
             </div>
-            <div class="ui bottom attached button">
+            <a class="ui bottom attached button" [routerLink]="['../user/password']">
                 <i class="lock icon"></i>Change Password
-            </div>
+            </a>
         </div>
 
         <!--groups and list all the researchers in the group when hoeving the image-->
@@ -72,7 +71,7 @@
                     <button class="ui disabled button brown">
                         <img *ngIf="group.photo" class="ui avatar image" src="{{appUrl+group.photo}}"> {{group.pi}}
                     </button>
-                    <button class="ui button" *ngIf="group.email===user.email">
+                    <button class="ui button" *ngIf="group.email===user.email" (click)="editGroup(group)">
                         <i class="ui red icon setting"></i>
                     </button>
                 </div>

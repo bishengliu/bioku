@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
       this.isLogin = state.authInfo.token? true: false;
     }
     if(this.isLogin){
-      this.router.navigate(['home']);
+      this.router.navigate(['']); 
     }
   }
   ngOnInit() {

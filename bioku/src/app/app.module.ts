@@ -35,8 +35,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './account/login/login.component';
 import { HomeHeaderComponent } from './home/home-header/home-header.component';
 import { HomeFooterComponent } from './home/home-footer/home-footer.component';
-import { HomeFeaturesComponent } from './home/home-features/home-features.component';
 import { AlertComponent } from './_helpers/alert/alert.component';
+import { HomeBodyComponent } from './home/home-body/home-body.component';
 
 
 @NgModule({
@@ -52,8 +52,8 @@ import { AlertComponent } from './_helpers/alert/alert.component';
     LoginComponent,
     HomeHeaderComponent,
     HomeFooterComponent,
-    HomeFeaturesComponent,
     AlertComponent,
+    HomeBodyComponent,
   ],
   imports: [
     BrowserModule,

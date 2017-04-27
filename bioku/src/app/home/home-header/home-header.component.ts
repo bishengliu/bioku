@@ -4,7 +4,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { LogoutService } from '../../_services/LogoutService';
 import { User } from '../../_classes/User';
-import { Group } from '../../_classes/Group';
+import { Group, GroupInfo } from '../../_classes/Group';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 
@@ -43,7 +43,11 @@ export class HomeHeaderComponent implements OnInit {
       this.isLogin = state.authInfo.token? true: false;      
     }
   }
-
+  editGroup(groupInfo: GroupInfo){
+    console.log('clicked...')
+    //navigate to group
+    //this.router.navigate(['group', groupInfo.pk]);
+  }
   //sidebar
   private _toggleSidebar() {
     this._opened = !this._opened;
