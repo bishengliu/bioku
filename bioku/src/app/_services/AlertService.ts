@@ -26,7 +26,7 @@ export class AlertService{
         });    
     }
 
-    success(message: string, keepPostNavigation=false){
+    success(message: string, keepPostNavigation=true){
         this.keepPostNavigation = keepPostNavigation;
         this.subject$.next(<Alert>({type:'success', text: message}));
 
@@ -39,7 +39,7 @@ export class AlertService{
         }        
     }
 
-    error(message: string, keepPostNavigation=false){
+    error(message: string, keepPostNavigation=true){
         this.keepPostNavigation = keepPostNavigation;
         this.subject$.next(<Alert>({type:'error', text: message})); 
         //dismiss message
