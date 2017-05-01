@@ -159,5 +159,48 @@ export class CustomFormValidators{
                 }); //end new Observable 
             };
     };
+
+
+    //asunc validator passworkd
+    currentPasswordAsyncValidator(username: string){
+        return (control: FormControl): Observable<{[key : string] : Boolean}> =>{
+            //required
+            return new Observable(observer => {
+                //url to get token for authentication
+                const token_url: string = this.appSetting.URL + this.appSetting.TOKEN_URL;
+                let body: string = JSON.stringify({'username': username, 'password': control.value});
+                //let body = {'username': username, 'password': password};
+                let headers = new Headers({ 'Content-Type': 'application/json' });
+                let options = new RequestOptions({ headers: headers });
+                control.valueChanges
+                        .debounceTime(1000)
+                        .flatMap(value => this.http.post(token_url, body, options))
+                        .map((response: Response) =>response.json())
+                        .catch((error:any) => { 
+                            observer.next({ currentPasswordAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({ currentPasswordAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if(data && data.token){
+                                //old password is corrent
+                                observer.next(null);
+                                observer.complete();
+                            }
+                            else{
+                                observer.next({ currentPasswordAsyncInvalid: true });
+                                observer.complete();
+                            }
+                        },
+                        ()=>{
+                            observer.next({ currentPasswordAsyncInvalid: true });
+                            observer.complete();
+                          }
+                        );
+            })
+        }
+    }
+
+    
 }
 
