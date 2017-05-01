@@ -3,9 +3,13 @@ import { Routes } from '@angular/router';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { ProfileComponent } from '../profile/profile.component';
 
+//guards
+import {AuthGuard} from  '../../_guards/AuthGuard';
+
 //childRoutes
+//, canActivate: [AuthGuard]
 export const accountRoutes: Routes = [
   {path: '', redirectTo: 'profile', pathMatch: 'full'},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'password', component: ChangePasswordComponent}
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, ]},
+  {path: 'password', component: ChangePasswordComponent, canActivate: [AuthGuard, ]}
 ]

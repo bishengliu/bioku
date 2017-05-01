@@ -19,11 +19,11 @@ export class AlertComponent implements OnInit {
       //define the sui model message class
       if (this.message && this.message.type=='error'){
         this.alertClass =[];
-        this.alertClass.push('warning');
+        this.alertClass.push('warning red center aligned');
       }
       else{
         this.alertClass =[];
-        this.alertClass.push('success');
+        this.alertClass.push('success teal center aligned');
       }
     }); 
   }

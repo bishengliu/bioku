@@ -1,3 +1,5 @@
+//not used
+/*
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 
@@ -45,7 +47,7 @@ private progress: number;
     });
   }
 }
-
+*/
 /*
 
 import {Component } from 'angular2/core';

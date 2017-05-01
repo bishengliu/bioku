@@ -54,6 +54,7 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   changePassword(){
+    console.log('password ...')
     this._opened = !this._opened;
   }
   updateProfile(){

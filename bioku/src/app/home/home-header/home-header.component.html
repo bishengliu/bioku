@@ -16,15 +16,15 @@
     </div>
     <div class="ui divider"></div>
     <div>
-        <a *ngIf="!isLogin" [routerLink]="['../login']" class="ui teal button">
+        <a *ngIf="!isLogin" [routerLink]="['/login']" class="ui teal button">
             <i class="sign in icon"></i>
             Log In
         </a>
-        <a *ngIf="!isLogin" [routerLink]="['../register']" class="ui inverted basic button">
+        <a *ngIf="!isLogin" [routerLink]="['/register']" class="ui inverted basic button">
             <i class="add user icon"></i>
             Sign Up
         </a>
-        <a *ngIf="isLogin" [routerLink]="['../user']" class="ui inverted basic button">
+        <a *ngIf="isLogin" [routerLink]="['/user']" class="ui inverted basic button">
             <i class="user icon"></i>
             Profile
         </a>
@@ -44,7 +44,7 @@
             </div>
             <div class="content">            
                 <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
-                <a [routerLink]="['../user']" class="ui blue circular button icon right floated" (click)="updateProfile()"><i class="icon setting"></i></a>
+                <a [routerLink]="['/user']" class="ui blue circular button icon right floated" (click)="updateProfile()"><i class="icon setting"></i></a>
                 <span class="header">{{user.first_name +" "+ user.last_name}} ({{user.username}})</span>
                 <div class="meta">
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
@@ -55,7 +55,7 @@
                     <span *ngFor="let r of user.roles">{{r}}</span>
                 </div>         
             </div>
-            <a class="ui bottom attached button" [routerLink]="['../user/password']" (click)="changePassword()">
+            <a class="ui bottom attached button" [routerLink]="['/user/password']" (click)="changePassword()">
                 <i class="lock icon"></i>Change Password
             </a>
         </div>

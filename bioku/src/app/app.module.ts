@@ -16,6 +16,7 @@ import { routes } from './_routes/root-routes';
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
+import { GuardProviders } from './_providers/GuardProviders';
 //custom form validators
 import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
 //mydatepicker
@@ -70,6 +71,8 @@ import { HomeBodyComponent } from './home/home-body/home-body.component';
     RouterModule.forRoot(routes),
   ],
   providers: [
+    //guards
+    GuardProviders,
     AlertServiceProvider, 
     AppSettingProvider,
     StoreProviders,

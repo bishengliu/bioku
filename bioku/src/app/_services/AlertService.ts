@@ -2,32 +2,32 @@ import { Alert } from '../_classes/Alert';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject} from 'rxjs'
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 
 @Injectable()
 export class AlertService{
-    private subject$ = new Subject<Alert>();
-    private keepPostNavigation: Boolean = false;
+    private subject$ = new BehaviorSubject<Alert>(null);
+    private keepPostNavigation: Boolean = true;
     dismissMessage: Boolean = true;
     constructor(private router: Router){
-        /*
+        
         // clear alert message on route change
+        router.events.subscribe(event => {
             if(event instanceof NavigationStart){
-                if (this.keepPostNavigation){
+                if (this.keepPostNavigation == false){
                     // only keep for a single location change
-                    this.keepPostNavigation = false;
-                }
-                else{
+                    //this.keepPostNavigation = false;
                     //clear alert
-                    this.subject$.next();
+                    this.subject$.next(null);
                 }
             } 
-            */
+        });
     }
 
     success(message: string, keepPostNavigation=true){
-        this.keepPostNavigation = keepPostNavigation;
+        this.keepPostNavigation = keepPostNavigation;      
         this.subject$.next(<Alert>({type:'success', text: message}));
 
         //dismiss message
@@ -52,10 +52,11 @@ export class AlertService{
     }
 
     getMessage(): Observable<Alert> {
-        return this.subject$.asObservable();
+        return this.subject$
+        .asObservable();
     }
 
     clearMessage(): void{
-        this.subject$.next();
+        this.subject$.next(null);
     }
 }

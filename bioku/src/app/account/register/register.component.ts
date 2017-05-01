@@ -149,7 +149,7 @@ export class RegisterComponent implements OnInit {
     if(state.authInfo){
        let isLogin = state.authInfo.token? true: false;
       if(isLogin){
-      this.router.navigate(['']);}
+      this.router.navigate(['/']);}
     } 
   }
 
