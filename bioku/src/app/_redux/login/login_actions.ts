@@ -151,7 +151,8 @@ export const registerActionAsync =
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'new user registered!'
                     //logger the redux action
-                    logAppStateService.log('REGISTER USER', preState, nextState, message);            
+                    logAppStateService.log('REGISTER USER', preState, nextState, message);
+                    alertService.success('Register Success!', true);            
                 }
             },
             (error)=>{
@@ -165,8 +166,7 @@ export const registerActionAsync =
                 alertService.error('Register Failed!');
             },
             ()=>{
-                //success
-                alertService.success('Register Success!', true);
+                //success                
             }
     )
 }
@@ -203,7 +203,7 @@ export const userChangePasswordActionAsync =
                     //logger the redux action
                     logAppStateService.log('USER CHANGE PASSWORD', preState, nextState, message);
                     //msg
-                    alertService.success('Password Changed Successfully!');
+                    alertService.success('Password Changed Successfully!', true);
             },
             (error)=>{
                 //get state: apppartialstate

@@ -1,1 +1,64 @@
-<p>Profile</p>
+<div class="ui one column stackable center aligned page grid huge-padding">
+   <div class="column eight wide">     
+       <div class="center floated column">
+         <!--form header-->
+          <h2 class="ui header teal image">
+            <img>
+            <div class="content">UPDATE USER PROFILE</div>
+          </h2>
+          <!--form-->
+          <form [formGroup]="profileForm" class="ui large form" (ngSubmit)="profileForm.valid && onUpdate(profileForm.value)" enctype="multipart/form-data">
+            <div class="ui stacked segment">
+              <div class="field" [class.error]="profileForm.controls['first_name'].invalid && profileForm.controls['first_name'].touched">
+                <div class="ui left icon input">
+                  <i class="keyboard icon"></i>
+                  <input type="text" id="first_name" [formControl]="profileForm.controls['first_name']" placeholder="First Name">
+                </div>
+                <div *ngIf="profileForm.controls['first_name'].hasError('required') && profileForm.controls['first_name'].touched" class="ui mini negative message">First Name is required</div>
+                <div *ngIf="profileForm.controls['first_name'].hasError('humanNameInvalid') && profileForm.controls['first_name'].touched" class="ui mini negative message">First Name is invalid</div>
+              </div>
+              <div class="field" [class.error]="profileForm.controls['last_name'].invalid && profileForm.controls['last_name'].touched">
+                <div class="ui left icon input">
+                  <i class="keyboard icon"></i>
+                  <input type="text" id="last_name" [formControl]="profileForm.controls['last_name']" placeholder="Last Name">
+                </div>
+                <div *ngIf="profileForm.controls['last_name'].hasError('required') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
+                <div *ngIf="profileForm.controls['last_name'].hasError('humanNameInvalid') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
+              </div>
+
+
+              <div class="field" [class.error]="profileForm.controls['photo'].invalid && profileForm.controls['photo'].touched">
+                <div class="ui left icon input right action">
+                  <i class="user icon"></i>
+                  <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}" #photoName>
+                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="profileForm.controls['photo']" placeholder="Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
+                </div>
+                <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
+              </div>
+
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="birthday icon" id="birth_date"></i>
+                  <my-date-picker name="birth_date" [options]="myDatePickerOptions" formControlName="birth_date" placeholder="Birth Date"></my-date-picker>
+                </div>
+              </div>
+
+              <div class="field" [class.error]="profileForm.controls['telephone'].invalid && profileForm.controls['telephone'].touched">
+                <div class="ui left icon input">
+                  <i class="call icon"></i>
+                  <input type="text" id="telephone" [formControl]="profileForm.controls['telephone']" placeholder="Telephone">
+                </div>
+                <div *ngIf="profileForm.controls['telephone'].hasError('telephoneInvalid') && profileForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
+              </div>
+              <button type="submit" class="ui fluid teal button">
+                <i class="icon edit"></i>
+                UPDATE
+              </button>
+              
+            </div>
+          </form>
+                  
+      </div>
+   </div>
+</div>

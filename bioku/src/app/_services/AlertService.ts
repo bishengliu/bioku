@@ -9,7 +9,7 @@ import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 @Injectable()
 export class AlertService{
     private subject$ = new BehaviorSubject<Alert>(null);
-    private keepPostNavigation: Boolean = true;
+    private keepPostNavigation: Boolean = false;
     dismissMessage: Boolean = true;
     constructor(private router: Router){
         
@@ -18,7 +18,6 @@ export class AlertService{
             if(event instanceof NavigationStart){
                 if (this.keepPostNavigation == false){
                     // only keep for a single location change
-                    //this.keepPostNavigation = false;
                     //clear alert
                     this.subject$.next(null);
                 }
@@ -26,7 +25,7 @@ export class AlertService{
         });
     }
 
-    success(message: string, keepPostNavigation=true){
+    success(message: string, keepPostNavigation=false){
         this.keepPostNavigation = keepPostNavigation;      
         this.subject$.next(<Alert>({type:'success', text: message}));
 
@@ -39,7 +38,7 @@ export class AlertService{
         }        
     }
 
-    error(message: string, keepPostNavigation=true){
+    error(message: string, keepPostNavigation=false){
         this.keepPostNavigation = keepPostNavigation;
         this.subject$.next(<Alert>({type:'error', text: message})); 
         //dismiss message

@@ -49,7 +49,7 @@ export class ChangePasswordComponent implements OnInit {
   updateState(){ 
     let state= this.appStore.getState();
     if(state.authInfo === null || state.authInfo.token === null){
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
     }
   }
   ngOnInit() {}

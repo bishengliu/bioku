@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
-
+ /*
   //my datepicker
   setDate(): void {
         // Set today date using the setValue function
@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit {
         // Clear the date using the setValue function
         this.registerForm.setValue({birth_date: ''});
   }
-  
+  */
   //check upload photo
   validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;

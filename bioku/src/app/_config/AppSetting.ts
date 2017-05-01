@@ -14,5 +14,7 @@ export const AppSetting = {
     'AUTH_GROUPS':'/api/groups/mygroups/',
     //user change password
     'CHANGE_PASSWORD': '/api/users/password/',
+    //UPDATE_USER_PROFILE
+    'UPDATE_USER_PROFILE':'',
 
 }
