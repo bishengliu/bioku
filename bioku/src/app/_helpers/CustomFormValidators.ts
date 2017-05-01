@@ -162,18 +162,19 @@ export class CustomFormValidators{
 
 
     //asunc validator passworkd
-    currentPasswordAsyncValidator(username: string){
+    currentPasswordAsyncValidator(appStore){
         return (control: FormControl): Observable<{[key : string] : Boolean}> =>{
             //required
             return new Observable(observer => {
                 //url to get token for authentication
                 const token_url: string = this.appSetting.URL + this.appSetting.TOKEN_URL;
+                let username = (appStore.getState().authInfo && appStore.getState().authInfo.authUser) ? appStore.getState().authInfo.authUser.username: '';
                 let body: string = JSON.stringify({'username': username, 'password': control.value});
                 //let body = {'username': username, 'password': password};
                 let headers = new Headers({ 'Content-Type': 'application/json' });
                 let options = new RequestOptions({ headers: headers });
                 control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(token_url, body, options))
                         .map((response: Response) =>response.json())
                         .catch((error:any) => { 

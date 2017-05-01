@@ -9,6 +9,8 @@ import {LoginService} from '../../_services/LoginService';
 import{AlertService} from '../../_services/AlertService';
 import {LogAppStateService} from '../../_services/LogAppStateService';
 import { RegisterService } from '../../_services/RegisterService';
+import { ChangePasswordService } from '../../_services/ChangePasswordService';
+
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
 
@@ -167,4 +169,49 @@ export const registerActionAsync =
                 alertService.success('Register Success!', true);
             }
     )
+}
+
+
+//change password
+//with thunk
+export const userChangePasswordActionAsync = 
+(username: string, old_password: string, new_password: string, changePasswordService, alertService: AlertService, logAppStateService: LogAppStateService) => 
+(dispatch: Dispatch<AppState>, getState) =>
+{
+        //auth user
+        changePasswordService.changePassword(username, old_password, new_password)
+        .subscribe(
+            ()=>{
+                //get state: apppartialstate
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();
+
+                    //dispatch unset auth token action
+                    let unsetAuthTokenAction: Action = unsetTokenActionCreator();
+                    dispatch(unsetAuthTokenAction);
+
+                    //dispatch unset auth user action
+                    let unsetAuthUserAction: Action = unsetAuthUserActionCreator();
+                    dispatch(unsetAuthUserAction);
+
+                    //dispatch unset authGroup
+                    let unSetAuthGroupAction: Action = unSetAuthGroupActionCreator();
+                    dispatch(unSetAuthGroupAction);
+
+                    //get state: apppartialstate
+                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                    let message: string = 'user change password success!';
+                    //logger the redux action
+                    logAppStateService.log('USER CHANGE PASSWORD', preState, nextState, message);
+            },
+            (error)=>{
+                //get state: apppartialstate
+                let preState: AppPartialState = logAppStateService.getAppPartialState();
+                let nextState: AppPartialState = preState;
+                let message: string = 'User change password failed: ' + (error || 'server error!') ;
+                logAppStateService.log('USER CHANGE PASSWORD', preState, nextState, message);
+                console.log(error);
+                //error
+                alertService.error('Change Password Failed!');
+            }
+        );
 }

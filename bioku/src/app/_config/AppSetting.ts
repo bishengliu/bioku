@@ -11,5 +11,8 @@ export const AppSetting = {
     //user register
     'REGISTER_USER': '/api/users/register/',
     //find my groups with researchers
-    'AUTH_GROUPS':'/api/groups/mygroups/'
+    'AUTH_GROUPS':'/api/groups/mygroups/',
+    //user change password
+    'CHANGE_PASSWORD': '/api/users/password/',
+
 }

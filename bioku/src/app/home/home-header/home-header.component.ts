@@ -44,7 +44,6 @@ export class HomeHeaderComponent implements OnInit {
     }
   }
   editGroup(groupInfo: GroupInfo){
-    console.log('clicked...')
     this._opened = !this._opened;
     //navigate to group
     //this.router.navigate(['group', groupInfo.pk]);
@@ -55,11 +54,9 @@ export class HomeHeaderComponent implements OnInit {
   }
 
   changePassword(){
-    console.log('clicked...');
     this._opened = !this._opened;
   }
   updateProfile(){
-    console.log('profile clicked...');
     this._opened = !this._opened;
   }
   ngOnInit() {}
