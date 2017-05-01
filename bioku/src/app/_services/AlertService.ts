@@ -2,7 +2,7 @@ import { Alert } from '../_classes/Alert';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 
 @Injectable()
@@ -11,8 +11,8 @@ export class AlertService{
     private keepPostNavigation: Boolean = false;
     dismissMessage: Boolean = true;
     constructor(private router: Router){
+        /*
         // clear alert message on route change
-        router.events.subscribe(event =>{
             if(event instanceof NavigationStart){
                 if (this.keepPostNavigation){
                     // only keep for a single location change
@@ -22,8 +22,8 @@ export class AlertService{
                     //clear alert
                     this.subject$.next();
                 }
-            }
-        });    
+            } 
+            */
     }
 
     success(message: string, keepPostNavigation=true){

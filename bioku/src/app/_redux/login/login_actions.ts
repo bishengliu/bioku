@@ -202,6 +202,8 @@ export const userChangePasswordActionAsync =
                     let message: string = 'user change password success!';
                     //logger the redux action
                     logAppStateService.log('USER CHANGE PASSWORD', preState, nextState, message);
+                    //msg
+                    alertService.success('Password Changed Successfully!');
             },
             (error)=>{
                 //get state: apppartialstate
