@@ -43,12 +43,7 @@
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
             </div>
-            <div class="content">                         
-                <!--
-                    <img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">
-                    <a [routerLink]="['/user']" class="ui blue circular button mini icon right floated" (click)="updateProfile()"><i class="icon setting"></i></a>
-                -->
-                
+            <div class="content">                                        
                 <span class="header">{{user.first_name +" "+ user.last_name}} <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="updateProfile()"><i class="icon red settings"></i></a></span>
                 <div class="meta">
                     <span class=""><i class="user icon"></i> {{user.username}}</span>
