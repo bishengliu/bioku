@@ -68,6 +68,7 @@ export class ProfileComponent implements OnInit {
   }
   //formGroup
     this.profileForm = fb.group({
+      'email': [user.email, Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(+user.pk)],
       'first_name': [user.first_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'last_name': [user.last_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'birth_date': [init_date, ],

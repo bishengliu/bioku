@@ -123,7 +123,7 @@ export class CustomFormValidators{
             };
     };               
     //async email
-    emailAsyncValidator(){
+    emailAsyncValidator(user_pk: Number = -1){
         return (control: FormControl): Observable<{[key : string] : Boolean}> => {
                 //not reuired
                 if(!control.value || control.value.length === 0 || control.value ==""){
@@ -132,11 +132,16 @@ export class CustomFormValidators{
 
                 return new Observable(observer=>{
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-                    let body: string = JSON.stringify({'query': 'email', 'value': control.value});
+                    let body: string = JSON.stringify({'query': 'email', 'value': control.value, 'user_pk': user_pk});
                     let headers = new Headers({ 'Content-Type': 'application/json' });
                     let options = new RequestOptions({ headers: headers });
-
-                    control.valueChanges
+                    console.log(control);
+                    if (!control.dirty){
+                        observer.next({ emailAsyncInvalid: false });
+                        observer.complete();
+                    }
+                    else {
+                        control.valueChanges
                         .debounceTime(1000)
                         .flatMap(value => this.http.post(find_user_detail_url, body, options))
                         .map((response: Response) =>response.json())
@@ -155,7 +160,8 @@ export class CustomFormValidators{
                           },
                           ()=>{observer.next({ emailAsyncInvalid: true });
                                 observer.complete();
-                          });   //end subscribe               
+                          });   //end subscribe    
+                    }           
                 }); //end new Observable 
             };
     };

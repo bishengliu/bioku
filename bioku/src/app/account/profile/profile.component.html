@@ -9,6 +9,17 @@
           <!--form-->
           <form [formGroup]="profileForm" class="ui large form" (ngSubmit)="profileForm.valid && onUpdate(profileForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
+
+              <div class="field" [class.error]="profileForm.controls['email'].invalid && profileForm.controls['email'].touched">
+                <div class="ui left icon input">
+                  <i class="mail icon"></i>
+                  <input type="email" id="email" [formControl]="profileForm.controls['email']" placeholder="Email">
+                </div>
+                <div *ngIf="profileForm.controls['email'].hasError('required') && profileForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
+                <div *ngIf="profileForm.controls['email'].hasError('email') && profileForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
+                <div *ngIf="profileForm.controls['email'].hasError('emailAsyncInvalid') && profileForm.controls['email'].touched" class="ui mini negative message">Email already taken</div>
+              </div>
+
               <div class="field" [class.error]="profileForm.controls['first_name'].invalid && profileForm.controls['first_name'].touched">
                 <div class="ui left icon input">
                   <i class="keyboard icon"></i>

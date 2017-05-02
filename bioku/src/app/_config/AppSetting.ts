@@ -15,6 +15,6 @@ export const AppSetting = {
     //user change password
     'CHANGE_PASSWORD': '/api/users/password/',
     //UPDATE_USER_PROFILE
-    'UPDATE_USER_PROFILE':'',
+    'UPDATE_USER_PROFILE':'/api/users/',
 
 }
