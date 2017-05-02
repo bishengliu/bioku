@@ -17,7 +17,7 @@ export class User{
     email: string;
     first_name: string;
     last_name: string;
-    profile: string;
+    profile: Profile;
     roles: Array<string>;
     groups: Array<GroupIdName>; //later will be different type
 }

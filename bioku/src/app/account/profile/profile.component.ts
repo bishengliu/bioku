@@ -35,12 +35,14 @@ export class ProfileComponent implements OnInit {
 
   profileForm: FormGroup;
   appName: string;
-  isUpdated: boolean = false;
   //for photo upload
   file: File;
   photo_name: string;
   photo_is2Large: Boolean = false;
   photo_isSupported: Boolean = true;
+  
+  //auth user
+  user: User = null;
 
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
@@ -55,25 +57,25 @@ export class ProfileComponent implements OnInit {
   constructor(fb: FormBuilder, private alertService: AlertService, 
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) {
-  //update photo name
+  //get the photo name for form
   let state= this.appStore.getState();
-  let user = state.authInfo.authUser;
-  let photo_path = user.profile.photo;
-  this.photo_name = user.profile.photo ? photo_path.split('/').pop(): '';
-  //parse date
-  let init_date ;
-  if(user.profile.birth_date){
-    let dArray = user.profile.birth_date.split('-');
+  this.user = state.authInfo.authUser;
+  let photo_path = this.user.profile.photo;
+  this.photo_name = this.user.profile.photo ? photo_path.split('/').pop(): '';
+  //parse date for form intial birth date
+  let init_date = {};
+  if(this.user.profile.birth_date){
+    let dArray = this.user.profile.birth_date.split('-');
     init_date = {date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]}};
   }
   //formGroup
     this.profileForm = fb.group({
-      'email': [user.email, Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(+user.pk)],
-      'first_name': [user.first_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
-      'last_name': [user.last_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
+      'email': [this.user.email, Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(+this.user.pk)],
+      'first_name': [this.user.first_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
+      'last_name': [this.user.last_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'birth_date': [init_date, ],
       'photo': ['', ],
-      'telephone': [user.profile.telephone, this.cValidators.telephoneValidator()]
+      'telephone': [this.user.profile.telephone, this.cValidators.telephoneValidator()]
     });
     //app name
     this.appName = appSetting.NAME;
@@ -84,7 +86,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //update photo name
+    //update photo name to the template
     this.photoInput.nativeElement.value = this.photo_name;
   }
   
@@ -94,7 +96,7 @@ export class ProfileComponent implements OnInit {
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
         let files: FileList = target.files;
         this.file = files[0];
-        console.log(this.file);
+        //console.log(this.file);
         this.photo_name = this.file.name;
         //check file size
         let size = this.file.size / 1024 / 1024
@@ -115,21 +117,27 @@ export class ProfileComponent implements OnInit {
   
     onUpdate(values: any): void{
     let obj = {
+            email: values.email,
             first_name : values.first_name,
             last_name : values.last_name,
             birth_date : values.birth_date.date.year + '-'+ values.birth_date.date.month + '-'+ values.birth_date.date.day,
             telephone : values.telephone };
         //url for get auth user details
-    const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE;
+    const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE+this.user.pk+'/';
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
     if (this.file){
       formData.append("file", this.file, this.file.name);
-    }    
+    }
+    //put call
+    ///////////////////////////////////////////////
+    //naviagate to home
+    this.router.navigate(['/']);    
   }
 
   updateState(){
     let state= this.appStore.getState();
+    this.user = state.authInfo.authUser;
     //console.log(state);
   }
 

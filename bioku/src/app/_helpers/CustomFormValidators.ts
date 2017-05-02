@@ -135,7 +135,6 @@ export class CustomFormValidators{
                     let body: string = JSON.stringify({'query': 'email', 'value': control.value, 'user_pk': user_pk});
                     let headers = new Headers({ 'Content-Type': 'application/json' });
                     let options = new RequestOptions({ headers: headers });
-                    console.log(control);
                     if (!control.dirty){
                         observer.next({ emailAsyncInvalid: false });
                         observer.complete();
