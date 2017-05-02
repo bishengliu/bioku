@@ -1,11 +1,11 @@
 import { Action, Reducer } from 'redux';
-import { AuthState } from './login_state';
+import { AuthState } from './account_state';
 import { AppState } from '../root/state';
 import { initialAppState } from '../root/state';
 import { User } from '../../_classes/User';
 import {Group} from '../../_classes/Group';
 import {REDUX_CONSTANTS as C } from '../root/constants';
-import {SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction} from './login_actions';
+import {SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction} from './account_actions';
 
 //initial auth status
 const initialState: AuthState = initialAppState.authInfo;

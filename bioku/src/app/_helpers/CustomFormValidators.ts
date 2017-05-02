@@ -165,7 +165,6 @@ export class CustomFormValidators{
             };
     };
 
-
     //asunc validator passworkd
     currentPasswordAsyncValidator(appStore){
         return (control: FormControl): Observable<{[key : string] : Boolean}> =>{

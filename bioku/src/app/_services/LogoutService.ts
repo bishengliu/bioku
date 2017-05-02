@@ -6,7 +6,7 @@ import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AppState, AppPartialState } from '../_redux/root/state';
 
 //import redux action, actionCreator and reducer from login redux
-import {unsetAuthUserActionCreator, unsetTokenActionCreator, unSetAuthGroupActionCreator} from '../_redux/login/login_actions';
+import {unsetAuthUserActionCreator, unsetTokenActionCreator, unSetAuthGroupActionCreator} from '../_redux/account/account_actions';
 
 @Injectable()
 export class LogoutService{

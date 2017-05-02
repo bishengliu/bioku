@@ -1,6 +1,6 @@
 import {User} from '../../_classes/User';
 import {Group} from '../../_classes/Group';
-import {AuthState} from '../login/login_state';
+import {AuthState} from '../account/account_state';
 import {AppLog} from '../../_classes/Logger';
 
 export interface AppPartialState{

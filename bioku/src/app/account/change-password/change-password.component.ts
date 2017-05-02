@@ -12,7 +12,7 @@ import { User } from '../../_classes/User';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
-import { userChangePasswordActionAsync } from '../../_redux/login/login_actions';
+import { userChangePasswordActionAsync } from '../../_redux/account/account_actions';
 
 //custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';

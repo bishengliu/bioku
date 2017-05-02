@@ -12,7 +12,7 @@ import { User } from '../../_classes/User';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import {SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator, setAuthTokenActionCreator, userAuthActionAsync} from '../../_redux/login/login_actions';
+import {SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator, setAuthTokenActionCreator, userAuthActionAsync} from '../../_redux/account/account_actions';
 
 @Component({
   selector: 'app-login',

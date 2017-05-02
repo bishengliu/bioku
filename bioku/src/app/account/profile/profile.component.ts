@@ -16,7 +16,7 @@ import {IMyOptions} from 'mydatepicker';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import { registerActionAsync } from '../../_redux/login/login_actions';
+import { registerActionAsync } from '../../_redux/account/account_actions';
 //access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
