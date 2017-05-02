@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
   
   //auth user
   user: User = null;
-
+  token: string = null;
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
         // other options...
@@ -59,6 +59,7 @@ export class ProfileComponent implements OnInit {
   //get the photo name for form
   let state= this.appStore.getState();
   this.user = state.authInfo.authUser;
+  this.token = state.authInfo.token.token;
   let photo_path = this.user.profile.photo;
   this.photo_name = this.user.profile.photo ? photo_path.split('/').pop(): '';
   //parse date for form intial birth date
@@ -115,21 +116,21 @@ export class ProfileComponent implements OnInit {
   }
   
     onUpdate(values: any): void{
+      console.log(this.profileForm);
     let obj = {
             email: values.email,
             first_name : values.first_name,
             last_name : values.last_name,
             birth_date : values.birth_date.date.year + '-'+ values.birth_date.date.month + '-'+ values.birth_date.date.day,
             telephone : values.telephone };
-    //url for get auth user details
-    const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE+this.user.pk+'/';
+    console.log(obj);
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
     if (this.file){
       formData.append("file", this.file, this.file.name);
     }
     //put call
-    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService));
+    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.token, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService));
     //naviagate to home
     this.router.navigate(['/']);    
   }
@@ -137,6 +138,7 @@ export class ProfileComponent implements OnInit {
   updateState(){
     let state= this.appStore.getState();
     this.user = state.authInfo.authUser;
+    this.token = state.authInfo.token.token;
     //console.log(state);
   }
 

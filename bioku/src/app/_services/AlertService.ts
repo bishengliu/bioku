@@ -34,7 +34,7 @@ export class AlertService{
             //clear message
             setTimeout(()=>{
                 this.clearMessage();
-            }, 5000);
+            }, 10000);
         }        
     }
 
@@ -46,7 +46,7 @@ export class AlertService{
             //clear message
             setTimeout(()=>{
                 this.clearMessage();
-            }, 5000);
+            }, 10000);
         }         
     }
 

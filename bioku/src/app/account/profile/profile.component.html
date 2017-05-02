@@ -6,10 +6,9 @@
             <img>
             <div class="content">UPDATE USER PROFILE</div>
           </h2>
-          <!--form-->
+          <!--form  -->
           <form [formGroup]="profileForm" class="ui large form" (ngSubmit)="profileForm.valid && onUpdate(profileForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
-
               <div class="field" [class.error]="profileForm.controls['email'].invalid && profileForm.controls['email'].touched">
                 <div class="ui left icon input">
                   <i class="mail icon"></i>
@@ -36,7 +35,6 @@
                 <div *ngIf="profileForm.controls['last_name'].hasError('required') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
                 <div *ngIf="profileForm.controls['last_name'].hasError('humanNameInvalid') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
               </div>
-
 
               <div class="field" [class.error]="profileForm.controls['photo'].invalid && profileForm.controls['photo'].touched">
                 <div class="ui left icon input right action">

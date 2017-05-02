@@ -221,10 +221,10 @@ export const userChangePasswordActionAsync =
 
 //update user profile thunk
 export const updateProfileActionAsync =
-(formData:FormData, pk: number, updateUserProfileService: UpdateUserProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(formData:FormData, pk: number, token: string, updateUserProfileService: UpdateUserProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
-    updateUserProfileService.update(formData, pk).subscribe(
+    updateUserProfileService.update(formData, pk, token).subscribe(
             (data)=> {
                 console.log(data);
                 if(data.detail){

@@ -8,14 +8,16 @@ import { APP_CONFIG } from '../_providers/AppSettingProvider';
 export class UpdateUserProfileService{
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any){}
 
-    update(formData: FormData, pk: number){
+    update(formData: FormData, pk: number, token: string){
         //url for get auth user details
         const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE+ pk +'/';
         //url to get my groups info
         const auth_groups: string = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         //get auth user
         const user_detail: string  = this.appSetting.URL + this.appSetting.AUTH_USER;
-        return this.http.put(update_profile_url, formData) //do provide header accorrding to django
+        let headers = new Headers({ 'Authorization': 'Token '+ token });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.put(update_profile_url, formData, options) //do provide header accorrding to django
                    .map((response: Response) =>response.json())
                    .mergeMap(data=>{
                        if (!data && !data.detail){
@@ -45,7 +47,6 @@ export class UpdateUserProfileService{
                         let token = data.token.token;
                         let headers = new Headers({ 'Authorization': 'Token '+ token });
                         let options = new RequestOptions({ headers: headers });
-                        debugger;
                         return this.http.get(auth_groups, options)
                             .map((response: Response) =>response.json())
                             //.toArray()

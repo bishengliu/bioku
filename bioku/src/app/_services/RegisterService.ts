@@ -46,7 +46,6 @@ export class RegisterService{
                         let token = data.token.token;
                         let headers = new Headers({ 'Authorization': 'Token '+ token });
                         let options = new RequestOptions({ headers: headers });
-                        debugger;
                         return this.http.get(auth_groups, options)
                             .map((response: Response) =>response.json())
                             //.toArray()

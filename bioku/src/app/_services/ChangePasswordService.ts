@@ -18,7 +18,6 @@ export class ChangePasswordService{
         //get the token
         let state = this.appStore.getState();
         if(!state || !state.authInfo || !state.authInfo.token){
-            console.log('not login ...');
             return Observable.throw('Please first login');
         }
         let headers = new Headers({ 'Authorization': 'Token '+ state.authInfo.token.token, 'Content-Type': 'application/json' });
