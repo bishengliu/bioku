@@ -58,6 +58,7 @@ export class HomeHeaderComponent implements OnInit {
   }
   updateProfile(){
     this._opened = !this._opened;
+    //this.router.navigate(['/user']);
   }
   ngOnInit() {}
 

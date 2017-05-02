@@ -1,6 +1,6 @@
 <div class="ui vertical inverted masthead center aligned segment">
     <div class="ui right icon secondary inverted pointing menu">
-        <a [routerLink]="['']" class="active item"><i class="home icon"></i> Home</a>
+        <!--<a [routerLink]="['']" class="active item"><i class="home icon"></i> Home</a>-->
         <a *ngIf="isLogin" (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
@@ -39,19 +39,26 @@
         <div class="">
         <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>                      
         <div *ngIf="isLogin" class="ui red raised card">
+            
             <div *ngIf="user.profile.photo" class="image">                
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
             </div>
-            <div class="content">            
-                <!--<img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">-->
-                <a [routerLink]="['/user']" class="ui blue circular button icon right floated" (click)="updateProfile()"><i class="icon setting"></i></a>
-                <span class="header">{{user.first_name +" "+ user.last_name}} ({{user.username}})</span>
+            <div class="content">                         
+                <!--
+                    <img class="right floated mini ui image" src="{{appUrl+user.profile.photo}}">
+                    <a [routerLink]="['/user']" class="ui blue circular button mini icon right floated" (click)="updateProfile()"><i class="icon setting"></i></a>
+                -->
+                
+                <span class="header">{{user.first_name +" "+ user.last_name}} <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="updateProfile()"><i class="icon red settings"></i></a></span>
                 <div class="meta">
+                    <span class=""><i class="user icon"></i> {{user.username}}</span>
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
-                    <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>
+                    <br>
+                    <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>                   
                     <span *ngIf="user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
                 </div>  
                 <div class="meta" *ngIf="user.roles">
+                    <i class="flag icon"></i> 
                     <span *ngFor="let r of user.roles">{{r}}</span>
                 </div>         
             </div>
