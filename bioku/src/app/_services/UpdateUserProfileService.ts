@@ -1,4 +1,3 @@
-//get user token and detail by posting username and password
 import { Injectable , Inject} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
@@ -6,18 +5,18 @@ import { AppSetting} from '../_config/AppSetting';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 
 @Injectable()
-export class RegisterService{
+export class UpdateUserProfileService{
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any){}
-    registerUser(formData: FormData){        
+
+    update(formData: FormData, pk: number){
         //url for get auth user details
-        const register_url: string  = this.appSetting.URL + this.appSetting.REGISTER_USER;
+        const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE+ pk +'/';
         //url to get my groups info
         const auth_groups: string = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         //get auth user
         const user_detail: string  = this.appSetting.URL + this.appSetting.AUTH_USER;
-        return this.http.post(register_url, formData) //do provide header accorrding to django
+        return this.http.put(update_profile_url, formData) //do provide header accorrding to django
                    .map((response: Response) =>response.json())
-                   //get the authUser using mergeMap
                    .mergeMap(data=>{
                        if (!data && !data.detail){
                             return Observable.throw('Registration Failed!');

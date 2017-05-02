@@ -10,6 +10,7 @@ import{AlertService} from '../../_services/AlertService';
 import {LogAppStateService} from '../../_services/LogAppStateService';
 import { RegisterService } from '../../_services/RegisterService';
 import { ChangePasswordService } from '../../_services/ChangePasswordService';
+import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
 
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
@@ -107,7 +108,7 @@ export const userAuthActionAsync =
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
-                let message: string = 'User login failed: ' + (error || 'server error!') ;
+                let message: string = 'user login failed: ' + (error || 'server error!') ;
                 logAppStateService.log('USER LOGIN', preState, nextState, message);
                 console.log(error);
                 //error
@@ -152,18 +153,18 @@ export const registerActionAsync =
                     let message: string = 'new user registered!'
                     //logger the redux action
                     logAppStateService.log('REGISTER USER', preState, nextState, message);
-                    alertService.success('Register Success!', true);            
+                    alertService.success('Registration Succeeded!', true);            
                 }
             },
             (error)=>{
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
-                let message: string = 'User Register failed: ' + (error || 'server error!') ;
+                let message: string = 'user registration failed: ' + (error || 'server error!') ;
                 logAppStateService.log('USER REGISTRATION', preState, nextState, message);
                 console.log(error);
                 //error
-                alertService.error('Register Failed!');
+                alertService.error('Registration Failed!');
             },
             ()=>{
                 //success                
@@ -216,4 +217,54 @@ export const userChangePasswordActionAsync =
                 alertService.error('Change Password Failed!');
             }
         );
+}
+
+//update user profile thunk
+export const updateProfileActionAsync =
+(formData:FormData, pk: number, updateUserProfileService: UpdateUserProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    updateUserProfileService.update(formData, pk).subscribe(
+            (data)=> {
+                console.log(data);
+                if(data.detail){
+                    //loger redux
+                    //get state: apppartialstate
+                    let preState: AppPartialState = logAppStateService.getAppPartialState();                   
+                    //dispatch set auth token action
+                    //dispatch set token              
+                    let setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token.token);
+                    dispatch(setAuthTokenAction);
+
+                    //dispatch set authUser
+                    if('user' in data && data.user){
+                        let setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
+                        dispatch(setAuthUserAction);
+                    }
+                    //dispatch authGroup
+                    let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+                    dispatch(setAuthGroupAction);
+
+                    //get state: apppartialstate
+                    let nextState: AppPartialState = logAppStateService.getAppPartialState();
+                    let message: string = 'user profile updated!'
+                    //logger the redux action
+                    logAppStateService.log('UPDATE USER PROFILE', preState, nextState, message);
+                    alertService.success('Update User Profile Succeeded!', true);            
+                }
+            },
+            (error)=>{
+                //get state: apppartialstate
+                let preState: AppPartialState = logAppStateService.getAppPartialState();
+                let nextState: AppPartialState = preState;
+                let message: string = 'update user profile failed: ' + (error || 'server error!') ;
+                logAppStateService.log('UPDATE USER PROFILE', preState, nextState, message);
+                console.log(error);
+                //error
+                alertService.error('Update User Profile Failed!');
+            },
+            ()=>{
+                //success                
+            }
+    )
 }

@@ -6,7 +6,6 @@ import { Router} from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
-import { LoginService } from '../../_services/LoginService';
 import { RegisterService } from '../../_services/RegisterService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { User } from '../../_classes/User';

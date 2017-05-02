@@ -6,8 +6,7 @@ import { Router} from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
-import { LoginService } from '../../_services/LoginService';
-import { RegisterService } from '../../_services/RegisterService';
+import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { User } from '../../_classes/User';
 //mydatepicker
@@ -16,7 +15,7 @@ import {IMyOptions} from 'mydatepicker';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import { registerActionAsync } from '../../_redux/account/account_actions';
+import { updateProfileActionAsync } from '../../_redux/account/account_actions';
 //access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
@@ -55,7 +54,7 @@ export class ProfileComponent implements OnInit {
         openSelectorOnInputClick: true};
 
   constructor(fb: FormBuilder, private alertService: AlertService, 
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
+              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private updateUserProfileService: UpdateUserProfileService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) {
   //get the photo name for form
   let state= this.appStore.getState();
@@ -122,7 +121,7 @@ export class ProfileComponent implements OnInit {
             last_name : values.last_name,
             birth_date : values.birth_date.date.year + '-'+ values.birth_date.date.month + '-'+ values.birth_date.date.day,
             telephone : values.telephone };
-        //url for get auth user details
+    //url for get auth user details
     const update_profile_url: string  = this.appSetting.URL + this.appSetting.UPDATE_USER_PROFILE+this.user.pk+'/';
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
@@ -130,7 +129,7 @@ export class ProfileComponent implements OnInit {
       formData.append("file", this.file, this.file.name);
     }
     //put call
-    ///////////////////////////////////////////////
+    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService));
     //naviagate to home
     this.router.navigate(['/']);    
   }
