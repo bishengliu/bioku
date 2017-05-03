@@ -2,12 +2,15 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router} from '@angular/router';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { LogoutService } from '../../_services/LogoutService';
 import { User } from '../../_classes/User';
 import { Group, GroupInfo } from '../../_classes/Group';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 
+//custom from validator
+import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 @Component({
   selector: 'app-home-header',
   templateUrl: './home-header.component.html',
@@ -19,15 +22,19 @@ export class HomeHeaderComponent implements OnInit {
   isLogin: boolean = false;
   user: User = null;
   groups: Array<Group> = null;
-  
+  assistEmailInput: FormControl = new FormControl();
+  memberEmailInput: FormControl = new FormControl();
   private _opened: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private router: Router) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private router: Router, private cValidators: CustomFormValidators,) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
     this.updateState();
+
+    this.assistEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
+    this.memberEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
   }
 
   Logout(){
@@ -49,20 +56,20 @@ export class HomeHeaderComponent implements OnInit {
     //navigate to group
     //this.router.navigate(['group', groupInfo.pk]);
   }
-  addAssistant(groupInfo: GroupInfo){
-    this._opened = !this._opened;
+  addAssistant(groupInfo: GroupInfo, email: any){
     console.log(groupInfo);
+    console.log(email);
   }
-  addMember(groupInfo: GroupInfo){
-    this._opened = !this._opened;
+  addMember(groupInfo: GroupInfo, email: any){
+    //url(r'^(?P<pk>[0-9]+)/researchers/$', OneGroupResearcherList.as_view(), name='one-group-researcher-list'),
     console.log(groupInfo);
+    console.log(email);
   }
   removeAssistant(assistant: User){
-    this._opened = !this._opened;
     console.log(assistant);
   }
   removeMember(member: User){
-    this._opened = !this._opened;
+    //url(r'^(?P<g_id>[0-9]+)/researchers/(?P<u_id>[0-9]+)/$', OneGroupResearcherDetail.as_view(), name='one-group-researcher-detail'),
     console.log(member);
   }
   //sidebar

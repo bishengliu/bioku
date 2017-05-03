@@ -83,3 +83,10 @@ body{
 .ng-sidebar{
   overflow: hidden !important;
 }
+.clearfix{
+  clear: both;
+}
+.nopadding{
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
