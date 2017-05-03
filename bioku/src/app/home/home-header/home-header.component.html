@@ -61,7 +61,6 @@
                 <i class="lock icon"></i>Change Password
             </a>
         </div>
-
         <!--groups and list all the researchers in the group when hoeving the image-->
         <div *ngIf="isLogin">
             <div class="ui blue raised card" *ngFor="let group of groups">
@@ -86,22 +85,33 @@
                 </div>
                 <!--assistant-->
                 <div class="extra content" *ngIf="group.assistants">
-                    <div><a class="ui teal tag mini label right floated">assistants</a></div>
-                    <div class="ui circular small labels">
+                    <button *ngIf="group.email===user.email" class="ui teal tag label right labeled icon mini button right floated" (click)="addAssistant(group)">
+                        <i class="ui icon add circle"></i>
+                        assistants
+                    </button>
+                    <span *ngIf="group.email !== user.email" class="ui teal tag mini label right floated">assistants</span>
+
+                    <div class="ui mini labels">
                         <span class="ui label" *ngFor="let assit of group.assistants">
                             <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
                             <span>{{assit.user.first_name}}</span>
+                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(assit)"></i>
                         </span>                        
                     </div>  
                 </div>
                 <!--members-->
                 <div class="extra content" *ngIf="group.researchers">
-                    <a class="ui orange tag mini label right floated">members</a>
+                    <button *ngIf="group.email===user.email" class="ui orange tag label right labeled icon mini button right floated" (click)="addMember(group)">
+                        <i class="ui icon add circle"></i>
+                        members
+                    </button>
+                    <span *ngIf="group.email !== user.email" class="ui orange tag mini label right floated">members</span>
                     <div class="fluid" style="clear:both;"></div>
-                    <div class="ui circular small labels">
+                    <div class="ui mini labels">
                         <span class="ui label" *ngFor="let r of group.researchers">
                             <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                             <span>{{r.user.first_name}}</span>
+                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(r)"></i>
                         </span>                        
                     </div>  
                 </div>

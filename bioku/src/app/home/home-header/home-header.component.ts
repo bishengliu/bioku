@@ -45,8 +45,25 @@ export class HomeHeaderComponent implements OnInit {
   }
   editGroup(groupInfo: GroupInfo){
     this._opened = !this._opened;
+    console.log(groupInfo);
     //navigate to group
     //this.router.navigate(['group', groupInfo.pk]);
+  }
+  addAssistant(groupInfo: GroupInfo){
+    this._opened = !this._opened;
+    console.log(groupInfo);
+  }
+  addMember(groupInfo: GroupInfo){
+    this._opened = !this._opened;
+    console.log(groupInfo);
+  }
+  removeAssistant(assistant: User){
+    this._opened = !this._opened;
+    console.log(assistant);
+  }
+  removeMember(member: User){
+    this._opened = !this._opened;
+    console.log(member);
   }
   //sidebar
   private _toggleSidebar() {
