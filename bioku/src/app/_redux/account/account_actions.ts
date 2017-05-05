@@ -11,6 +11,8 @@ import {LogAppStateService} from '../../_services/LogAppStateService';
 import { RegisterService } from '../../_services/RegisterService';
 import { ChangePasswordService } from '../../_services/ChangePasswordService';
 import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
+import { GroupService } from '../../_services/GroupService';
+
 
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
@@ -267,4 +269,136 @@ export const updateProfileActionAsync =
                 //success                
             }
     )
+}
+
+//add assistant to one group
+export const addAssistantAsync =
+(group_pk: number, email: string, groupService: GroupService, alertService: AlertService, logAppStateService: LogAppStateService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    groupService.addAssistant(group_pk, email)
+    .subscribe(
+        (data:any)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //dispatch authGroup
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            dispatch(setAuthGroupAction);
+
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'group assistant added!'
+            //logger the redux action
+            logAppStateService.log('ADD GROUP ASSISTANT BY PI', preState, nextState, message);
+            alertService.success('Add Group Assistant Succeeded!', true);
+        },
+        (error)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            let nextState: AppPartialState = preState;
+            let message: string = 'add group assistant failed: ' + (error || 'server error!') ;
+            logAppStateService.log('ADD GROUP ASSISTANT BY PI', preState, nextState, message);
+            console.log(error);
+                //error
+            alertService.error('Add Group Assistant Failed!');
+        })
+}
+
+//add researcher to one group
+export const addMemberAsync =
+(group_pk: number, email: string, groupService: GroupService, alertService: AlertService, logAppStateService: LogAppStateService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    groupService.addMember(group_pk, email)
+    .subscribe(
+        (data:any)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //dispatch authGroup
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            dispatch(setAuthGroupAction);
+
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'group member added!'
+            //logger the redux action
+            logAppStateService.log('ADD GROUP MEMBER BY PI', preState, nextState, message);
+            alertService.success('Add Group Member Succeeded!', true);
+        },
+        (error)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            let nextState: AppPartialState = preState;
+            let message: string = 'add group member failed: ' + (error || 'server error!') ;
+            logAppStateService.log('ADD GROUP MEMEBER BY PI', preState, nextState, message);
+            console.log(error);
+            //error
+            alertService.error('Add Group Memeber Failed!');
+        })
+}
+
+//remove assistant to one group
+export const removeAssistantAsync =
+(group_pk: number, user_pk: number, groupService: GroupService, alertService: AlertService, logAppStateService: LogAppStateService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    groupService.removeAssistant(group_pk, user_pk)
+    .subscribe(
+        (data:any)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //dispatch authGroup
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            dispatch(setAuthGroupAction);
+
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'group assistant removed!'
+            //logger the redux action
+            logAppStateService.log('REMOVE GROUP ASSISTANT BY PI', preState, nextState, message);
+            alertService.success('Remove Group Assistant Succeeded!', true);
+        },
+        (error)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            let nextState: AppPartialState = preState;
+            let message: string = 'remove group assistant failed: ' + (error || 'server error!') ;
+            logAppStateService.log('REMVOE GROUP ASSISTANT BY PI', preState, nextState, message);
+            console.log(error);
+            //error
+            alertService.error('Remove Group Assistant Failed!');
+        })
+}
+
+//remove researcher to one group
+export const removeMemberAsync =
+(group_pk: number, user_pk: number, groupService: GroupService, alertService: AlertService, logAppStateService: LogAppStateService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    groupService.removeMember(group_pk, user_pk)
+    .subscribe(
+        (data:any)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //dispatch authGroup
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            dispatch(setAuthGroupAction);
+
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'group member removed!'
+            //logger the redux action
+            logAppStateService.log('REMOVE GROUP MEMBER BY PI', preState, nextState, message);
+            alertService.success('Remove Group Member Succeeded!', true);
+        },
+        (error)=>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            let nextState: AppPartialState = preState;
+            let message: string = 'remove group member failed: ' + (error || 'server error!') ;
+            logAppStateService.log('REMVOE GROUP MEMEBER BY PI', preState, nextState, message);
+            console.log(error);
+            //error
+            alertService.error('Remove Group Memeber Failed!');
+        })
 }

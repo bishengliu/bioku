@@ -16,5 +16,9 @@ export const AppSetting = {
     'CHANGE_PASSWORD': '/api/users/password/',
     //UPDATE_USER_PROFILE
     'UPDATE_USER_PROFILE':'/api/users/',
+    //MGROUP API
+    'SINGLE_GROUP_API': '/api/groups/',
+    //UPDATE GROUP INFO
+    'UPDATE_GROUP_INFO': '/api/groups/update',
 
 }

@@ -111,7 +111,7 @@
                         <span class="ui label" *ngFor="let assit of group.assistants">
                             <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
                             <span>{{assit.user.first_name}}</span>
-                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(assit)"></i>
+                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(group, assit)"></i>
                         </span>                        
                     </div>  
                 </div>
@@ -144,7 +144,7 @@
                         <span class="ui label" *ngFor="let r of group.researchers">
                             <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                             <span>{{r.user.first_name}}</span>
-                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(r)"></i>
+                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
                         </span>                        
                     </div>  
                 </div>

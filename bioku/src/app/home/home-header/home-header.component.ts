@@ -3,14 +3,24 @@ import { Router} from '@angular/router';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
-import { LogoutService } from '../../_services/LogoutService';
 import { User } from '../../_classes/User';
 import { Group, GroupInfo } from '../../_classes/Group';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 
+//service
+import {GroupService} from '../../_services/GroupService';
+import { AlertService } from '../../_services/AlertService';
+import { LogAppStateService } from '../../_services/LogAppStateService';
+import { LogoutService } from '../../_services/LogoutService';
 //custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
+
+//redux action
+import { addAssistantAsync, addMemberAsync, removeAssistantAsync, removeMemberAsync } from '../../_redux/account/account_actions';
+
+
+
 @Component({
   selector: 'app-home-header',
   templateUrl: './home-header.component.html',
@@ -26,22 +36,69 @@ export class HomeHeaderComponent implements OnInit {
   memberEmailInput: FormControl = new FormControl();
   private _opened: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private router: Router, private cValidators: CustomFormValidators,) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private groupService: GroupService,  
+  private router: Router, private cValidators: CustomFormValidators,private alertService: AlertService,private logAppStateService: LogAppStateService) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
     this.updateState();
-
+    //form controls for adding member or assistants
     this.assistEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
     this.memberEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
   }
-
+  //sidebar
+  private _toggleSidebar() {
+    this._opened = !this._opened;
+  }
+  //logout
   Logout(){
     this.logoutService.logOut();
     this._opened = false;
   }
+  //change my password
+  changePassword(){
+    this._opened = !this._opened;
+  }
+  //update my profile
+  updateProfile(){
+    this._opened = !this._opened;
+  }
+  
+  //edit my group profile
+  editGroup(groupInfo: GroupInfo){
+    this._opened = !this._opened;
+    console.log(groupInfo);
+    //navigate to group
+    //this.router.navigate(['group', groupInfo.pk]);
+  }
+  //add assistant to a group
+  addAssistant(groupInfo: GroupInfo, email: any){
+    console.log(groupInfo);
+    console.log(email);
+    this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService))  
+  }
+  //add researcher to a group
+  addMember(groupInfo: GroupInfo, email: any){
+    console.log(groupInfo);
+    console.log(email);
+    this.appStore.dispatch(addMemberAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService))    
+  }
+  //remove assistant to a group
+  removeAssistant(groupInfo: GroupInfo, assistant: User){
+    console.log(groupInfo);
+    console.log(assistant);
+    this.appStore.dispatch(removeAssistantAsync(groupInfo.pk, assistant.pk, this.groupService, this.alertService, this.logAppStateService))    
+  }
+  //remove researcher to a group
+  removeMember(groupInfo: GroupInfo, member: User){
+    console.log(groupInfo);
+    console.log(member);
+    this.appStore.dispatch(removeMemberAsync(groupInfo.pk, member.pk, this.groupService, this.alertService, this.logAppStateService))    
+  }
+  
 
+  //update redux state
   updateState(){
     let state= this.appStore.getState()
     if(state.authInfo){      
@@ -49,40 +106,6 @@ export class HomeHeaderComponent implements OnInit {
       this.groups = state.authInfo.authGroup;
       this.isLogin = state.authInfo.token? true: false;      
     }
-  }
-  editGroup(groupInfo: GroupInfo){
-    this._opened = !this._opened;
-    console.log(groupInfo);
-    //navigate to group
-    //this.router.navigate(['group', groupInfo.pk]);
-  }
-  addAssistant(groupInfo: GroupInfo, email: any){
-    console.log(groupInfo);
-    console.log(email);
-  }
-  addMember(groupInfo: GroupInfo, email: any){
-    //url(r'^(?P<pk>[0-9]+)/researchers/$', OneGroupResearcherList.as_view(), name='one-group-researcher-list'),
-    console.log(groupInfo);
-    console.log(email);
-  }
-  removeAssistant(assistant: User){
-    console.log(assistant);
-  }
-  removeMember(member: User){
-    //url(r'^(?P<g_id>[0-9]+)/researchers/(?P<u_id>[0-9]+)/$', OneGroupResearcherDetail.as_view(), name='one-group-researcher-detail'),
-    console.log(member);
-  }
-  //sidebar
-  private _toggleSidebar() {
-    this._opened = !this._opened;
-  }
-
-  changePassword(){
-    this._opened = !this._opened;
-  }
-  updateProfile(){
-    this._opened = !this._opened;
-    //this.router.navigate(['/user']);
   }
   ngOnInit() {}
 
