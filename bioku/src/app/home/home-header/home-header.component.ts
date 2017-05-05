@@ -76,6 +76,8 @@ export class HomeHeaderComponent implements OnInit {
   addAssistant(groupInfo: GroupInfo, email: any){
     console.log(groupInfo);
     console.log(email);
+    console.log(this.logAppStateService);
+    console.log(this.groupService);
     this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService))  
   }
   //add researcher to a group
@@ -85,16 +87,16 @@ export class HomeHeaderComponent implements OnInit {
     this.appStore.dispatch(addMemberAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService))    
   }
   //remove assistant to a group
-  removeAssistant(groupInfo: GroupInfo, assistant: User){
+  removeAssistant(groupInfo: GroupInfo, assistant){
     console.log(groupInfo);
     console.log(assistant);
-    this.appStore.dispatch(removeAssistantAsync(groupInfo.pk, assistant.pk, this.groupService, this.alertService, this.logAppStateService))    
+    this.appStore.dispatch(removeAssistantAsync(groupInfo.pk, assistant.user_id, this.groupService, this.alertService, this.logAppStateService))    
   }
   //remove researcher to a group
-  removeMember(groupInfo: GroupInfo, member: User){
+  removeMember(groupInfo: GroupInfo, member){
     console.log(groupInfo);
     console.log(member);
-    this.appStore.dispatch(removeMemberAsync(groupInfo.pk, member.pk, this.groupService, this.alertService, this.logAppStateService))    
+    this.appStore.dispatch(removeMemberAsync(groupInfo.pk, member.user_id, this.groupService, this.alertService, this.logAppStateService))    
   }
   
 

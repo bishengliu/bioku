@@ -12,5 +12,5 @@ export var APIServiceProviders: Array<any> = [
         {provide: RegisterService, useClass: RegisterService},
         {provide: ChangePasswordService, useClass: ChangePasswordService},
         {provide: UpdateUserProfileService, useClass: UpdateUserProfileService},
-        {provide: GroupService, userClass: GroupService}
+        {provide: GroupService, useClass: GroupService}
     ];
