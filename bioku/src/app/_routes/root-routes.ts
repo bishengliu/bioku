@@ -5,7 +5,8 @@ import { HomeComponent } from '../home/home.component';
 import { AdminComponent } from '../admin/admin.component';
 import { AccountComponent } from '../account/account.component';
 import { RegisterComponent } from '../account/register/register.component';
-import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from '.././_helpers/page-not-found/page-not-found.component';
+import { PermissionDeniedComponent } from '.././_helpers/permission-denied/permission-denied.component';
 import { LoginComponent } from '../account/login/login.component';
 //routing
 import { Routes } from '@angular/router';
@@ -17,5 +18,6 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},
+  {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

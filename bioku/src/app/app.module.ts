@@ -32,12 +32,14 @@ import { AccountComponent } from './account/account.component';
 import { RegisterComponent } from './account/register/register.component';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { ProfileComponent } from './account/profile/profile.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './_helpers/page-not-found/page-not-found.component';
 import { LoginComponent } from './account/login/login.component';
 import { HomeHeaderComponent } from './home/home-header/home-header.component';
 import { HomeFooterComponent } from './home/home-footer/home-footer.component';
 import { AlertComponent } from './_helpers/alert/alert.component';
 import { HomeBodyComponent } from './home/home-body/home-body.component';
+import { GroupComponent } from './account/group/group.component';
+import { PermissionDeniedComponent } from './_helpers/permission-denied/permission-denied.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { HomeBodyComponent } from './home/home-body/home-body.component';
     HomeFooterComponent,
     AlertComponent,
     HomeBodyComponent,
+    GroupComponent,
+    PermissionDeniedComponent,
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,7 @@
             Profile
         </a>
         <a *ngIf="isLogin" (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
+        <!--<a [routerLink]="['/user/group']" class="ui inverted basic button"><i class="home icon"></i> Group Setting</a>-->
     </div>
 </div>
 
@@ -44,7 +45,12 @@
                 <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
             </div>
             <div class="content">                                        
-                <span class="header">{{user.first_name +" "+ user.last_name}} <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="updateProfile()"><i class="icon red settings"></i></a></span>
+                <span class="header">
+                    {{user.first_name +" "+ user.last_name}} 
+                    <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="updateProfile()">
+                        <i class="icon red settings"></i>
+                    </a>
+                    </span>
                 <div class="meta">
                     <span class=""><i class="user icon"></i> {{user.username}}</span>
                     <span class=""><i class="mail icon"></i> {{user.email}}</span>
