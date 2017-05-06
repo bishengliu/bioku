@@ -89,14 +89,14 @@
                         <div class="field" [class.error]="assistEmailInput.invalid && assistEmailInput.touched" >
                             <div class="ui teal right labeled left icon mini input right floated">
                                 <i class="mail icon"></i>
-                                <input type="email" placeholder="user's email" [formControl]="assistEmailInput" #assistInput>
-                                <a class="ui teal tag label" (click)="addAssistant(group, assistInput.value)">
+                                <input type="email" placeholder="user's email" [formControl]="assistEmailInput" #assistInput (mouseout)="hideValidation('assistant')" (mouseenter)="showValidation('assistant')">
+                                <a class="ui teal tag label" (click)="assistEmailInput.valid && addAssistant(group, assistInput.value)" (mouseout)="hideValidation('assistant')" (mouseenter)="showValidation('assistant')">
                                     <i class="ui icon add circle"></i>
                                     assistants
                                 </a>
                             </div>
                             <div class="fluid clearfix"></div>
-                            <div>
+                            <div [ngClass]="{hidden: !showAssistantMsg}">                          
                                 <div *ngIf="assistEmailInput.hasError('required') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
                                 <div *ngIf="assistEmailInput.hasError('email') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
                                 <div *ngIf="!assistEmailInput.hasError('emailAsyncInvalid') && assistEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>
@@ -121,14 +121,14 @@
                         <div class="field" [class.error]="memberEmailInput.invalid && memberEmailInput.touched" >
                             <div class="ui orange right labeled left icon mini input right floated" *ngIf="group.email===user.email">
                                 <i class="mail icon"></i>
-                                <input type="email" placeholder="user's email" [formControl]="memberEmailInput" #memberInput>
-                                <a class="ui orange tag label" (click)="addMember(group, memberInput.value)">
+                                <input type="email" placeholder="user's email" [formControl]="memberEmailInput" #memberInput (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')">
+                                <a class="ui orange tag label" (click)="memberEmailInput.valid &&addMember(group, memberInput.value)" (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')"> 
                                     <i class="ui icon add circle"></i>
                                     members
                                 </a>
                             </div>
                             <div class="fluid clearfix"></div>
-                            <div>
+                            <div [ngClass]="{hidden: !showMemberMsg}">
                                 <div *ngIf="memberEmailInput.hasError('required') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
                                 <div *ngIf="memberEmailInput.hasError('email') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
                                 <div *ngIf="!memberEmailInput.hasError('emailAsyncInvalid') && memberEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>

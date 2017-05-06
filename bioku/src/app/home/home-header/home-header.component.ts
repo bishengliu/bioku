@@ -20,7 +20,6 @@ import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 import { addAssistantAsync, addMemberAsync, removeAssistantAsync, removeMemberAsync } from '../../_redux/account/account_actions';
 
 
-
 @Component({
   selector: 'app-home-header',
   templateUrl: './home-header.component.html',
@@ -35,6 +34,9 @@ export class HomeHeaderComponent implements OnInit {
   assistEmailInput: FormControl = new FormControl();
   memberEmailInput: FormControl = new FormControl();
   private _opened: boolean = false;
+  //for validation message
+  showAssistantMsg: boolean = true;
+  showMemberMsg: boolean = true;
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private groupService: GroupService,  
   private router: Router, private cValidators: CustomFormValidators,private alertService: AlertService,private logAppStateService: LogAppStateService) {
@@ -78,7 +80,7 @@ export class HomeHeaderComponent implements OnInit {
     console.log(email);
     console.log(this.logAppStateService);
     console.log(this.groupService);
-    this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));  
+    this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));
   }
   //add researcher to a group
   addMember(groupInfo: GroupInfo, email: any){
@@ -98,8 +100,26 @@ export class HomeHeaderComponent implements OnInit {
     console.log(member);
     this.appStore.dispatch(removeMemberAsync(groupInfo.pk, member.user_id, this.groupService, this.alertService, this.logAppStateService));    
   }
-  
-
+  hideValidation(type: string){
+    if (type === 'assistant'){ 
+      setTimeout(()=>{
+        this.showAssistantMsg = false;
+      }, 2000) 
+    }
+    if(type === 'member'){
+      setTimeout(()=>{
+        this.showMemberMsg = false;
+      }, 2000)       
+    }
+  }
+  showValidation(type: string){
+    if (type === 'assistant'){
+      this.showAssistantMsg = true;   
+    }
+    if(type === 'member'){
+      this.showMemberMsg = true;     
+    }
+  }
   //update redux state
   updateState(){
     let state= this.appStore.getState()
