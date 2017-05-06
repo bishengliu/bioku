@@ -72,7 +72,7 @@ export class HomeHeaderComponent implements OnInit {
     this._opened = !this._opened;
     console.log(groupInfo);
     //navigate to group
-    //this.router.navigate(['group', groupInfo.pk]);
+    this.router.navigate(['/user/group', groupInfo.pk]);
   }
   //add assistant to a group
   addAssistant(groupInfo: GroupInfo, email: any){
