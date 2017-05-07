@@ -38,7 +38,7 @@
 
               <div class="field" [class.error]="profileForm.controls['photo'].invalid && profileForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
-                  <i class="user icon"></i>
+                  <i class="image icon"></i>
                   <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}" #photoName>
                   <label class="ui button">Browse<input type="file" id="photo" [formControl]="profileForm.controls['photo']" placeholder="Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
                 </div>
@@ -63,11 +63,9 @@
               <button type="submit" class="ui fluid teal button">
                 <i class="icon edit"></i>
                 UPDATE
-              </button>
-              
+              </button>              
             </div>
-          </form>
-                  
+          </form>                  
       </div>
    </div>
 </div>

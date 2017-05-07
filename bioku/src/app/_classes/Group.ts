@@ -1,6 +1,6 @@
 //research group
 import { User } from './User';
-export interface GroupInfo{
+export class GroupInfo{
     pk: number;
     group_name: string;
     pi: string;
@@ -12,8 +12,8 @@ export interface GroupInfo{
     telephone: number;
 }
 
-export class Group{
-    group: GroupInfo;
+export class Group extends GroupInfo{
+    //group: GroupInfo;
     members: Array<User>;
     assistants: Array<User>;
 }

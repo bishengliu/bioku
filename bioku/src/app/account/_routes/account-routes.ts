@@ -14,5 +14,5 @@ export const accountRoutes: Routes = [
   {path: '', redirectTo: 'profile', pathMatch: 'full'},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, ]},
   {path: 'password', component: ChangePasswordComponent, canActivate: [AuthGuard, ]},
-  {path: 'group', component: GroupComponent, canActivate: [AuthGuard, PIGuard]}
+  {path: 'group/:id', component: GroupComponent, canActivate: [AuthGuard, PIGuard]}
 ]

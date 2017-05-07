@@ -75,7 +75,7 @@
 
               <div class="field" [class.error]="registerForm.controls['photo'].invalid && registerForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
-                  <i class="user icon"></i>
+                  <i class="image icon"></i>
                   <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}">
                   <label class="ui button">Browse<input type="file" id="photo" [formControl]="registerForm.controls['photo']" placeholder="Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
                 </div>

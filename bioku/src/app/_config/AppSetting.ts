@@ -8,6 +8,8 @@ export const AppSetting = {
     'AUTH_USER': '/api/users/auth_user/',
     //find username, user email and other info
     'FIND_USER_DETAILS':'/api/users/search/',
+    //find group info
+    'FIND_GROUP_DETAILS':'/api/groups/search/',
     //user register
     'REGISTER_USER': '/api/users/register/',
     //find my groups with researchers
