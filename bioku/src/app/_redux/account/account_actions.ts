@@ -302,7 +302,7 @@ export const updateGroupProfileActionAsync =
             //error
             alertService.error('Update Group Profile Failed!');
         }
-    );
+    )
 }
 
 

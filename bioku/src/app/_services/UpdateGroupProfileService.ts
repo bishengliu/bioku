@@ -12,7 +12,7 @@ export class UpdateGroupProfileService{
     update(formData: FormData, pk: number){
         let state = this.appStore.getState();
         let token = state.authInfo.token.token;
-        let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });
+        let headers = new Headers({ 'Authorization': 'Token '+ token });
         let options = new RequestOptions({ headers: headers });
 
         //url for get auth user details

@@ -114,7 +114,6 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (this.file){
       formData.append("file", this.file, this.file.name);
     }
-
     //put call
     this.appStore.dispatch(updateGroupProfileActionAsync(formData, this.id, this.updateGroupProfileService, this.http, this.logAppStateService, this.alertService));
     //naviagate to home
@@ -155,7 +154,5 @@ export class GroupComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+  ngOnDestroy() { this.sub.unsubscribe(); }
 }
