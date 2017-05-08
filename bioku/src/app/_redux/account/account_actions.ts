@@ -11,6 +11,7 @@ import {LogAppStateService} from '../../_services/LogAppStateService';
 import { RegisterService } from '../../_services/RegisterService';
 import { ChangePasswordService } from '../../_services/ChangePasswordService';
 import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
+import { UpdateGroupProfileService } from '../../_services/UpdateGroupProfileService';
 import { GroupService } from '../../_services/GroupService';
 
 
@@ -270,6 +271,40 @@ export const updateProfileActionAsync =
             }
     )
 }
+
+//update group profile thunk
+export const updateGroupProfileActionAsync =
+(formData:FormData, pk: number, updateGroupProfileService: UpdateGroupProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    updateGroupProfileService.update(formData, pk).subscribe(
+        data =>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //dispatch authGroup
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            dispatch(setAuthGroupAction);
+
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'update group profile succeeded!'
+            //logger the redux action
+            logAppStateService.log('UPDATE GROUP PROFILE', preState, nextState, message);
+            alertService.success('Update Group Profile Succeeded!', true);
+        },
+        error =>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            let nextState: AppPartialState = preState;
+            let message: string = 'update group profile failed: ' + (error || 'server error!') ;
+            logAppStateService.log('UPDATE GROUP PROFILE', preState, nextState, message);
+            console.log(error);
+            //error
+            alertService.error('Update Group Profile Failed!');
+        }
+    );
+}
+
 
 //add assistant to one group
 export const addAssistantAsync =

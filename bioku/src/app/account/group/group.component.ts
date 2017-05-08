@@ -7,6 +7,7 @@ import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { LogAppStateService } from '../../_services/LogAppStateService';
+import { UpdateGroupProfileService } from '../../_services/UpdateGroupProfileService';
 import { User } from '../../_classes/User';
 import { Group } from '../../_classes/Group';
 
@@ -14,7 +15,7 @@ import { Group } from '../../_classes/Group';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-
+import { updateGroupProfileActionAsync } from '../../_redux/account/account_actions';
 //access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
@@ -52,7 +53,7 @@ export class GroupComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute,
+  constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute, private updateGroupProfileService : UpdateGroupProfileService,
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) 
   { 
@@ -113,9 +114,11 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (this.file){
       formData.append("file", this.file, this.file.name);
     }
+
     //put call
+    this.appStore.dispatch(updateGroupProfileActionAsync(formData, this.id, this.updateGroupProfileService, this.http, this.logAppStateService, this.alertService));
     //naviagate to home
-    //this.router.navigate(['/']);    
+    this.router.navigate(['/']);    
   }
 
   updateState(){
