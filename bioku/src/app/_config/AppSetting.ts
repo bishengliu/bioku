@@ -21,6 +21,6 @@ export const AppSetting = {
     //MGROUP API
     'SINGLE_GROUP_API': '/api/groups/',
     //UPDATE GROUP INFO
-    'UPDATE_GROUP_INFO': '/api/groups/update',
+    'UPDATE_GROUP_INFO': '/api/groups/update/',
 
 }
