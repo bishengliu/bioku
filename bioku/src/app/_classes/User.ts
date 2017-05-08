@@ -19,5 +19,5 @@ export class User{
     last_name: string;
     profile: Profile;
     roles: Array<string>;
-    groups: Array<GroupIdName>; //later will be different type
+    //groups: Array<GroupIdName>; //later will be different type
 }
