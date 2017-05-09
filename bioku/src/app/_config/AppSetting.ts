@@ -1,6 +1,7 @@
 export const AppSetting = {
     'VERSION': '0.0.1',
     'NAME':'BioKu',
+    //API REST URL
     'URL': 'http://127.0.0.1:8000',
     //post to get token
     'TOKEN_URL': '/api/users/token/',
@@ -18,7 +19,7 @@ export const AppSetting = {
     'CHANGE_PASSWORD': '/api/users/password/',
     //UPDATE_USER_PROFILE
     'UPDATE_USER_PROFILE':'/api/users/',
-    //MGROUP API
+    //GROUP API
     'SINGLE_GROUP_API': '/api/groups/',
     //UPDATE GROUP INFO
     'UPDATE_GROUP_INFO': '/api/groups/update/',

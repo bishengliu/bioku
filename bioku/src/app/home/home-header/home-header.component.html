@@ -1,6 +1,7 @@
 <div class="ui vertical inverted masthead center aligned segment">
     <div class="ui right icon secondary inverted pointing menu">
         <!--<a [routerLink]="['']" class="active item"><i class="home icon"></i> Home</a>-->
+        <a [routerLink]="['']" class="active item"><i class="settings icon"></i> {{isAdmin}}</a>
         <a *ngIf="isLogin" (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">

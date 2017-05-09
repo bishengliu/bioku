@@ -38,6 +38,9 @@ export class HomeHeaderComponent implements OnInit {
   showAssistantMsg: boolean = true;
   showMemberMsg: boolean = true;
 
+  //check whether the auth user is admin
+  isAdmin: boolean = false;
+
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private groupService: GroupService,  
   private router: Router, private cValidators: CustomFormValidators,private alertService: AlertService,private logAppStateService: LogAppStateService) {
     //app name
@@ -116,7 +119,10 @@ export class HomeHeaderComponent implements OnInit {
     if(state.authInfo){      
       this.user = state.authInfo.authUser;
       this.groups = state.authInfo.authGroup;
-      this.isLogin = state.authInfo.token? true: false;      
+      this.isLogin = state.authInfo.token? true: false;
+      if(this.user){
+        this.isAdmin = this.user.is_superuser;
+      }
     }
   }
   ngOnInit() {}

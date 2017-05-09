@@ -14,6 +14,7 @@ interface Profile{
 export class User{
     pk: number;
     username: string;
+    is_superuser: boolean;
     email: string;
     first_name: string;
     last_name: string;
