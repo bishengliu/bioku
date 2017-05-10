@@ -1,3 +1,18 @@
-<p>
-  admin works!
-</p>
+<app-home-header></app-home-header>
+<app-alert></app-alert>
+
+<br/>
+<div class="ui grid">
+  <div class="thirteen wide column">
+    <h3 class="ui teal center aligned header"><i class="icon users"></i>RESEARCHER GROUPS</h3>
+  </div>
+  <div class="three wide column">
+    <div class="ui toggle checkbox">
+      <input type="checkbox" name="" id="table_view">
+      <label for="table_view">Show As Table</label>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
+<app-home-footer></app-home-footer>
+

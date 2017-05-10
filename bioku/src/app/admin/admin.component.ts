@@ -10,6 +10,7 @@ export class AdminComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //list all the groups with researchers in each group
   }
 
 }

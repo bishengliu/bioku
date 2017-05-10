@@ -1,37 +1,56 @@
-<div class="ui vertical inverted masthead center aligned segment">
-    <div class="ui right icon secondary inverted pointing menu">
-        <!--<a [routerLink]="['']" class="active item"><i class="home icon"></i> Home</a>-->
-        <a *ngIf="isLogin" (click)="_toggleSidebar()" class="right item">
+<div class="ui vertical inverted masthead center aligned segment" [ngClass]="{nopadding: isLogin}">
+    <div class="ui right icon secondary inverted pointing menu small" *ngIf="isLogin">
+        <div class="item">
+            <a [routerLink]="['']" ><i class="grid layout icon"></i> Containers</a>
+        </div>  
+        <div class="item" *ngIf="isAdmin">
+            <a [routerLink]="['/admin']" ><i class="users icon"></i> Groups</a>
+        </div>              
+        <div class="right item"><em class="teal-text">An Open-Source Container System for Biomaterials</em></div>
+        <a (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
-    <div class="ui container">
-        <h1 class="ui inverted header bioku-header">
-            <span><em>{{appName}}</em></span>
-        </h1>
-        <h2 class="inverted">
-            <span><em>An Open-Source Container System for Biomaterials</em></span>
-        </h2>
-    </div>
-    <div class="ui divider"></div>
-    <div>
-        <a *ngIf="!isLogin" [routerLink]="['/login']" class="ui teal button">
-            <i class="sign in icon"></i>
-            Log In
-        </a>
-        <a *ngIf="!isLogin" [routerLink]="['/register']" class="ui inverted basic button">
-            <i class="add user icon"></i>
-            Sign Up
-        </a>
-        <a *ngIf="isLogin" [routerLink]="['/user']" class="ui inverted basic button">
-            <i class="user icon"></i>
-            Profile
-        </a>
-        <a *ngIf="isLogin" (click)="Logout()" class="ui inverted basic button"><i class="sign out icon"></i>Log Out</a>
-        <!--<a [routerLink]="['/user/group']" class="ui inverted basic button"><i class="home icon"></i> Group Setting</a>-->
-    </div>
+    <div *ngIf="!isLogin">
+        <div class="ui container">
+            <h1 class="ui inverted header bioku-header">
+                <span><em>{{appName}}</em></span>
+            </h1>
+            <h2 class="inverted">
+                <span><em>An Open-Source Container System for Biomaterials</em></span>
+            </h2>
+        </div>
+        <div class="ui divider"></div>
+        <div>
+            <a [routerLink]="['/login']" class="ui teal button">
+                <i class="sign in icon"></i> Log In
+            </a>
+            <a [routerLink]="['/register']" class="ui inverted basic button">
+                <i class="add user icon"></i> Sign Up
+            </a>
+        </div>
+    </div>        
 </div>
+
+<!-- for freezer sidemenu 
+<div *ngIf="isLogin">
+    <div class="ui floated right inverted vertical menu small">
+        <a *ngIf="isLogin" (click)="_toggleSidebar()" class="item">
+            <i class="user icon" *ngIf="!user.profile.photo"></i>
+            <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
+            <span class="">{{user.first_name.toUpperCase()+" "+user.last_name.toUpperCase()}}</span>
+        </a>
+        <a [routerLink]="['/register']" class="item">
+            <i class="add user icon"></i>Freezer1     
+        </a>
+        <a [routerLink]="['/register']" class="item">
+            <i class="add user icon"></i>Freezer2         
+        </a>    
+    </div>
+    <div class="clearfix"></div>
+</div>
+-->
 
 <!-- sidebar -->
 <div class="account-sidebar">
