@@ -1,5 +1,5 @@
 <div class="ui vertical inverted masthead center aligned segment" [ngClass]="{nopadding: isLogin}">
-    <div class="ui right icon secondary inverted pointing menu small" *ngIf="isLogin">
+    <div class="ui stackable right icon secondary inverted pointing menu small" *ngIf="isLogin">
         <div class="item">
             <a [routerLink]="['']" ><i class="grid layout icon"></i> Containers</a>
         </div>  
@@ -9,7 +9,7 @@
         <div class="right item"><em class="teal-text">An Open-Source Container System for Biomaterials</em></div>
         <a (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
-            <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
+            <img *ngIf="user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
     <div *ngIf="!isLogin">

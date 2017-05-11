@@ -40,6 +40,7 @@ import { AlertComponent } from './_helpers/alert/alert.component';
 import { HomeBodyComponent } from './home/home-body/home-body.component';
 import { GroupComponent } from './account/group/group.component';
 import { PermissionDeniedComponent } from './_helpers/permission-denied/permission-denied.component';
+import { GroupListComponent } from './admin/groups/group-list/group-list.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { PermissionDeniedComponent } from './_helpers/permission-denied/permissi
     HomeBodyComponent,
     GroupComponent,
     PermissionDeniedComponent,
+    GroupListComponent,
   ],
   imports: [
     BrowserModule,

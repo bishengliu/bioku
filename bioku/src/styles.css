@@ -99,13 +99,38 @@ body{
   padding-top: 1px !important;
   padding-bottom: 1px !important;
 }
-
+.small_padding{
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
 .fixed_width{
   width: 200px !important;
   margin-top: 10px !important;
   margin-right: 10px !important;
 }
+.fixed_avatar_height{
+  height: 1.5rem !important;
+}
 
 .teal-text{
   color: #00B5AD;
+}
+
+.right.menu{
+  padding-top: 0 !important;
+}
+.sidebar_menu_offset{
+  position: relative !important;
+  margin-left: 10px !important;
+  margin-top: 5px !important;
+  margin-right: 10px !important;
+}
+.fix_image_height
+{
+  height: 250px;
+  overflow: hidden;
+  background-color: white !important;
+}
+.fix_image_height>img{
+  height: 250px !important;
 }

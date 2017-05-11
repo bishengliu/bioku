@@ -1,0 +1,56 @@
+<div class="ui grid">
+  <div class="thirteen wide column">
+    <h3 class="ui teal center aligned header"><i class="icon users"></i>RESEARCHER GROUPS</h3>
+  </div>
+  <div class="three wide column">
+    <div class="ui toggle checkbox" suiPopup popupText="Show research groups in a table">
+      <input type="checkbox" name="" id="table_view">
+      <label for="table_view" class="teal-text">TABLE VIEW</label>
+    </div>
+  </div>
+</div>
+<div class="ui grid small_padding">
+    <div class="ui cards">
+
+    <div class="ui black raised card" *ngFor="let group of groups | async">
+
+      <div class="image fix_image_height">                
+          <img *ngIf="group.photo" src="{{appUrl + group.photo}}" class="ui medium rounded image">
+      </div>
+
+      <div class="content">                                
+        <div class="meta">
+          <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span><br>
+          <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
+          <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
+          <span *ngIf="group.telephone" class=""><i class="call icon"></i> {{'Phone: '+group.telephone}}</span><br *ngIf="group.telephone">
+          <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">
+        </div>
+     </div>
+
+     <div class="extra" *ngIf="group.assistants">
+       <h5 class="ui header meta">Group Assistants</h5>
+        <div class="ui four cards" >
+          <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
+            <div class="image">
+              <img src="{{ appUrl + assist.user.profile.photo }}">
+            </div>
+          </div>         
+        </div>
+      </div>
+
+      <div class="extra" *ngIf="group.members">
+        <h5 class="ui header meta">Group Members</h5>
+        <div class="ui four cards">
+          <div class="ui orange raised card" *ngFor="let member of group.members" suiPopup popupHeader="{{member.user.first_name + member.user.last_name}}" popupText="{{member.user.username + ', ' + member.user.email }}">
+            <div class="image">
+              <img src="{{ appUrl + member.user.profile.photo }}">
+            </div>
+          </div>         
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

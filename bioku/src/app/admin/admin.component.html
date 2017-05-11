@@ -1,15 +1,21 @@
 <app-home-header></app-home-header>
 <app-alert></app-alert>
 
-<br/>
-<div class="ui grid">
-  <div class="thirteen wide column">
-    <h3 class="ui teal center aligned header"><i class="icon users"></i>RESEARCHER GROUPS</h3>
-  </div>
-  <div class="three wide column">
-    <div class="ui toggle checkbox">
-      <input type="checkbox" name="" id="table_view">
-      <label for="table_view">Show As Table</label>
+<div class="ui grid row">
+  <div class="sixteen wide column">
+    <div class="ui stackable floated right menu small sidebar_menu_offset">
+      <a class="active teal item" [routerLink]="['/admin/groups']">
+        GROUPS
+        <div class="ui teal left pointing label">1</div>
+      </a>
+      <a class="orange item">
+        USERS
+        <div class="ui orange left pointing label">51</div>
+      </a>
+      <a class="violet item">
+        CONTAINERS
+        <div class="ui violet left pointing label label">1</div>
+      </a>
     </div>
   </div>
 </div>

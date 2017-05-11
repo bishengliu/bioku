@@ -6,11 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-
+  gCount: number = 0;
   constructor() { }
 
   ngOnInit() {
     //list all the groups with researchers in each group
+    console.log(this.gCount);
   }
 
 }

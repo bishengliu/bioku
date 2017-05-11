@@ -23,5 +23,7 @@ export const AppSetting = {
     'SINGLE_GROUP_API': '/api/groups/',
     //UPDATE GROUP INFO
     'UPDATE_GROUP_INFO': '/api/groups/update/',
+    //find all groups
+    'ALL_GROUPS':'/api/groups/'
 
 }
