@@ -26,19 +26,16 @@ export class AdminComponent implements OnInit {
       c=>this.gCount = c.count,
       e=> this.gCount = 0
     );
-    console.log(this.gCount);
     //user count
     this.userService.getUserCount().subscribe(
       c=>this.uCount = c.count,
       e=> this.uCount = 0
     );
-    console.log(this.uCount);
     //container count
     this.containerService.getContainerCount().subscribe(
       c=>this.cCount = c.count,
       e=> this.cCount = 0
     );
-    console.log(this.cCount);
-  }
 
+  }
 }

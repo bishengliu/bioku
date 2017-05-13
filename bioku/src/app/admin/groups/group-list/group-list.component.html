@@ -4,53 +4,141 @@
   </div>
   <div class="three wide column">
     <div class="ui toggle checkbox" suiPopup popupText="Show research groups in a table">
-      <input type="checkbox" name="" id="table_view">
-      <label for="table_view" class="teal-text">TABLE VIEW</label>
+      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+      <label for="table_view" class="teal-text">LIST VIEW</label>
     </div>
   </div>
 </div>
 <div class="ui grid small_padding">
-    <div class="ui cards">
-
-    <div class="ui black raised card" *ngFor="let group of groups | async">
-
-      <div class="image fix_image_height">                
-          <img *ngIf="group.photo" src="{{appUrl + group.photo}}" class="ui medium rounded image">
-      </div>
-
-      <div class="content">                                
-        <div class="meta">
-          <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span><br>
-          <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
-          <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
-          <span *ngIf="group.telephone" class=""><i class="call icon"></i> {{'Phone: '+group.telephone}}</span><br *ngIf="group.telephone">
-          <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">
+    <div class="ui cards" *ngIf="!tableView">
+      <!-- one card -->
+      <div class="ui black raised card" *ngFor="let group of groups | async">
+        <!-- group image -->
+        <div class="image fix_image_height">                
+            <img *ngIf="group.photo" src="{{appUrl + group.photo}}" class="ui medium rounded image">
         </div>
-     </div>
-
-     <div class="extra" *ngIf="group.assistants">
-       <h5 class="ui header meta">Group Assistants</h5>
-        <div class="ui four cards" >
-          <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
-            <div class="image">
-              <img src="{{ appUrl + assist.user.profile.photo }}">
-            </div>
-          </div>         
+        <!-- end group image -->
+        <!-- group info -->
+        <div class="content">                                
+          <div class="meta">
+            <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span><br>
+            <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
+            <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
+            <span *ngIf="group.telephone" class=""><i class="call icon"></i> {{'Phone: '+group.telephone}}</span><br *ngIf="group.telephone">
+            <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">
+          </div>
         </div>
-      </div>
-
-      <div class="extra" *ngIf="group.members">
-        <h5 class="ui header meta">Group Members</h5>
-        <div class="ui four cards">
-          <div class="ui orange raised card" *ngFor="let member of group.members" suiPopup popupHeader="{{member.user.first_name + member.user.last_name}}" popupText="{{member.user.username + ', ' + member.user.email }}">
-            <div class="image">
-              <img src="{{ appUrl + member.user.profile.photo }}">
-            </div>
-          </div>         
+        <!-- end group info -->  
+        <!-- group assist --> 
+        <div class="extra" *ngIf="group.assistants">
+          <h5 class="ui header meta">Group Assistants</h5>
+          <div class="ui four cards" >
+            <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
+              <div class="image">
+                <img src="{{ appUrl + assist.user.profile.photo }}">
+              </div>
+            </div>         
+          </div>
         </div>
+        <!-- end group assist --> 
+        <!-- group members --> 
+        <div class="extra" *ngIf="group.members">
+          <h5 class="ui header meta">Group Members</h5>
+          <div class="ui four cards">
+            <div class="ui orange raised card" *ngFor="let member of group.members" suiPopup popupHeader="{{member.user.first_name + member.user.last_name}}" popupText="{{member.user.username + ', ' + member.user.email }}">
+              <div class="image">
+                <img src="{{ appUrl + member.user.profile.photo }}">
+              </div>
+            </div>         
+          </div>
+        </div>
+        <!--end group memebers --> 
       </div>
-
+      <!-- end one card -->
     </div>
 
+  <!-- table view -->
+  <div class="sixteen wide column" *ngIf="tableView">
+    <table class="ui celled structured small green single line compact padded table">
+    <thead>
+      <tr>
+        <th colspan="4" class="center aligned">Group</th>
+        <th colspan="4" class="center aligned">Assistants</th>
+        <th colspan="4" class="center aligned">Members</th>
+      </tr>
+      <tr>
+        <th class="center aligned">Group</th>
+        <th class="center aligned">PI</th>
+        <th class="center aligned">Email</th>
+        <th class="center aligned">Telephone</th>
+        
+        <th class="center aligned">Name</th>
+        <th class="center aligned">Role</th>
+        <th class="center aligned">Email</th>
+        <th class="center aligned">Telephone</th>
+
+        <th class="center aligned">Name</th>
+        <th class="center aligned">Role</th>
+        <th class="center aligned">Email</th>
+        <th class="center aligned">Telephone</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let group of groups | async">
+      <tr *ngFor="let i of genArray(renderRowSpan(group))">
+        <!-- group info -->
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)"> 
+          <h4 class="ui image header">
+            <img src="{{appUrl + group.photo}}" class="ui mini rounded image">
+            <div class="content">
+              {{group.group_name}}
+            <div class="sub header">{{group.department}}</div>
+            </div>
+          </h4>         
+          </td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.pi_fullname +'/'+ group.pi}}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.email}}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.telephone}}</td>
+        <!-- end group info -->
+        <!-- assistants info -->
+        <td>          
+          <h4 class="ui image header">
+            <img *ngIf="group.assistants.length >= i && group.assistants[i-1].user.profile" src="{{appUrl + group.assistants[i-1].user.profile.photo}}" class="ui mini rounded image">
+            <div class="content">
+              {{group.assistants.length >= i ? group.assistants[i-1].user.first_name +' '+group.assistants[i-1].user.last_name: "" }}
+            <div class="sub header">{{group.assistants.length >= i ? group.assistants[i-1].user.username: ""}}</div>
+            </div>
+          </h4>           
+        </td>
+        <td>
+          <div *ngIf="group.members.length >= i">
+            <p *ngFor="let r of group.members[i-1].user.roles">{{r}}</p>
+          </div>
+        </td>
+        <td>{{group.assistants.length >= i ? group.assistants[i-1].user.email: ""}}</td>
+        <td>{{ group.assistants.length >= i && group.assistants[i-1].user.profile ? group.assistants[i-1].user.profile.telephone: ""}}</td>
+        <!--end assistants info -->
+        <!-- member info -->
+        <td>          
+          <h4 class="ui image header">
+            <img *ngIf="group.members.length >= i && group.members[i-1].user.profile" src="{{appUrl + group.members[i-1].user.profile.photo}}" class="ui mini rounded image">
+            <div class="content">
+              {{group.members.length >= i ? group.members[i-1].user.first_name +' '+group.members[i-1].user.last_name: "" }}
+            <div class="sub header">{{group.members.length >= i ? group.members[i-1].user.username: ""}}</div>
+            </div>
+          </h4>           
+        </td>
+        <td>
+          <div *ngIf="group.members.length >= i">
+            <p *ngFor="let r of group.members[i-1].user.roles">{{r}}</p>
+          </div>          
+        </td>
+        <td>{{group.members.length >= i ? group.members[i-1].user.email: ""}}</td>
+        <td>{{ group.members.length >= i && group.members[i-1].user.profile ? group.members[i-1].user.profile.telephone: ""}}</td>
+        <!-- member info -->
+      </tr>
+    </tbody>
+  </table>
   </div>
+  
+<!-- end table view -->
 </div>

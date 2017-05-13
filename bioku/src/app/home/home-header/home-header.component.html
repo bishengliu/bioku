@@ -92,14 +92,6 @@
             <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="changePassword()">
                 <i class="lock icon"></i>Change Password
             </a>
-            <!--   
-            <a class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="changePassword()">
-                <i class="lock icon"></i>Change Password
-            </a>
-            <a *ngIf="isAdmin" class="ui bottom attached red button small_button" [routerLink]="['/user/password']" (click)="changePassword()">
-                <i class="lock icon"></i>Manage Groups
-            </a>
-            -->
         </div>
         <!--groups and list all the researchers in the group when hoeving the image-->
         <div *ngIf="isLogin">
