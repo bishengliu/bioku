@@ -34,6 +34,7 @@ export class GroupListComponent implements OnInit {
       e=> this.gCount = 0
     );
     //get the users
+    
   }
 
 }

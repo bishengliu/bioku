@@ -2,10 +2,12 @@
     <div class="ui stackable right icon secondary inverted pointing menu small" *ngIf="isLogin">
         <div class="item">
             <a [routerLink]="['']" ><i class="grid layout icon"></i> Containers</a>
-        </div>  
+        </div> 
+        <!--
         <div class="item" *ngIf="isAdmin">
-            <a [routerLink]="['/admin']" ><i class="users icon"></i> Groups</a>
-        </div>              
+            <a [routerLink]="['/admin']" ><i class="dashboard icon"></i> Admin</a>
+        </div>
+        -->           
         <div class="right item"><em class="teal-text">An Open-Source Container System for Biomaterials</em></div>
         <a (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
@@ -85,7 +87,7 @@
             <div *ngIf="isAdmin" class="mini ui buttons attached bottom">
                 <a class="ui button active" [routerLink]="['/user/password']" (click)="changePassword()"><i class="lock icon"></i>Password</a>
                 <div class="or"></div>
-                <a class="ui red button"><i class="users icon"></i>Groups</a>
+                <a [routerLink]="['/admin']" class="ui red button"><i class="dashboard icon"></i> Admin</a>
             </div>
             <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="changePassword()">
                 <i class="lock icon"></i>Change Password

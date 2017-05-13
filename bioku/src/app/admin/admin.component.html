@@ -2,23 +2,28 @@
 <app-alert></app-alert>
 
 <div class="ui grid row">
-  <div class="sixteen wide column">
+  <div class="sixteen wide column">   
     <div class="ui stackable floated right menu small sidebar_menu_offset">
+      <a class="item disabled">
+        <span class="red-text">WELCOME TO ADMIN DASHBOARD</span>
+      </a>
       <a class="active teal item" [routerLink]="['/admin/groups']">
         GROUPS
-        <div class="ui teal left pointing label">1</div>
+        <div class="ui teal left pointing label">{{gCount}}</div>
       </a>
       <a class="orange item">
         USERS
-        <div class="ui orange left pointing label">51</div>
+        <div class="ui orange left pointing label">{{uCount}}</div>
       </a>
       <a class="violet item">
         CONTAINERS
-        <div class="ui violet left pointing label label">1</div>
+        <div class="ui violet left pointing label label">{{cCount}}</div>
       </a>
     </div>
   </div>
 </div>
 <router-outlet></router-outlet>
+
+
 <app-home-footer></app-home-footer>
 

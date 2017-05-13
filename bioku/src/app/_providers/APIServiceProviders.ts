@@ -5,7 +5,8 @@ import { ChangePasswordService } from '../_services/ChangePasswordService';
 import { UpdateUserProfileService } from '../_services/UpdateUserProfileService';
 import { UpdateGroupProfileService } from '../_services/UpdateGroupProfileService';
 import { GroupService } from '../_services/GroupService';
-
+import { UserService } from '../_services/UserService';
+import { ContainerService } from '../_services/ContainerService';
 
 export var APIServiceProviders: Array<any> = [
         {provide: LoginService, useClass: LoginService},
@@ -14,5 +15,7 @@ export var APIServiceProviders: Array<any> = [
         {provide: ChangePasswordService, useClass: ChangePasswordService},
         {provide: UpdateUserProfileService, useClass: UpdateUserProfileService},
         {provide: UpdateGroupProfileService, useClass: UpdateGroupProfileService},
-        {provide: GroupService, useClass: GroupService}
+        {provide: GroupService, useClass: GroupService},
+        {provide: UserService, useClass: UserService},
+        {provide: ContainerService, useClass: ContainerService},
     ];
