@@ -137,3 +137,20 @@ body{
 .fix_image_height>img{
   height: 250px !important;
 }
+.bordered {
+  border: 1px solid rgba(34,36,38,.15) !important;
+}
+
+.left-bordered{
+  border-left: 1px solid rgba(34,36,38,.15) !important;
+}
+
+div [class*="left floated"] {
+  float: left;
+  margin-left: 0.25em;
+}
+
+div [class*="right floated"] {
+  float: right;
+  margin-right: 0.25em;
+} 

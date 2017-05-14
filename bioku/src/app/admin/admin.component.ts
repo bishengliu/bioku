@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-//import { Router} from '@angular/router';
+import { Router} from '@angular/router';
 //import { AppSetting} from '../_config/AppSetting';
 //import {APP_CONFIG} from '../_providers/AppSettingProvider';
 //import { AppStore } from '../_providers/ReduxProviders';
@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit {
   gCount: number = 0;
   uCount: number = 0;
   cCount: number = 0;
-  constructor(private groupService: GroupService, private userService: UserService, private containerService: ContainerService,) { }
+  constructor(private groupService: GroupService, private userService: UserService, private containerService: ContainerService, private router: Router) { }
 
   ngOnInit() {
     //group count
@@ -36,6 +36,6 @@ export class AdminComponent implements OnInit {
       c=>this.cCount = c.count,
       e=> this.cCount = 0
     );
-
+    this.router.navigate(['/admin/groups']);
   }
 }

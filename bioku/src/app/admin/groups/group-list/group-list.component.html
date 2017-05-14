@@ -1,15 +1,21 @@
-<div class="ui grid">
-  <div class="thirteen wide column">
-    <h3 class="ui teal center aligned header"><i class="icon users"></i>RESEARCHER GROUPS</h3>
+<div class="ui grid small_padding stackable">
+  <div class="four wide column">
+    <h3 class="ui teal left aligned header"><i class="icon users"></i>RESEARCH GROUPS</h3>
   </div>
-  <div class="three wide column">
-    <div class="ui toggle checkbox" suiPopup popupText="Show research groups in a table">
+  <div class="ten wide column">
+    <div class="ui toggle checkbox" suiPopup popupText="List View">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view" class="teal-text">LIST VIEW</label>
+      <label for="table_view"><span class="teal-text">LIST</span></label>
     </div>
   </div>
+  <!-- new group -->
+  <div class="two wide column">
+    <a class="ui secondary button"><i class="icon add circle"></i>NEW GROUP</a>
+  </div>
+  <!-- end new group -->
 </div>
 <div class="ui grid small_padding">
+  <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">
       <!-- one card -->
       <div class="ui black raised card" *ngFor="let group of groups | async">
@@ -21,12 +27,21 @@
         <!-- group info -->
         <div class="content">                                
           <div class="meta">
-            <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span><br>
+            <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span>
+            <!-- manage group --> 
+            <a class="" suiPopup popupText="Edit Group Profile">
+              <i class="icon edit teal-text"></i>
+            </a>
+            <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
+                <i class="icon remove circle red-text"></i>
+            </a>
+            <!-- end manage group --> 
+            <br>
             <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
             <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
             <span *ngIf="group.telephone" class=""><i class="call icon"></i> {{'Phone: '+group.telephone}}</span><br *ngIf="group.telephone">
-            <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">
-          </div>
+            <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">            
+          </div>          
         </div>
         <!-- end group info -->  
         <!-- group assist --> 
@@ -56,34 +71,34 @@
       </div>
       <!-- end one card -->
     </div>
-
+  <!-- end card view -->
   <!-- table view -->
   <div class="sixteen wide column" *ngIf="tableView">
-    <table class="ui celled structured small green single line compact padded table">
+    <table class="ui structured small teal single line compact padded table">
     <thead>
       <tr>
-        <th colspan="4" class="center aligned">Group</th>
-        <th colspan="4" class="center aligned">Assistants</th>
-        <th colspan="4" class="center aligned">Members</th>
+        <th colspan="4" class="center aligned">Groups</th>
+        <th colspan="4" class="center aligned left-bordered">Assistants</th>
+        <th colspan="4" class="center aligned left-bordered">Members</th>
       </tr>
       <tr>
-        <th class="center aligned">Group</th>
-        <th class="center aligned">PI</th>
-        <th class="center aligned">Email</th>
-        <th class="center aligned">Telephone</th>
+        <th class="">Group</th>
+        <th class="">PI</th>
+        <th class="">Email</th>
+        <th class="">Telephone</th>
         
-        <th class="center aligned">Name</th>
-        <th class="center aligned">Role</th>
-        <th class="center aligned">Email</th>
-        <th class="center aligned">Telephone</th>
+        <th class="left-bordered">Name</th>
+        <th class="">Role</th>
+        <th class="">Email</th>
+        <th class="">Telephone</th>
 
-        <th class="center aligned">Name</th>
-        <th class="center aligned">Role</th>
-        <th class="center aligned">Email</th>
-        <th class="center aligned">Telephone</th>
+        <th class="left-bordered">Name</th>
+        <th class="">Role</th>
+        <th class="">Email</th>
+        <th class="">Telephone</th>
       </tr>
     </thead>
-    <tbody *ngFor="let group of groups | async">
+    <tbody *ngFor="let group of groups | async" class="bordered">
       <tr *ngFor="let i of genArray(renderRowSpan(group))">
         <!-- group info -->
         <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)"> 
@@ -91,16 +106,24 @@
             <img src="{{appUrl + group.photo}}" class="ui mini rounded image">
             <div class="content">
               {{group.group_name}}
+              <!-- manage group -->
+              <a class="" suiPopup popupText="Edit Group Profile">
+              <i class="icon edit teal-text"></i>
+              </a>
+              <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
+                  <i class="icon remove circle red-text"></i>
+              </a>
+              <!-- end manage group -->
             <div class="sub header">{{group.department}}</div>
             </div>
           </h4>         
-          </td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.pi_fullname +'/'+ group.pi}}</td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.email}}</td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)">{{group.telephone}}</td>
+        </td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)"><i class="user icon"></i>{{group.pi_fullname +'/'+ group.pi}}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)"><i class="mail icon"></i>{{group.email}}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(group)"><i *ngIf="group.telephone" class="call icon"></i>{{group.telephone}}</td>
         <!-- end group info -->
         <!-- assistants info -->
-        <td>          
+        <td class="left-bordered">          
           <h4 class="ui image header">
             <img *ngIf="group.assistants.length >= i && group.assistants[i-1].user.profile" src="{{appUrl + group.assistants[i-1].user.profile.photo}}" class="ui mini rounded image">
             <div class="content">
@@ -110,15 +133,15 @@
           </h4>           
         </td>
         <td>
-          <div *ngIf="group.members.length >= i">
-            <p *ngFor="let r of group.members[i-1].user.roles">{{r}}</p>
+          <div *ngIf="group.assistants.length >= i">
+            <span *ngFor="let r of group.assistants[i-1].user.roles" [ngClass]="{'red-text': r==='PI'}"><i class="flag icon"></i>{{r}}<br ></span>
           </div>
         </td>
-        <td>{{group.assistants.length >= i ? group.assistants[i-1].user.email: ""}}</td>
-        <td>{{ group.assistants.length >= i && group.assistants[i-1].user.profile ? group.assistants[i-1].user.profile.telephone: ""}}</td>
+        <td><i *ngIf="group.assistants.length >= i" class="mail icon"></i>{{group.assistants.length >= i ? group.assistants[i-1].user.email: ""}}</td>
+        <td><i *ngIf="group.assistants.length >= i && group.assistants[i-1].user.profile && group.assistants[i-1].user.profile.telephone" class="call icon"></i>{{ group.assistants.length >= i && group.assistants[i-1].user.profile && group.assistants[i-1].user.profile.telephone ? group.assistants[i-1].user.profile.telephone: ""}}</td>
         <!--end assistants info -->
         <!-- member info -->
-        <td>          
+        <td class="left-bordered">          
           <h4 class="ui image header">
             <img *ngIf="group.members.length >= i && group.members[i-1].user.profile" src="{{appUrl + group.members[i-1].user.profile.photo}}" class="ui mini rounded image">
             <div class="content">
@@ -129,16 +152,15 @@
         </td>
         <td>
           <div *ngIf="group.members.length >= i">
-            <p *ngFor="let r of group.members[i-1].user.roles">{{r}}</p>
+            <span *ngFor="let r of group.members[i-1].user.roles" [ngClass]="{'red-text': r==='PI'}"><i class="flag icon"></i>{{r}}<br ></span>
           </div>          
         </td>
-        <td>{{group.members.length >= i ? group.members[i-1].user.email: ""}}</td>
-        <td>{{ group.members.length >= i && group.members[i-1].user.profile ? group.members[i-1].user.profile.telephone: ""}}</td>
+        <td><i *ngIf="group.members.length >= i" class="mail icon"></i>{{group.members.length >= i ? group.members[i-1].user.email: ""}}</td>
+        <td><i *ngIf="group.members.length >= i && group.members[i-1].user.profile && group.members[i-1].user.profile.telephone" class="call icon"></i>{{ group.members.length >= i && group.members[i-1].user.profile ? group.members[i-1].user.profile.telephone: ""}}</td>
         <!-- member info -->
       </tr>
     </tbody>
   </table>
   </div>
-  
 <!-- end table view -->
 </div>

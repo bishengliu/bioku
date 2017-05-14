@@ -20,7 +20,7 @@ export class GroupListComponent implements OnInit {
   appUrl: string;
   tableView: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,private router: Router, private alertService: AlertService, private groupService: GroupService) { 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private alertService: AlertService, private groupService: GroupService) { 
     this.appUrl = this.appSetting.URL;
   }
   toggleList(){
