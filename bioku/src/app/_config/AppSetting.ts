@@ -25,9 +25,8 @@ export const AppSetting = {
     'UPDATE_GROUP_INFO': '/api/groups/update/',
     //find all groups
     'ALL_GROUPS':'/api/groups/',
-    //find a;; users
+    //find all users
     'ALL_USERS':'/api/users/',
-
 
     //find all conatiners
     'ALL_CONTAINERS':'/api/containers/',

@@ -30,7 +30,7 @@ import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 })
 export class GroupComponent implements OnInit, OnDestroy {
 
-//access dom
+  //access dom
   @ViewChild('photoName') photoInput:ElementRef;
 
   //route param
