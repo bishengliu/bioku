@@ -51,6 +51,11 @@ export class GroupListComponent implements OnInit {
     }
     return array;
   }
+  //delete group
+  deleteGroup(group: Group){
+    console.log('deleting group...');
+    console.log(group);
+  }
   ngOnInit() {
     //get the groups
     this.groups = this.groupService.getAllGroups();

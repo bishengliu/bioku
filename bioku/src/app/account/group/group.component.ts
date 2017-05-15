@@ -144,7 +144,7 @@ export class GroupComponent implements OnInit, OnDestroy {
        //formGroup
         this.profileForm = this.fb.group({
           'group_name': [this.group.group_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]), this.cValidators.groupnameAsyncValidator(this.group.pk)],          
-          'email': [this.group.email, Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(+this.user.pk)],
+          'email': [this.group.email, Validators.compose([Validators.required, Validators.email]), this.cValidators.groupemailAsyncValidator(+this.group.pk)],
           'pi_fullname': [this.group.pi_fullname, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
           'pi': [this.group.pi, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
           'photo': ['', ],

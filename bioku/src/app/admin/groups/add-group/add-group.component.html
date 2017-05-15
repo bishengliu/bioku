@@ -1,0 +1,83 @@
+<div class="ui one column stackable center aligned page grid huge-padding">
+   <div class="column eight wide">     
+       <div class="center floated column">
+         <!--form header-->
+          <h2 class="ui header teal image">
+            <img>
+            <div class="content">CREATE GROUP</div>
+          </h2>
+          <!--form  -->
+          <form [formGroup]="groupForm" class="ui large form" (ngSubmit)="groupForm.valid && onCreate(groupForm.value)" enctype="multipart/form-data">
+            <div class="ui stacked segment">
+
+              <div class="field" [class.error]="groupForm.controls['group_name'].invalid && groupForm.controls['group_name'].touched">
+                <div class="ui left icon input">
+                  <i class="users icon"></i>
+                  <input type="text" id="group_name" [formControl]="groupForm.controls['group_name']" placeholder="Group Name">
+                </div>
+                <div *ngIf="groupForm.controls['group_name'].hasError('required') && groupForm.controls['group_name'].touched" class="ui mini negative message">Group name is required</div>
+                <div *ngIf="groupForm.controls['group_name'].hasError('humanNameInvalid') && groupForm.controls['group_name'].touched" class="ui mini negative message">Group name is invalid</div>
+                <div *ngIf="groupForm.controls['group_name'].hasError('groupnameAsyncInvalid') && groupForm.controls['group_name'].touched" class="ui mini negative message">Group name already taken</div>
+              </div>
+
+              <div class="field" [class.error]="groupForm.controls['department'].invalid && groupForm.controls['department'].touched">
+                <div class="ui left icon input">
+                  <i class="building icon"></i>
+                  <input type="text" id="department" [formControl]="groupForm.controls['department']" placeholder="Department">
+                </div>
+                <div *ngIf="groupForm.controls['department'].hasError('humanNameInvalid') && groupForm.controls['department'].touched" class="ui mini negative message">Department name is invalid</div>
+              </div>
+
+              <div class="field" [class.error]="groupForm.controls['pi_fullname'].invalid && groupForm.controls['pi_fullname'].touched">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input type="text" id="pi_fullname" [formControl]="groupForm.controls['pi_fullname']" placeholder="PI Full Name">
+                </div>
+                <div *ngIf="groupForm.controls['pi_fullname'].hasError('required') && groupForm.controls['pi_fullname'].touched" class="ui mini negative message">PI fullname is required</div>
+                <div *ngIf="groupForm.controls['pi_fullname'].hasError('humanNameInvalid') && groupForm.controls['pi_fullname'].touched" class="ui mini negative message">PI fullname is invalid</div>
+              </div>
+              <div class="field" [class.error]="groupForm.controls['pi'].invalid && groupForm.controls['pi'].touched">
+                <div class="ui left icon input">
+                  <i class="flag icon"></i>
+                  <input type="text" id="pi" [formControl]="groupForm.controls['pi']" placeholder="PI Initials">
+                </div>
+                <div *ngIf="groupForm.controls['pi'].hasError('required') && groupForm.controls['pi'].touched" class="ui mini negative message">PI initials is required</div>
+                <div *ngIf="groupForm.controls['pi'].hasError('humanNameInvalid') && groupForm.controls['pi'].touched" class="ui mini negative message">PI initials is invalid</div>
+              </div>
+
+              <div class="field" [class.error]="groupForm.controls['email'].invalid && groupForm.controls['email'].touched">
+                <div class="ui left icon input">
+                  <i class="mail icon"></i>
+                  <input type="email" id="email" [formControl]="groupForm.controls['email']" placeholder="PI Email">
+                </div>
+                <div *ngIf="groupForm.controls['email'].hasError('required') && groupForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
+                <div *ngIf="groupForm.controls['email'].hasError('email') && groupForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
+                <div *ngIf="groupForm.controls['email'].hasError('emailAsyncInvalid') && groupForm.controls['email'].touched" class="ui mini negative message">Email already taken</div>
+              </div>
+            
+              <div class="field" [class.error]="groupForm.controls['photo'].invalid && groupForm.controls['photo'].touched">
+                <div class="ui left icon input right action">
+                  <i class="image icon"></i>
+                  <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}" #photoName>
+                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="groupForm.controls['photo']" placeholder="PI Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
+                </div>
+                <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
+              </div>
+
+              <div class="field" [class.error]="groupForm.controls['telephone'].invalid && groupForm.controls['telephone'].touched">
+                <div class="ui left icon input">
+                  <i class="call icon"></i>
+                  <input type="text" id="telephone" [formControl]="groupForm.controls['telephone']" placeholder="Telephone">
+                </div>
+                <div *ngIf="groupForm.controls['telephone'].hasError('telephoneInvalid') && groupForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
+              </div>
+              <button type="submit" class="ui fluid teal button">
+                <i class="icon add circle"></i>
+                CREATE
+              </button>              
+            </div>
+          </form>                  
+      </div>
+   </div>
+</div>

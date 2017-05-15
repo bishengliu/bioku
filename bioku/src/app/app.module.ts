@@ -41,6 +41,8 @@ import { HomeBodyComponent } from './home/home-body/home-body.component';
 import { GroupComponent } from './account/group/group.component';
 import { PermissionDeniedComponent } from './_helpers/permission-denied/permission-denied.component';
 import { GroupListComponent } from './admin/groups/group-list/group-list.component';
+import { AddGroupComponent } from './admin/groups/add-group/add-group.component';
+import { EditGroupComponent } from './admin/groups/edit-group/edit-group.component';
 
 
 @NgModule({
@@ -61,6 +63,8 @@ import { GroupListComponent } from './admin/groups/group-list/group-list.compone
     GroupComponent,
     PermissionDeniedComponent,
     GroupListComponent,
+    AddGroupComponent,
+    EditGroupComponent,
   ],
   imports: [
     BrowserModule,

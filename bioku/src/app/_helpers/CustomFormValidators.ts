@@ -248,5 +248,48 @@ export class CustomFormValidators{
             });
         }        
     }
+
+    //async email
+    groupemailAsyncValidator(group_pk: Number = -1){
+        return (control: FormControl): Observable<{[key : string] : Boolean}> => {
+                //not reuired
+                if(!control.value || control.value.length === 0 || control.value ==""){
+                    return Observable.throw(null);
+                }
+
+                return new Observable(observer=>{
+                    const find_group_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_GROUP_DETAILS;
+                    let body: string = JSON.stringify({'query': 'email', 'value': control.value, 'group_pk': group_pk});
+                    let headers = new Headers({ 'Content-Type': 'application/json' });
+                    let options = new RequestOptions({ headers: headers });
+                    if (!control.dirty){
+                        observer.next(null);
+                        observer.complete();
+                    }
+                    else {
+                        control.valueChanges
+                        .debounceTime(1000)
+                        .flatMap(value => this.http.post(find_group_detail_url, body, options))
+                        .map((response: Response) =>response.json())
+                        .catch((error:any) => { 
+                            observer.next({ emailAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({ emailAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({ emailAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({ emailAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe    
+                    }           
+                }); //end new Observable 
+            };
+    };
 }
 

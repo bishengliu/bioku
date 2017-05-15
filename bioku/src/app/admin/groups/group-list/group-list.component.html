@@ -10,7 +10,7 @@
   </div>
   <!-- new group -->
   <div class="two wide column">
-    <a class="ui secondary button"><i class="icon add circle"></i>NEW GROUP</a>
+    <a class="ui secondary button" [routerLink]="['./add']"><i class="icon add circle"></i>NEW GROUP</a>
   </div>
   <!-- end new group -->
 </div>
@@ -29,10 +29,10 @@
           <div class="meta">
             <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span>
             <!-- manage group --> 
-            <a class="" suiPopup popupText="Edit Group Profile">
+            <a class="" suiPopup popupText="Edit Group Profile" [routerLink]="['./edit', group.pk]">
               <i class="icon edit teal-text"></i>
             </a>
-            <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
+            <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))" (click)="deleteGroup(group)">
                 <i class="icon remove circle red-text"></i>
             </a>
             <!-- end manage group --> 
@@ -107,10 +107,10 @@
             <div class="content">
               {{group.group_name}}
               <!-- manage group -->
-              <a class="" suiPopup popupText="Edit Group Profile">
+              <a class="" suiPopup popupText="Edit Group Profile" [routerLink]="['./edit', group.pk]">
               <i class="icon edit teal-text"></i>
               </a>
-              <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
+              <a class="" suiPopup popupText="Delete current Group" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))" (click)="deleteGroup(group)">
                   <i class="icon remove circle red-text"></i>
               </a>
               <!-- end manage group -->
