@@ -8,7 +8,7 @@ import { AppSetting} from '../../../_config/AppSetting';
 import { APP_CONFIG } from '../../../_providers/AppSettingProvider';
 import { LogAppStateService } from '../../../_services/LogAppStateService';
 import { User } from '../../../_classes/User';
-
+import {  GroupService } from '../../../_services/GroupService';
 //mydatepicker
 import {IMyOptions} from 'mydatepicker';
 
@@ -43,7 +43,7 @@ export class AddGroupComponent implements OnInit {
   user: User = null;
   token: string = null;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private groupService: GroupService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) 
   { 
     //get the photo name for form
@@ -105,7 +105,11 @@ export class AddGroupComponent implements OnInit {
       formData.append("file", this.file, this.file.name);
     }
     //post call
-    
+    this.groupService.create(formData)
+    .subscribe(
+      data=> this.alertService.success('New Group Added!', true),
+      () => this.alertService.error('Something went wrong, the new group was not created!', true)
+    );
     //naviagate to home
     this.router.navigate(['/admin']);    
   }
