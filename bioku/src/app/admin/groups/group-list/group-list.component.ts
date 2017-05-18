@@ -39,6 +39,7 @@ export class GroupListComponent implements OnInit {
         1;
       return rowspan;
   }
+
   genArray(num : number){
     let array: Array<number> = [];
     if(num >= 1){
@@ -51,11 +52,7 @@ export class GroupListComponent implements OnInit {
     }
     return array;
   }
-  //delete group
-  deleteGroup(group: Group){
-    console.log('deleting group...');
-    console.log(group);
-  }
+  
   ngOnInit() {
     //get the groups
     this.groups = this.groupService.getAllGroups();

@@ -46,13 +46,12 @@ export class EditGroupComponent implements OnInit, OnDestroy {
   group: Group = null;
 
   constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http, private groupService: GroupService) 
+              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private groupService: GroupService) 
   { 
     //get the photo name for form
     let state= this.appStore.getState();
     this.user = state.authInfo.authUser;
     this.token = state.authInfo.token.token;
-
   }
 
   ngAfterViewInit() {
@@ -86,7 +85,7 @@ export class EditGroupComponent implements OnInit, OnDestroy {
   }
 
   onUpdate(values: any): void{
-      console.log(this.profileForm);
+    //console.log(this.profileForm);
     let obj = {
             group_name: values.group_name,            
             email: values.email,

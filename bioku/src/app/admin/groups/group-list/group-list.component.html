@@ -32,7 +32,7 @@
             <a class="" [routerLink]="['./edit', group.pk]">
               <i class="icon edit teal-text"></i>
             </a>
-            <a class="" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))" (click)="deleteGroup(group)">
+            <a class="" [routerLink]="['./delete', group.pk]" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
                 <i class="icon remove circle red-text"></i>
             </a>
             <!-- end manage group --> 
@@ -110,7 +110,7 @@
               <a class="" [routerLink]="['./edit', group.pk]">
               <i class="icon edit teal-text"></i>
               </a>
-              <a class="" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))" (click)="deleteGroup(group)">
+              <a class="" [routerLink]="['./delete', group.pk]" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
                   <i class="icon remove circle red-text"></i>
               </a>
               <!-- end manage group -->

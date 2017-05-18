@@ -43,6 +43,7 @@ import { PermissionDeniedComponent } from './_helpers/permission-denied/permissi
 import { GroupListComponent } from './admin/groups/group-list/group-list.component';
 import { AddGroupComponent } from './admin/groups/add-group/add-group.component';
 import { EditGroupComponent } from './admin/groups/edit-group/edit-group.component';
+import { DeleteGroupComponent } from './admin/groups/delete-group/delete-group.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { EditGroupComponent } from './admin/groups/edit-group/edit-group.compone
     GroupListComponent,
     AddGroupComponent,
     EditGroupComponent,
+    DeleteGroupComponent,
   ],
   imports: [
     BrowserModule,

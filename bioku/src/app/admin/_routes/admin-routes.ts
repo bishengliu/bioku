@@ -4,6 +4,7 @@ import { AdminComponent } from '../admin.component';
 import { GroupListComponent } from '../groups/group-list/group-list.component';
 import { AddGroupComponent } from '../groups/add-group/add-group.component';
 import { EditGroupComponent } from '../groups/edit-group/edit-group.component';
+import { DeleteGroupComponent } from '../groups/delete-group/delete-group.component';
 //guards
 import { AuthGuard } from  '../../_guards/AuthGuard';
 import { AdminGuard } from  '../../_guards/AdminGuard';
@@ -15,5 +16,6 @@ export const adminRoutes: Routes = [
   {path: 'groups', component: GroupListComponent, canActivate: [AuthGuard, AdminGuard, ] },
   {path: 'groups/add', component: AddGroupComponent, canActivate: [AuthGuard, AdminGuard, ] },
   {path: 'groups/edit/:id', component: EditGroupComponent, canActivate: [AuthGuard, AdminGuard, ] },
+  {path: 'groups/delete/:id', component: DeleteGroupComponent, canActivate: [AuthGuard, AdminGuard, ] },
   {path: 'users', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: usersRoutes}
 ]

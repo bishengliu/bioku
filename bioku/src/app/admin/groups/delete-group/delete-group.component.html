@@ -1,0 +1,49 @@
+<div class="ui one column stackable page grid huge-padding">
+  <div class="column six wide"></div>
+  <div class="column eight wide">
+    <div class="center floated column">
+      <!-- one card -->
+      <div class="ui black raised card" *ngIf="group">   
+        <!-- group image -->
+        <div class="image fix_image_height">                
+            <img *ngIf="group.photo" src="{{appUrl + group.photo}}" class="ui medium rounded image">
+        </div>
+        <!-- end group image -->
+        <!-- group info -->
+        <div class="content">                                
+          <div class="meta">
+            <span class=""><i class="users icon"></i> {{'Group: '+group.group_name}}</span><br>
+            <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
+            <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
+            <span *ngIf="group.telephone" class=""><i class="call icon"></i> {{'Phone: '+group.telephone}}</span><br *ngIf="group.telephone">
+            <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br *ngIf="group.department">            
+          </div>          
+        </div>
+        <!-- end group info -->  
+        <!-- group assist --> 
+        <div class="extra" *ngIf="group.assistants && group.assistants.length > 0">
+          <h5 class="ui header meta">Group Assistants</h5>
+          <div class="ui four cards" >
+            <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
+              <div class="image">
+                <img src="{{ appUrl + assist.user.profile.photo }}">
+              </div>
+            </div>         
+          </div>
+        </div>
+        <!-- end group assist -->
+        <div class="extra content">
+          <div class="ui center aligned red-text">
+            Are you sure to delete this group?
+          </div>
+        </div>
+        <div class="mini ui buttons attached bottom">
+            <a class="ui button red" (click)="deleteGroup(group.pk)"><i class="trash icon"></i>DELETE</a>
+            <div class="or"></div>
+            <a [routerLink]="['/admin/groups']" class="ui grey button"><i class="caret left icon"></i> CANCEL</a>
+        </div>
+      </div>
+      <!-- end one card -->
+    </div>
+  </div>    
+</div>

@@ -89,7 +89,7 @@ export class AddGroupComponent implements OnInit {
   }
 
   onCreate(values: any): void{
-    console.log(this.groupForm);
+    //console.log(this.groupForm);
     let obj = {
         group_name: values.group_name,            
         email: values.email,
