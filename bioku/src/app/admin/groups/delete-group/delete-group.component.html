@@ -23,7 +23,7 @@
         <!-- group assist --> 
         <div class="extra" *ngIf="group.assistants && group.assistants.length > 0">
           <h5 class="ui header meta">Group Assistants</h5>
-          <div class="ui four cards" >
+          <div class="ui six cards" >
             <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
               <div class="image">
                 <img src="{{ appUrl + assist.user.profile.photo }}">

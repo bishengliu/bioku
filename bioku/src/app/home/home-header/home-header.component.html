@@ -152,7 +152,7 @@
                     </div>  
                 </div>
                 <!--members-->
-                <div class="extra content" *ngIf="group.researchers">
+                <div class="extra content" *ngIf="group.members">
                     <div *ngIf="group.email===user.email">
                         <div class="field" [class.error]="memberEmailInput.invalid && memberEmailInput.touched" >
                             <div class="ui orange right labeled left icon mini input right floated" *ngIf="group.email===user.email">
@@ -180,7 +180,7 @@
                     <span *ngIf="group.email !== user.email" class="ui orange tag mini label right floated">members</span>
                     <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
                     <div class="ui mini labels">
-                        <span class="ui label" *ngFor="let r of group.researchers">
+                        <span class="ui label" *ngFor="let r of group.members">
                             <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                             <span>{{r.user.first_name}}</span>
                             <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
