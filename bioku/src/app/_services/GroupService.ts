@@ -232,4 +232,23 @@ export class GroupService{
             .do(data=>console.log(data))           
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+
+    //group edit
+    groupUpdate(formData: FormData, pk: number){
+        let state = this.appStore.getState();
+        let token = state.authInfo.token.token;
+        let headers = new Headers({ 'Authorization': 'Token '+ token });
+        let options = new RequestOptions({ headers: headers });
+
+        if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            return Observable.throw('Please first login');
+        }
+        if(!state.authInfo.authUser.is_superuser){
+            return Observable.throw('Please login as Admin');
+        }
+        const update_group_url: string  = this.appSetting.URL + this.appSetting.ALL_GROUPS + pk+'/';
+        return this.http.put(update_group_url, formData, options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }

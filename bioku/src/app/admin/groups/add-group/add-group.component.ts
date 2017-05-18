@@ -116,5 +116,4 @@ export class AddGroupComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

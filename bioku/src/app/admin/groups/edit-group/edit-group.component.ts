@@ -102,9 +102,13 @@ export class EditGroupComponent implements OnInit, OnDestroy {
       formData.append("file", this.file, this.file.name);
     }
     //put call
-
+    this.groupService.groupUpdate(formData, this.id)
+    .subscribe(
+      data=> this.alertService.success('Group Profile Updated!', true),
+      () => this.alertService.error('Something went wrong, the group profile was not updated!', true)
+    );
     //naviagate to home
-    this.router.navigate(['/']);    
+    this.router.navigate(['/admin/']);    
   }
   ngOnInit() {
     this.sub = this.route.params
