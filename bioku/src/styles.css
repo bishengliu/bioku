@@ -118,7 +118,9 @@ body{
 .red-text{
   color: #d01919;
 }
-
+.brown-text{
+  color: brown;
+}
 .right.menu{
   padding-top: 0 !important;
 }
