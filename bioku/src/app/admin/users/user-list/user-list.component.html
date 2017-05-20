@@ -13,9 +13,9 @@
   <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">
       <!-- one card -->
-      <div class="ui black raised card" *ngFor="let user of users | async">
+      <div class="ui black raised card small_card" *ngFor="let user of users | async">
         <!-- user image -->
-        <div class="image fix_image_height">                
+        <div class="image small_image_height">                
             <img *ngIf="user.profile && user.profile.photo" src="{{appUrl + user.profile.photo }}" class="ui medium rounded image">
         </div>
         <!-- end user image -->
