@@ -1,0 +1,74 @@
+<div class="ui grid small_padding stackable">
+  <div class="four wide column">
+    <h3 class="ui teal left aligned header"><i class="icon user"></i>USERS</h3>
+  </div>
+  <div class="ten wide column">
+    <div class="ui toggle checkbox" suiPopup popupText="List View">
+      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+      <label for="table_view"><span class="teal-text">LIST</span></label>
+    </div>
+  </div>
+</div>
+<div class="ui grid small_padding">
+  <!-- card view -->
+    <div class="ui cards" *ngIf="!tableView">
+      <!-- one card -->
+      <div class="ui black raised card" *ngFor="let user of users | async">
+        <!-- user image -->
+        <div class="image fix_image_height">                
+            <img *ngIf="user.profile && user.profile.photo" src="{{appUrl + user.profile.photo }}" class="ui medium rounded image">
+        </div>
+        <!-- end user image -->
+        <!-- user info -->
+        <div class="content">                                
+          <div class="meta">
+            <span class=""><i class="sign in icon"></i> {{ user.username }}</span><br>
+            <span class=""><i class="user icon"></i> {{ user.first_name + " " + user.last_name }}</span><br>
+            <span class=""><i class="mail icon"></i> {{ user.email }}</span><br>
+            <span *ngIf="user.profile && user.profile.telephone" class=""><i class="call icon"></i> {{ user.profile.telephone }}</span>
+          </div>
+          <!-- user role -->
+          <div class="meta" *ngIf="user.roles.length > 0">              
+              <i class="flag icon"></i><span *ngFor="let r of user.roles"> {{r}}</span>
+          </div> 
+        <!-- user role --> 
+        </div>
+        <!-- end user info -->          
+      </div>
+      <!-- end one card -->
+    </div>
+  <!-- end card view -->
+
+  <!-- table view -->
+<div class="sixteen wide column" *ngIf="tableView">
+  <table class="ui small teal single line compact padded table">
+    <thead>
+      <tr>
+        <th class="">Account</th>
+        <th class="">Name</th>
+        <th class="">Email</th>
+        <th class="">Telephone</th>
+        <th class="">Role</th>        
+      </tr>
+    </thead>
+    <tbody class="">
+      <tr *ngFor="let user of users | async">
+        <td>
+          <h4 class="ui image header">
+            <img src="{{appUrl + user.profile.photo }}" class="ui mini rounded image">
+            <div class="content">
+              {{user.first_name + " " + user.last_name}}
+            <div class="sub header">{{user.username}}</div>
+            </div>
+          </h4> 
+        </td>
+        <td><i class="user icon"></i>{{user.first_name + " " + user.last_name}}</td>
+        <td><i class="mail icon"></i>{{user.email}}</td>
+        <td><i class="call icon" *ngIf="user.profile && user.profile.telephone"></i><span *ngIf="user.profile && user.profile.telephone">{{ user.profile.telephone }}</span></td>
+        <td><i class="flag icon" *ngIf="user.roles.length > 0"></i><span *ngFor="let r of user.roles">{{r + " "}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <!-- table view -->
+</div>

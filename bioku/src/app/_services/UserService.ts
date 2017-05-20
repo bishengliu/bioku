@@ -30,7 +30,7 @@ export class UserService{
     }
 
     //get the list of all users
-    getAllGroups(){
+    getAllUsers(){
         let state = this.appStore.getState();
         let token = state.authInfo.token.token;
         let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });

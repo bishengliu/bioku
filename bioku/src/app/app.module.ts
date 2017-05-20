@@ -44,6 +44,7 @@ import { GroupListComponent } from './admin/groups/group-list/group-list.compone
 import { AddGroupComponent } from './admin/groups/add-group/add-group.component';
 import { EditGroupComponent } from './admin/groups/edit-group/edit-group.component';
 import { DeleteGroupComponent } from './admin/groups/delete-group/delete-group.component';
+import { UserListComponent } from './admin/users/user-list/user-list.component';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { DeleteGroupComponent } from './admin/groups/delete-group/delete-group.c
     AddGroupComponent,
     EditGroupComponent,
     DeleteGroupComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,

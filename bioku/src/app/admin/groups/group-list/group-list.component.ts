@@ -55,8 +55,7 @@ export class GroupListComponent implements OnInit {
   
   ngOnInit() {
     //get the groups
-    this.groups = this.groupService.getAllGroups();
-    
+    this.groups = this.groupService.getAllGroups();   
   }
 
 }
