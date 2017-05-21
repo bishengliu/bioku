@@ -8,6 +8,8 @@ import { EditGroupComponent } from '../groups/edit-group/edit-group.component';
 import { DeleteGroupComponent } from '../groups/delete-group/delete-group.component';
 //users
 import { UserListComponent } from '../users/user-list/user-list.component';
+//containers
+import { ContainerListComponent } from '../containers/container-list/container-list.component';
 //guards
 import { AuthGuard } from  '../../_guards/AuthGuard';
 import { AdminGuard } from  '../../_guards/AdminGuard';
@@ -21,4 +23,5 @@ export const adminRoutes: Routes = [
   {path: 'groups/edit/:id', component: EditGroupComponent, canActivate: [AuthGuard, AdminGuard, ] },
   {path: 'groups/delete/:id', component: DeleteGroupComponent, canActivate: [AuthGuard, AdminGuard, ] },
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard, AdminGuard, ] },
+  {path: 'containers', component: ContainerListComponent, canActivate: [AuthGuard, AdminGuard, ] },
 ]
