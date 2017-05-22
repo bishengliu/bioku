@@ -60,6 +60,7 @@ export class HomeHeaderComponent implements OnInit {
   Logout(){
     this.logoutService.logOut();
     this._opened = false;
+    this.router.navigate(['/']);
   }
   //change my password
   changePassword(){

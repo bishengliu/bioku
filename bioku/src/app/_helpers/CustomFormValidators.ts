@@ -83,7 +83,18 @@ export class CustomFormValidators{
             }
         }
     }
-
+    digitValidator(){
+        return (control: FormControl): {[s: string]: Boolean} => 
+        {
+            if(!control.value || control.value.length === 0 || control.value ==""){
+                return null
+            }
+            let digit_pattern = new RegExp("^([0-9]){1,}$");
+            if(!control.value.match(digit_pattern)){
+                return { digitInvalid: true}
+            }
+        }
+    }
     //async validators, must be the 3rd parameter
     //async validation
     usernameAsyncValidator(){
@@ -247,6 +258,47 @@ export class CustomFormValidators{
                 }
             });
         }        
+    }
+    containernameAsyncValidator(container_pk: number){
+        return (control: FormControl): Observable<{[key : string] : Boolean}> =>{
+            //not reuired
+            if(!control.value || control.value.length === 0 || control.value ==""){
+                return Observable.throw(null);
+            }
+            return new Observable(observer=>{
+                const find_container_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_CONTAINER_DETAILS;
+                let body: string = JSON.stringify({'query': 'name', 'value': control.value, 'container_pk': container_pk});
+                let headers = new Headers({ 'Content-Type': 'application/json' });
+                let options = new RequestOptions({ headers: headers });
+                if (!control.dirty){
+                        observer.next(null);
+                        observer.complete();
+                }
+                else
+                {
+                    control.valueChanges
+                        .debounceTime(1000)
+                        .flatMap(value => this.http.post(find_container_detail_url, body, options))
+                        .map((response: Response) =>response.json())
+                        .catch((error:any) => { 
+                            observer.next({ containernameAsyncInvalid: true });
+                            observer.complete();
+                            return Observable.throw({ containernameAsyncInvalid: true });      
+                        })
+                        .subscribe(data=>{
+                            if (data && <Boolean>data.matched){
+                                observer.next({ containernameAsyncInvalid: true });
+                                observer.complete();} 
+                            else{
+                                observer.next(null);
+                                observer.complete();}
+                          },
+                          ()=>{observer.next({ containernameAsyncInvalid: true });
+                                observer.complete();
+                          });   //end subscribe 
+                }
+            });
+        }
     }
 
     //async email

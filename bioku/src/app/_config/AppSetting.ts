@@ -30,4 +30,6 @@ export const AppSetting = {
 
     //find all conatiners
     'ALL_CONTAINERS':'/api/containers/',
+    //FIND CONTAINER 
+    'FIND_CONTAINER_DETAILS': '/api/containers/search/',
 }
