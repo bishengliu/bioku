@@ -46,6 +46,9 @@ import { EditGroupComponent } from './admin/groups/edit-group/edit-group.compone
 import { DeleteGroupComponent } from './admin/groups/delete-group/delete-group.component';
 import { UserListComponent } from './admin/users/user-list/user-list.component';
 import { ContainerListComponent } from './admin/containers/container-list/container-list.component';
+import { AddContainerComponent } from './admin/containers/add-container/add-container.component';
+import { EditContainerComponent } from './admin/containers/edit-container/edit-container.component';
+import { DeleteContainerComponent } from './admin/containers/delete-container/delete-container.component';
 
 
 @NgModule({
@@ -71,6 +74,9 @@ import { ContainerListComponent } from './admin/containers/container-list/contai
     DeleteGroupComponent,
     UserListComponent,
     ContainerListComponent,
+    AddContainerComponent,
+    EditContainerComponent,
+    DeleteContainerComponent,
   ],
   imports: [
     BrowserModule,
