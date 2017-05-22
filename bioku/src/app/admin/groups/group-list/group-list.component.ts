@@ -27,7 +27,7 @@ export class GroupListComponent implements OnInit {
     this.tableView = !this.tableView;
   }
   
-  renderRowSpan(group){
+  renderRowSpan(group: Group): number {
     let rowspan = ((group.assistants && group.assistants.length > 0) || (group.members && group.members.length > 0)) 
         ? 
           Math.max

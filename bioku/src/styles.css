@@ -121,6 +121,12 @@ body{
 .brown-text{
   color: brown;
 }
+.orange-text{
+  color: #F2711C;
+}
+.violet-text{
+  color:#6435C9;
+}
 .right.menu{
   padding-top: 0 !important;
 }
@@ -140,7 +146,9 @@ body{
   height: 250px !important;
 }
 .bordered {
-  border: 1px solid rgba(34,36,38,.15) !important;
+  border: 1px solid rgba(34,36,38,.15);
+  border-top-width: 0.2rem !important;
+  border-top-color: teal !important;
 }
 
 .left-bordered{

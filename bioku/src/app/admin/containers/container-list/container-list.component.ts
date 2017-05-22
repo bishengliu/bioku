@@ -30,6 +30,31 @@ export class ContainerListComponent implements OnInit {
     this.tableView = !this.tableView;
   }
 
+  renderRowSpan(container:Container) : number {
+    let rowspan = ((container.groups && container.groups.length > 0) || (container.boxes && container.boxes.length > 0)) 
+        ? 
+          Math.max
+          (
+            (container.groups && container.groups.length > 0) ? container.groups.length: 1, 
+            (container.boxes && container.boxes.length > 0) ? container.boxes.length: 1
+          ) 
+        :
+        1;
+      return rowspan;
+  }
+
+  genArray(num : number){
+    let array: Array<number> = [];
+    if(num >= 1){
+      for(let x = 1; x <= num; x++){
+      array.push(x);
+      }
+    }
+    else{
+      array.push(1);
+    }
+    return array;
+  }
   ngOnInit() {
     this.containers = this.containerService.getAllContainers();
     this.containers.subscribe(c=>{console.log(c)})

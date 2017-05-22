@@ -1,3 +1,146 @@
-<p>
-  container-list works!
-</p>
+<div class="ui grid small_padding stackable">
+  <div class="four wide column">
+    <h3 class="ui violet left aligned header"><i class="icon building outline"></i>CONTAINERS</h3>
+  </div>
+  <div class="ten wide column">
+    <div class="ui toggle checkbox" suiPopup popupText="List View">
+      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+      <label for="table_view"><span class="violet-text">LIST</span></label>
+    </div>
+  </div>
+  <!-- new container -->
+  <div class="two wide column">
+    <a class="ui secondary button" [routerLink]="['./add']"><i class="icon add circle"></i>CONTAINER</a>
+  </div>
+  <!-- end new container -->
+</div>
+<div class="ui grid small_padding">
+  <!-- card view -->
+  <div class="ui cards" *ngIf="!tableView">
+    <!-- one card -->
+      <div class="ui black raised card" *ngFor="let container of containers | async">
+        <!-- container image -->
+        <div class="image fix_image_height">                
+            <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui medium rounded image">
+        </div>
+        <!-- end container image -->
+        <!-- container info -->
+        <div class="content">                                
+          <div class="meta">
+            <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span>
+            <!-- container group --> 
+            <a class="" [routerLink]="['./edit', container.pk]">
+              <i class="icon edit teal-text"></i>
+            </a>
+            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!((container.groups && container.groups.length>0) || (container.boxes && container.boxes.length>0))">
+                <i class="icon remove circle red-text"></i>
+            </a>
+            <!-- end container group --> 
+            <br>
+            <span class=""><i class="caret right icon"></i> {{'Room: '+container.room}}</span><br>
+            <span class=""><i class="caret right icon"></i> {{'Temperature : '+ container.temperature+'&deg;C' }}</span><br>
+            <span><i class="caret right icon"></i> {{'#Boxes: '+ (container.boxes == null ? 0 : container.boxes.length) }}</span><br>
+            <span><i class="caret right icon"></i> {{'#Tower: '+ container.tower}}</span><br>
+            <span><i class="caret right icon"></i> {{'#Shelf per tower: '+ container.shelf}}</span><br>
+            <span><i class="caret right icon"></i> {{'#Box per shelf: '+ container.box}}</span><br>
+            <span><i class="caret right icon"></i> {{'Description: '+ container.description}}</span><br>           
+          </div>          
+        </div>
+        <!-- end container info -->  
+        <!-- container groups -->
+        <div class="extra" *ngIf="container.groups && container.groups.length > 0">
+          <h5 class="ui header meta">Groups</h5>
+          <div class="ui six cards" >
+            <div class="ui teal raised card" *ngFor="let group of container.groups" suiPopup popupHeader="{{group.group_name +'/'+ group.pi}}" popupText="{{group.email}}">
+              <div class="image">
+                <img src="{{ appUrl + group.photo }}">
+              </div>
+            </div>         
+          </div>
+        </div>        
+        <!-- container groups -->       
+      </div>
+      <!-- end one card -->
+  </div>
+  <!-- end card view -->
+  <!-- table view -->
+  <div class="sixteen wide column" *ngIf="tableView">
+    <table class="ui structured small teal single line compact padded table">
+    <thead>
+      <tr>
+        <th colspan="5" class="center aligned">Containers</th>       
+        <th colspan="4" class="center aligned left-bordered">Boxes</th>
+        <th colspan="4" class="center aligned left-bordered">Groups</th>
+      </tr>
+      <tr>
+        <th class="">Name</th>
+        <th class="">Temperature</th>
+        <th class="">#Towers</th>
+        <th class="">#Shelves</th>
+        <th class="">#Boxes</th>
+
+        <th class="left-bordered">Box</th>
+        <th class="">#Horizontal</th>
+        <th class="">#Vertical</th>
+        <th class="">#Researchers</th>
+
+        <th class="left-bordered">Group</th>
+        <th class="">PI</th>
+        <th class="">Email</th>
+        <th class="">Telephone</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let container of containers | async" class="bordered">
+      <tr *ngFor="let i of genArray(renderRowSpan(container))">
+        <!-- container info -->
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)"> 
+          <h4 class="ui image header">
+            <img src="{{appUrl + container.photo}}" class="ui mini rounded image">
+            <div class="content">
+              {{container.name}}
+              <!-- manage container -->
+              <a class="" [routerLink]="['./edit', container.pk]">
+              <i class="icon edit teal-text"></i>
+              </a>
+              <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!((container.groups && container.groups.length>0) || (container.boxes && container.boxes.length>0))">
+                  <i class="icon remove circle red-text"></i>
+              </a>
+              <!-- end manage container -->
+            <div class="sub header">{{container.room}}</div>
+            <div class="sub header">{{container.description}}</div>
+            </div>
+          </h4>         
+        </td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.temperature+'&deg;C' }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.tower }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.shelf }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.box }}</td>
+        <!-- end container info -->
+        <!-- boxes info -->
+        <td class="left-bordered">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_position : "" }}</td>
+        <td class="">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_horizontal : "" }}</td>
+        <td class="">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_vertical : "" }}</td>
+        <td class="">
+          {{ (container.boxes && container.boxes.length >= i && container.boxes[i-1].researchers && container.boxes[i-1].researchers.length > 0) ? container.boxes[i-1].researchers.length : ""}}
+        </td>
+        <!--end boxes info -->
+        <!-- groups info -->
+        <td class="left-bordered">          
+          <h4 class="ui image header">
+            <img *ngIf="container.groups && container.groups.length >= i && container.groups[i-1].photo" src="{{ appUrl + container.groups[i-1].photo }}" class="ui mini rounded image">
+            <div class="content">
+              {{ (container.groups && container.groups.length >= i) ? container.groups[i-1].group_name : "" }}
+              <div class="sub header">{{ (container.groups && container.groups.length >= i && container.groups[i-1].department) ? container.groups[i-1].department : "" }}</div>
+            </div>
+          </h4>           
+        </td>
+        <td>{{ (container.groups && container.groups.length >= i) ? container.groups[i-1].pi_fullname + '/' + container.groups[i-1].pi : "" }}</td>
+        <td>{{ (container.groups && container.groups.length >= i) ? container.groups[i-1].email : "" }}</td>
+        <td>{{ (container.groups && container.groups.length >= i && container.groups[i-1].telephone) ? container.groups[i-1].telephone : "" }}</td>
+        <!-- groups info -->
+      </tr>
+    </tbody>
+  </table>
+  </div>
+<!-- end table view -->
+</div>
