@@ -58,7 +58,18 @@
             </div>         
           </div>
         </div>        
-        <!-- container groups -->       
+        <!-- container groups -->
+        <!-- add container to group -->
+        <div class="extra">
+          <h5 class="ui header meta">Add to Groups</h5>
+          <div class="">            
+            <select class="ui dropdown fluid selection" (change)="add2Group(container.pk, selectionCtl)" #selectionCtl>
+              <option value="">-- select --</option>
+              <option [ngClass]="{hidden: isGroup(container.groups, group) }" [value]="group.pk" *ngFor="let group of groups | async">{{group.group_name +'/'+ group.pi}}</option>
+            </select>
+          </div>
+        </div>
+        <!-- end add container to group -->      
       </div>
       <!-- end one card -->
   </div>
