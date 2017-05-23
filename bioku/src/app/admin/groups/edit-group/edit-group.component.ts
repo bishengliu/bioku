@@ -135,9 +135,10 @@ export class EditGroupComponent implements OnInit, OnDestroy {
             });         
           },
           () => this.alertService.error('Something went wrong, data were not loaded from the server!', true)
-       ); 
+       );
+
        //init the form group
-       this.profileForm = this.fb.group({
+    this.profileForm = this.fb.group({
           'group_name': [, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]), this.cValidators.groupnameAsyncValidator(-1)],          
           'email': [, Validators.compose([Validators.required, Validators.email]), this.cValidators.groupemailAsyncValidator(-1)],
           'pi_fullname': [, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
@@ -145,7 +146,7 @@ export class EditGroupComponent implements OnInit, OnDestroy {
           'photo': ['', ],
           'telephone': [, this.cValidators.telephoneValidator()],
           'department': [, Validators.compose([this.cValidators.humanNameValidator(),])]
-       });
+    });
   }
 
   ngOnDestroy() { this.sub.unsubscribe(); }

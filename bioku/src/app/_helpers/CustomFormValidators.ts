@@ -78,8 +78,11 @@ export class CustomFormValidators{
                 return null
             }
             let telephone_pattern = new RegExp("^([0-9]){4,}$");
-            if(!control.value.match(telephone_pattern)){
+            if(control.touched && !control.value.match(telephone_pattern)){
                 return { telephoneInvalid: true}
+            }
+            else{
+                return null;
             }
         }
     }
@@ -87,11 +90,14 @@ export class CustomFormValidators{
         return (control: FormControl): {[s: string]: Boolean} => 
         {
             if(!control.value || control.value.length === 0 || control.value ==""){
-                return null
+                return null;
             }
             let digit_pattern = new RegExp("^([0-9]){1,}$");
-            if(!control.value.match(digit_pattern)){
+            if(control.touched && !control.value.match(digit_pattern)){
                 return { digitInvalid: true}
+            }
+            else{
+                return null;
             }
         }
     }
@@ -259,7 +265,7 @@ export class CustomFormValidators{
             });
         }        
     }
-    containernameAsyncValidator(container_pk: number){
+    containernameAsyncValidator(container_pk: number = -1){
         return (control: FormControl): Observable<{[key : string] : Boolean}> =>{
             //not reuired
             if(!control.value || control.value.length === 0 || control.value ==""){

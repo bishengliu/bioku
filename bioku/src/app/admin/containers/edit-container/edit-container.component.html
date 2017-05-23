@@ -1,3 +1,91 @@
-<p>
-  edit-container works!
-</p>
+<div class="ui one column stackable center aligned page grid huge-padding">
+   <div class="column eight wide">     
+       <div class="center floated column">
+         <!--form header-->
+          <h2 class="ui header teal image">
+            <img>
+            <div class="content"><span class="violet-text">UPDATE CONTAINER</span></div>
+          </h2>
+          <!--form  -->
+          <form [formGroup]="containerForm" class="ui large form" (ngSubmit)="containerForm.valid && onUpdate(containerForm.value)" enctype="multipart/form-data">
+            <div class="ui stacked segment">
+              <div class="field" [class.error]="containerForm.controls['name'].invalid && containerForm.controls['name'].touched">
+                <div class="ui left icon input">
+                  <i class="building outline icon"></i>
+                  <input type="text" id="name" [formControl]="containerForm.controls['name']" placeholder="container Name">
+                </div>
+                <div *ngIf="containerForm.controls['name'].hasError('required') && containerForm.controls['name'].touched" class="ui mini negative message">Container name is required</div>
+                <div *ngIf="containerForm.controls['name'].hasError('humanNameInvalid') && containerForm.controls['name'].touched" class="ui mini negative message">Container name is invalid</div>
+                <div *ngIf="containerForm.controls['name'].hasError('containernameAsyncInvalid') && containerForm.controls['name'].touched" class="ui mini negative message">Container name already taken</div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['temperature'].invalid && containerForm.controls['temperature'].touched">
+
+
+                <div class="ui left icon labeled input">
+                  <i class="theme icon"></i>
+                  <input type="text" id="temperature" [formControl]="containerForm.controls['temperature']" placeholder="temperature">
+                  <div class="ui basic label">&deg;C</div>
+                </div>
+                <div *ngIf="containerForm.controls['temperature'].hasError('required') && containerForm.controls['temperature'].touched" class="ui mini negative message">Temperature is required</div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['tower'].invalid && containerForm.controls['tower'].touched">
+                <div class="ui left icon input">
+                  <i class="caret right icon"></i>
+                  <input type="text" id="tower" [formControl]="containerForm.controls['tower']" placeholder="total number of towers">
+                </div>
+                <div *ngIf="containerForm.controls['tower'].hasError('required') && containerForm.controls['tower'].touched" class="ui mini negative message">Number of total towers is required</div>
+                <div *ngIf="containerForm.controls['tower'].hasError('digitInvalid') && containerForm.controls['tower'].touched" class="ui mini negative message">the number must be digits</div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['shelf'].invalid && containerForm.controls['shelf'].touched">
+                <div class="ui left icon input">
+                  <i class="caret right icon"></i>
+                  <input type="text" id="shelf" [formControl]="containerForm.controls['shelf']" placeholder="total number of shelves per tower">
+                </div>
+                <div *ngIf="containerForm.controls['shelf'].hasError('required') && containerForm.controls['shelf'].touched" class="ui mini negative message">Number of total shelves is required</div>
+                <div *ngIf="containerForm.controls['shelf'].hasError('digitInvalid') && containerForm.controls['shelf'].touched" class="ui mini negative message">the number must be digits</div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['box'].invalid && containerForm.controls['box'].touched">
+                <div class="ui left icon input">
+                  <i class="caret right icon"></i>
+                  <input type="text" id="box" [formControl]="containerForm.controls['box']" placeholder="total number of boxes per shelf">
+                </div>
+                <div *ngIf="containerForm.controls['box'].hasError('required') && containerForm.controls['box'].touched" class="ui mini negative message">Number of total boxes is required</div>
+                <div *ngIf="containerForm.controls['box'].hasError('digitInvalid') && containerForm.controls['box'].touched" class="ui mini negative message">the number must be digits</div>
+              </div>
+         
+              <div class="field" [class.error]="containerForm.controls['photo'].invalid && containerForm.controls['photo'].touched">
+                <div class="ui left icon input right action">
+                  <i class="image icon"></i>
+                  <input type="text" id="photo_name" readonly placeholder="Photo" id="photo_name" value="{{photo_name}}" #photoName>
+                  <label class="ui button">Browse<input type="file" id="photo" [formControl]="containerForm.controls['photo']" placeholder="PI Photo" class="hidden" id="photo_upload" (change)="validatePhotoUpload($event)"></label>
+                </div>
+                <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['room'].invalid && containerForm.controls['room'].touched">
+                <div class="ui left icon input">
+                  <i class="marker icon"></i>
+                  <input type="text" id="room" [formControl]="containerForm.controls['room']" placeholder="room">
+                </div>
+              </div>
+
+              <div class="field" [class.error]="containerForm.controls['description'].invalid && containerForm.controls['description'].touched">
+                <div class="ui left icon input">
+                  <i class="sticky note icon"></i>
+                  <input type="text" id="description" [formControl]="containerForm.controls['description']" placeholder="short description">
+                </div>
+              </div>
+              <button type="submit" class="ui fluid violet button">
+                <i class="icon add circle"></i>
+                Save Changes
+              </button>              
+            </div>
+          </form>                  
+      </div>
+   </div>
+</div>

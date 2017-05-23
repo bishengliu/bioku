@@ -109,7 +109,7 @@ export class AddContainerComponent implements OnInit {
       () => this.alertService.error('Something went wrong, the new container was not created!', true)
     );
     //naviagate to home
-    //this.router.navigate(['/admin/containers']);
+    this.router.navigate(['/admin/containers']);
   }
   ngOnInit() {}
 

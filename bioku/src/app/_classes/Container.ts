@@ -4,6 +4,7 @@ import { Box } from './Box';
 export class Container{
     pk: number;
     name: string;
+    room: string;
     photo: string;
     photo_tag: string;
     temperature:number;
