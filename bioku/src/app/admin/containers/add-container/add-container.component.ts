@@ -96,7 +96,6 @@ export class AddContainerComponent implements OnInit {
       box : values.box,
       description : values.description
     };
-    console.log(obj);
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
     if (this.file){

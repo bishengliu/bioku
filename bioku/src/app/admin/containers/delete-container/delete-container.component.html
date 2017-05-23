@@ -1,3 +1,61 @@
-<p>
-  delete-container works!
-</p>
+<div class="ui one column stackable page grid huge-padding">
+  <div class="column six wide"></div>
+  <div class="column eight wide">
+    <div class="center floated column">
+      <!-- one card -->
+      <div class="ui black raised card" *ngIf="container">   
+        <!-- container image -->
+        <div class="image fix_image_height">                
+            <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui medium rounded image">
+        </div>
+        <!-- end container image -->
+        <!-- container info -->
+        <div class="content">                                
+          <div class="meta">
+            <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span>
+            <!-- container group --> 
+            <a class="" [routerLink]="['./edit', container.pk]">
+              <i class="icon edit teal-text"></i>
+            </a>
+            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!((container.groups && container.groups.length>0) || (container.boxes && container.boxes.length>0))">
+                <i class="icon remove circle red-text"></i>
+            </a>
+            <!-- end container group --> 
+            <br>
+            <span class=""><i class="caret right icon"></i> {{'Room: '+container.room}}</span><br>
+            <span class=""><i class="caret right icon"></i> {{'Temperature : '+ container.temperature+'&deg;C' }}</span><br>
+            <span><i class="caret right icon"></i> {{'#Boxes: '+ (container.boxes == null ? 0 : container.boxes.length) }}</span><br>
+            <span><i class="caret right icon"></i> {{'#Tower: '+ container.tower}}</span><br>
+            <span><i class="caret right icon"></i> {{'#Shelf per tower: '+ container.shelf}}</span><br>
+            <span><i class="caret right icon"></i> {{'#Box per shelf: '+ container.box}}</span><br>
+            <span><i class="caret right icon"></i> {{'Description: '+ container.description}}</span><br>           
+          </div>          
+        </div>
+        <!-- end container info -->  
+        <!-- container groups -->
+        <div class="extra" *ngIf="container.groups && container.groups.length > 0">
+          <h5 class="ui header meta">Groups</h5>
+          <div class="ui six cards" >
+            <div class="ui teal raised card" *ngFor="let group of container.groups" suiPopup popupHeader="{{group.group_name +'/'+ group.pi}}" popupText="{{group.email}}">
+              <div class="image">
+                <img src="{{ appUrl + group.photo }}">
+              </div>
+            </div>         
+          </div>
+        </div>        
+        <!-- container groups -->
+        <div class="extra content">
+          <div class="ui center aligned red-text">
+            Are you sure to delete this container?
+          </div>
+        </div>
+        <div class="mini ui buttons attached bottom">
+            <a class="ui button red" (click)="deleteContainer(container.pk)"><i class="trash icon"></i>DELETE</a>
+            <div class="or"></div>
+            <a [routerLink]="['/admin/containers']" class="ui grey button"><i class="caret left icon"></i> CANCEL</a>
+        </div> 
+      </div>
+      <!-- end one card -->
+    </div>
+  </div>    
+</div>

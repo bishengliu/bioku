@@ -98,7 +98,6 @@ export class AddGroupComponent implements OnInit {
         department: values.department,
         telephone : values.telephone 
         };
-    console.log(obj);
     let formData: FormData = new FormData();
     formData.append("obj", JSON.stringify(obj));
     if (this.file){

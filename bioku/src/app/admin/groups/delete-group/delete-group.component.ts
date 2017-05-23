@@ -18,7 +18,7 @@ import { AppState , AppPartialState} from '../../../_redux/root/state';
   templateUrl: './delete-group.component.html',
   styleUrls: ['./delete-group.component.css']
 })
-export class DeleteGroupComponent implements OnInit {
+export class DeleteGroupComponent implements OnInit, OnDestroy {
   //route param
   id: number;
   private sub: any; //subscribe to params observable
