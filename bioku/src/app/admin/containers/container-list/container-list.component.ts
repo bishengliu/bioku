@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router} from '@angular/router';
 import { AppSetting} from '../../../_config/AppSetting';
 import {APP_CONFIG} from '../../../_providers/AppSettingProvider';
@@ -15,7 +15,8 @@ import {GroupService} from '../../../_services/GroupService';
 @Component({
   selector: 'app-container-list',
   templateUrl: './container-list.component.html',
-  styleUrls: ['./container-list.component.css']
+  styleUrls: ['./container-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContainerListComponent implements OnInit {
   containers: Observable<Array<Container>>;
@@ -75,6 +76,17 @@ export class ContainerListComponent implements OnInit {
   removefromGroup(container_pk: number, group_pk: number){
     console.log('container: ' + container_pk);
     console.log('group: ' + group_pk);
+    this.containerService.removeGroupFromContainer(container_pk, group_pk)
+    .subscribe(
+      (group: Group)=>{
+        this.alertService.success("Container is removed to the selected group!", true);
+        this.router.navigate(['/admin']);
+      },
+      (err: any)=>{
+        console.log(err);
+        this.alertService.error("Something went wrong, container is not removed to the selected group!", true);
+      }
+    )
   }
   isGroup(groups: Array<Group>, group: Group){
     let found: Boolean = false;
@@ -84,6 +96,16 @@ export class ContainerListComponent implements OnInit {
     let pks: Array<number> = groups.map(g=>g.pk);   
     pks.indexOf(group.pk) !=-1 ? found=true : found=false;
     return found;
+  }
+  allowRemoveGroup(container_pk: number, group_pk: number){
+    console.log(container_pk+':'+group_pk);
+    return true;
+    /*
+    return this.containerService.allowRemoveGroup(container_pk, group_pk)
+           .subscribe(
+                  data=>(data.detail ? true: false), 
+                  err=>false);
+   */
   }
   ngOnInit() {
     this.containers = this.containerService.getAllContainers();

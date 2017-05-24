@@ -18,7 +18,7 @@
   <!-- card view -->
   <div class="ui cards" *ngIf="!tableView">
     <!-- one card -->
-      <div class="ui black raised card" *ngFor="let container of containers | async">
+      <div class="ui black raised card" *ngFor="let container of containers | async; let c = index">
         <!-- container image -->
         <div class="image fix_image_height">                
             <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui medium rounded image">
@@ -46,16 +46,20 @@
             <span><i class="caret right icon"></i> {{'Description: '+ container.description}}</span><br>           
           </div>          
         </div>
-        <!-- end container info -->  
+        <!-- end container info -->
         <!-- container groups -->
         <div class="extra" *ngIf="container.groups && container.groups.length > 0">
           <h5 class="ui header meta">Groups</h5>
           <div class="ui six cards" >
-            <div class="ui teal raised card" *ngFor="let group of container.groups" suiPopup popupHeader="{{group.group_name +'/'+ group.pi}}" popupText="{{group.email}}">
-              <div class="image">
-                <img src="{{ appUrl + group.photo }}">
-              </div>
-            </div>         
+            <div class="ui teal raised card" *ngFor="let group of container.groups; let g = index">
+              <div class="ui avatar image">
+                <img src="{{ appUrl + group.photo }}" suiPopup popupHeader="{{group.group_name +'/'+ group.pi}}" popupText="{{group.email}}">
+                <a *ngIf="allowRemoveGroup(container.pk, group.pk)" suiPopup popupHeader="Remove Group" popupText="click to remove" (click)="removefromGroup(container.pk, group.pk)">
+                  <i class="ui grey remove circle outline icon"></i>
+                </a> 
+              </div>            
+            </div>
+                  
           </div>
         </div>        
         <!-- container groups -->

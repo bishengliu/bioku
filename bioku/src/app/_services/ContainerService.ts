@@ -55,7 +55,7 @@ export class ContainerService{
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.get(query_url, this.options)
             .map((response: Response) =>response.json())
-            //.do(data=>console.log(data))
+            .do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     create(formData: FormData){
@@ -65,7 +65,7 @@ export class ContainerService{
         }
         const create_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.post(create_container_url, formData, this.options_NoContentType) //do provide header accorrding to django
-                .map((response: Response) =>response.json())          
+                //.map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 
@@ -115,7 +115,7 @@ export class ContainerService{
         return this.http.post(query_url, body, this.options)
                    .map((response: Response) =>response.json())
                    .mergeMap((data:any)=>{
-                       const query_url2: string  = this.appSetting.URL + this.appSetting.ALL_GROUPS+ group_pk +"/";
+                       const query_url2: string  = this.appSetting.URL + this.appSetting.ALL_GROUPS+ group_pk + "/";
                        return this.http.get(query_url2, this.options)
                                   .retry(2)
                                   .map((response: Response) =>response.json())
@@ -128,8 +128,19 @@ export class ContainerService{
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
         }
-        const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/groups/" + group_pk;
+        const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/groups/" + group_pk +"/";
         return this.http.delete(query_url, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    allowRemoveGroup(container_pk: number, group_pk: number){
+        if(!this.state.authInfo.authUser.is_superuser){
+            this.alertService.error('Please login as Admin!', true);
+            return Observable.throw('Please login as Admin');
+        }
+        const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/groups/" + group_pk + "/";
+        let body: string = JSON.stringify({});
+        return this.http.post(query_url, body, this.options) //do provide header accorrding to django
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }

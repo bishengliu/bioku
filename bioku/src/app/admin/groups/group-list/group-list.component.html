@@ -49,7 +49,7 @@
           <h5 class="ui header meta">Group Assistants</h5>
           <div class="ui six cards" >
             <div class="ui teal raised card" *ngFor="let assist of group.assistants" suiPopup popupHeader="{{assist.user.first_name + assist.user.last_name}}" popupText="{{assist.user.username + ', ' + assist.user.email }}">
-              <div class="image">
+              <div class="ui avatar image">
                 <img src="{{ appUrl + assist.user.profile.photo }}">
               </div>
             </div>         
@@ -61,7 +61,7 @@
           <h5 class="ui header meta">Group Members</h5>
           <div class="ui six cards">
             <div class="ui orange raised card" *ngFor="let member of group.members" suiPopup popupHeader="{{member.user.first_name + member.user.last_name}}" popupText="{{member.user.username + ', ' + member.user.email }}">
-              <div class="image">
+              <div class="ui avatar image">
                 <img src="{{ appUrl + member.user.profile.photo }}">
               </div>
             </div>         
