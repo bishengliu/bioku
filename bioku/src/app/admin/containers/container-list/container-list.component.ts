@@ -60,8 +60,17 @@ export class ContainerListComponent implements OnInit {
   }
 
   add2Group(container_pk: number, ctl: any): void{
-    console.log('container: ' + container_pk);
-    console.log('group: ' + ctl.value);
+    this.containerService.addContainer2Group(container_pk, ctl.value)
+    .subscribe(
+      (group: Group)=>{
+        this.alertService.success("Container is assigned to the selected group!", true);
+        this.router.navigate(['/admin']);
+      },
+      (err: any)=>{
+        console.log(err);
+        this.alertService.error("Something went wrong, container not assigned to the selected group!", true);
+      }
+    )
   }
   removefromGroup(container_pk: number, group_pk: number){
     console.log('container: ' + container_pk);

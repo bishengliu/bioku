@@ -1,15 +1,17 @@
 import { Injectable , Inject} from '@angular/core';
+import { Router} from '@angular/router';
 import { Observable } from 'rxjs';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
+import { AlertService } from '../_services/AlertService';
 //redux
 import { AppStore } from '../_providers/ReduxProviders';
 
 @Injectable()
 export class GroupService{
-    
-    constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore){}
+    constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+                private router: Router, private alertService: AlertService){}
 
     addAssistant(group_pk: number, email: string){
         let state = this.appStore.getState();
@@ -20,6 +22,7 @@ export class GroupService{
         let auth_groups = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         let find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(state.authInfo.authUser.roles.indexOf('PI') === -1){
@@ -61,6 +64,7 @@ export class GroupService{
         let find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
 
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(state.authInfo.authUser.roles.indexOf('PI') === -1){
@@ -100,6 +104,7 @@ export class GroupService{
         let auth_groups = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         let find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(state.authInfo.authUser.roles.indexOf('PI') === -1){
@@ -133,6 +138,7 @@ export class GroupService{
         let find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
 
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(state.authInfo.authUser.roles.indexOf('PI') === -1){
@@ -164,6 +170,7 @@ export class GroupService{
         let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
@@ -183,6 +190,7 @@ export class GroupService{
         let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
@@ -203,6 +211,7 @@ export class GroupService{
         let options = new RequestOptions({ headers: headers });
 
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
@@ -221,6 +230,7 @@ export class GroupService{
         let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
@@ -241,6 +251,7 @@ export class GroupService{
         let options = new RequestOptions({ headers: headers });
 
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
@@ -258,6 +269,7 @@ export class GroupService{
         let headers = new Headers({ 'Authorization': 'Token '+ token, 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         if(!state || !token || !state.authInfo || !state.authInfo.authUser){
+            this.alertService.error('Please first login!', true);
             return Observable.throw('Please first login');
         }
         if(!state.authInfo.authUser.is_superuser){
