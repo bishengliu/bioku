@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router} from '@angular/router';
 import { AppSetting} from '../../../_config/AppSetting';
 import {APP_CONFIG} from '../../../_providers/AppSettingProvider';
@@ -16,7 +16,7 @@ import {GroupService} from '../../../_services/GroupService';
   selector: 'app-container-list',
   templateUrl: './container-list.component.html',
   styleUrls: ['./container-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContainerListComponent implements OnInit {
   containers: Observable<Array<Container>>;
@@ -24,7 +24,7 @@ export class ContainerListComponent implements OnInit {
   appUrl: string;
   tableView: boolean = false;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private changeDetector: ChangeDetectorRef,
               private alertService: AlertService, private containerService: ContainerService, private groupService: GroupService)
   { 
     this.appUrl = this.appSetting.URL;
@@ -63,9 +63,10 @@ export class ContainerListComponent implements OnInit {
   add2Group(container_pk: number, ctl: any): void{
     this.containerService.addContainer2Group(container_pk, ctl.value)
     .subscribe(
-      (group: Group)=>{
+      (group: Group)=>{        
         this.alertService.success("Container is assigned to the selected group!", true);
-        this.router.navigate(['/admin']);
+        this.containers = this.containerService.getAllContainers();       
+        //this.router.navigate(['/admin/containers']);
       },
       (err: any)=>{
         console.log(err);
@@ -74,13 +75,12 @@ export class ContainerListComponent implements OnInit {
     )
   }
   removefromGroup(container_pk: number, group_pk: number){
-    console.log('container: ' + container_pk);
-    console.log('group: ' + group_pk);
     this.containerService.removeGroupFromContainer(container_pk, group_pk)
     .subscribe(
       (group: Group)=>{
         this.alertService.success("Container is removed to the selected group!", true);
-        this.router.navigate(['/admin']);
+        //this.router.navigate(['/admin/containers']);
+        this.containers = this.containerService.getAllContainers();
       },
       (err: any)=>{
         console.log(err);
@@ -98,16 +98,12 @@ export class ContainerListComponent implements OnInit {
     return found;
   }
   allowRemoveGroup(container_pk: number, group_pk: number){
-    console.log(container_pk+':'+group_pk);
-    return true;
-    /*
     return this.containerService.allowRemoveGroup(container_pk, group_pk)
            .subscribe(
                   data=>(data.detail ? true: false), 
                   err=>false);
-   */
   }
-  ngOnInit() {
+  ngOnInit() { 
     this.containers = this.containerService.getAllContainers();
     this.groups = this.groupService.getAllGroups();
   }

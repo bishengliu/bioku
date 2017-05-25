@@ -55,7 +55,7 @@ export class ContainerService{
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.get(query_url, this.options)
             .map((response: Response) =>response.json())
-            .do(data=>console.log(data))
+            //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     create(formData: FormData){
