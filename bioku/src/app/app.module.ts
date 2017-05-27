@@ -55,6 +55,7 @@ import { ContainerBoxListComponent } from './containers/container-box-list/conta
 import { BoxDetailComponent } from './containers/box-detail/box-detail.component';
 import { SampleListComponent } from './containers/sample-list/sample-list.component';
 import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
+import { MyContainerListComponent } from './containers/my-container-list/my-container-list.component';
 
 
 @NgModule({
@@ -89,6 +90,7 @@ import { SampleDetailComponent } from './containers/sample-detail/sample-detail.
     BoxDetailComponent,
     SampleListComponent,
     SampleDetailComponent,
+    MyContainerListComponent,
   ],
   imports: [
     BrowserModule,
