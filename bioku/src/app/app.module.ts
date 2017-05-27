@@ -49,6 +49,12 @@ import { ContainerListComponent } from './admin/containers/container-list/contai
 import { AddContainerComponent } from './admin/containers/add-container/add-container.component';
 import { EditContainerComponent } from './admin/containers/edit-container/edit-container.component';
 import { DeleteContainerComponent } from './admin/containers/delete-container/delete-container.component';
+import { ContainersSiderbarComponent } from './containers/containers-siderbar/containers-siderbar.component';
+import { ContainerDetailComponent } from './containers/container-detail/container-detail.component';
+import { ContainerBoxListComponent } from './containers/container-box-list/container-box-list.component';
+import { BoxDetailComponent } from './containers/box-detail/box-detail.component';
+import { SampleListComponent } from './containers/sample-list/sample-list.component';
+import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
 
 
 @NgModule({
@@ -77,6 +83,12 @@ import { DeleteContainerComponent } from './admin/containers/delete-container/de
     AddContainerComponent,
     EditContainerComponent,
     DeleteContainerComponent,
+    ContainersSiderbarComponent,
+    ContainerDetailComponent,
+    ContainerBoxListComponent,
+    BoxDetailComponent,
+    SampleListComponent,
+    SampleDetailComponent,
   ],
   imports: [
     BrowserModule,
