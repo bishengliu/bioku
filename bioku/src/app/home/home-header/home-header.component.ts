@@ -62,19 +62,10 @@ export class HomeHeaderComponent implements OnInit {
     this._opened = false;
     this.router.navigate(['/']);
   }
-  //change my password
-  changePassword(){
-    this._opened = !this._opened;
-  }
-  //update my profile
-  updateProfile(){
-    this._opened = !this._opened;
-  }
-  
   //edit my group profile
   editGroup(groupInfo: GroupInfo){
     this._opened = !this._opened;
-    console.log(groupInfo);
+    //console.log(groupInfo);
     //navigate to group
     this.router.navigate(['/user/group', groupInfo.pk]);
   }

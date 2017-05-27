@@ -37,7 +37,6 @@ import { LoginComponent } from './account/login/login.component';
 import { HomeHeaderComponent } from './home/home-header/home-header.component';
 import { HomeFooterComponent } from './home/home-footer/home-footer.component';
 import { AlertComponent } from './_helpers/alert/alert.component';
-import { HomeBodyComponent } from './home/home-body/home-body.component';
 import { GroupComponent } from './account/group/group.component';
 import { PermissionDeniedComponent } from './_helpers/permission-denied/permission-denied.component';
 import { GroupListComponent } from './admin/groups/group-list/group-list.component';
@@ -56,6 +55,7 @@ import { BoxDetailComponent } from './containers/box-detail/box-detail.component
 import { SampleListComponent } from './containers/sample-list/sample-list.component';
 import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
 import { MyContainerListComponent } from './containers/my-container-list/my-container-list.component';
+import { FooterComponent } from './_helpers/footer/footer.component';
 
 
 @NgModule({
@@ -72,7 +72,6 @@ import { MyContainerListComponent } from './containers/my-container-list/my-cont
     HomeHeaderComponent,
     HomeFooterComponent,
     AlertComponent,
-    HomeBodyComponent,
     GroupComponent,
     PermissionDeniedComponent,
     GroupListComponent,
@@ -91,6 +90,7 @@ import { MyContainerListComponent } from './containers/my-container-list/my-cont
     SampleListComponent,
     SampleDetailComponent,
     MyContainerListComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

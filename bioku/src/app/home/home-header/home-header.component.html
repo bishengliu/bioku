@@ -34,26 +34,6 @@
         </div>
     </div>        
 </div>
-
-<!-- for freezer sidemenu 
-<div *ngIf="isLogin">
-    <div class="ui floated right inverted vertical menu small">
-        <a *ngIf="isLogin" (click)="_toggleSidebar()" class="item">
-            <i class="user icon" *ngIf="!user.profile.photo"></i>
-            <img *ngIf="user.profile.photo" class="ui avatar image" src="{{appUrl+user.profile.photo}}">
-            <span class="">{{user.first_name.toUpperCase()+" "+user.last_name.toUpperCase()}}</span>
-        </a>
-        <a [routerLink]="['/register']" class="item">
-            <i class="add user icon"></i>Freezer1     
-        </a>
-        <a [routerLink]="['/register']" class="item">
-            <i class="add user icon"></i>Freezer2         
-        </a>    
-    </div>
-    <div class="clearfix"></div>
-</div>
--->
-
 <!-- sidebar -->
 <div class="account-sidebar">
 <ng-sidebar-container sidebarClass="">
@@ -68,7 +48,7 @@
             <div class="content">                                        
                 <span class="header">
                     {{user.first_name +" "+ user.last_name}} 
-                    <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="updateProfile()">
+                    <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="_toggleSidebar()">
                         <i class="icon red edit"></i>
                     </a>
                     </span>
@@ -85,11 +65,11 @@
                 </div>         
             </div>
             <div *ngIf="isAdmin" class="mini ui buttons attached bottom">
-                <a class="ui button active" [routerLink]="['/user/password']" (click)="changePassword()"><i class="lock icon"></i>Password</a>
+                <a class="ui button active" [routerLink]="['/user/password']" (click)="_toggleSidebar()"><i class="lock icon"></i>Password</a>
                 <div class="or"></div>
-                <a [routerLink]="['/admin']" class="ui red button"><i class="dashboard icon"></i> Admin</a>
+                <a [routerLink]="['/admin']" class="ui red button" (click)="_toggleSidebar()"><i class="dashboard icon"></i> Admin</a>
             </div>
-            <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="changePassword()">
+            <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="_toggleSidebar()">
                 <i class="lock icon"></i>Change Password
             </a>
         </div>

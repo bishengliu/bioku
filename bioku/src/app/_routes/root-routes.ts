@@ -24,7 +24,7 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes},
-  {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, AdminGuard, ], children: containersRoutes},
+  {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ]},
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]
