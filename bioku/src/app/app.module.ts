@@ -34,8 +34,6 @@ import { ChangePasswordComponent } from './account/change-password/change-passwo
 import { ProfileComponent } from './account/profile/profile.component';
 import { PageNotFoundComponent } from './_helpers/page-not-found/page-not-found.component';
 import { LoginComponent } from './account/login/login.component';
-import { HomeHeaderComponent } from './home/home-header/home-header.component';
-import { HomeFooterComponent } from './home/home-footer/home-footer.component';
 import { AlertComponent } from './_helpers/alert/alert.component';
 import { GroupComponent } from './account/group/group.component';
 import { PermissionDeniedComponent } from './_helpers/permission-denied/permission-denied.component';
@@ -56,6 +54,7 @@ import { SampleListComponent } from './containers/sample-list/sample-list.compon
 import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
 import { MyContainerListComponent } from './containers/my-container-list/my-container-list.component';
 import { FooterComponent } from './_helpers/footer/footer.component';
+import { TopNavbarComponent } from './_helpers/top-navbar/top-navbar.component';
 
 
 @NgModule({
@@ -69,8 +68,6 @@ import { FooterComponent } from './_helpers/footer/footer.component';
     ProfileComponent,
     PageNotFoundComponent,
     LoginComponent,
-    HomeHeaderComponent,
-    HomeFooterComponent,
     AlertComponent,
     GroupComponent,
     PermissionDeniedComponent,
@@ -91,6 +88,7 @@ import { FooterComponent } from './_helpers/footer/footer.component';
     SampleDetailComponent,
     MyContainerListComponent,
     FooterComponent,
+    TopNavbarComponent,
   ],
   imports: [
     BrowserModule,

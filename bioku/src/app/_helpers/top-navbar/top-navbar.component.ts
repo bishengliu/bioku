@@ -21,11 +21,11 @@ import { addAssistantAsync, addMemberAsync, removeAssistantAsync, removeMemberAs
 
 
 @Component({
-  selector: 'app-home-header',
-  templateUrl: './home-header.component.html',
-  styleUrls: ['./home-header.component.css']
+  selector: 'app-top-navbar',
+  templateUrl: './top-navbar.component.html',
+  styleUrls: ['./top-navbar.component.css']
 })
-export class HomeHeaderComponent implements OnInit {
+export class TopNavbarComponent implements OnInit {
   appName: string;
   appUrl: string;
   isLogin: boolean = false;
@@ -118,5 +118,4 @@ export class HomeHeaderComponent implements OnInit {
     }
   }
   ngOnInit() {}
-
 }
