@@ -1,3 +1,15 @@
-<p>
-  container-box-navbar works!
-</p>
+<div class="ui grid row">
+  <div class="sixteen wide column">   
+    <div class="ui stackable floated right menu small sidebar_menu_offset">
+      <a class="item disabled">
+        <span class="brown-text"><i class="marker icon"></i></span>
+      </a>
+      <a class="active teal item" [routerLink]="['/admin/groups']">
+        Container:
+      </a>
+      <a class="orange item" [routerLink]="['/admin/users']">
+        Box: 
+      </a>
+    </div>
+  </div>
+</div>
