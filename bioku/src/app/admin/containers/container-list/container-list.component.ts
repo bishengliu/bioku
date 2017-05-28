@@ -105,6 +105,7 @@ export class ContainerListComponent implements OnInit {
   }
   ngOnInit() { 
     this.containers = this.containerService.getAllContainers();
+    this.containers.subscribe(c=> console.log(c))
     this.groups = this.groupService.getAllGroups();
   }
 

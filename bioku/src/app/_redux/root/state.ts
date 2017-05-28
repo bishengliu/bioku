@@ -1,11 +1,14 @@
 import {User} from '../../_classes/User';
 import {Group} from '../../_classes/Group';
 import {AuthState} from '../account/account_state';
+import { ContainerState } from '../container/container_state';
 import {AppLog} from '../../_classes/Logger';
 
 export interface AppPartialState{
     //auth user 
     authInfo: AuthState;
+    //containers
+    containerInfo: ContainerState;
 }
 
 export interface AppState extends AppPartialState{
@@ -21,6 +24,11 @@ export const initialAppState: AppState = {
         authUser: null,
         authGroup: null,
         token: null
+    },
+    containerInfo: {
+        containers: null,
+        currentContainer: null,
+        currentBox: null
     },
     //logs
     appLogs: <AppLog[]>[]

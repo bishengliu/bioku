@@ -12,7 +12,10 @@ export class LogAppStateService{
     //get AppPartialState
     getAppPartialState(): AppPartialState{
         let appState = this.appStore.getState();
-        let appPartialState: AppPartialState ={ authInfo: null};
+        let appPartialState: AppPartialState = { 
+                authInfo: null, 
+                containerInfo: null 
+            };
         for (let k in appState){
             if (k !== 'appLogs'){ //HARD CODE OBJECT KEY HERE
                 appPartialState[k] = appState[k];

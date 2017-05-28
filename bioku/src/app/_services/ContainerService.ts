@@ -33,7 +33,7 @@ export class ContainerService{
         this.headers_NoContentType = new Headers({ 'Authorization': 'Token '+ this.token });
         this.options_NoContentType = new RequestOptions({ headers: this.headers_NoContentType });
     }
-    
+    //////////////////////////////////////////////////////////////////ADMIN///////////////////////////////////////////////////////
     //get container count
     getContainerCount(){
         if(!this.state.authInfo.authUser.is_superuser){
@@ -143,6 +143,17 @@ export class ContainerService{
         return this.http.post(query_url, body, this.options) //do provide header accorrding to django
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+
+
+
+    ////////////////////////////////////////////////PI OR assistants or researchers/////////////////////////////////////
+    myContainers(){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
+        return this.http.get(query_url, this.options)
+            .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
+            .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 }
 
