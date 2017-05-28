@@ -1,8 +1,8 @@
 <div class="ui vertical inverted masthead center aligned segment" [ngClass]="{nopadding: isLogin}">
     <div class="ui stackable right icon secondary inverted pointing menu small" *ngIf="isLogin">
-        <div class="item">
-            <a [routerLink]="['/containers']" ><i class="grid layout icon"></i> Containers</a>
-        </div> 
+        <a (click)="_toggleContainerSidebar()" class="item" *ngIf="isLogin && hasContainers">
+            <i class="large grid layout teal icon"></i>                
+        </a>
         <!--
         <div class="item" *ngIf="isAdmin">
             <a [routerLink]="['/admin']" ><i class="dashboard icon"></i> Admin</a>
@@ -174,4 +174,17 @@
         </div>
     </ng-sidebar>
 </ng-sidebar-container>
+</div>
+
+<!-- container sidebar -->
+<div class="container-sidebar">
+    <ng-sidebar-container sidebarClass="">
+        <ng-sidebar [(opened)]="_container_opened" position="left" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true">
+            <!-- list -->
+            <a class="item" (click)="go2ContainerList()"><i class="grid layout icon"></i>All Containers</a>
+            <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card link" (click)="displayContainerBoxes(container.pk)"></app-container-detail>
+            <!-- logout -->
+            <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
+        </ng-sidebar>
+    </ng-sidebar-container>
 </div>

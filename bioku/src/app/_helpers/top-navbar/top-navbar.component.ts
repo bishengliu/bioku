@@ -5,6 +5,7 @@ import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { User } from '../../_classes/User';
 import { Group, GroupInfo } from '../../_classes/Group';
+import { Container } from '../../_classes/Container';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 
@@ -18,6 +19,7 @@ import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 
 //redux action
 import { addAssistantAsync, addMemberAsync, removeAssistantAsync, removeMemberAsync } from '../../_redux/account/account_actions';
+import { SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 
 @Component({
   selector: 'app-top-navbar',
@@ -36,7 +38,11 @@ export class TopNavbarComponent implements OnInit {
   //for validation message
   showAssistantMsg: boolean = true;
   showMemberMsg: boolean = true;
-
+  //for my container list
+  hasContainers: boolean = false;
+  private _container_opened: boolean = false;
+  containers: Array<Container> = null;
+  currentContainer: Container = null;
   //check whether the auth user is admin
   isAdmin: boolean = false;
 
@@ -56,15 +62,21 @@ export class TopNavbarComponent implements OnInit {
   private _toggleSidebar() {
     this._opened = !this._opened;
   }
+  //container sidebar
+  private _toggleContainerSidebar() {
+    this._container_opened = !this._container_opened;
+  }
   //logout
   Logout(){
     this.logoutService.logOut();
     this._opened = false;
+    this._container_opened = false;
     this.router.navigate(['/']);
   }
   //edit my group profile
   editGroup(groupInfo: GroupInfo){
-    this._opened = !this._opened;
+    this._opened = false;
+    this._container_opened = false;
     //console.log(groupInfo);
     //navigate to group
     this.router.navigate(['/user/group', groupInfo.pk]);
@@ -105,6 +117,22 @@ export class TopNavbarComponent implements OnInit {
       this.showMemberMsg = true;     
     }
   }
+  //select a container
+  displayContainerBoxes(container_pk: number){
+    let currentContainer = this.containers.filter((c)=>c.pk===container_pk);
+    if(currentContainer.length > 0){
+      let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainer);
+      this.appStore.dispatch(setCurrentContainerAction);
+      this._opened = false;
+      this._container_opened = false;
+      this.router.navigate(['/containers', container_pk]);
+    }
+  }
+  go2ContainerList(){
+    this._opened = false;
+    this._container_opened = false;
+    this.router.navigate(['/containers']);
+  }
   //update redux state
   updateState(){
     let state= this.appStore.getState()
@@ -114,6 +142,14 @@ export class TopNavbarComponent implements OnInit {
       this.isLogin = state.authInfo.token? true: false;
       if(this.user){
         this.isAdmin = this.user.is_superuser;
+      }
+      if (this.isLogin){
+        //check the container list
+        if(state.containerInfo && state.containerInfo.containers){
+          this.containers = state.containerInfo.containers;
+          this.currentContainer = state.containerInfo.currentContainer;
+          this.hasContainers = true;
+        }
       }
     }
   }
