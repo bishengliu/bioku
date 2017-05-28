@@ -13,7 +13,6 @@ export class ContainerDetailComponent implements OnInit {
   constructor(@Inject(APP_CONFIG) private appSetting: any) { 
     this.appUrl = this.appSetting.URL;
   }
-
   ngOnInit() {}
 
 }

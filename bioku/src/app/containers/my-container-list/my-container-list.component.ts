@@ -11,7 +11,7 @@ import { Container } from '../../_classes/Container';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import { setMyContainersActionAsync, SetMyContainersAction, setMyContainersActionCreator } from '../../_redux/container/container_actions';
+import { setMyContainersActionAsync, SetMyContainersAction, setMyContainersActionCreator, SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 
 @Component({
   selector: 'app-my-container-list',
@@ -32,8 +32,16 @@ export class MyContainerListComponent implements OnInit {
     if (state.containerInfo && state.containerInfo.containers){
       this.containers = state.containerInfo.containers;
     }
-    console.log(this.containers);
   }
+  displayContainerBoxes(container_pk: number){
+    let currentContainer = this.containers.filter((c)=>c.pk===container_pk);
+    if(currentContainer.length > 0){
+      let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainer);
+      this.appStore.dispatch(setCurrentContainerAction);
+      this.router.navigate(['/containers', container_pk]);
+    }
+  }
+
   ngOnInit() { 
     this.appStore.dispatch(setMyContainersActionAsync(this.containerService, this.alertService, this.logAppStateService));
   }
