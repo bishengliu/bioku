@@ -19,7 +19,6 @@ import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 //redux action
 import { addAssistantAsync, addMemberAsync, removeAssistantAsync, removeMemberAsync } from '../../_redux/account/account_actions';
 
-
 @Component({
   selector: 'app-top-navbar',
   templateUrl: './top-navbar.component.html',
@@ -42,7 +41,8 @@ export class TopNavbarComponent implements OnInit {
   isAdmin: boolean = false;
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private groupService: GroupService,  
-  private router: Router, private cValidators: CustomFormValidators,private alertService: AlertService,private logAppStateService: LogAppStateService) {
+              private router: Router, private cValidators: CustomFormValidators,
+              private alertService: AlertService,private logAppStateService: LogAppStateService, ) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;

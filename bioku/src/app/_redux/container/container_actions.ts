@@ -52,13 +52,13 @@ export const unSetCurrentContainerActionCreator: ActionCreator<Action> =
 //set selected box of a container
 export interface SetCurrentBoxAction extends Action {
     currentContainer: Container;
-    curretnBox: Box;
+    currentBox: Box;
 }
 export const setCurrentBoxActionCreator: ActionCreator<SetCurrentBoxAction> = 
 (container: Container, box: Box) => ({
     type: C.SET_CURRENT_BOX,
     currentContainer: container,
-    curretnBox: box
+    currentBox: box
 });
 
 //unset selected box of a container
@@ -79,12 +79,12 @@ export const setMyContainersActionAsync =
     containerService.myContainers()
     .subscribe(
         data =>{
-            console.log(data);
+            //console.log(data);
             //get state: apppartialstate
             let preState: AppPartialState = logAppStateService.getAppPartialState();
             //set my containers list
             let setMyContainersAction: SetMyContainersAction = setMyContainersActionCreator(data);
-                dispatch(setMyContainersAction);
+            dispatch(setMyContainersAction);
             
             //get state: apppartialstate
             let nextState: AppPartialState = logAppStateService.getAppPartialState();
@@ -93,7 +93,8 @@ export const setMyContainersActionAsync =
             logAppStateService.log('GET MY CONTAINERS', preState, nextState, message);
         },
         (err)=>{
-            console.log(err)
+            console.log(err);
+            alertService.error('GET MY CONTAINERS FAILED!');
         }
     );
 }

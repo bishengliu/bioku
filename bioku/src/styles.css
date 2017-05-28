@@ -103,6 +103,12 @@ body{
   padding-left: 10px !important;
   padding-right: 10px !important;
 }
+.medium_padding{
+  padding-top: 30px !important;
+  padding-bottom: 10px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
 .fixed_width{
   width: 200px !important;
   margin-top: 10px !important;

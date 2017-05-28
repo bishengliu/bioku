@@ -21,20 +21,40 @@ export const containerReducer: Reducer<ContainerState> =
                 containers : containers,
                 currentContainer: state.currentContainer,
                 currentBox: state.currentBox
-            };
+            }
         case C.UNSET_MYCONTAINERS_LIST:
-            return state;
-
+            return {
+                containers : null,
+                currentContainer: null,
+                currentBox: null
+            }
         case C.SET_CURRENT_CONTAINER:
-            return state;
+            const container : Container = (<SetCurrentContainerAction>action).currentContainer;
+            return {
+                containers : state.containers,
+                currentContainer: container,
+                currentBox: state.currentBox
+            }
         case C.UNSET_CURRENT_CONTAINER:
-            return state;
-        
+            return {
+                containers : state.containers,
+                currentContainer: null,
+                currentBox: null
+            };        
         case C.SET_CURRENT_BOX:
-            return state;
+            const currentContainer : Container = (<SetCurrentBoxAction>action).currentContainer;
+            const currentBox : Box = (<SetCurrentBoxAction>action).currentBox;
+            return {
+                containers : state.containers,
+                currentContainer: currentContainer,
+                currentBox: currentBox
+            }
         case C.UNSET_CURRENT_BOX:
-            return state;
-
+            return {
+                containers : state.containers,
+                currentContainer: state.currentContainer,
+                currentBox: null
+            }
         default:
             return state;
         }
