@@ -55,6 +55,9 @@ import { SampleDetailComponent } from './containers/sample-detail/sample-detail.
 import { MyContainerListComponent } from './containers/my-container-list/my-container-list.component';
 import { FooterComponent } from './_helpers/footer/footer.component';
 import { TopNavbarComponent } from './_helpers/top-navbar/top-navbar.component';
+import { ContainerBoxesFilterComponent } from './containers/container-boxes-filter/container-boxes-filter.component';
+import { ContainerBoxNavbarComponent } from './containers/container-box-navbar/container-box-navbar.component';
+import { ContainerBoxCardviewComponent } from './containers/container-box-cardview/container-box-cardview.component';
 
 
 @NgModule({
@@ -89,6 +92,9 @@ import { TopNavbarComponent } from './_helpers/top-navbar/top-navbar.component';
     MyContainerListComponent,
     FooterComponent,
     TopNavbarComponent,
+    ContainerBoxesFilterComponent,
+    ContainerBoxNavbarComponent,
+    ContainerBoxCardviewComponent,
   ],
   imports: [
     BrowserModule,

@@ -119,9 +119,9 @@ export class TopNavbarComponent implements OnInit {
   }
   //select a container
   displayContainerBoxes(container_pk: number){
-    let currentContainer = this.containers.filter((c)=>c.pk===container_pk);
-    if(currentContainer.length > 0){
-      let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainer);
+    let currentContainers = this.containers.filter((c)=>c.pk===container_pk);
+    if(currentContainers.length > 0){
+      let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainers[0]);
       this.appStore.dispatch(setCurrentContainerAction);
       this._opened = false;
       this._container_opened = false;

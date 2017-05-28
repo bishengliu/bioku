@@ -10,5 +10,8 @@ export class Box{
     box: number;
     code39: string;
     qrcode: string;
+    color: string;
+    rate: number;
+    description: string;
     researchers: Array<User>;
 }

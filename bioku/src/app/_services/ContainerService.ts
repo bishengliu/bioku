@@ -71,10 +71,6 @@ export class ContainerService{
 
     //get group detail
     containerDetail(pk: number){      
-        if(!this.state.authInfo.authUser.is_superuser){
-            this.alertService.error('Please login as Admin!', true);
-            return Observable.throw('Please login as Admin');
-        }
         const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS+ pk +"/";
         return this.http.get(query_url, this.options)
             .map((response: Response) =>response.json())
@@ -152,6 +148,15 @@ export class ContainerService{
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.get(query_url, this.options)
             .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+
+    //GET THE GROUP BOXES IN A CONTAINER
+    containerGroupBoxes(container_pk: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/boxes/"; 
+        return this.http.get(query_url, this.options)
+        .map((response: Response) =>response.json())
             //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
