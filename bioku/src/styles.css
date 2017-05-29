@@ -187,3 +187,6 @@ div [class*="right floated"] {
   width: 190px !important;
   overflow: hidden;
 }
+.text-left{
+  text-align: left !important;
+}

@@ -179,7 +179,7 @@
 <!-- container sidebar -->
 <div class="container-sidebar">
     <ng-sidebar-container sidebarClass="">
-        <ng-sidebar [(opened)]="_container_opened" position="left" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true">
+        <ng-sidebar [(opened)]="_container_opened" position="left" mode="push" sidebarClass="ui inverted labeled icon vertical menu text-left" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true">
             <!-- list -->
             <a class="item" (click)="go2ContainerList()"><i class="grid layout icon"></i>All Containers</a>
             <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card link" (click)="displayContainerBoxes(container.pk)"></app-container-detail>

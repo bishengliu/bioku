@@ -1,27 +1,32 @@
 <div class="ui grid row">
-  <div class="sixteen wide column">   
-    <div class="ui stackable floated left menu small sidebar_menu_offset">
-      <div class="item">
-        <i class="filter icon"></i>
-      </div>
-      <div class="item">
-        <div class="ui labeled mini input">
-          <div class="ui label">Tower</div>
-          <input type="number" required>        
+  <div class="eight wide column"> 
+    <div class="ui form sidebar_menu_offset equal width">
+        <div class="fields inline">
+          <div class="five field">
+            <div class="ui left corner labeled input">
+              <input type="number" min="1" placeholder="type tower# to filter">
+              <div class="ui left corner label">
+                <i class="filter icon teal-text"></i>
+              </div>
+            </div>
+          </div>
+          <div class="five field">
+            <div class="ui left corner labeled input">
+              <input type="number" min="1" required placeholder="type shelf# to filter">
+              <div class="ui left corner label">
+                <i class="filter icon rown-text"></i>
+              </div>
+            </div>
+          </div>
+          <div class="five field">
+            <div class="ui left corner labeled input">
+              <input type="number" min="1" required placeholder="type box# to filter">
+              <div class="ui left corner label">
+                <i class="filter icon orange-text"></i>
+              </div>
+            </div>
+          </div>     
         </div>
-      </div>
-      <div class="item">
-        <div class="ui labeled item mini input">
-            <div class="ui label">Shelf</div>
-            <input type="number" required>        
-        </div>
-      </div>
-      <div class="item">
-        <div class="ui labeled item mini input">
-            <div class="ui label">Box</div>
-            <input type="number" required>        
-        </div> 
-      </div>           
-    </div>
+    </div>  
   </div>
 </div>
