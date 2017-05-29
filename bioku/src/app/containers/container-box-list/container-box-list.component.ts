@@ -37,12 +37,10 @@ export class ContainerBoxListComponent implements OnInit {
     }
   }
   updateBoxList(boxFilter:BoxFilter){
-    console.log(boxFilter);
-    if(+boxFilter.tower === -1 && +boxFilter.shelf === -1 && +boxFilter.box ===-1){
-      this.searcherBoxes = this.myBoxes;
-    }
-    else{
-      this.searcherBoxes = this.myBoxes.filter((e: Box)=> {
+    //restore the complete boxes
+    this.searcherBoxes = this.myBoxes;
+    //filter the machted boxes
+    this.searcherBoxes = this.myBoxes.filter((e: Box)=> {
         let isSelected = true;
         if(+boxFilter.tower != -1 && e.tower !== +boxFilter.tower){
           isSelected = false;
@@ -54,8 +52,7 @@ export class ContainerBoxListComponent implements OnInit {
           isSelected = false;
         }
         return isSelected;      
-      });
-    } 
+      }); 
   }
   ngOnInit() {
     this.sub = this.route.params

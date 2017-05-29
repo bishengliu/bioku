@@ -47,18 +47,31 @@ export class ContainerBoxesFilterComponent implements OnInit {
     //tower
     Observable.fromEvent(this.towerInput.nativeElement, 'keyup')
               .map((e:any) => e.target.value)
-              .do((num:number) => console.log(num))
-              .filter((num:number) => num > 0 && num <= this.currentContaner.tower )
+              .map((num:number) => {
+                let val: number = -1;
+                if(!isNaN(+num) && +num > 0){
+                  val = +num;}
+                if(!isNaN(+num) && +num > this.currentContaner.tower){
+                  val = this.currentContaner.tower;}
+                return val;
+               })
               .debounceTime(250)
               .subscribe((num: number)=> {
+                console.log(num);
                 this.filterObj.tower= num;
                 this.boxFilter.emit(this.filterObj);
               });
     //shelf
     Observable.fromEvent(this.shelfInput.nativeElement, 'keyup')
               .map((e:any) => e.target.value)
-              .do((num:number) => console.log(num))
-              .filter((num:number) => num > 0 && num <= this.currentContaner.shelf )
+              .map((num:number) => {
+                let val: number = -1;
+                if(!isNaN(+num) && +num > 0){
+                  val = +num;}
+                if(!isNaN(+num) && +num > this.currentContaner.shelf){
+                  val = this.currentContaner.shelf;}
+                return val;
+               })
               .debounceTime(250)
               .subscribe((num: number)=> {
                 this.filterObj.shelf= num;
@@ -67,8 +80,14 @@ export class ContainerBoxesFilterComponent implements OnInit {
     //box
     Observable.fromEvent(this.boxInput.nativeElement, 'keyup')
               .map((e:any) => e.target.value)
-              .do((num:number) => console.log(num))
-              .filter((num:number) => num > 0 && num <= this.currentContaner.box)
+              .map((num:number) => {
+                let val: number = -1;
+                if(!isNaN(+num) && +num > 0){
+                  val = +num;}
+                if(!isNaN(+num) && +num > this.currentContaner.box){
+                  val = this.currentContaner.box;}
+                return val;
+               })
               .debounceTime(250)
               .subscribe((num: number)=> { 
                 this.filterObj.box= num;
