@@ -15,6 +15,8 @@ import { AppState } from '../../_redux/root/state';
 })
 export class ContainerBoxCardviewComponent implements OnInit {
   @Input() box: Box;
+  rate: number = 0;
+  color: string = "#ffffff";
   user: User;
   appUrl: string;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) { 
@@ -29,6 +31,13 @@ export class ContainerBoxCardviewComponent implements OnInit {
       this.user = state.authInfo.authUser;
     }
   }
-
-  ngOnInit() {}
+  updateRate(rate: number){
+    console.log(rate);
+  }
+  ngOnInit() {
+    if(this.box != null){
+      this.rate =  this.box.rate == null ? 0 : this.box.rate;
+      this.color = this.box.color == null ? "#ffffff" : this.box.color;
+    }    
+  }
 }

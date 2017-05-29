@@ -1,11 +1,11 @@
 <!-- one card -->
-<div class="content">
-  <div class="header right floated"> Box: {{box.box_position}} </div>
+<div class="content" [style.background-color]="color">
+  <div class="header right floated">Box: {{box.box_position}} </div>
   <img *ngIf="user != null && user.profile.photo" class="ui avatar image" src="{{appUrl + user.profile.photo}}"><span class="meta">{{user.first_name.toUpperCase()+ " " + user.last_name.toUpperCase()}}</span>         
 </div>
 <div class="content">
   <div class="meta">tower#: {{box.tower}}, shelf#: {{box.shelf}}, box# {{box.box}}</div>
   <div class="description">{{box.description}}</div>
 </div>
-<div class="ui bottom attached segment"><sui-rating class="heart" [ngModel]="3" max="5"></sui-rating></div>
+<div class="ui bottom attached segment"><sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event)"></sui-rating></div>
 <!-- end one card -->
