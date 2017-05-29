@@ -138,7 +138,7 @@ body{
 }
 .sidebar_menu_offset{
   position: relative !important;
-  margin-left: 10px !important;
+  margin-left: 20px !important;
   margin-top: 5px !important;
   margin-right: 10px !important;
 }
@@ -189,4 +189,8 @@ div [class*="right floated"] {
 }
 .text-left{
   text-align: left !important;
+}
+.float-right{
+  position: relative;
+  float: right;
 }

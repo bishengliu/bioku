@@ -4,11 +4,11 @@
       <a class="item disabled">
         <span class="brown-text"><i class="marker icon"></i></span>
       </a>
-      <a class="active teal item" (click)="displayContainerBoxes(currentContaner.pk)" >
-        <span class="teal-text">{{ currentContaner != null ? currentContaner.name +" (" + currentContaner.temperature + ' &deg;C' + ")" : "NOT SELECTED"}}</span><i class="red-text icon caret right"></i>
+      <a class="active teal item" [routerLink]="['/containers', currentContaner.pk]" >
+        <span class="teal-text">{{ currentContaner != null ? currentContaner.name +" (" + currentContaner.temperature + ' &deg;C' + ")" : "not selected"}}</span><i class="red-text icon caret right"></i>
       </a>
-      <a class="orange item" [routerLink]="['/containers']" *ngIf="currentBox != null">
-        <span class="orange-text">Box: {{ currentBox != null ? currentBox.position : "NOT SELECTED"}}</span>
+      <a class="orange item" [routerLink]="['/containers', currentContaner.pk]" *ngIf="currentBox != null">
+        <span class="orange-text">Box: {{ currentBox != null ? currentBox.position : "not selected"}}</span>
       </a>
     </div>
   </div>

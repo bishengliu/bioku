@@ -15,3 +15,9 @@ export class Box{
     description: string;
     researchers: Array<User>;
 }
+
+export class BoxFilter {
+    tower: number;
+    shelf: number;
+    box: number
+}

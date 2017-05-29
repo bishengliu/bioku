@@ -1,4 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Container } from '../../_classes/Container';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Box, BoxFilter } from '../../_classes/Box';
+import { AppSetting} from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
+//redux
+import { AppStore } from '../../_providers/ReduxProviders';
+import { AppState , AppPartialState} from '../../_redux/root/state';
 
 @Component({
   selector: 'app-container-boxes-filter',
@@ -6,10 +15,64 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./container-boxes-filter.component.css']
 })
 export class ContainerBoxesFilterComponent implements OnInit {
+  currentContaner: Container= null;
+  currentBox: Box = null;
+  filterObj: BoxFilter = {
+    'tower': -1,
+    'shelf': -1,
+    'box': -1 }
 
-  constructor() { }
+  @Output() boxFilter: EventEmitter<BoxFilter> = new EventEmitter<BoxFilter> ();
+  //access dom
+  @ViewChild('tower') towerInput:ElementRef;
+  @ViewChild('shelf') shelfInput:ElementRef;
+  @ViewChild('box') boxInput:ElementRef;
 
-  ngOnInit() {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private router: Router) 
+  {
+    //subscribe store state changes
+    appStore.subscribe(()=> this.updateState());
+    this.updateState();
+  }
+  updateState(){
+    let state = this.appStore.getState();
+    if (state.containerInfo && state.containerInfo.currentContainer){
+      this.currentContaner = state.containerInfo.currentContainer;
+      this.currentBox = state.containerInfo.currentBox;
+    }
   }
 
+  ngOnInit() {
+    //tower
+    Observable.fromEvent(this.towerInput.nativeElement, 'keyup')
+              .map((e:any) => e.target.value)
+              .do((num:number) => console.log(num))
+              .filter((num:number) => num > 0 && num <= this.currentContaner.tower )
+              .debounceTime(250)
+              .subscribe((num: number)=> {
+                this.filterObj.tower= num;
+                this.boxFilter.emit(this.filterObj);
+              });
+    //shelf
+    Observable.fromEvent(this.shelfInput.nativeElement, 'keyup')
+              .map((e:any) => e.target.value)
+              .do((num:number) => console.log(num))
+              .filter((num:number) => num > 0 && num <= this.currentContaner.shelf )
+              .debounceTime(250)
+              .subscribe((num: number)=> {
+                this.filterObj.shelf= num;
+                this.boxFilter.emit(this.filterObj);
+              });
+    //box
+    Observable.fromEvent(this.boxInput.nativeElement, 'keyup')
+              .map((e:any) => e.target.value)
+              .do((num:number) => console.log(num))
+              .filter((num:number) => num > 0 && num <= this.currentContaner.box)
+              .debounceTime(250)
+              .subscribe((num: number)=> { 
+                this.filterObj.box= num;
+                this.boxFilter.emit(this.filterObj);
+              });
+  }
 }

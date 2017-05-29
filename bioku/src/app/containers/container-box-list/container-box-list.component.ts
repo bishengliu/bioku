@@ -5,7 +5,7 @@ import { AlertService } from '../../_services/AlertService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
-import { Box } from '../../_classes/Box';
+import { Box, BoxFilter } from '../../_classes/Box';
 import {  ContainerService } from '../../_services/ContainerService';
 
 //redux
@@ -21,7 +21,8 @@ export class ContainerBoxListComponent implements OnInit {
   id: number;
   private sub: any; //subscribe to params observable
   container: Container = null;
-  myBoxes: Array<Box> = []
+  myBoxes: Array<Box> = [];
+  searcherBoxes: Array<Box> = [];
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService,)
   { 
@@ -35,7 +36,27 @@ export class ContainerBoxListComponent implements OnInit {
       this.container = state.containerInfo.currentContainer;
     }
   }
-
+  updateBoxList(boxFilter:BoxFilter){
+    console.log(boxFilter);
+    if(+boxFilter.tower === -1 && +boxFilter.shelf === -1 && +boxFilter.box ===-1){
+      this.searcherBoxes = this.myBoxes;
+    }
+    else{
+      this.searcherBoxes = this.myBoxes.filter((e: Box)=> {
+        let isSelected = true;
+        if(+boxFilter.tower != -1 && e.tower !== +boxFilter.tower){
+          isSelected = false;
+        }
+        if(+boxFilter.shelf != -1 && e.shelf !== +boxFilter.shelf){
+          isSelected = false;
+        }
+        if(+boxFilter.box != -1 && e.box !== +boxFilter.box){
+          isSelected = false;
+        }
+        return isSelected;      
+      });
+    } 
+  }
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{
@@ -52,8 +73,8 @@ export class ContainerBoxListComponent implements OnInit {
         return this.containerService.containerGroupBoxes(this.id)
       })
       .subscribe((data: any)=>{
-        console.log(data)
         this.myBoxes = data;
+        this.searcherBoxes = data;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }

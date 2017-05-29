@@ -27,18 +27,8 @@ export class ContainerBoxNavbarComponent implements OnInit {
     let state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.currentContaner = state.containerInfo.currentContainer;
-
       this.currentBox = state.containerInfo.currentBox;
     }
   }
-    displayContainerBoxes(container_pk: number){
-      this.router.navigate(['/containers', container_pk]);
-  }
-  ngOnInit() {
-    let state = this.appStore.getState();
-    if (state.containerInfo && state.containerInfo.currentContainer){
-      this.currentContaner = state.containerInfo.currentContainer;
-      this.currentBox = state.containerInfo.currentBox;
-    }
-  }
+  ngOnInit() {}
 }
