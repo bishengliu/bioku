@@ -1,10 +1,10 @@
 <!-- one card -->
-<!-- container image -->
-        <div class="image fix_image_height">                
-            <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui medium rounded image">
-        </div>
-        <!-- end container image -->
-        <!-- container info -->
+  <!-- container image -->
+  <div class="image fix_image_height">                
+    <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui medium rounded image">
+  </div>
+  <!-- end container image -->
+<!-- container info -->
         <div class="content">                                
           <div class="meta">
             <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span><br>
@@ -17,5 +17,5 @@
             <span><i class="caret right icon"></i> {{'Description: '+ container.description}}</span><br>           
           </div>          
         </div>
-        <!-- end container info -->
+<!-- end container info -->
 <!-- end one card -->

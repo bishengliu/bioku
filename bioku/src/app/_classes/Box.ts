@@ -1,10 +1,11 @@
 import { User } from './User';
+import { Sample } from './Sample';
+
 export class Box{
     pk: number;
     box_position: string;
     box_vertical: number;
     box_horizontal: number;
-    temperature:number;
     tower: number;
     shelf: number;
     box: number;
@@ -14,6 +15,7 @@ export class Box{
     rate: number;
     description: string;
     researchers: Array<User>;
+    samples: Array<Sample>;
 }
 
 export class BoxFilter {
