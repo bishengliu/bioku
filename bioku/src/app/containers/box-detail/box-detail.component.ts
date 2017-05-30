@@ -55,17 +55,18 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
       })
       .mergeMap((container: any)=>{
+        //set the container
         this.container = container;
-        //get group boxes of the container
-        return this.containerService.getContainerBox(this.ct_pk, this.box_pos)
+
+        if(this.box != null){
+            return Observable.of(this.box);}
+        else{
+          //get group boxes of the container
+          return this.containerService.getContainerBox(this.ct_pk, this.box_pos);}        
       })
       .subscribe((box: Box)=>{
         this.box = box;
-        //dispatch redux
-        //let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(this.container, this.box);
-        //this.appStore.dispatch(setCurrentBoxAction);
-    },
-        
+    },        
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
