@@ -98,3 +98,24 @@ export const setMyContainersActionAsync =
         }
     );
 }
+
+export const setCurrentBoxActionAsync =
+(containerService: ContainerService, logAppStateService: LogAppStateService, container: Container, box: Box) =>
+(dispatch: Dispatch<AppState>, getState) =>
+{
+    containerService.getContainerBox(container.pk, box.box_position)
+    .subscribe( data =>{
+            //get state: apppartialstate
+            let preState: AppPartialState = logAppStateService.getAppPartialState();
+            //set current box
+            let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(container, box);
+            dispatch(setCurrentBoxAction);           
+            //get state: apppartialstate
+            let nextState: AppPartialState = logAppStateService.getAppPartialState();
+            let message: string = 'set current box!';
+            //logger the redux action
+            logAppStateService.log('SET CURRENT BOX', preState, nextState, message);
+        },
+        (err) => console.log(err)
+    );
+}

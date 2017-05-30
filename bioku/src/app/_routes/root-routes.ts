@@ -10,6 +10,7 @@ import { PermissionDeniedComponent } from '.././_helpers/permission-denied/permi
 import { LoginComponent } from '../account/login/login.component';
 import { MyContainerListComponent } from '../containers/my-container-list/my-container-list.component';
 import { ContainerBoxListComponent } from '../containers/container-box-list/container-box-list.component';
+import { BoxDetailComponent } from '../containers/box-detail/box-detail.component';
 //guards
 import { AuthGuard } from  '../_guards/AuthGuard';
 import { AdminGuard } from  '../_guards/AdminGuard';
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes},
   {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

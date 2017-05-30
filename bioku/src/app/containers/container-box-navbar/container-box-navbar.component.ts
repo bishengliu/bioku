@@ -30,5 +30,5 @@ export class ContainerBoxNavbarComponent implements OnInit {
       this.currentBox = state.containerInfo.currentBox;
     }
   }
-  ngOnInit() {}
+  ngOnInit() { }
 }

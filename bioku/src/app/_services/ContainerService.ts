@@ -156,8 +156,16 @@ export class ContainerService{
     containerGroupBoxes(container_pk: number){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/boxes/"; 
         return this.http.get(query_url, this.options)
-        .map((response: Response) =>response.json())
-            .do(data=>console.log(data))
+            .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //get one box
+    getContainerBox(container_pk: number, box_position: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/";
+        return this.http.get(query_url, this.options)
+            .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     //put the box color

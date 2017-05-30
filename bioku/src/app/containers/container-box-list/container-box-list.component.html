@@ -12,13 +12,13 @@
     <h3 class="ui violet left aligned header"><i class="icon table"></i>My Boxes</h3>
   </div>
   <div class="six wide column">
-    <a class="ui teal button float-right" [routerLink]="['./add']"><i class="icon add circle"></i>BOX</a>
+    <a class="ui teal button float-right" [routerLink]="['/']"><i class="icon add circle"></i>BOX</a>
   </div>
 </div>
 
 
 <div class="ui grid row small_padding stackable">
   <div class="ui link cards">
-    <app-container-box-cardview *ngFor="let box of searcherBoxes" [box]="box" class="ui black raised card"></app-container-box-cardview>
+    <app-container-box-cardview *ngFor="let box of searcherBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
   </div>
 </div>
