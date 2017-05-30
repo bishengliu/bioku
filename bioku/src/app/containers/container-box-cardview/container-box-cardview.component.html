@@ -7,5 +7,8 @@
   <div class="meta">tower#: {{box.tower}}, shelf#: {{box.shelf}}, box# {{box.box}}</div>
   <div class="description">{{box.description}}</div>
 </div>
-<div class="ui bottom attached segment"><sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event)"></sui-rating></div>
+<div class="ui bottom attached segment">
+  <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
+  <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
+</div>
 <!-- end one card -->

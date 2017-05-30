@@ -3,7 +3,8 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
-
+import { Container } from '../../_classes/Container';
+import {  ContainerService } from '../../_services/ContainerService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -19,7 +20,8 @@ export class ContainerBoxCardviewComponent implements OnInit {
   color: string = "#ffffff";
   user: User;
   appUrl: string;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) { 
+  container: Container = null;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
@@ -30,9 +32,18 @@ export class ContainerBoxCardviewComponent implements OnInit {
     if (state.authInfo && state.authInfo.authUser){
       this.user = state.authInfo.authUser;
     }
+    if (state.containerInfo && state.containerInfo.currentContainer){
+      this.container = state.containerInfo.currentContainer;
+    }
   }
-  updateRate(rate: number){
-    console.log(rate);
+  updateRate(rate: number, box_position: string){
+    this.rate = rate;
+    this.containerService.updateBoxRate(this.container.pk, box_position, rate)
+    .subscribe(()=>{},(err)=>console.log(err));  
+  }
+  clearRate(box_position: string){
+    this.containerService.updateBoxRate(this.container.pk, box_position, 0)
+    .subscribe(()=>this.rate =0,(err)=>console.log(err));
   }
   ngOnInit() {
     if(this.box != null){

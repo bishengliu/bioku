@@ -160,5 +160,29 @@ export class ContainerService{
             .do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    //put the box color
+    updateBoxRate(container_pk: number, box_position: string, rate: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/rate/";
+        let body: string = JSON.stringify({'rate': rate });
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //put box rate
+    updateColorRate(container_pk: number, box_position: string, color: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/color/";
+        let body: string = JSON.stringify({'color': color });
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //put box description
+    updateDescriptionRate(container_pk: number, box_position: string, description: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/description/";
+        let body: string = JSON.stringify({'description': description });
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }
 
