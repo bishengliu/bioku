@@ -40,3 +40,8 @@ export class Sample {
     vposition: string;
     researchers: Array<User>;
 }
+
+export class SampleFilter {
+    key: string;
+    value: string;
+} 

@@ -1,7 +1,28 @@
 <div class="ui grid row">
   <div class="eight wide column">
+    <app-sample-filter (sampleFilter)="updateSampleList($event)"></app-sample-filter>
   </div>
   <div class="eight wide column">
     <app-container-box-navbar></app-container-box-navbar>
   </div>
+</div>
+
+
+<div class="ui grid row small_padding stackable">
+  <div class="ten wide column">
+    <h3 class="ui violet left aligned header"><i class="icon table"></i>BOX SAMPLES</h3>
+  </div>
+  <div class="six wide column">
+    <a class="ui teal button float-right" [routerLink]="['/']"><i class="icon add circle"></i>SAMPLE(S)</a>
+  </div>
+</div>
+
+
+<div class="ui grid row small_padding stackable">
+  <div class="eight wide column">
+      <h3 class="ui violet left aligned header"><i class="icon table"></i>BOX Layout here</h3>
+    </div>
+    <div class="eight wide column">
+      <a class="ui teal button float-right" [routerLink]="['/']"><i class="icon add circle"></i>sample details or batch actions</a>
+    </div>
 </div>

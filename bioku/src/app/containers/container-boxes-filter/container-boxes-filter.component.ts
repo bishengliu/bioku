@@ -28,8 +28,7 @@ export class ContainerBoxesFilterComponent implements OnInit {
   @ViewChild('shelf') shelfInput:ElementRef;
   @ViewChild('box') boxInput:ElementRef;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router) 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) 
   {
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());

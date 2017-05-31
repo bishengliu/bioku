@@ -1,0 +1,23 @@
+<div class="ui grid row">
+  <div class="twelf wide column"> 
+    <div class="ui form sidebar_menu_offset equal width">
+        <div class="fields">
+          <label class="orange-text"><em>Filter Samples</em></label>
+          <div class="field">
+            <select class="ui search dropdown" #filterkey>
+              <option value="-1"> -- SELECT A KEYWORD -- </option>
+              <option value="{{v}}" *ngFor="let k of keywords; let v = index">{{k}}</option>
+            </select>
+          </div>
+          <div class="field" [ngClass]="{hidden: keyIsNotSelected}">
+            <div class="ui left corner labeled input">
+              <input type="text" name="value" placeholder="filter content" #filterValue>
+              <div class="ui left corner label">
+                <i class="filter icon orange-text"></i>
+              </div>
+            </div>
+          </div>   
+        </div>
+    </div>  
+  </div>
+</div>

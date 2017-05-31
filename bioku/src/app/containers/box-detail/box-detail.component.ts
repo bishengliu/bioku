@@ -6,6 +6,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
+import { Sample, SampleFilter } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 
 //redux
@@ -42,6 +43,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
     }
+  }
+  updateSampleList(sampleFilter: SampleFilter){
+    console.log('pt -->');
+    console.log(sampleFilter);
   }
   ngOnInit() {
     this.sub = this.route.params
