@@ -19,6 +19,6 @@
 
 <div class="ui grid row small_padding stackable">
   <div class="ui link cards">
-    <app-container-box-cardview *ngFor="let box of searcherBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
+    <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
   </div>
 </div>

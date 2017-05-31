@@ -25,7 +25,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   container: Container = null;
   currentBox: Box = null;
   myBoxes: Array<Box> = [];
-  searcherBoxes: Array<Box> = [];
+  searchedBoxes: Array<Box> = [];
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private logAppStateService: LogAppStateService)
   { 
@@ -44,9 +44,9 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   }
   updateBoxList(boxFilter:BoxFilter){
     //restore the complete boxes
-    this.searcherBoxes = this.myBoxes;
+    this.searchedBoxes = this.myBoxes;
     //filter the machted boxes
-    this.searcherBoxes = this.myBoxes.filter((e: Box)=> {
+    this.searchedBoxes = this.myBoxes.filter((e: Box)=> {
         let isSelected = true;
         if(+boxFilter.tower != -1 && e.tower !== +boxFilter.tower){
           isSelected = false;
@@ -83,7 +83,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       })
       .subscribe((data: any)=>{
         this.myBoxes = data;
-        this.searcherBoxes = data;
+        this.searchedBoxes = data;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }
