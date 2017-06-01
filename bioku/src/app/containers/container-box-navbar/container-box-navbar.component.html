@@ -4,10 +4,11 @@
       <a class="item disabled">
         <span class="brown-text"><i class="marker icon"></i></span>
       </a>
+      <a class="item" (click)="go2ContainerList()"><i class="grid layout icon"></i></a>
       <a class="teal item" [routerLink]="['/containers', currentContaner.pk]" >
         <span class="teal-text">{{ currentContaner != null ? currentContaner.name +" (" + currentContaner.temperature + ' &deg;C' + ")" : "not selected"}}</span><i class="red-text icon caret right"></i>
       </a>
-      <a class="orange item" [routerLink]="['/containers', currentContaner.pk]" *ngIf="currentBox != null">
+      <a class="orange item" [routerLink]="['/containers', currentContaner.pk, currentBox.box_position]" *ngIf="currentBox != null">
         <span [style.color]="currentBox.color">Box: {{ currentBox != null ? currentBox.box_position : "not selected"}}</span>
       </a>
     </div>
