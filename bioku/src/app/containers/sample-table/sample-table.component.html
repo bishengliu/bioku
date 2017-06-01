@@ -1,27 +1,82 @@
 <div class="sixteen wide column">
-  <table class="ui structured small teal single line compact padded table">
+  <table class="ui small teal single line compact padded table">
     <thead>
       <tr>
-        <th colspan="4" class="center aligned">Sample</th>
-        <th colspan="2" class="center aligned left-bordered">Tissue</th>
-        <th colspan="2" class="center aligned left-bordered">Attachment</th>
-        <th colspan="2" class="center aligned left-bordered">Researcher</th>
-      </tr>
-      <tr>
         <th class="">Name</th>
-        <th class="">POSITION</th>
-        <th class="">DATES</th>
-        <th class="">CODES</th>
-        
-        <th class="left-bordered">System</th>
+        <th class="">Position</th>
+        <th class="">Quantity</th>
+        <th class="">Freezing Date</th>
+        <th class="">Freezing Code</th>
+        <th class="">Sample Code</th>
+        <th class="">Pathology Code</th>
+        <th class="">Date In</th>
+        <th class="">Date Out</th>
         <th class="">Tissue</th>
-
-        <th class="left-bordered">Label</th>
-        <th class="">Description</th>
-
-        <th class="left-bordered">Name</th>
-        <th class="">Email</th>
-      </tr>
+        <th class="">Attachment</th>
+        <th class="">Researcher</th>
+        <th class="">Remarks</th>
+      </tr>      
     </thead>
+    <tbody>
+      <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1}">
+        <td class="collapsing" [style.border-left]="genLeftBorder(sample.color)">{{sample.name}}</td>
+        <td class="collapsing">{{sample.position}}</td>
+        <td class="collapsing">{{sample.quantity}}</td>
+        <td class="collapsing">{{sample.freezing_date}}</td>
+        <td class="collapsing">{{sample.freezing_code}}</td>
+        <td class="collapsing">{{sample.resgistration_code}}</td>
+        <td class="collapsing">{{sample.pathology_code}}</td>
+        <td class="collapsing">{{sample.date_in}}</td>
+        <td class="collapsing">{{sample.date_out}}</td>        
+        <td class="collapsing">
+          <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
+            <p class="nopadding no_margin" *ngFor="let tissue of sample.tissues">{{tissue.tissue != null ? tissue.tissue +' (' + tissue.system + ')' : ""}}</p>
+          </div>   
+        </td>
+        <td class="collapsing">
+          <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
+            <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments"><a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a></p>
+          </div>   
+        </td>
+        <td class="collapsing">
+          <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
+            <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">{{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}</p>
+          </div> 
+        </td>
+        <td class="collapsing">{{sample.description}}</td>  
+      </tr>
+    </tbody>
+    <tfoot class="full-width">
+        <tr>
+          <th class="no_side_padding no_side_margin" colspan="13">
+            <sui-progress class="indicating tiny" [value]="55" [maximum]="100" [autoSuccess]="true" [precision]="1">
+              <div [style.color]="color">
+                <span class="header">Box: {{box.box_position}}</span>
+                <span class="">(<i class="icon pie chart"></i>{{currentSampleCount}} Samples)</span>
+              </div>
+            </sui-progress>            
+          </th>
+        </tr>
+        <tr>
+          <th colspan="13">
+            <small><span class="header">BOX DESCRIPTION: </span>{{box.description}}</small>
+          </th>
+        </tr>      
+        <tr>        
+          <th colspan="13">                      
+            <div class="ui right floated">
+              <h5 class="header">Box Rating</h5>
+              <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
+              <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating>
+            </div>
+            <div [style.color]="color">
+              <span class="header">Box ({{box.box_position}}) Color: </span>
+            </div>
+            <div>
+                <color-picker [(ngModel)]="color" (ngModelChange)="updateColor($event, box.box_position)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
+            </div>
+          </th>
+        </tr>
+    </tfoot>
   </table>
 </div>

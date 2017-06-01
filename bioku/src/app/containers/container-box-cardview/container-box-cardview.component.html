@@ -7,10 +7,12 @@
   <div class="meta">tower#: {{box.tower}}, shelf#: {{box.shelf}}, box# {{box.box}}</div>
   <div class="description">{{box.description}}</div>
 </div>
-
-<div class="ui bottom attached segment">
-  <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
-  <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
+<div class="content">
+  <span class="ui bottom right floated">
+    <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
+    <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
+  </span>
+  <i class="icon pie chart"></i>{{currentSampleCount}} Samples
 </div>
 
 <!-- end one card -->

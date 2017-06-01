@@ -8,7 +8,7 @@ import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
 import { Sample, SampleFilter, Attachment, Tissue } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
-
+import {  UtilityService } from '../../_services/UtilityService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -30,7 +30,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   samples: Array<Sample> = [];
   searchedSamples: Array<Sample> = [];
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router, private containerService: ContainerService, private alertService: AlertService,)
+              private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
   { 
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
@@ -43,7 +43,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      this.samples = this.box.samples;
+      this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'));
       this.searchedSamples = this.samples;
     }
   }
@@ -81,7 +81,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         return false;
       });
-  }
+  }  
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{

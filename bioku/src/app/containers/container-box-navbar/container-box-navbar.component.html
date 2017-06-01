@@ -8,7 +8,7 @@
         <span class="teal-text">{{ currentContaner != null ? currentContaner.name +" (" + currentContaner.temperature + ' &deg;C' + ")" : "not selected"}}</span><i class="red-text icon caret right"></i>
       </a>
       <a class="orange item" [routerLink]="['/containers', currentContaner.pk]" *ngIf="currentBox != null">
-        <span class="orange-text">Box: {{ currentBox != null ? currentBox.box_position : "not selected"}}</span>
+        <span [style.color]="currentBox.color">Box: {{ currentBox != null ? currentBox.box_position : "not selected"}}</span>
       </a>
     </div>
   </div>

@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+//color picker
+//https://www.npmjs.com/package/ng2-color-picker
+import { ColorPickerModule } from 'ng2-color-picker';
 //symantic -ui
 //https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
 //sidebar: https://www.npmjs.com/package/ng-sidebar
@@ -17,6 +20,8 @@ import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 import { GuardProviders } from './_providers/GuardProviders';
+//UtilityServiceProvider
+import { UtilityServiceProvider } from './_providers/UtilityServiceProvider';
 //custom form validators
 import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
 //mydatepicker
@@ -109,6 +114,8 @@ import { SampleTableComponent } from './containers/sample-table/sample-table.com
     SuiModule,
     //mydatepicker
     MyDatePickerModule,
+    //ColorPickerModule
+    ColorPickerModule,
     //sidebar
     SidebarModule.forRoot(),
     //register root routers
@@ -123,6 +130,7 @@ import { SampleTableComponent } from './containers/sample-table/sample-table.com
     APIServiceProviders,
     LogerProvider,
     CustomFormValidatorsProvider,
+    UtilityServiceProvider,
     ],
   bootstrap: [AppComponent]
 })

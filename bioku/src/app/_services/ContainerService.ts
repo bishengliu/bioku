@@ -177,7 +177,7 @@ export class ContainerService{
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     //put box rate
-    updateColorRate(container_pk: number, box_position: string, color: string){
+    updateBoxColor(container_pk: number, box_position: string, color: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/color/";
         let body: string = JSON.stringify({'color': color });
         return this.http.put(query_url, body, this.options) //do provide header accorrding to django

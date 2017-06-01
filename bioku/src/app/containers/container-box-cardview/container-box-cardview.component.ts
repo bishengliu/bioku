@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, Input } from '@angular/core';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
+import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import {  ContainerService } from '../../_services/ContainerService';
@@ -21,6 +22,7 @@ export class ContainerBoxCardviewComponent implements OnInit {
   user: User;
   appUrl: string;
   container: Container = null;
+  currentSampleCount : number = 0;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
@@ -49,6 +51,7 @@ export class ContainerBoxCardviewComponent implements OnInit {
     if(this.box != null){
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? "#ffffff" : this.box.color;
+      this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
     }    
   }
 }

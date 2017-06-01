@@ -47,7 +47,22 @@ body{
 .hidden{
   display: none;
 }
+.noEvent
+{
+  pointer-events: none;
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer */
+  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}
 
+.clickable{
+  cursor: pointer;
+}
+.table-td-selected{
+  background-color: #C5CAE9 !important;
+}
 /*
 .footer{
     background: #537489;
@@ -95,10 +110,24 @@ body{
 .clearfix{
   clear: both;
 }
-.nopadding{
+.no_margin{
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.nopadding{  
   padding-top: 1px !important;
   padding-bottom: 1px !important;
 }
+
+.no_side_padding{  
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+} 
+.no_side_margin{
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
 .small_padding{
   padding-left: 10px !important;
   padding-right: 10px !important;
@@ -193,4 +222,7 @@ div [class*="right floated"] {
 .float-right{
   position: relative;
   float: right;
+}
+.very-grey-color{
+  color: rgb(237, 231, 246);
 }
