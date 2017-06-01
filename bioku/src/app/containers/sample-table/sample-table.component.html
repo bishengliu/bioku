@@ -49,7 +49,7 @@
     <tfoot class="full-width">
         <tr>
           <th class="no_side_padding no_side_margin" colspan="13">
-            <sui-progress class="indicating tiny" [value]="55" [maximum]="100" [autoSuccess]="true" [precision]="1">
+            <sui-progress class="indicating tiny" [value]="currentSampleCount" [maximum]="totalBoxCapacity" [autoSuccess]="true" [precision]="0">
               <div [style.color]="color">
                 <span class="header">Box: {{box.box_position}}</span>
                 <span class="">(<i class="icon pie chart"></i>{{currentSampleCount}} Samples)</span>

@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 //color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
 
@@ -20,10 +21,12 @@ import { AppState } from '../../_redux/root/state';
 export class SampleTableComponent implements OnInit {
   @Input() samples: Array<Sample>;
   selectedSamples: Array<number> =[] //sample pk
+  @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   appUrl: string;
   container: Container;
   box: Box;
   currentSampleCount: number = 0; //active samples in the box
+  totalBoxCapacity: number;
   user: User;
   rate: number = 0;
   color: string = "#ffffff"; //box color
@@ -53,6 +56,8 @@ export class SampleTableComponent implements OnInit {
         this.selectedSamples.splice(index, 1);
       }
     }
+    //emit observable
+    this.sampleSelected.emit(this.selectedSamples);
   }
 
   updateState(){
@@ -92,10 +97,12 @@ export class SampleTableComponent implements OnInit {
   }
   ngOnInit() {
     console.log(this.samples);
+    this.sampleSelected.emit([]);//emit empty sample selected
     if(this.box != null){
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? "#ffffff" : this.box.color;
       this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
+      this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
     }
   }
 

@@ -29,6 +29,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   box: Box = null;
   samples: Array<Sample> = [];
   searchedSamples: Array<Sample> = [];
+  selectedSamples: Array<number> = [];
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
   { 
@@ -81,6 +82,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         return false;
       });
+  }
+  //capture emit from sample-table
+  captureSampleSelected(pks: Array<number>){
+    this.selectedSamples = pks;
   }  
   ngOnInit() {
     this.sub = this.route.params

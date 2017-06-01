@@ -11,18 +11,18 @@ import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 
 @Component({
-  selector: 'app-container-box-cardview',
-  templateUrl: './container-box-cardview.component.html',
-  styleUrls: ['./container-box-cardview.component.css']
+  selector: 'app-box-detail-action-panel',
+  templateUrl: './box-detail-action-panel.component.html',
+  styleUrls: ['./box-detail-action-panel.component.css']
 })
-export class ContainerBoxCardviewComponent implements OnInit {
-  @Input() box: Box;
-  rate: number = 0;
-  color: string = "#ffffff";
+export class BoxDetailActionPanelComponent implements OnInit {
+  @Input() selectedSamples: Array<number>;
   user: User;
   appUrl: string;
   container: Container = null;
-  currentSampleCount : number = 0;
+  box: Box = null;
+  boxDescription: string;
+  samples: Array<Sample> =[];
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
@@ -37,21 +37,19 @@ export class ContainerBoxCardviewComponent implements OnInit {
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
+    if (state.containerInfo && state.containerInfo.currentBox){
+      this.box = state.containerInfo.currentBox;
+      this.boxDescription = this.box.description;
+    }
   }
-  updateRate(rate: number, box_position: string){
-    this.rate = rate;
-    this.containerService.updateBoxRate(this.container.pk, box_position, rate)
-    .subscribe(()=>{},(err)=>console.log(err));  
+  //find the samples from selected pks
+  findSamples(pks: Array<number>){
+    let samples = [];
+    if (pks != null && pks.length >0){
+      samples = this.box.samples.filter((s:Sample)=> pks.indexOf(+s.pk) !== -1);
+    }
+    return samples;
   }
-  clearRate(box_position: string){
-    this.containerService.updateBoxRate(this.container.pk, box_position, 0)
-    .subscribe(()=>this.rate =0,(err)=>console.log(err));
-  }
-  ngOnInit() {
-    if(this.box != null){
-      this.rate =  this.box.rate == null ? 0 : this.box.rate;
-      this.color = this.box.color == null ? "#ffffff" : this.box.color;
-      this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
-    }    
-  }
+  ngOnInit() {}
+
 }

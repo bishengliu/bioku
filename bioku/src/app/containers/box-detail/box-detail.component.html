@@ -20,9 +20,9 @@
 
 <div class="ui small_padding stackable very relaxed grid row">
   <div class="twelve wide column">
-      <app-sample-table [samples]="searchedSamples"></app-sample-table>
+      <app-sample-table [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table>
   </div>
   <div class="four wide column left-bordered">
-      <p>sample details or batch actions</p>
+      <app-box-detail-action-panel [selectedSamples]="selectedSamples"></app-box-detail-action-panel>
   </div>
 </div>
