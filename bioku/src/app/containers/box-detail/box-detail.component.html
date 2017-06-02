@@ -18,11 +18,11 @@
 </div>
 
 
-<div class="ui small_padding stackable very relaxed grid row">
-  <div class="twelve wide column">
-      <app-sample-table [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table>
+<div class="ui small_padding stackable grid">
+  <div class="ten wide tablet twelve wide computer column">
+    <app-sample-table [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table>  
   </div>
-  <div class="four wide column left-bordered">
+  <div class="six wide tablet four wide computer column">
       <app-box-detail-action-panel [selectedSamples]="selectedSamples"></app-box-detail-action-panel>
   </div>
 </div>

@@ -72,7 +72,7 @@ export class SampleTableComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
     }
   }
-  genLeftBorder(color: string){
+  genBorderStyle(color: string){
     let cssValue: string = "1px solid rgba(34,36,38,.15)";
     if(color != null){
       cssValue = "2px solid " + color;
@@ -93,6 +93,11 @@ export class SampleTableComponent implements OnInit {
   updateColor(color: string, box_position: string){
     this.color = color;
     this.containerService.updateBoxColor(this.container.pk, box_position, color)
+    .subscribe(()=>{},(err)=>console.log(err));
+  }
+  //update description
+  updateDescription(text: string, box_position: string){
+    this.containerService.updateBoxDescription(this.container.pk, box_position, text)
     .subscribe(()=>{},(err)=>console.log(err));
   }
   ngOnInit() {

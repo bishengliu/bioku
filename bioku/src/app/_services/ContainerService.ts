@@ -185,7 +185,7 @@ export class ContainerService{
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     //put box description
-    updateDescriptionRate(container_pk: number, box_position: string, description: string){
+    updateBoxDescription(container_pk: number, box_position: string, description: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/description/";
         let body: string = JSON.stringify({'description': description });
         return this.http.put(query_url, body, this.options) //do provide header accorrding to django

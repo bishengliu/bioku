@@ -1,5 +1,5 @@
-<div class="sixteen wide column">
-  <table class="ui small teal single line compact padded table">
+<div class="">
+  <table class="ui small teal single line compact padded table" [style.border-top]="genBorderStyle(color)">
     <thead>
       <tr>
         <th class="">Name</th>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1}">
-        <td class="collapsing" [style.border-left]="genLeftBorder(sample.color)">{{sample.name}}</td>
+        <td class="collapsing" [style.border-left]="genBorderStyle(sample.color)">{{sample.name}}</td>
         <td class="collapsing">{{sample.position}}</td>
         <td class="collapsing">{{sample.quantity}}</td>
         <td class="collapsing">{{sample.freezing_date}}</td>
@@ -59,7 +59,11 @@
         </tr>
         <tr>
           <th colspan="13">
-            <small><span class="header">BOX DESCRIPTION: </span>{{box.description}}</small>
+            <span class="header">BOX DESCRIPTION: </span>
+              <div class="ui fluid icon input">
+                <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
+                <i class="refresh icon"></i>
+              </div>
           </th>
         </tr>      
         <tr>        
