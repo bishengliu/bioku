@@ -1,11 +1,119 @@
-<div class="ui raised red segment">
-  <div *ngIf="selectedSamples != null && selectedSamples.length > 0">
-    <p *ngFor="let pk of selectedSamples"> {{pk}}</p>
-  </div>
-  <div *ngIf="selectedSamples == null || selectedSamples.length == 0" class="ui list">
-    <div class="item">Click one sample to display the sample details</div>
-    <div class="item">Select multiple samples to take batch actions</div>
-    <div class="item">Click add sample button to add a sample</div>
+<div class="ui stacked raised segments">
+  <div class="ui center aligned tertiary inverted segment" [style.background-color]="box.color"><p>BOX ACTION PAENL</p></div>
+  <div class="ui segment">
+    <div *ngIf="selectedSamples != null">
+      <div *ngIf="selectedSamples.length == 1">
+        <div>
+          <!--msg-->
+          <div class="ui icon message" *ngIf="action_panel_msg">
+            <i class="warning sign icon red-text"></i>
+            <div class="content">
+              <p class="red-text">{{action_panel_msg}}</p>
+            </div>
+          </div>
+          <!--msg-->
+          <table class="ui sortable small striped compact padded single line table">
+            <tbody *ngFor="let sample of findSamples(selectedSamples)">
+              <tr><td class="six wide">Name</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'name', true)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+              <tr><td class="">Position</td>
+                <td class="">
+                  <a class="ui right floated"><i class="edit icon grey-text"></i></a>
+                  <div>{{sample.position}}</div>
+                  </td>
+              </tr>
+              <tr><td class="">Quantity</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="numner" min="1" [(ngModel)]="sample.quantity" placeholder="update sample quantity ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'quantity', true)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+              <tr><td class="">Freezing Date</td>
+                <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" (ngModelChange)="updateSampleDetail($event, box.box_position, 'freezing_date', true)" required></my-date-picker>
+              </tr>
+              <tr><td class="">Freezing Code</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'freezing_code', false)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+              <tr><td class="">Sample Code</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.resgistration_code" placeholder="update sample resgistration code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'resgistration_code', false)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+              <tr><td class="">Pathology Code</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.pathology_code" placeholder="update sample pathology code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'pathology_code', false)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+              <tr><td class="">Date In</td><td class="">{{sample.date_in}}</td></tr>
+              <tr><td class="">Date Out</td><td class="">{{sample.date_out}}</td></tr>
+              <tr>
+                <td class="">Tissue</td>
+                <td class="">
+                    <a class="ui right floated"><i class="edit icon grey-text"></i></a>
+                    <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
+                      <p class="nopadding no_margin" *ngFor="let tissue of sample.tissues">{{tissue.tissue != null ? tissue.tissue +' (' + tissue.system + ')' : ""}}</p>
+                    </div>   
+                  </td>
+              </tr>
+              <tr>
+                <td class="">Attachment</td>
+                <td class="">
+                    <a class="ui right floated"><i class="edit icon grey-text"></i></a>
+                    <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
+                      <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments"><a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a></p>
+                    </div>   
+                  </td>
+                </tr>
+              <tr>
+                <td class="">Researcher</td>
+                <td class="">
+                    <a class="ui right floated"><i class="edit icon grey-text"></i></a>
+                    <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
+                      <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">{{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}</p>
+                    </div> 
+                  </td>
+              </tr>
+              <tr><td class="">Remarks</td>
+                <td class="ten wide">
+                  <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.description" placeholder="update sample description ..." (ngModelChange)="updateSampleDetail($event, box.box_position, 'description', false)"><i class="edit icon"></i>
+                  </div>                                              
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="2">
+                  need to update sample color
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>        
+      </div>
+      <div *ngIf="selectedSamples.length > 1">
+        <p *ngFor="let pk of selectedSamples"> {{pk}}</p>
+      </div>      
+    </div>
+    <div *ngIf="selectedSamples == null || selectedSamples.length == 0" class="ui list">
+      <div class="item"><i class="icon caret right"></i>Click one sample to display the sample details</div>
+      <div class="item"><i class="icon caret right"></i>Select multiple samples to take batch actions</div>
+      <div class="item"><i class="icon caret right"></i>Click add sample button to add a sample</div>
+    </div>
   </div>
 </div>
 

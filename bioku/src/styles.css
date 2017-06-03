@@ -146,7 +146,9 @@ body{
 .fixed_avatar_height{
   height: 1.5rem !important;
 }
-
+.grey-text{
+  color: rgb(158, 158, 158);
+}
 .teal-text{
   color: #00B5AD;
 }
@@ -225,4 +227,13 @@ div [class*="right floated"] {
 }
 .very-grey-color{
   color: rgb(237, 231, 246);
+}
+.wide-form{
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.mydp{
+  margin-left: 10px !important;
+  width: 95% !important;
 }
