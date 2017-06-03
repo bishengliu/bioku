@@ -51,9 +51,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
     //restore the complete boxes
-    this.searchedSamples = this.samples;
+    this.searchedSamples = this.samples.filter((e:Sample) => e.pk != null);
     //filter the machted boxes
-    this.searchedSamples = this.samples.filter((e: Sample)=> {
+    if(sampleFilter.value != null){
+          this.searchedSamples = this.samples.filter((e: Sample)=> {
         if(sampleFilter.key=="label"){
           //get the attachment label
           if (e.attachments != null && e.attachments.length > 0){
@@ -82,6 +83,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         return false;
       });
+    }
   }
   //capture emit from sample-table
   captureSampleSelected(pks: Array<number>){

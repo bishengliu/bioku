@@ -38,14 +38,21 @@ export class SampleFilterComponent implements OnInit {
               .subscribe((key:string)=> {
                 this.filterObj.key = key;
                 this.filterObj.value = null;
+                this.sampleFilter.emit(this.filterObj);   
               });
     Observable.fromEvent(this.filterValue.nativeElement, 'keyup')
               .map((e:any) => e.target.value)
-              .filter((val:string)=>val != null && val != "")
+              //.filter((val:string)=>val != null && val != "")
               .debounceTime(250)
               .subscribe((val: string)=> {
+                if(val == "" || val == null){
+                  this.filterObj.value= null;
+                  this.sampleFilter.emit(this.filterObj);  
+                }
+                else{
                   this.filterObj.value= val;
-                  this.sampleFilter.emit(this.filterObj);              
+                  this.sampleFilter.emit(this.filterObj);  
+                }                              
               });
   }
 }

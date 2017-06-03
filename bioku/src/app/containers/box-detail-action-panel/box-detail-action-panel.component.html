@@ -1,9 +1,14 @@
 <div class="ui raised red segment">
-  <p *ngFor="let pk of selectedSamples"> {{pk}}</p>
-  <p>show sample details when only one sample is selected</p>
-  <p>show batch sample actions when multiple samples are selected</p>
-  <p>when add sample button is clicked, show the form</p>
+  <div *ngIf="selectedSamples != null && selectedSamples.length > 0">
+    <p *ngFor="let pk of selectedSamples"> {{pk}}</p>
+  </div>
+  <div *ngIf="selectedSamples == null || selectedSamples.length == 0" class="ui list">
+    <div class="item">Click one sample to display the sample details</div>
+    <div class="item">Select multiple samples to take batch actions</div>
+    <div class="item">Click add sample button to add a sample</div>
+  </div>
 </div>
+
 
 <!--
 ag2 drag drop

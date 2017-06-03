@@ -110,5 +110,8 @@ export class SampleTableComponent implements OnInit {
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
     }
   }
-
+  ngOnChanges(){
+    this.selectedSamples = []; //clear selected samples
+    this.sampleSelected.emit(null); //emit selected sample pk
+  }
 }
