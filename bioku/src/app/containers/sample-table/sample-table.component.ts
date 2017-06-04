@@ -75,7 +75,7 @@ export class SampleTableComponent implements OnInit {
   genBorderStyle(color: string){
     let cssValue: string = "1px solid rgba(34,36,38,.15)";
     if(color != null){
-      cssValue = "2px solid " + color;
+      cssValue = "3px solid " + color;
     }
     return cssValue;
   }
