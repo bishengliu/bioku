@@ -17,7 +17,7 @@
               <tr><td class="six wide">Name</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'name', true)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'name', true)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
@@ -30,32 +30,32 @@
               <tr><td class="">Quantity</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="numner" min="1" [(ngModel)]="sample.quantity" placeholder="update sample quantity ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'quantity', true)"><i class="edit icon"></i>
+                    <input class="" type="numner" min="1" [(ngModel)]="sample.quantity" placeholder="update sample quantity ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
               <tr><td class="">Freezing Date</td>            
                 <input class="hidden" [(ngModel)]="sample.freezing_date">          
-                <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'freezing_date', true)" required></my-date-picker>
+                <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_date', true)" required></my-date-picker>
               </tr>
               <tr><td class="">Freezing Code</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'freezing_code', false)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_code', false)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
               <tr><td class="">Sample Code</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.resgistration_code" placeholder="update sample resgistration code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'resgistration_code', false)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.resgistration_code" placeholder="update sample resgistration code ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'resgistration_code', false)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
               <tr><td class="">Pathology Code</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.pathology_code" placeholder="update sample pathology code ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'pathology_code', false)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.pathology_code" placeholder="update sample pathology code ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'pathology_code', false)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
@@ -91,7 +91,7 @@
               <tr><td class="">Remarks</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.description" placeholder="update sample description ..." (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'description', false)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.description" placeholder="update sample description ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'description', false)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>

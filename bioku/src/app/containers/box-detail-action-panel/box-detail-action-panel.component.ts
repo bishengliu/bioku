@@ -83,13 +83,16 @@ export class BoxDetailActionPanelComponent implements OnInit {
       return freezing_date;
   }
 
-  updateSampleDetail(value:any, box_position: string, sample_position: string, data_attr: string, required: boolean){
+  updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
     if((value == "" || value == null) && required){
       this.action_panel_msg = data_attr + " is required!"}
     else{
-      this.action_panel_msg = null;       
+      this.action_panel_msg = null;            
       //sample.freezing_date
-      if(data_attr == "freezing_date") { value = value.formatted;}      
+      if(data_attr == "freezing_date") { 
+        value = value.formatted;
+        sample.freezing_date =  value;
+      }      
       this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
           .subscribe(()=>{},(err)=>console.log(err));
     } 
