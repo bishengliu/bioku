@@ -19,7 +19,8 @@ import { IColorPickerConfiguration } from 'ng2-color-picker';
   styleUrls: ['./box-detail-action-panel.component.css']
 })
 export class BoxDetailActionPanelComponent implements OnInit {
-  @Input() selectedSamples: Array<number>;
+  @Input() selectedSamples: string; //convert it to string in the parent cmp and force triger the ngOnChanges() detection in this cmp; if set to array the ngOnChanges() won't be triggered
+  samplePKs: Array<number> = [];
   user: User;
   appUrl: string;
   container: Container = null;
@@ -44,8 +45,10 @@ export class BoxDetailActionPanelComponent implements OnInit {
     width: 8,
     height: 8,
     borderRadius: 2};
+    
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
+    this.availableColors = this.appSetting.APP_COLORS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -76,30 +79,34 @@ export class BoxDetailActionPanelComponent implements OnInit {
       let freezing_date = {};
       if(date){
         let dArray = date.split('-');
-        freezing_date ={date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]}};
-      }
+        freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
       return freezing_date;
   }
 
   updateSampleDetail(value:any, box_position: string, sample_position: string, data_attr: string, required: boolean){
     if((value == "" || value == null) && required){
-      this.action_panel_msg = data_attr + " is required!"
-    }
+      this.action_panel_msg = data_attr + " is required!"}
     else{
-      this.action_panel_msg = null;
-      value = (data_attr == "freezing_date") ? value.formatted : value; 
+      this.action_panel_msg = null;       
+      //sample.freezing_date
+      if(data_attr == "freezing_date") { value = value.formatted;}      
       this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
-          .subscribe(()=>{
-            if (data_attr == "freezing_date"){this.freezing_date = this.parseFreezingDate(value);}
-          },(err)=>console.log(err));
+          .subscribe(()=>{},(err)=>console.log(err));
     } 
   }
   ngOnInit() {}
   ngOnChanges(){
-    if (this.selectedSamples != null && this.selectedSamples.length==1){
-      let samples = this.findSamples(this.selectedSamples);
-      this.freezing_date = this.parseFreezingDate(samples[0].freezing_date); //clear selected samples
-      this.availableColors = this.appSetting.APP_COLORS;
+    this.samplePKs = [];
+    if(this.selectedSamples != null && this.selectedSamples != ""){
+      let sArray = this.selectedSamples.split(',');     
+      for(let i=0; i< sArray.length; i++){
+        if(!isNaN(+sArray[i])){
+          this.samplePKs.push(+sArray[i]);}
+        }
+      if(this.samplePKs != null && this.samplePKs.length==1)  {
+        let samples = this.findSamples(this.samplePKs);
+      this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
+      }    
     }
   }
 }
