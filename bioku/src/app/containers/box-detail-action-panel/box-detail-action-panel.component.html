@@ -23,8 +23,16 @@
               </tr>
               <tr><td class="">Position</td>
                 <td class="">
-                  <a class="ui right floated"><i class="edit icon grey-text"></i></a>
-                  <div>{{sample.position}}</div>
+                  <a class="ui right floated"><i class="exchange icon grey-text"></i></a>
+                  <div>
+                    <div class="ui right floated">
+                      <div class="ui input">
+                        <input class="" type="text" [(ngModel)]="sample.vposition" placeholder="update sample vposition ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
+                        <input class="" type="numner" min="1" [(ngModel)]="sample.hposition" placeholder="update sample hposition ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
+                      </div>                      
+                    </div> 
+                    <div>{{sample.position}}</div>
+                  </div>
                   </td>
               </tr>
               <tr><td class="">Quantity</td>
