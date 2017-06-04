@@ -237,3 +237,7 @@ div [class*="right floated"] {
   margin-left: 10px !important;
   width: 95% !important;
 }
+.color-picker-dropdown{
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+}

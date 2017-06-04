@@ -32,8 +32,7 @@ export class SampleTableComponent implements OnInit {
   color: string = "#ffffff"; //box color
 
   //color picker
-  availableColors: Array<string> = ['#F44336', '#F44336', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3','#03A9F4',
-                                    '#00BCD4','#009688','#4CAF50','#8BC34A','#CDDC39','#FFEB3B','#FFC107','#FF9800','#FF5722','#795548','#9E9E9E','#607D8B','#000000', '#FFFFFF'];
+  availableColors: Array<string> = [];
   pickerOptions: IColorPickerConfiguration = {
     width: 25,
     height: 25,
@@ -41,6 +40,7 @@ export class SampleTableComponent implements OnInit {
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
+    this.availableColors = this.appSetting.APP_COLORS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();

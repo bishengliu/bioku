@@ -192,5 +192,15 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+
+
+    //////////////////////////////////samples//////////////////////////////////////////
+    updateSampleDetail(container_pk: number, box_position: string, sample_position: string, data_attr: string, value: any){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/update";
+        let body: string = JSON.stringify({'key': data_attr, 'value': value });
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }
 

@@ -11,7 +11,8 @@ import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 //mydatepicker
 import {IMyOptions} from 'mydatepicker';
-
+//color picker
+import { IColorPickerConfiguration } from 'ng2-color-picker';
 @Component({
   selector: 'app-box-detail-action-panel',
   templateUrl: './box-detail-action-panel.component.html',
@@ -36,7 +37,13 @@ export class BoxDetailActionPanelComponent implements OnInit {
         showSelectorArrow: false,
         editableDateField: false,
         openSelectorOnInputClick: true};
-  
+
+  //color picker
+  availableColors: Array<string> = [];
+  pickerOptions: IColorPickerConfiguration = {
+    width: 8,
+    height: 8,
+    borderRadius: 2};
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
@@ -66,34 +73,33 @@ export class BoxDetailActionPanelComponent implements OnInit {
   }
 
   parseFreezingDate(date: string){
-    console.log(date);
       let freezing_date = {};
       if(date){
         let dArray = date.split('-');
         freezing_date ={date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]}};
       }
-      console.log(freezing_date);
       return freezing_date;
   }
 
-  updateSampleDetail(value:any, box_position: string, data_attr: string, required: boolean){
-    console.log(value);
+  updateSampleDetail(value:any, box_position: string, sample_position: string, data_attr: string, required: boolean){
     if((value == "" || value == null) && required){
       this.action_panel_msg = data_attr + " is required!"
     }
-    else
-    {
+    else{
       this.action_panel_msg = null;
-      //this.containerService.updateBoxDescription(this.container.pk, box_position, data_attr, value:any)
-      //   .subscribe(()=>{},(err)=>console.log(err));
-    }
-    
+      value = (data_attr == "freezing_date") ? value.formatted : value; 
+      this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
+          .subscribe(()=>{
+            if (data_attr == "freezing_date"){this.freezing_date = this.parseFreezingDate(value);}
+          },(err)=>console.log(err));
+    } 
   }
   ngOnInit() {}
   ngOnChanges(){
     if (this.selectedSamples != null && this.selectedSamples.length==1){
       let samples = this.findSamples(this.selectedSamples);
       this.freezing_date = this.parseFreezingDate(samples[0].freezing_date); //clear selected samples
+      this.availableColors = this.appSetting.APP_COLORS;
     }
   }
 }
