@@ -66,7 +66,7 @@
               <tr><td class="">Sample Code</td>
                 <td class="ten wide">
                   <div class="ui icon input wide-form">
-                    <input class="" type="text" [(ngModel)]="sample.resgistration_code" placeholder="update sample resgistration code ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'resgistration_code', false)"><i class="edit icon"></i>
+                    <input class="" type="text" [(ngModel)]="sample.registration_code" placeholder="update sample resgistration code ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'registration_code', false)"><i class="edit icon"></i>
                   </div>                                              
                 </td>
               </tr>
@@ -77,8 +77,8 @@
                   </div>                                              
                 </td>
               </tr>
-              <tr><td class="">Date In</td><td class="">{{sample.date_in}}</td></tr>
-              <tr><td class="">Date Out</td><td class="">{{sample.date_out}}</td></tr>
+              <tr><td class="">Date In</td><td class="">{{sample.date_in | date: 'yyyy-MM-dd'}}</td></tr>
+              <tr><td class="">Date Out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
               <tr>
                 <td class="">Tissue</td>
                 <td class="">
@@ -118,17 +118,16 @@
                   <div >
                     <span [style.color]="sample.color" class="header">Sample {{sample.box_position}} Color: </span>
                   </div>
-                  <color-picker [(ngModel)]="sample.color" (ngModelChange)="updateSampleDetail($event, box.box_position, sample.position, 'color', false)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>                                            
+                  <color-picker [(ngModel)]="sample.color" (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>                                            
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <button *ngIf="sample.date_out == null" class="fluid ui mini blue button" (click)="takeSampleOut(box.box_position, sample, sample.position, true)">Take Sample Out</button>
+                  <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" (click)="takeSampleOut(box.box_position, sample, sample.position, false)">Put Sample Back</button>
                 </td>
               </tr>
             </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="2">
-                  need to update sample color
-                </th>
-              </tr>
-            </tfoot>
           </table>
         </div>        
       </div>

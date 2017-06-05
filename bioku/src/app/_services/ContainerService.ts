@@ -210,5 +210,19 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    takeSampleOut(container_pk: number, box_position: string, sample_position: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/take/";
+        let body: string = JSON.stringify({ });
+        return this.http.put(query_url, body, this.options)
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    putSampleBack(container_pk: number, box_position: string, sample_position: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/back/";
+        let body: string = JSON.stringify({ });
+        return this.http.put(query_url, body, this.options)
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }
 

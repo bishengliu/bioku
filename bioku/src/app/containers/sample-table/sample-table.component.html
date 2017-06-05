@@ -22,12 +22,12 @@
         <td class="collapsing" [style.border-left]="genBorderStyle(sample.color)">{{sample.name}}</td>
         <td class="collapsing">{{sample.position}}</td>
         <td class="collapsing">{{sample.quantity}}</td>
-        <td class="collapsing">{{sample.freezing_date}}</td>
+        <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td>
         <td class="collapsing">{{sample.freezing_code}}</td>
-        <td class="collapsing">{{sample.resgistration_code}}</td>
+        <td class="collapsing">{{sample.registration_code}}</td>
         <td class="collapsing">{{sample.pathology_code}}</td>
-        <td class="collapsing">{{sample.date_in}}</td>
-        <td class="collapsing">{{sample.date_out}}</td>        
+        <td class="collapsing">{{sample.date_in | date: 'yyyy-MM-dd'}}</td>
+        <td class="collapsing">{{sample.date_out| date: 'yyyy-MM-dd'}}</td>        
         <td class="collapsing">
           <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
             <p class="nopadding no_margin" *ngFor="let tissue of sample.tissues">{{tissue.tissue != null ? tissue.tissue +' (' + tissue.system + ')' : ""}}</p>

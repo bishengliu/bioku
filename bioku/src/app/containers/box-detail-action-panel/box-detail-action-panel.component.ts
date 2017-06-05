@@ -130,7 +130,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }    
   }
   updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
-    console.log("hit...");
     this.action_panel_msg = null;
     this.action_loader = true;
     var new_hposition = this.hposition.nativeElement.value;
@@ -146,6 +145,24 @@ export class BoxDetailActionPanelComponent implements OnInit {
         .subscribe(()=>{this.action_loader = false;},(err)=>{console.log(err);this.action_loader = false;});
       }
     }      
+  }
+  //take or put sample back
+  takeSampleOut(box_position: string, sample: Sample, sample_position: string, status: boolean){
+    //take sample out: status == true
+    //put sample back: sample == false
+    //get today 
+    let today = new Date()
+    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+    if(status){
+      sample.date_out = today;
+      this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
+      .subscribe(()=>{},(err)=>{console.log(err);});
+    }
+    else{
+      sample.date_out = null;
+      this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
+      .subscribe(()=>{},(err)=>{console.log(err);});
+    }    
   }
   ngOnInit() {}
   ngOnChanges(){
