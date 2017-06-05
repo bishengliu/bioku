@@ -134,6 +134,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     this.action_loader = true;
     console.log(this.hposition.nativeElement.value);
     console.log(this.vposition.nativeElement.value)
+    
   }
   ngOnInit() {}
   ngOnChanges(){
