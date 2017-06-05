@@ -248,3 +248,6 @@ div [class*="right floated"] {
   padding-left: 0px !important;
   margin-left: 0px !important;
 }
+.grey-line{
+  color: rgba(34,36,38,.15);
+}

@@ -26,10 +26,10 @@
                 <td class="">
                   <div class="ui grid">                    
                     <div class="four wide column"><span>{{sample.position}}</span></div>
-                    <div class="four wide column" suiPopup popupText="Move/switch current sample to another position in the box"><i *ngIf="!action_loader" class="refresh icon grey-text"></i>
+                    <div *ngIf="sample.occupied" class="four wide column" suiPopup popupText="Move/switch current sample to another position in the box"><i *ngIf="!action_loader" class="refresh icon grey-text"></i>
                       <i *ngIf="action_loader" class="ui active mini loader"></i>
                     </div>
-                    <div class="four wide column ui form tiny small_vertial_padding">
+                    <div *ngIf="sample.occupied" class="four wide column ui form tiny small_vertial_padding">
                       <div class="ui inline fields">
                         <div class="field">
                           <select name="vposition" class="ui fluid dropdown" (change)="display_hposition()" #vposition>
@@ -134,7 +134,17 @@
       </div>
       <!--multiple selection-->
       <div *ngIf="samplePKs.length > 1">
-        <p *ngFor="let pk of samplePKs"> {{pk}}</p>
+        <div class="ui labels">
+          <div class="ui label" *ngFor="let sample of findSamples(samplePKs)"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
+        </div>
+        <div>
+          <div class="ui divider"></div>
+          <div class="mini fluid ui buttons">
+            <button class="ui button">One</button>
+            <button class="ui button">Two</button>
+            <button class="ui button">Three</button>
+          </div>
+        </div>        
       </div>      
     </div>
     <div *ngIf="samplePKs == null || samplePKs.length == 0" class="ui list">
