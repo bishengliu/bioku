@@ -155,11 +155,13 @@ export class BoxDetailActionPanelComponent implements OnInit {
     let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
     if(status){
       sample.date_out = today;
+      sample.occupied = false;
       this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
       .subscribe(()=>{},(err)=>{console.log(err);});
     }
     else{
       sample.date_out = null;
+      sample.occupied = true;
       this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
       .subscribe(()=>{},(err)=>{console.log(err);});
     }    

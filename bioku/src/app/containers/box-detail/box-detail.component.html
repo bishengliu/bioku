@@ -22,7 +22,7 @@
   <div class="ten wide tablet twelve wide computer column">
     <app-sample-table [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table>  
   </div>
-  <div class="six wide tablet four wide computer column">
+  <div *ngIf="selectedSamples.length > 0" class="six wide tablet four wide computer column ui sticky">
       <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
   </div>
 </div>

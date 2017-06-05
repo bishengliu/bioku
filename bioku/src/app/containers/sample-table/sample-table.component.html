@@ -18,7 +18,7 @@
       </tr>      
     </thead>
     <tbody>
-      <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1}">
+      <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
         <td class="collapsing" [style.border-left]="genBorderStyle(sample.color)">{{sample.name}}</td>
         <td class="collapsing">{{sample.position}}</td>
         <td class="collapsing">{{sample.quantity}}</td>

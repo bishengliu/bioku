@@ -44,7 +44,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'));
+      this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition')).sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+
       this.searchedSamples = this.samples;
     }
   }

@@ -63,6 +63,9 @@ body{
 .table-td-selected{
   background-color: #C5CAE9 !important;
 }
+.table-td-no-sample td{
+  color: #E0E0E0 !important;
+}
 /*
 .footer{
     background: #537489;
