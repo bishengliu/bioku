@@ -82,8 +82,8 @@ export class BoxDetailActionPanelComponent implements OnInit {
   renderOptions(count: number, letter: boolean){
     let options = [];
     options.push({name:'-', value:null});
-    for(let i=0; i< count; i++){
-      let obj = letter? {name:this.box_letters[i], value:i}: {name:i, value:i};
+    for(let i=1; i<= count; i++){
+      let obj = letter? {name:this.box_letters[i-1], value:this.box_letters[i-1]}: {name:i, value:i};
       options.push(obj)
     }
     return options;
@@ -104,7 +104,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
         freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
       return freezing_date;
   }
-
   updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
     if((value == "" || value == null) && required){
       this.action_panel_msg = data_attr + " is required!"}
@@ -131,10 +130,22 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }    
   }
   updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
+    console.log("hit...");
+    this.action_panel_msg = null;
     this.action_loader = true;
-    console.log(this.hposition.nativeElement.value);
-    console.log(this.vposition.nativeElement.value)
-    
+    var new_hposition = this.hposition.nativeElement.value;
+    var new_vposition = this.vposition.nativeElement.value;
+    sample.position = new_vposition + new_hposition;
+    if((!isNaN(+new_hposition) && +new_hposition >=1) && (new_vposition != "" && new_vposition != null) ){
+      if((new_vposition === sample.vposition.toLowerCase()) && +new_hposition === +sample.hposition){
+        this.action_panel_msg = "The new position is the same as current sample position, sample position not changed!";
+      }
+        else{
+        this.action_panel_msg = null;
+        this.containerService.updateSamplePosition(this.container.pk, box_position, sample_position, new_vposition, new_hposition)
+        .subscribe(()=>{this.action_loader = false;},(err)=>{console.log(err);this.action_loader = false;});
+      }
+    }      
   }
   ngOnInit() {}
   ngOnChanges(){

@@ -196,16 +196,19 @@ export class ContainerService{
 
     //////////////////////////////////samples//////////////////////////////////////////
     updateSampleDetail(container_pk: number, box_position: string, sample_position: string, data_attr: string, value: any){
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/update";
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/update/";
         let body: string = JSON.stringify({'key': data_attr, 'value': value });
         return this.http.put(query_url, body, this.options) //do provide header accorrding to django
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     //switch sample position
-    updateSamplePosition(container_pk: number, box_position: string, sample_position: string, new_vposition: number, new_hposition: number){
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/switch_position";
-        let body: string = JSON.stringify({'new_position': 'xxx', 'new_vposition': new_vposition, 'new_hposition': new_hposition });
+    updateSamplePosition(container_pk: number, box_position: string, sample_position: string, new_vposition: string, new_hposition: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/switch_position/";
+        let body: string = JSON.stringify({'new_vposition': new_vposition, 'new_hposition': new_hposition });
+        return this.http.put(query_url, body, this.options)
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 }
 
