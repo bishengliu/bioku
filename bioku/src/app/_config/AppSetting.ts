@@ -3,6 +3,7 @@ export const AppSetting = {
     'NAME':'BioKu',
     'APP_COLORS': ['#F44336', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3','#03A9F4',
                    '#00BCD4','#009688','#4CAF50','#8BC34A','#CDDC39','#FFEB3B','#FFC107','#FF9800','#FF5722','#795548','#9E9E9E','#607D8B','#000000', '#FFFFFF'],
+    'BOX_POSITION_LETTERS':['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'],
     //API REST URL
     'URL': 'http://127.0.0.1:8000',
     //post to get token

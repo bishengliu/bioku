@@ -23,17 +23,36 @@
               </tr>
               <tr><td class="">Position</td>
                 <td class="">
-                  <a class="ui right floated"><i class="exchange icon grey-text"></i></a>
-                  <div>
-                    <div class="ui right floated">
-                      <div class="ui input">
+                  <div class="ui grid">                    
+                    <div class="four wide column"><span>{{sample.position}}</span></div>
+                    <div class="four wide column" suiPopup popupText="Move/switch current sample to another position in the box"><i *ngIf="!action_loader" class="refresh icon grey-text"></i>
+                      <i *ngIf="action_loader" class="ui active mini loader"></i>
+                    </div>
+                    <div class="four wide column ui form tiny small_vertial_padding">
+                      <div class="ui inline fields">
+                        <div class="field">
+                          <select name="vposition" class="ui fluid dropdown" (change)="display_hposition()" #vposition>
+                            <option *ngFor="let option of vertical_options" value="{{option.value}}">{{option.name}}</option>
+                          </select>
+                        </div>
+                        <div class="field" *ngIf="box_hposition">
+                          <select name="vposition" class="ui fluid dropdown" (change)="updateSamplePosition(sample, box.box_position, sample.position)" #hposition>
+                            <option *ngFor="let option of horizontal_options" value="{{option.value}}">{{option.name}}</option>
+                          </select>
+                        </div>
+                        <!--<div>
+                          <a class="ui button compact mini" (click)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">OK</a>
+                        </div>-->
+                      </div>
+                       
+                      <!--<div class="ui input">
                         <input class="" type="text" [(ngModel)]="sample.vposition" placeholder="update sample vposition ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
                         <input class="" type="numner" min="1" [(ngModel)]="sample.hposition" placeholder="update sample hposition ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
-                      </div>                      
+                      </div>-->
+
                     </div> 
-                    <div>{{sample.position}}</div>
                   </div>
-                  </td>
+                </td>
               </tr>
               <tr><td class="">Quantity</td>
                 <td class="ten wide">
@@ -133,7 +152,6 @@
     </div>
   </div>
 </div>
-
 
 <!--
 ag2 drag drop

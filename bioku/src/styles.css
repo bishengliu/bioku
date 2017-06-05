@@ -118,6 +118,10 @@ body{
   padding-top: 1px !important;
   padding-bottom: 1px !important;
 }
+.small_vertial_padding{
+  padding-top: 10px !important;
+  padding-bottom: 0px !important;
+}
 
 .no_side_padding{  
   padding-left: 0px !important;

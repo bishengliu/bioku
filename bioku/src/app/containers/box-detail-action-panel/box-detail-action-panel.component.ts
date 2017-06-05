@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
@@ -13,6 +13,7 @@ import { AppState } from '../../_redux/root/state';
 import {IMyOptions} from 'mydatepicker';
 //color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
+
 @Component({
   selector: 'app-box-detail-action-panel',
   templateUrl: './box-detail-action-panel.component.html',
@@ -29,6 +30,10 @@ export class BoxDetailActionPanelComponent implements OnInit {
   samples: Array<Sample> =[];
   freezing_date = {}; //for only select one sample
   action_panel_msg: string= null;
+  //Box position letters
+  box_letters: Array<string> = [];
+  //box hposition
+  box_hposition: boolean = false;
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
         // other options...
@@ -45,10 +50,18 @@ export class BoxDetailActionPanelComponent implements OnInit {
     width: 8,
     height: 8,
     borderRadius: 2};
-    
+  //selection options
+  vertical_options = [];
+  horizontal_options = [];
+  //loader
+  action_loader: boolean = false;
+  //view child
+  @ViewChild('vposition') vposition:ElementRef;
+  @ViewChild('hposition') hposition:ElementRef;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
+    this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -65,6 +78,15 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
       this.boxDescription = this.box.description;
     }
+  }
+  renderOptions(count: number, letter: boolean){
+    let options = [];
+    options.push({name:'-', value:null});
+    for(let i=0; i< count; i++){
+      let obj = letter? {name:this.box_letters[i], value:i}: {name:i, value:i};
+      options.push(obj)
+    }
+    return options;
   }
   //find the samples from selected pks
   findSamples(pks: Array<number>){
@@ -97,6 +119,22 @@ export class BoxDetailActionPanelComponent implements OnInit {
           .subscribe(()=>{},(err)=>console.log(err));
     } 
   }
+  display_hposition(){
+    if(this.vposition.nativeElement.value == null || this.vposition.nativeElement.value == ""){
+      this.box_hposition = false;
+    }
+    else{
+      if(this.hposition){
+        this.hposition.nativeElement.value = null;
+      }      
+      this.box_hposition = true;
+    }    
+  }
+  updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
+    this.action_loader = true;
+    console.log(this.hposition.nativeElement.value);
+    console.log(this.vposition.nativeElement.value)
+  }
   ngOnInit() {}
   ngOnChanges(){
     this.samplePKs = [];
@@ -108,7 +146,9 @@ export class BoxDetailActionPanelComponent implements OnInit {
         }
       if(this.samplePKs != null && this.samplePKs.length==1)  {
         let samples = this.findSamples(this.samplePKs);
-      this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
+        this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
+        this.vertical_options = this.renderOptions(this.box.box_vertical, true);
+        this.horizontal_options = this.renderOptions(this.box.box_horizontal, false);
       }    
     }
   }
