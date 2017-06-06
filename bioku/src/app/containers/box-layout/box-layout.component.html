@@ -1,3 +1,21 @@
-<p>
-  box-layout works!
-</p>
+<div>
+  <table class="ui small unstackable celled single line fixed padded table" [style.border-top]="genBorderStyle(color)">
+    <thead>
+      <tr>
+        <th></th>
+        <th *ngFor="let h of hArray" class="center aligned"><em class="">{{h}}</em></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of vArray">
+        <td class="center aligned"><em class="">{{v}}</em></td>
+        <td class="center aligned clickable sample-cell" *ngFor="let h of hArray" (click)="toggleSelection(h,v)" [ngClass]="{'sample-cell-selected': selectedCells.indexOf(v+h) !==- 1 }">
+          <div *ngFor="let sample of pickerSamples(h,v)">
+            <div class="ui horizontal label"><i class="icon circle" [style.color]="sample.color"></i><span [style.color]="sample.color">{{sample.name}}</span></div>
+            <div>{{sample.freezing_date}}</div>
+          </div>                   
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

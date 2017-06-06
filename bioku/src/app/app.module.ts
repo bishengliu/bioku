@@ -54,8 +54,6 @@ import { DeleteContainerComponent } from './admin/containers/delete-container/de
 import { ContainerDetailComponent } from './containers/container-detail/container-detail.component';
 import { ContainerBoxListComponent } from './containers/container-box-list/container-box-list.component';
 import { BoxDetailComponent } from './containers/box-detail/box-detail.component';
-import { SampleListComponent } from './containers/sample-list/sample-list.component';
-import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
 import { MyContainerListComponent } from './containers/my-container-list/my-container-list.component';
 import { FooterComponent } from './_helpers/footer/footer.component';
 import { TopNavbarComponent } from './_helpers/top-navbar/top-navbar.component';
@@ -94,8 +92,6 @@ import { BoxDetailActionPanelComponent } from './containers/box-detail-action-pa
     ContainerDetailComponent,
     ContainerBoxListComponent,
     BoxDetailComponent,
-    SampleListComponent,
-    SampleDetailComponent,
     MyContainerListComponent,
     FooterComponent,
     TopNavbarComponent,

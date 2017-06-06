@@ -251,3 +251,9 @@ div [class*="right floated"] {
 .grey-line{
   color: rgba(34,36,38,.15);
 }
+.sample-cell:hover{
+  background-color: #EFEBE9;
+}
+.sample-cell-selected{
+  background-color: #C5CAE9 !important;
+}

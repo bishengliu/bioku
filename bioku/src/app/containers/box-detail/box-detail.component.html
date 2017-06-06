@@ -26,3 +26,13 @@
       <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
   </div>
 </div>
+
+<div class="ui small_padding stackable grid">
+  <div class="ten wide tablet twelve wide computer column">
+    <app-box-layout [samples]="samples" [searchedSamples]="searchedSamples"></app-box-layout>  
+  </div>
+  <div *ngIf="selectedSamples.length > 0" class="six wide tablet four wide computer column ui sticky">
+      <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
+  </div>
+  
+</div>

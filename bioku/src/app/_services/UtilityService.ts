@@ -28,5 +28,15 @@ export class UtilityService{
             return result;
         }
     }
-    
+
+    //generate array form a number
+    genArray(num : number){
+    let array: Array<number> = [];
+    if(num >= 1){
+      for(let x = 1; x <= num; x++){
+        array.push(x);}}
+    else{
+      array.push(1);}
+    return array;
+    }    
 }
