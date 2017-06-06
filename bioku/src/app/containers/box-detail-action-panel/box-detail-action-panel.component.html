@@ -1,5 +1,5 @@
 <div class="ui stacked raised segments">
-  <div class="ui center aligned tertiary inverted segment" [style.background-color]="box.color"><p>BOX ACTION PAENL</p></div>
+  <div class="ui center aligned tertiary inverted segment" [style.background-color]="box.color"><p>BOX ACTION PANEL</p></div>
   <div class="ui segment">
     <div *ngIf="samplePKs != null">
       <!--single selection-->
@@ -134,17 +134,33 @@
       </div>
       <!--multiple selection-->
       <div *ngIf="samplePKs.length > 1">
-        <div class="ui labels">
-          <div class="ui label" *ngFor="let sample of findSamples(samplePKs)"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
-        </div>
-        <div>
-          <div class="ui divider"></div>
-          <div class="mini fluid ui buttons">
-            <button class="ui button">One</button>
-            <button class="ui button">Two</button>
-            <button class="ui button">Three</button>
+        <!--current occipied sample-->
+        <div *ngIf="occupiedSamples.length >= 1" class="ui raised red segment">
+          <div class="ui labels">
+            <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
           </div>
-        </div>        
+          <div >
+            <div class="ui divider"></div>
+            <div class="" *ngIf="occupiedSamples.length > 1">
+              <button class="ui compact mini red button"><i class="icon external share"></i>TAKE OUT</button>
+              <button class="ui compact mini teal button" *ngIf="occupiedSamples.length == 2"><i class="icon refresh"></i>SWITCH</button>
+              <button class="ui compact mini blue button"><i class="icon move"></i>MOVE</button>
+            </div>
+            <div class="ui center aligned" *ngIf="occupiedSamples.length == 1">
+              <p class="grey-text">Please Select At Least One More Sample</p>
+            </div>
+          </div> 
+        </div>
+        <!--previous occupied sample-->       
+        <div *ngIf="preoccupiedSamples.length >= 1" class="ui raised grey segment">
+          <div class="ui labels">
+            <div class="ui label" *ngFor="let sample of preoccupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
+          </div>
+          <div >
+            <div class="ui divider"></div>
+            <button class="ui mini black button"><i class="icon reply"></i>PUT SAMPLES BACK</button>
+          </div> 
+        </div>
       </div>      
     </div>
     <div *ngIf="samplePKs == null || samplePKs.length == 0" class="ui list">
@@ -152,7 +168,6 @@
     </div>
   </div>
 </div>
-
 <!--
 ag2 drag drop
 https://www.npmjs.com/package/angular-drag-drop

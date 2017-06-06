@@ -26,8 +26,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   appUrl: string;
   container: Container = null;
   box: Box = null;
-  boxDescription: string;
-  samples: Array<Sample> =[];
+  boxDescription: string;  
   freezing_date = {}; //for only select one sample
   action_panel_msg: string= null;
   //Box position letters
@@ -55,6 +54,9 @@ export class BoxDetailActionPanelComponent implements OnInit {
   horizontal_options = [];
   //loader
   action_loader: boolean = false;
+  //when multiple samples selected
+  occupiedSamples: Array<Sample> =[];//occupied samples
+  preoccupiedSamples: Array<Sample> =[]; //previous occupied samples
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
@@ -180,7 +182,13 @@ export class BoxDetailActionPanelComponent implements OnInit {
         this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
         this.vertical_options = this.renderOptions(this.box.box_vertical, true);
         this.horizontal_options = this.renderOptions(this.box.box_horizontal, false);
-      }    
+      } 
+      //more sample selects
+      if(this.samplePKs != null && this.samplePKs.length >=1){
+        let samples = this.findSamples(this.samplePKs);
+        this.occupiedSamples = samples.filter((s:Sample)=> s.occupied == true && s.date_out == null);
+        this.preoccupiedSamples = samples.filter((s:Sample)=> s.occupied != true && s.date_out != null);
+      }   
     }
   }
 }
