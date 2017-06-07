@@ -28,11 +28,18 @@ export class BoxLayoutSimpleComponent implements OnInit {
     this.appUrl = this.appSetting.URL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;    
    }
-   genLetterArray(num:number){
+   genLetterArray(num:number): Array<string>{
     return this.box_letters.slice(0, num);
   }
-  pickerSamples(h: number, v: string){
+  pickerSamples(h: number, v: string): Array<Sample>{
     return this.box.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
+  }
+  genBackgroundColor(color:string){
+    let cssValue: string = "";
+    if(color != null){
+      cssValue = color;
+    }
+    return cssValue;
   }
   ngOnInit() {
     if(this.box != null){

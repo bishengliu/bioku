@@ -2,17 +2,16 @@
   <table class="ui small unstackable celled single line fixed table">
     <thead>
       <tr>
-        <th></th>
-        <th *ngFor="let h of hArray" class="center aligned"><em class="">{{h}}</em></th>
+        <th class="nopadding"></th>
+        <th *ngFor="let h of hArray" class="left aligned nopadding"><small class="">{{h}}</small></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let v of vArray">
-        <td class="center aligned"><em class="">{{v}}</em></td>
-        <td class="center aligned clickable sample-cell" *ngFor="let h of hArray">
-          <div *ngFor="let sample of pickerSamples(h,v)">
-            <i class="icon circle" [style.color]="sample.color"></i>
-            <div [style.background-color]="sample.color"></div>
+        <th class="center aligned nopadding"><small class="">{{v}}</small></th>
+        <td class="center aligned clickable sample-cell tight_around" *ngFor="let h of hArray">
+          <div *ngFor="let sample of pickerSamples(h,v)" class="fix_size_div" [style.background-color]="genBackgroundColor(sample.color)">
+            <!--<i class="icon circle tight_around" [style.color]="sample.color"></i>-->
           </div>                   
         </td>
       </tr>
