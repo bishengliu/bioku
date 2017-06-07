@@ -21,7 +21,9 @@ import { IColorPickerConfiguration } from 'ng2-color-picker';
 })
 export class BoxDetailActionPanelComponent implements OnInit {
   @Input() selectedSamples: string; //convert it to string in the parent cmp and force triger the ngOnChanges() detection in this cmp; if set to array the ngOnChanges() won't be triggered
-  samplePKs: Array<number> = [];
+  @Input() selectedCells: string; //same as above
+  samplePKs: Array<number> = []; //real sample pk array selected
+  cells: Array<string> = []; //real cells selected
   user: User;
   appUrl: string;
   container: Container = null;
@@ -57,6 +59,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //when multiple samples selected
   occupiedSamples: Array<Sample> =[];//occupied samples
   preoccupiedSamples: Array<Sample> =[]; //previous occupied samples
+  emptySelectedCells: Array<string> =[]; //selected cells that are empty
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
@@ -168,8 +171,14 @@ export class BoxDetailActionPanelComponent implements OnInit {
       .subscribe(()=>{},(err)=>{console.log(err);});
     }    
   }
+  //check whether a cell has a sample
+  checkSamplebyCell(cell:string){
+    let findSamples = this.occupiedSamples.filter((s:Sample)=> s.position.toLowerCase()===cell.toLowerCase());
+    return (findSamples != null && findSamples.length >0)? true : false;
+  }
   ngOnInit() {}
   ngOnChanges(){
+    //samples
     this.samplePKs = [];
     if(this.selectedSamples != null && this.selectedSamples != ""){
       let sArray = this.selectedSamples.split(',');     
@@ -190,5 +199,12 @@ export class BoxDetailActionPanelComponent implements OnInit {
         this.preoccupiedSamples = samples.filter((s:Sample)=> s.occupied != true && s.date_out != null);
       }   
     }
+    //positions
+    this.cells = [];
+    if(this.selectedCells != null && this.selectedCells != ""){
+      this.cells = this.selectedCells.split(',');
+    }
+    //get positions that are not occupied
+    this.emptySelectedCells = this.cells.filter((cell:string) => !this.checkSamplebyCell(cell));
   }
 }

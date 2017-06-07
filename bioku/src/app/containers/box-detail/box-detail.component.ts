@@ -30,6 +30,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   samples: Array<Sample> = [];
   searchedSamples: Array<Sample> = [];
   selectedSamples: Array<number> = [];
+  selectedCells: Array<string> = [];
   box_view: boolean = true;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
@@ -53,6 +54,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   //toggle view setting
   toggleList(){
     this.box_view = !this.box_view;
+    //empty all the arrays
+    this.selectedCells = [];
+    this.selectedSamples = [];    
   }
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
@@ -94,7 +98,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   //capture emit from sample-table
   captureSampleSelected(pks: Array<number>){
     this.selectedSamples = pks;
-  }  
+  }
+  captureCellSelected(cells: Array<string>){
+    this.selectedCells = cells;
+  }
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{

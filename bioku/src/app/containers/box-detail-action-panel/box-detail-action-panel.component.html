@@ -1,5 +1,5 @@
 <div class="ui stacked raised segments">
-  <div class="ui center aligned tertiary inverted segment" [style.background-color]="box.color"><p>BOX ACTION PANEL</p></div>
+  <div class="ui center aligned tertiary inverted segment no_margin nopadding" [style.background-color]="box.color"><p class="no_margin nopadding">ACTION PANEL</p></div>
   <div class="ui segment">
     <div *ngIf="samplePKs != null">
       <!--single selection-->
@@ -160,12 +160,19 @@
             <div class="ui divider"></div>
             <button class="ui mini black button"><i class="icon reply"></i>PUT SAMPLES BACK</button>
           </div> 
-        </div>
-      </div>      
+        </div>          
+      </div>   
     </div>
-    <div *ngIf="samplePKs == null || samplePKs.length == 0" class="ui list">
-      <div class="item"><i class="icon caret right"></i>Click sample to actions</div>
-    </div>
+    <!--empty box cells: for box view only-->
+    <div *ngIf="emptySelectedCells.length > 0" class="ui raised grey segment">
+      <div class="ui labels">
+        <div class="ui label" *ngFor="let cell of emptySelectedCells"><span [style.color]="'#BDBDBD'">{{cell}}</span></div>
+      </div>
+      <div >
+        <div class="ui divider"></div>
+        <button class="ui mini teal button"><i class="icon plus"></i>STORE SAMPLES</button>
+      </div> 
+    </div>  
   </div>
 </div>
 <!--

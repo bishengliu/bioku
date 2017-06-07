@@ -26,6 +26,7 @@ export class BoxLayoutComponent implements OnInit {
   selectedSamples: Array<number> =[] //sample pk
   selectedCells: Array<string>=[] //cell position
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
+  @Output() cellSelected: EventEmitter<Array<string>> = new EventEmitter<Array<string>> ();
   appUrl: string;
   container: Container;
   box: Box;
@@ -38,18 +39,17 @@ export class BoxLayoutComponent implements OnInit {
   box_letters: Array<string> = [];
   //color picker
   availableColors: Array<string> = [];
-  pickerOptions: IColorPickerConfiguration = {
-    width: 25,
-    height: 25,
-    borderRadius: 4};
+  pickerOptions: IColorPickerConfiguration = { width: 25, height: 25, borderRadius: 4};
   //box hArray and vArray
   hArray: Array<number> = [];
   vArray:Array<string> = [];
+  //tfoot colspan
+  colspanCount: number =1;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService, private utilityService: UtilityService)
   { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
-    this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
+    this.box_letters = this.appSetting.BOX_POSITION_LETTERS;    
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -63,24 +63,20 @@ export class BoxLayoutComponent implements OnInit {
     if(filterSamples.length  > 0 ){
       let index = this.selectedSamples.indexOf(filterSamples[0].pk);
       if(index === -1){
-        this.selectedSamples.push(filterSamples[0].pk);
-      }
-      else{
-        this.selectedSamples.splice(index, 1);
-      }
+        this.selectedSamples.push(filterSamples[0].pk);}
+      else{this.selectedSamples.splice(index, 1);}
     }
     //all positions selected
     let pIndex= this.selectedCells.indexOf(v+h);
     if(pIndex === -1){
-        this.selectedCells.push(v+h);
-      }
-      else{
-        this.selectedCells.splice(pIndex, 1);
-      }
-      console.log(this.selectedCells);
-      console.log(this.selectedSamples);
+        this.selectedCells.push(v+h);}
+    else{
+        this.selectedCells.splice(pIndex, 1);}
+    //console.log(this.selectedCells);
+    //console.log(this.selectedSamples);
     //emit observable
     this.sampleSelected.emit(this.selectedSamples);
+    this.cellSelected.emit(this.selectedCells);
   }
   updateState(){
     let state = this.appStore.getState();
@@ -94,6 +90,7 @@ export class BoxLayoutComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
       this.hArray = this.utilityService.genArray(this.box.box_horizontal);
       this.vArray = this.genLetterArray(this.box.box_vertical);
+      this.colspanCount = this.box.box_horizontal + 1;
     }
   }
   genBorderStyle(color: string){
@@ -130,6 +127,7 @@ export class BoxLayoutComponent implements OnInit {
   ngOnInit() {
     console.log(this.samples);
     this.sampleSelected.emit([]);//emit empty sample selected
+    this.cellSelected.emit([]);////emit selected cells
     if(this.box != null){
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? "#ffffff" : this.box.color;
@@ -138,7 +136,11 @@ export class BoxLayoutComponent implements OnInit {
     }
   }
   ngOnChanges(){
+    //sample
     this.selectedSamples = []; //clear selected samples
     this.sampleSelected.emit(null); //emit selected sample pk
+    //cells
+    this.selectedCells = []; //clear selected cells
+    this.cellSelected.emit(null); //emit selected cells
   }
 }

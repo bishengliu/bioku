@@ -27,9 +27,9 @@
 <div class="ui small_padding stackable grid">
   <div class="ten wide tablet twelve wide computer column" >
     <app-sample-table *ngIf="!box_view" [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
-    <app-box-layout *ngIf="box_view" [samples]="samples" [searchedSamples]="searchedSamples"></app-box-layout>   
+    <app-box-layout *ngIf="box_view" [samples]="samples" [searchedSamples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)" (cellSelected)="captureCellSelected($event)"></app-box-layout>   
   </div>
-  <div *ngIf="selectedSamples.length > 0" class="six wide tablet four wide computer column ui sticky">
-      <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
+  <div *ngIf="selectedSamples.length > 0 || selectedCells.length > 0" class="six wide tablet four wide computer column ui sticky">
+      <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()" [selectedCells]="selectedCells.toString()"></app-box-detail-action-panel>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div>
+  <div class="">
   <table class="ui small unstackable celled single line fixed padded table" [style.border-top]="genBorderStyle(color)">
     <thead>
       <tr>
@@ -17,5 +17,41 @@
         </td>
       </tr>
     </tbody>
+        <tfoot class="full-width">
+        <tr>
+          <th class="no_side_padding no_side_margin" [attr.colspan]="colspanCount">
+            <sui-progress class="indicating tiny" [value]="currentSampleCount" [maximum]="totalBoxCapacity" [autoSuccess]="true" [precision]="0">
+              <div [style.color]="color">
+                <span class="header">Box: {{box.box_position}}</span>
+                <span class="">(<i class="icon pie chart"></i>{{currentSampleCount}} Samples)</span>
+              </div>
+            </sui-progress>            
+          </th>
+        </tr>
+        <tr>
+          <th [attr.colspan]="colspanCount">
+            <span class="header">BOX DESCRIPTION: </span>
+              <div class="ui fluid icon input">
+                <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
+                <i class="refresh icon"></i>
+              </div>
+          </th>
+        </tr>      
+        <tr>        
+          <th [attr.colspan]="colspanCount">                      
+            <div class="ui right floated">
+              <h5 class="header">Box Rating</h5>
+              <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
+              <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating>
+            </div>
+            <div [style.color]="color">
+              <span class="header">Box ({{box.box_position}}) Color: </span>
+            </div>
+            <div>
+                <color-picker [(ngModel)]="color" (ngModelChange)="updateColor($event, box.box_position)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
+            </div>
+          </th>
+        </tr>
+    </tfoot>
   </table>
 </div>
