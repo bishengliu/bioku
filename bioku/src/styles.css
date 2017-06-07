@@ -257,3 +257,7 @@ div [class*="right floated"] {
 .sample-cell-selected{
   background-color: #C5CAE9 !important;
 }
+.search-matched-sample{
+  border-left: 5px solid #FF9100 !important;
+  background-color: #FFF3E0 !important;
+}

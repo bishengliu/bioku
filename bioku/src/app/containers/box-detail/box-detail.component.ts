@@ -28,9 +28,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   container: Container = null;
   box: Box = null;
   samples: Array<Sample> = [];
-  searchedSamples: Array<Sample> = [];
-  selectedSamples: Array<number> = [];
-  selectedCells: Array<string> = [];
+  searchedSamples: Array<Sample> = [];//for list view only
+  selectedSamples: Array<number> = []; //for list view and box view
+  selectedCells: Array<string> = []; //for box view only
+  searchedBoxSamples: Array<string> = []; //cell position
   box_view: boolean = true;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
@@ -60,9 +61,11 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   }
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
-    //restore the complete boxes
+    //restore the complete samples for list view
     //hard copy of the array
     this.searchedSamples = this.samples.filter((e:Sample) => e.pk != null);
+    //empty searched samples for box view
+    this.searchedBoxSamples = [];
     //filter the machted boxes
     if(sampleFilter.value != null){
           this.searchedSamples = this.samples.filter((e: Sample)=> {
@@ -94,6 +97,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         return false;
       });
+      //for box searched samples
+       let matchedBoxSamples = this.searchedSamples.filter((s:Sample)=>s.occupied == true);
+       matchedBoxSamples.forEach((s:Sample)=>this.searchedBoxSamples.push(s.position));
     }
   }
   //capture emit from sample-table

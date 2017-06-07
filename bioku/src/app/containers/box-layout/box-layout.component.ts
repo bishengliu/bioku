@@ -22,7 +22,7 @@ import { AppState } from '../../_redux/root/state';
 })
 export class BoxLayoutComponent implements OnInit {
   @Input() samples: Array<Sample>;
-  @Input() searchedSamples: Array<number> =[];
+  @Input() searchedBoxSamples: Array<string> =[]; //cell positions
   selectedSamples: Array<number> =[] //sample pk
   selectedCells: Array<string>=[] //cell position
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
