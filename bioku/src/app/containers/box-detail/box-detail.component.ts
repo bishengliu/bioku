@@ -30,6 +30,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   samples: Array<Sample> = [];
   searchedSamples: Array<Sample> = [];
   selectedSamples: Array<number> = [];
+  box_view: boolean = true;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
   { 
@@ -48,6 +49,10 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
 
       this.searchedSamples = this.samples;
     }
+  }
+  //toggle view setting
+  toggleList(){
+    this.box_view = !this.box_view;
   }
   //filter output
   updateSampleList(sampleFilter: SampleFilter){

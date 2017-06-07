@@ -13,26 +13,23 @@
     <h3 class="ui violet left aligned header"><i class="icon list layout"></i>BOX SAMPLES</h3>
   </div>
   <div class="six wide column">
-    <a class="ui teal button float-right" [routerLink]="['/']"><i class="icon add circle"></i>SAMPLE(S)</a>
-  </div>
-</div>
-
-
-<div class="ui small_padding stackable grid">
-  <div class="ten wide tablet twelve wide computer column">
-    <app-sample-table [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table>  
-  </div>
-  <div *ngIf="selectedSamples.length > 0" class="six wide tablet four wide computer column ui sticky">
-      <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
+    <div *ngIf="box_view" class="ui toggle checkbox float-right" suiPopup popupText="List View of All Samples">
+      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+      <label for="table_view"><span class="violet-text">Sample List</span></label>
+    </div>
+    <div *ngIf="!box_view" class="ui toggle checkbox float-right" suiPopup popupText="Box View of All Samples">
+      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+      <label for="table_view"><span class="violet-text">Box View</span></label>
+    </div>
   </div>
 </div>
 
 <div class="ui small_padding stackable grid">
-  <div class="ten wide tablet twelve wide computer column">
-    <app-box-layout [samples]="samples" [searchedSamples]="searchedSamples"></app-box-layout>  
+  <div class="ten wide tablet twelve wide computer column" >
+    <app-sample-table *ngIf="!box_view" [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
+    <app-box-layout *ngIf="box_view" [samples]="samples" [searchedSamples]="searchedSamples"></app-box-layout>   
   </div>
   <div *ngIf="selectedSamples.length > 0" class="six wide tablet four wide computer column ui sticky">
       <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()"></app-box-detail-action-panel>
   </div>
-  
 </div>

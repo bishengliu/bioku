@@ -58,6 +58,7 @@ export class BoxLayoutComponent implements OnInit {
     return this.box_letters.slice(0, num);
   }
   toggleSelection(h: number, v: string){
+    //all samples selected
     let filterSamples = this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
     if(filterSamples.length  > 0 ){
       let index = this.selectedSamples.indexOf(filterSamples[0].pk);
@@ -68,7 +69,7 @@ export class BoxLayoutComponent implements OnInit {
         this.selectedSamples.splice(index, 1);
       }
     }
-    //positions
+    //all positions selected
     let pIndex= this.selectedCells.indexOf(v+h);
     if(pIndex === -1){
         this.selectedCells.push(v+h);
