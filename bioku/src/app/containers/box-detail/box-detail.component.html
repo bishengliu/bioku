@@ -7,7 +7,6 @@
   </div>
 </div>
 
-
 <div class="ui grid row small_padding stackable">
   <div class="ten wide column">
     <h3 class="ui violet left aligned header"><i class="icon list layout"></i>BOX SAMPLES</h3>
@@ -29,7 +28,7 @@
     <app-sample-table *ngIf="!box_view" [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
     <app-box-layout *ngIf="box_view" [samples]="samples" [searchedSamples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)" (cellSelected)="captureCellSelected($event)"></app-box-layout>   
   </div>
-  <div *ngIf="selectedSamples.length > 0 || selectedCells.length > 0" class="six wide tablet four wide computer column ui sticky">
+  <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" class="six wide tablet four wide computer column ui sticky">
       <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()" [selectedCells]="selectedCells.toString()"></app-box-detail-action-panel>
   </div>
 </div>

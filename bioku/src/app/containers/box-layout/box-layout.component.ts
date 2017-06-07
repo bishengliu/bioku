@@ -125,7 +125,6 @@ export class BoxLayoutComponent implements OnInit {
     return this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
   }
   ngOnInit() {
-    console.log(this.samples);
     this.sampleSelected.emit([]);//emit empty sample selected
     this.cellSelected.emit([]);////emit selected cells
     if(this.box != null){

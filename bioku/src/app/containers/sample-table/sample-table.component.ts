@@ -101,7 +101,6 @@ export class SampleTableComponent implements OnInit {
     .subscribe(()=>{},(err)=>console.log(err));
   }
   ngOnInit() {
-    console.log(this.samples);
     this.sampleSelected.emit([]);//emit empty sample selected
     if(this.box != null){
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
