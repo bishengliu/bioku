@@ -29,6 +29,8 @@ import { MyDatePickerModule } from 'mydatepicker';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
+//angular2-useful-swiper
+import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -120,6 +122,8 @@ import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-lay
     SidebarModule.forRoot(),
     //register root routers
     RouterModule.forRoot(routes),
+    //npm install --save angular2-useful-swiper
+    SwiperModule,
   ],
   providers: [
     //guards

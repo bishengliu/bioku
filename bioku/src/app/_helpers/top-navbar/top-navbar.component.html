@@ -1,5 +1,5 @@
 <div class="ui vertical inverted masthead center aligned segment" [ngClass]="{nopadding: isLogin}">
-    <div class="ui stackable right icon secondary inverted pointing menu small" *ngIf="isLogin">
+    <div class="ui right icon secondary inverted pointing menu small" *ngIf="isLogin">
         <a (click)="_toggleContainerSidebar()" class="item" *ngIf="isLogin && hasContainers">
             <i class="large grid layout teal icon"></i>                
         </a>
@@ -8,7 +8,7 @@
             <a [routerLink]="['/admin']" ><i class="dashboard icon"></i> Admin</a>
         </div>
         -->           
-        <div class="right item"><em class="teal-text">An Open-Source Container System for Biomaterials</em></div>
+        <div class="right item"><em class="teal-text">An User-friendly Container System for Biomaterials</em></div>
         <a (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
@@ -20,7 +20,7 @@
                 <span><em>{{appName}}</em></span>
             </h1>
             <h2 class="inverted">
-                <span><em>An Open-Source Container System for Biomaterials</em></span>
+                <span><em>An User-friendly Container System for Biomaterials</em></span>
             </h2>
         </div>
         <div class="ui divider"></div>
