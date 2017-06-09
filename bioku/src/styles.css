@@ -265,7 +265,7 @@ div [class*="right floated"] {
   background-color: #FFF3E0 !important;
 }
 .fix_size_div{
-  width: 22px;
+  width: 32px;
   height: 23px;
   border-radius: 2px;
 }
