@@ -5,7 +5,7 @@
   <div class="ten wide column">
     <div class="ui toggle checkbox" suiPopup popupText="List View">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view"><span class="violet-text">LIST</span></label>
+      <label for="table_view"><span class="violet-text">LIST VIEW</span></label>
     </div>
   </div>
   <!-- new container -->
@@ -27,7 +27,7 @@
         <!-- container info -->
         <div class="content">                                
           <div class="meta">
-            <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span>
+            <span class="violet-text"><i class="building outline icon"></i> {{'Name: ' + container.name}}</span>
             <!-- container group --> 
             <a class="" [routerLink]="['./edit', container.pk]">
               <i class="icon edit teal-text"></i>
@@ -58,8 +58,7 @@
                   <i class="ui teal remove circle outline icon"></i>
                 </a> 
               </div>            
-            </div>
-                  
+            </div>                  
           </div>
         </div>        
         <!-- container groups -->
@@ -108,7 +107,7 @@
     <tbody *ngFor="let container of containers | async" class="bordered">
       <tr *ngFor="let i of genArray(renderRowSpan(container))">
         <!-- container info -->
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)"> 
+        <td *ngIf="i===1" [attr.rowspan]="rowspan"> 
           <h4 class="ui image header">
             <img src="{{appUrl + container.photo}}" class="ui mini rounded image">
             <div class="content">
@@ -126,10 +125,10 @@
             </div>
           </h4>         
         </td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.temperature+'&deg;C' }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.tower }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.shelf }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="renderRowSpan(container)">{{ container.box }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.temperature+'&deg;C' }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.tower }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.shelf }}</td>
+        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.box }}</td>
         <!-- end container info -->
         <!-- boxes info -->
         <td class="left-bordered">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_position : "" }}</td>
@@ -145,8 +144,8 @@
             <img *ngIf="container.groups[i-1].photo" src="{{ appUrl + container.groups[i-1].photo }}" class="ui mini rounded image">
             <div class="content">
               {{ (container.groups && container.groups.length >= i) ? container.groups[i-1].group_name : "" }}
-              <a suiPopup popupHeader="Remove Group" popupText="click to remove" (click)="removefromGroup(container.pk, container.groups[i-1].pk)">
-                  <i class="ui teal remove circle outline icon"></i>
+              <a (click)="removefromGroup(container.pk, container.groups[i-1].pk)">
+                  <i class="ui teal remove circle outline icon clickable"></i>
                 </a>
               <div class="sub header">{{ (container.groups && container.groups.length >= i && container.groups[i-1].department) ? container.groups[i-1].department : "" }}</div>
             </div>

@@ -23,6 +23,8 @@ export class ContainerListComponent implements OnInit {
   groups: Observable<Array<Group>>;
   appUrl: string;
   tableView: boolean = false;
+  //for list table view only 
+  rowspan: number = 1;
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private changeDetector: ChangeDetectorRef,
               private alertService: AlertService, private containerService: ContainerService, private groupService: GroupService)
@@ -35,7 +37,7 @@ export class ContainerListComponent implements OnInit {
   }
 
   renderRowSpan(container:Container) : number {
-    let rowspan = ((container.groups && container.groups.length > 0) || (container.boxes && container.boxes.length > 0)) 
+    this.rowspan = ((container.groups && container.groups.length > 0) || (container.boxes && container.boxes.length > 0)) 
         ? 
           Math.max
           (
@@ -44,7 +46,7 @@ export class ContainerListComponent implements OnInit {
           ) 
         :
         1;
-      return rowspan;
+      return this.rowspan;
   }
 
   genArray(num : number){
@@ -91,8 +93,7 @@ export class ContainerListComponent implements OnInit {
   isGroup(groups: Array<Group>, group: Group){
     let found: Boolean = false;
     if (groups == null){
-      return found;
-    }
+      return found;}
     let pks: Array<number> = groups.map(g=>g.pk);   
     pks.indexOf(group.pk) !=-1 ? found=true : found=false;
     return found;
