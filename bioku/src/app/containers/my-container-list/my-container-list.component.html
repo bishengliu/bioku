@@ -4,11 +4,11 @@
   </div>
   <div class="six wide column">
     <!--[routerLink]="['/']"-->
-    <a class="ui teal button float-right"><i class="icon add circle"></i>CONTAINER</a>
+    <a class="ui violet button float-right" [routerLink]="['/containers/add']"><i class="icon add circle"></i>CONTAINER</a>
   </div>
 </div>
 <div class="ui grid small_padding">
     <div class="ui link cards">
-        <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card" (click)="displayContainerBoxes(container.pk)"></app-container-detail>
+        <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card" (click)="displayContainerBoxes(container.pk)" [displayMode]="'editable'"></app-container-detail>
     </div>
 </div>

@@ -26,6 +26,8 @@ export class DeleteContainerComponent implements OnInit, OnDestroy {
 
   container: Container = null;
   appUrl: string;
+  //get current route url
+  url: string ="";
   constructor(private alertService: AlertService, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private logAppStateService: LogAppStateService, private containerService: ContainerService)
   { 
@@ -40,7 +42,18 @@ export class DeleteContainerComponent implements OnInit, OnDestroy {
       () => this.alertService.error('Something went wrong, the container was not deleted!', true)
     );
     //naviagate to home
-    this.router.navigate(['/admin/containers/']);
+    if(this.url.startsWith("/containers/delete")){
+      this.router.navigate(['/containers']);}
+    else{
+      this.router.navigate(['/admin/containers/']);}    
+    
+  }
+  cancelDeletion():void{
+    //naviagate to home
+    if(this.url.startsWith("/containers/delete")){
+      this.router.navigate(['/containers']);}
+    else{
+      this.router.navigate(['/admin/containers/']);}    
   }
   ngOnInit() {
     this.sub = this.route.params
@@ -51,7 +64,9 @@ export class DeleteContainerComponent implements OnInit, OnDestroy {
     .subscribe(
         data =>{this.container = data;},
         () => {this.alertService.error('Something went wrong, data were not loaded from the server!', true)}
-    ); 
+    );
+    //get current url
+    this.url = this.router.url;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

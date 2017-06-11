@@ -9,6 +9,10 @@ import { PageNotFoundComponent } from '.././_helpers/page-not-found/page-not-fou
 import { PermissionDeniedComponent } from '.././_helpers/permission-denied/permission-denied.component';
 import { LoginComponent } from '../account/login/login.component';
 import { MyContainerListComponent } from '../containers/my-container-list/my-container-list.component';
+import { AddContainerComponent } from '../admin/containers/add-container/add-container.component';
+import { EditContainerComponent } from '../admin/containers/edit-container/edit-container.component';
+import { DeleteContainerComponent } from '../admin/containers/delete-container/delete-container.component';
+
 import { ContainerBoxListComponent } from '../containers/container-box-list/container-box-list.component';
 import { BoxDetailComponent } from '../containers/box-detail/box-detail.component';
 //guards
@@ -28,7 +32,10 @@ export const routes: Routes = [
   {path: 'user', component: AccountComponent, children: accountRoutes},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes},
   {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}

@@ -1,6 +1,6 @@
 <div class="ui one column stackable page grid huge-padding">
   <div class="column six wide"></div>
-  <div class="column eight wide">
+  <div class="column ten wide">
     <div class="center floated column">
       <!-- one card -->
       <div class="ui black raised card" *ngIf="container">   
@@ -37,7 +37,7 @@
           <h5 class="ui header meta">Groups</h5>
           <div class="ui six cards" >
             <div class="ui teal raised card" *ngFor="let group of container.groups" suiPopup popupHeader="{{group.group_name +'/'+ group.pi}}" popupText="{{group.email}}">
-              <div class="image">
+              <div class="ui avatar image">
                 <img src="{{ appUrl + group.photo }}">
               </div>
             </div>         
@@ -52,7 +52,7 @@
         <div class="mini ui buttons attached bottom">
             <a class="ui button red" (click)="deleteContainer(container.pk)"><i class="trash icon"></i>DELETE</a>
             <div class="or"></div>
-            <a [routerLink]="['/admin/containers']" class="ui grey button"><i class="caret left icon"></i> CANCEL</a>
+            <a (click)="cancelDeletion()" class="ui grey button"><i class="caret left icon"></i> CANCEL</a>
         </div> 
       </div>
       <!-- end one card -->

@@ -9,6 +9,7 @@ import { Container } from '../../_classes/Container';
 })
 export class ContainerDetailComponent implements OnInit {
   @Input() container: Container;
+  @Input() displayMode: string ="";
   appUrl: string;
   constructor(@Inject(APP_CONFIG) private appSetting: any) { 
     this.appUrl = this.appSetting.URL;

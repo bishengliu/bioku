@@ -39,7 +39,8 @@ export class AddContainerComponent implements OnInit {
   //auth user
   user: User = null;
   token: string = null;
-
+  //get current route url
+  url: string ="";
   constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http)
   {
@@ -108,8 +109,13 @@ export class AddContainerComponent implements OnInit {
       () => this.alertService.error('Something went wrong, the new container was not created!', true)
     );
     //naviagate to home
-    this.router.navigate(['/admin/containers']);
+    if(this.url==="/containers/add"){
+      this.router.navigate(['/containers']);}
+    else{
+      this.router.navigate(['/admin/containers']);}    
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.url = this.router.url;
+  }
 
 }

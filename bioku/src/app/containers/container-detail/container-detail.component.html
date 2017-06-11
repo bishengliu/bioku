@@ -7,7 +7,14 @@
 <!-- container info -->
         <div class="content">                                
           <div class="meta">
-            <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span><br>
+            <span class="violet-text"><i class="building outline icon"></i> {{'Name: '+container.name}}</span>
+            <a *ngIf="displayMode==='editable'" class="" [routerLink]="['./edit', container.pk]">
+              <i class="icon edit teal-text"></i>
+            </a>
+            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="(!(container.boxes && container.boxes.length>0) && displayMode==='editable')">
+                <i class="icon remove circle red-text"></i>
+            </a>
+            <br>
             <span class=""><i class="caret right icon"></i> {{'Room: '+container.room}}</span><br>
             <span class=""><i class="caret right icon"></i> {{'Temperature : '+ container.temperature+'&deg;C' }}</span><br>
             <span><i class="caret right icon"></i> {{'#Boxes: '+ (container.boxes == null ? 0 : container.boxes.length) }}</span><br>

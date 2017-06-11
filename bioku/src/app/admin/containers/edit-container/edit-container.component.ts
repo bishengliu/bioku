@@ -44,7 +44,8 @@ export class EditContainerComponent implements OnInit, OnDestroy {
   user: User = null;
   token: string = null;
   container: Container = null;
-
+  //get current route url
+  url: string ="";
   constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private containerService: ContainerService)
   {
@@ -106,7 +107,10 @@ export class EditContainerComponent implements OnInit, OnDestroy {
       () => this.alertService.error('Something went wrong, the container profile was not updated!', true)
     );
     //naviagate to home
-    this.router.navigate(['/admin/containers']);  
+    if(this.url.startsWith("/containers/edit")){
+      this.router.navigate(['/containers']);}
+    else{
+      this.router.navigate(['/admin/containers/']);}   
   }
 
   ngOnInit() 
@@ -149,9 +153,8 @@ export class EditContainerComponent implements OnInit, OnDestroy {
           },
           () => this.alertService.error('Something went wrong, data were not loaded from the server!', true)
        );
-
-
-    
+    //get current url
+    this.url = this.router.url;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 
