@@ -8,6 +8,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
+import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import {  ContainerService } from '../../_services/ContainerService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
@@ -29,16 +30,16 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
   private sub: any; //subscribe to params observable
 
   //CURRENT CONTAINER
-  container: Container = null;
+  container: Container;
   //current boxes
-  boxes: Array<Box> = [];
+  occupied_boxes: Array<Box> = [];
   //occupied box positions
   occupied_postions: Array<string> = [];
   //available positions
-  available_positions: Array<string> = [];
+  containerTowers: Array<ContainerTower> = [];
 
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private http: Http,
-              private containerService: ContainerService,)
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private router: Router, private http: Http, private containerService: ContainerService,)
    { 
      appStore.subscribe(()=> this.updateState());
      this.updateState();
@@ -55,36 +56,78 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
-    //get current occupied boxes
-    if (state.containerInfo && state.containerInfo.currentBox){
-      this.boxes = state.containerInfo.currentBox;
-    }
   }
   ngOnInit() {
     this.sub = this.route.params
     .mergeMap((params) =>{
       this.id = +params['id'];
       if( this.container != null && this.container.pk === this.id){
-        return Observable.of(this.container);      
-      }
+        return Observable.of(this.container);}
       else{
-        return this.containerService.containerDetail(this.id);
-      }
+        return this.containerService.containerDetail(this.id);}
     });
 
-    this.sub.mergeMap((container: any)=>{
-      return Observable.of(container);    
-    }).map((response: Response) =>response.json()).do(data=>console.log(data));
-    //displatch current container
-    this.sub.subscribe((container: any)=>{
-      this.container = container;
-      //dispatch appstore to update container
-      //let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(this.container);
-      //this.appStore.dispatch(setCurrentContainerAction);
+    //container and boxes observable
+    let container$ = this.sub
+    .map((container: Container) => { this.container = container; return container;})
+    .mergeMap((container: Container)=>{
+      //get all the boxes in the current container
+      return this.containerService.containerAllBoxes(container.pk);
+    });
+
+    //all the boxes in the current container
+    container$.subscribe((boxes: Array<Box>)=>{
+      this.occupied_boxes = boxes; //all occupied boxes
+      //get curent occupied positions
+      this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
+      //generate current free positions
+      this.containerTowers = this.getContainerBoxAvailablity(this.container, this.occupied_postions);
+      console.log(this.containerTowers);
     },
-    ()=>{});
-
-
+    (err)=>{console.log(err)});
   }
+
+  //method to get curent occupied positions
+  getContainerBoxOccupiedPositions(occupied_boxes: Array<Box>): Array<string>{
+    let occupied_postions: Array<string> = [];
+    occupied_boxes.forEach(box => {
+      if(occupied_postions.indexOf(box.box_position) === -1){
+        occupied_postions.push(box.box_position);} 
+    });
+    return occupied_postions;
+  }
+  //method generate current free positions
+  getContainerBoxAvailablity(container: Container, occupied_postions: Array<string>): Array<ContainerTower> {
+    let containerTowers: Array<ContainerTower> = [];
+    //loop the container towers
+    for(let t=0; t< container.tower; t++){
+      let containerTower = new ContainerTower();
+      containerTower.tower = (t + 1);
+      //get the shelves
+      let containershelves: Array<Containershelf> = [];
+      //loop shelves
+      for(let s=0; s < container.shelf; s++){
+        let containershelf = new Containershelf();
+        containershelf.shelf = (s + 1);
+        //box availablity
+        let boxAvailabilities : Array<BoxAvailability> = [];
+        //loop box
+        for(let b=0; b< container.box; b++){
+          let boxAvailability = new BoxAvailability();
+          boxAvailability.position = (b+1);
+          //current position
+          let current_box_pos: string = (t+1)+'-'+(s+1)+'-'+(b+1);
+          occupied_postions.indexOf(current_box_pos) === -1? boxAvailability.vailable = true: boxAvailability.vailable = false;
+          boxAvailabilities.push(boxAvailability);
+        }
+        containershelf.boxAvailabilities = boxAvailabilities;
+        containershelves.push(containershelf);        
+      }
+      containerTower.shelves = containershelves;
+      containerTowers.push(containerTower);
+    }
+    return containerTowers;
+  }
+
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

@@ -58,6 +58,7 @@ export class ContainerService{
             //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    
     create(formData: FormData){
         if(!this.state.authInfo.authUser.is_superuser){
             this.alertService.error('Please login as Admin!', true);
@@ -160,6 +161,14 @@ export class ContainerService{
             //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    //get all the occupied boxes in a container
+    containerAllBoxes(container_pk: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/all_boxes/"; 
+        return this.http.get(query_url, this.options)
+            .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
     //get one box
     getContainerBox(container_pk: number, box_position: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/";
@@ -192,7 +201,6 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
-
 
     //////////////////////////////////samples//////////////////////////////////////////
     updateSampleDetail(container_pk: number, box_position: string, sample_position: string, data_attr: string, value: any){
