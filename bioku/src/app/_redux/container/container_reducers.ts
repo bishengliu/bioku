@@ -19,8 +19,8 @@ export const containerReducer: Reducer<ContainerState> =
             const containers : Array<Container> = (<SetMyContainersAction>action).containers
             return {
                 containers : containers,
-                currentContainer: state.currentContainer,
-                currentBox: state.currentBox
+                currentContainer: null,
+                currentBox: null
             }
         case C.UNSET_MYCONTAINERS_LIST:
             return {

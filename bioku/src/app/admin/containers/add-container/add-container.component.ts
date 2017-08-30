@@ -44,7 +44,6 @@ export class AddContainerComponent implements OnInit {
   constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http)
   {
-    //get the photo name for form
     let state= this.appStore.getState();
     this.user = state.authInfo.authUser;
     this.token = state.authInfo.token.token;
