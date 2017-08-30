@@ -67,6 +67,7 @@ import { SampleFilterComponent } from './containers/sample-filter/sample-filter.
 import { SampleTableComponent } from './containers/sample-table/sample-table.component';
 import { BoxDetailActionPanelComponent } from './containers/box-detail-action-panel/box-detail-action-panel.component';
 import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-layout-simple.component';
+import { ContainerAddBoxComponent } from './containers/container-add-box/container-add-box.component';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-lay
     SampleTableComponent,
     BoxDetailActionPanelComponent,
     BoxLayoutSimpleComponent,
+    ContainerAddBoxComponent,
   ],
   imports: [
     BrowserModule,
