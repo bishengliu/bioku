@@ -68,6 +68,7 @@ import { SampleTableComponent } from './containers/sample-table/sample-table.com
 import { BoxDetailActionPanelComponent } from './containers/box-detail-action-panel/box-detail-action-panel.component';
 import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-layout-simple.component';
 import { ContainerAddBoxComponent } from './containers/container-add-box/container-add-box.component';
+import { ContainerBoxOverviewComponent } from './containers/container-box-overview/container-box-overview.component';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ import { ContainerAddBoxComponent } from './containers/container-add-box/contain
     BoxDetailActionPanelComponent,
     BoxLayoutSimpleComponent,
     ContainerAddBoxComponent,
+    ContainerBoxOverviewComponent,
   ],
   imports: [
     BrowserModule,
