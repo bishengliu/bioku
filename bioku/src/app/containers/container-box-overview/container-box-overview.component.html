@@ -1,5 +1,5 @@
-<div class="" *ngIf="_towers" style="overflow-y:hidden;white-space:nowrap;">
-    <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of towers_splited">
+<div class="ui row" *ngIf="_towers" style="overflow-y:hidden;white-space:nowrap;">
+    <table class="ui small celled teal single line compact structured unstackable collapsing medium_margin table" *ngFor="let tws of towers_splited">
       <thead>
           <tr>
               <th></th>
@@ -26,4 +26,24 @@
         <tr>
       </tbody>
     </table>
-</div> 
+</div>
+<br/>
+<br/>
+<div class="ui horizontal segments tiny_vertial_padding fixed_width_huge">
+  <div class="ui compact segment tiny_vertial_padding">
+    <div class="fix_size_div bordered inline"></div>
+    <div class="inline"><small class="small_padding"> EMPTY SLOT</small></div>
+  </div>
+  <div class="ui compact segment tiny_vertial_padding">
+    <div class="fix_size_div inline" style="background-color: teal;"></div>
+    <div class="inline"><small class="small_padding"> OCCUPIED SLOT</small></div>
+  </div>
+  <div class="ui compact segment tiny_vertial_padding">
+    <div class="fix_size_div not_permitted_box inline"></div>
+    <div class="inline"><small class="small_padding"> INSUFFICIENT PERMISSION</small></div>
+  </div>
+  <div class="ui compact segment tiny_vertial_padding">
+    <div class="fix_size_div box-selected inline"></div>
+    <div class="inline"><small class="small_padding"> SELECTED SLOT</small></div>
+  </div>
+</div>

@@ -126,7 +126,10 @@ body{
   padding-top: 10px !important;
   padding-bottom: 0px !important;
 }
-
+.tiny_vertial_padding{
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
 .no_side_padding{  
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -151,6 +154,11 @@ body{
 }
 .fixed_width{
   width: 200px !important;
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+}
+.fixed_width_huge{
+  width: 800px !important;
   margin-top: 10px !important;
   margin-right: 10px !important;
 }
@@ -281,4 +289,15 @@ div [class*="right floated"] {
 }
 .not_permitted_box{
   background-color:grey !important;
+}
+
+.medium_margin{
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+.bordered{
+  border: 1px solid black !important;
+}
+.inline{
+  float:left;
 }
