@@ -279,3 +279,6 @@ div [class*="right floated"] {
   background-color: #FFAB91 !important;
   border: 2px solid red;
 }
+.not_permitted_box{
+  background-color:grey !important;
+}

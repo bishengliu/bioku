@@ -3,7 +3,7 @@
 export class BoxAvailability{
     position: number;
     available: boolean;
-    full_position: string
+    full_position: string;
 }
 
 export class Containershelf {

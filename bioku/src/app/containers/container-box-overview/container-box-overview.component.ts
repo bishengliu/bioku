@@ -1,9 +1,11 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Container } from '../../_classes/Container';
+import { Box } from '../../_classes/Box';
 import {  UtilityService } from '../../_services/UtilityService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
+import {  ContainerService } from '../../_services/ContainerService';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 
 @Component({
@@ -21,24 +23,41 @@ export class ContainerBoxOverviewComponent implements OnInit {
 
   _towers: Array<ContainerTower>;
   _shelfBoxes: Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
+  _container: Container;
 
+  //all the group box
+  permited_boxes: Array<Box> = new Array<Box>();
+  permited_box_positions: Array<string> = new Array<string>();
   //how many towers to show in a table
   tower_per_table: number = 10;
   towers_splited: Array<Array<ContainerTower>> = new Array<Array<ContainerTower>>();
   shelfBoxes_splited : Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
 
-  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any) { 
+  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService) { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
   }
 
   ngOnInit() {}
 
   ngOnChanges(change: SimpleChanges){
-    this._towers = this.towers;
-    //splite towers
-    this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
-    //console.log(this.towers_splited);
-    this._shelfBoxes = this.transformTowers(this._towers);
+    //console.log(change);
+    if(change["towers"] != undefined){
+      this._towers = this.towers;
+      //splite towers
+      this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
+      //console.log(this.towers_splited);
+      this._shelfBoxes = this.transformTowers(this._towers);
+    }
+    if(change["container"] != undefined){
+      this._container = this.container;
+      //get group boxes of the container
+      this.containerService.containerGroupBoxes(this._container.pk)
+      .subscribe((boxes: any)=>{
+        this.permited_boxes = boxes;
+        this.permited_box_positions = this.obtainPermittedBoxPositions(this.permited_boxes);
+      },
+      (error) => console.log(error));
+    }
   }
 
   //splite towers for multiple tables
@@ -105,9 +124,21 @@ export class ContainerBoxOverviewComponent implements OnInit {
 
   obtainBoxPostions(selectedBoxes: Array<BoxAvailability>): Array<string>{
     let positions: Array<string> = new Array<string>();
-    selectedBoxes.forEach((b, i)=>{
-      positions.push(b.full_position);
-    });
+    if(selectedBoxes.length >0){
+      selectedBoxes.forEach((b, i)=>{
+        positions.push(b.full_position);
+      });
+    }  
+    return positions
+  }
+
+  obtainPermittedBoxPositions(boxes: Array<Box>): Array<string>{
+    let positions: Array<string> = new Array<string>();
+    if(boxes.length>0){
+      boxes.forEach((b, i)=>{
+        positions.push(b.box_position);
+      });
+    }
     return positions
   }
 }
