@@ -1,31 +1,4 @@
-<!-- <div class="sixteen wide column" *ngIf="_towers">
-  <table class="ui small celled teal single line compact structured unstackable table">
-    <thead>
-        <tr>
-            <th rowspan="3"></th>
-            <th *ngFor="let tower of _towers" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned">TOWER{{tower.tower}}</th>
-        </tr>
-        <tr>
-            <th *ngFor="let tower of _towers" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned"><small class="">BOXES</small></th>
-        </tr>
-        <tr>
-          <th *ngFor="let box of _shelfBoxes[0]; let t = index" class="center aligned">{{box.position}}</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let shelf of _shelfBoxes; let s = index">
-        <th>SHELF{{s}}</th>
-        <td *ngFor="let box of shelf; let t = index" class="clickable sample-cell tight_around" (click)="boxClicked(box)">
-          <div *ngIf="box.available" class="fix_size_div"></div>
-          <div *ngIf="!box.available" class="fix_size_div" style="background-color: teal;"></div>
-        </td>
-      <tr>
-    </tbody>
-  </table>
-</div> -->
-
-<!-- try to split the view-->
-<div class="sixteen wide column" *ngIf="_towers" style="overflow-y:auto;white-space:nowrap;">
+<div class="" *ngIf="_towers" style="overflow-y:hidden;white-space:nowrap;">
     <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of towers_splited">
       <thead>
           <tr>
@@ -46,4 +19,4 @@
         <tr>
       </tbody>
     </table>
-  </div>
+</div> 

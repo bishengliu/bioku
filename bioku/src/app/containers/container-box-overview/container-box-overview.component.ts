@@ -57,7 +57,6 @@ export class ContainerBoxOverviewComponent implements OnInit {
     return _towers_splited;
   }
 
-
   transformTowers(towers: Array<ContainerTower>): Array<Array<BoxAvailability>>{
     if (towers.length==0) return [];
     let shelfBoxes: Array<Array<BoxAvailability>> = [];
