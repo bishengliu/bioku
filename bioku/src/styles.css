@@ -275,3 +275,7 @@ div [class*="right floated"] {
   height: 11.5px;
   border-radius: 2px;
 }
+.box-selected{
+  background-color: #FFAB91 !important;
+  border: 2px solid red;
+}

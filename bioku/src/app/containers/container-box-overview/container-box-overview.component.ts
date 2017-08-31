@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Container } from '../../_classes/Container';
 import {  UtilityService } from '../../_services/UtilityService';
@@ -14,6 +14,10 @@ import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/
 export class ContainerBoxOverviewComponent implements OnInit {
   @Input() container: Container;
   @Input() towers: Array<ContainerTower>;
+  //for selected boxes
+  selectedBoxes: Array<BoxAvailability> = new Array<BoxAvailability>();
+  selectedBoxPositions: Array<string> = new Array<string>();
+  @Output() boxesSelected: EventEmitter<Array<BoxAvailability>> = new EventEmitter<Array<BoxAvailability>> ();
 
   _towers: Array<ContainerTower>;
   _shelfBoxes: Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
@@ -79,7 +83,31 @@ export class ContainerBoxOverviewComponent implements OnInit {
     return this.utilityService.genArray(max_box_count);
   }
 
-  boxClicked(box: BoxAvailability){
-    console.log(box);
+  toggleSelection(box: BoxAvailability){
+    if(this.selectedBoxes.length === 0){
+      this.selectedBoxes.push(box);
+    }
+    else
+    {
+      //get the posiiton array
+      let positions: Array<string> = this.obtainBoxPostions(this.selectedBoxes)
+      let index: number = positions.indexOf(box.full_position);
+      if(index !== -1){
+        this.selectedBoxes.splice(index, 1);
+      }
+      else{
+        this.selectedBoxes.push(box);
+      }
+    }
+    this.boxesSelected.emit(this.selectedBoxes);
+    this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);
+  }
+
+  obtainBoxPostions(selectedBoxes: Array<BoxAvailability>): Array<string>{
+    let positions: Array<string> = new Array<string>();
+    selectedBoxes.forEach((b, i)=>{
+      positions.push(b.full_position);
+    });
+    return positions
   }
 }

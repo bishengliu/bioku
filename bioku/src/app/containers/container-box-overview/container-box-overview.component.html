@@ -12,7 +12,7 @@
       <tbody>
         <tr *ngFor="let shelf of transformTowers(tws); let s = index">
           <th><em><small class="">SHELF{{s+1}}</small></em></th>
-          <td *ngFor="let box of shelf; let t = index" class="clickable sample-cell tight_around center aligned" (click)="boxClicked(box)">
+          <td *ngFor="let box of shelf; let t = index" class="clickable sample-cell tight_around center aligned" (click)="toggleSelection(box)" [ngClass]="{'box-selected': selectedBoxPositions.indexOf(box.full_position) !==- 1 }">
             <div *ngIf="box.available" class="fix_size_div center aligned grey-text">{{box.position}}</div>
             <div *ngIf="!box.available" class="fix_size_div center aligned grey-text" style="background-color: teal;">{{box.position}}</div>
           </td>

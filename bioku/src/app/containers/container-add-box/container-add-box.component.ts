@@ -38,6 +38,9 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
   //available positions
   containerTowers: Array<ContainerTower> = [];
 
+  //selected boxes
+  selectedBoxes: Array<BoxAvailability> = new Array<BoxAvailability>();
+
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private http: Http, private containerService: ContainerService,)
    { 
@@ -129,6 +132,10 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
     }
     return containerTowers;
   }
-
+  //capture child event emited
+  captureBoxesSelected(boxes: Array<BoxAvailability>){
+    this.selectedBoxes = boxes;
+    console.log(this.selectedBoxes);
+  }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
