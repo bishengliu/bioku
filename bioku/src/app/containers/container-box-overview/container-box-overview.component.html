@@ -25,7 +25,7 @@
 </div> -->
 
 <!-- try to split the view-->
-<div class="sixteen wide column" *ngIf="_towers">
+<div class="sixteen wide column" *ngIf="_towers" style="overflow-y:auto;white-space:nowrap;">
     <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of towers_splited">
       <thead>
           <tr>
