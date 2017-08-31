@@ -12,4 +12,6 @@
   </div>
 </div>
 
-<div class="ui grid small_padding stackable"></div>
+<div class="ui grid small_padding stackable">
+  <app-container-box-overview [container]="container" [towers]="containerTowers" *ngIf="containerTowers"></app-container-box-overview>
+</div>
