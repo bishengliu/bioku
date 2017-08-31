@@ -1,5 +1,5 @@
-<div class="sixteen wide column" *ngIf="_towers">
-  <table class="ui small celled teal single line compact padded structured unstackable table">
+<!-- <div class="sixteen wide column" *ngIf="_towers">
+  <table class="ui small celled teal single line compact structured unstackable table">
     <thead>
         <tr>
             <th rowspan="3"></th>
@@ -15,12 +15,35 @@
     <tbody>
       <tr *ngFor="let shelf of _shelfBoxes; let s = index">
         <th>SHELF{{s}}</th>
-        <td *ngFor="let box of shelf; let t = index">
-          <div  class="fix_size_div">
-              <i *ngIf="!box.vailable" class="ui red circle icon"></i>
-          </div>
+        <td *ngFor="let box of shelf; let t = index" class="clickable sample-cell tight_around" (click)="boxClicked(box)">
+          <div *ngIf="box.available" class="fix_size_div"></div>
+          <div *ngIf="!box.available" class="fix_size_div" style="background-color: teal;"></div>
         </td>
       <tr>
     </tbody>
   </table>
-</div>
+</div> -->
+
+<!-- try to split the view-->
+<div class="sixteen wide column" *ngIf="_towers">
+    <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of towers_splited">
+      <thead>
+          <tr>
+              <th></th>
+              <th *ngFor="let tower of tws" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned">
+                <em>TOWER{{tower.tower}}</em><br/>
+                <small class="">BOXES</small>
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let shelf of transformTowers(tws); let s = index">
+          <th><em><small class="">SHELF{{s+1}}</small></em></th>
+          <td *ngFor="let box of shelf; let t = index" class="clickable sample-cell tight_around center aligned" (click)="boxClicked(box)">
+            <div *ngIf="box.available" class="fix_size_div center aligned grey-text">{{box.position}}</div>
+            <div *ngIf="!box.available" class="fix_size_div center aligned grey-text" style="background-color: teal;">{{box.position}}</div>
+          </td>
+        <tr>
+      </tbody>
+    </table>
+  </div>

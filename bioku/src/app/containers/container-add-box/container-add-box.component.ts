@@ -82,7 +82,7 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
       this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
       //generate current free positions
       this.containerTowers = this.getContainerBoxAvailablity(this.container, this.occupied_postions);
-      console.log(this.containerTowers);
+      //console.log(this.containerTowers);
     },
     (err)=>{console.log(err)});
   }
@@ -114,10 +114,11 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
         //loop box
         for(let b=0; b< container.box; b++){
           let boxAvailability = new BoxAvailability();
-          boxAvailability.position = (b+1);
+          boxAvailability.position = (b+1);         
           //current position
           let current_box_pos: string = (t+1)+'-'+(s+1)+'-'+(b+1);
-          occupied_postions.indexOf(current_box_pos) === -1? boxAvailability.vailable = true: boxAvailability.vailable = false;
+          boxAvailability.full_position = current_box_pos;
+          occupied_postions.indexOf(current_box_pos) === -1? boxAvailability.available = true: boxAvailability.available = false;
           boxAvailabilities.push(boxAvailability);
         }
         containershelf.boxAvailabilities = boxAvailabilities;

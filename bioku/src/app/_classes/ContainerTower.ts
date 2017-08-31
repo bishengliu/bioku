@@ -2,7 +2,8 @@
 
 export class BoxAvailability{
     position: number;
-    vailable: boolean;
+    available: boolean;
+    full_position: string
 }
 
 export class Containershelf {

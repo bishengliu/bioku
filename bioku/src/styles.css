@@ -269,3 +269,8 @@ div [class*="right floated"] {
   height: 23px;
   border-radius: 2px;
 }
+.contianer_overview_fix_size_div{
+  width: 16px;
+  height: 11.5px;
+  border-radius: 2px;
+}
