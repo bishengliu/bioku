@@ -1,3 +1,26 @@
-<p>
-  container-box-overview works!
-</p>
+<div class="sixteen wide column" *ngIf="_towers">
+  <table class="ui small celled teal single line compact padded structured unstackable table">
+    <thead>
+        <tr>
+            <th rowspan="3"></th>
+            <th *ngFor="let tower of _towers" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned">TOWER{{tower.tower}}</th>
+        </tr>
+        <tr>
+            <th *ngFor="let tower of _towers" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned"><small class="">BOXES</small></th>
+        </tr>
+        <tr>
+          <th *ngFor="let box of _shelfBoxes[0]; let t = index" class="center aligned">{{box.position}}</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shelf of _shelfBoxes; let s = index">
+        <th>SHELF{{s}}</th>
+        <td *ngFor="let box of shelf; let t = index">
+          <div  class="fix_size_div">
+              <i *ngIf="!box.vailable" class="ui red circle icon"></i>
+          </div>
+        </td>
+      <tr>
+    </tbody>
+  </table>
+</div>

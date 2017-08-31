@@ -82,15 +82,11 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
       this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
       //generate current free positions
       this.containerTowers = this.getContainerBoxAvailablity(this.container, this.occupied_postions);
-      //console.log(this.containerTowers);
+      console.log(this.containerTowers);
     },
     (err)=>{console.log(err)});
   }
 
-    passTowers(containerTowers: Array<ContainerTower>): Array<ContainerTower>{
-      console.log(containerTowers);
-      return containerTowers;
-    }
   //method to get curent occupied positions
   getContainerBoxOccupiedPositions(occupied_boxes: Array<Box>): Array<string>{
     let occupied_postions: Array<string> = [];
