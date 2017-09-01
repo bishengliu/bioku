@@ -17,6 +17,6 @@
         <app-container-box-overview [container]="container" [towers]="containerTowers" (boxesSelected)="captureBoxesSelected($event)"></app-container-box-overview>
       </div>
       <div class="four wide tablet three wide computer column ui sticky">
-          action panel
+          <app-container-box-overview-action-panel [selectedBoxes]="selectedBoxes" [container]="container"></app-container-box-overview-action-panel>
       </div> 
 </div>

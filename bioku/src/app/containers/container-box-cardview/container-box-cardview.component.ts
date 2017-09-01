@@ -48,10 +48,10 @@ export class ContainerBoxCardviewComponent implements OnInit {
     .subscribe(()=>this.rate =0,(err)=>console.log(err));
   }
   ngOnInit() {
-    if(this.box != null){
+    if(this.box != null){  
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? "#ffffff" : this.box.color;
-      this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
+      this.currentSampleCount = this.box.samples != null ? this.box.samples.filter((s:Sample)=>s.occupied == true).length : 0;
     }    
   }
 }

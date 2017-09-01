@@ -32,7 +32,7 @@ export class BoxLayoutSimpleComponent implements OnInit {
     return this.box_letters.slice(0, num);
   }
   pickerSamples(h: number, v: string): Array<Sample>{
-    return this.box.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
+    return this.box.samples != null ? this.box.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase()) : new Array<Sample>();
   }
   genBackgroundColor(color:string){
     let cssValue: string = "";

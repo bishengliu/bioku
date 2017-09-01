@@ -135,7 +135,6 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
   //capture child event emited
   captureBoxesSelected(boxes: Array<BoxAvailability>){
     this.selectedBoxes = boxes;
-    console.log(this.selectedBoxes);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

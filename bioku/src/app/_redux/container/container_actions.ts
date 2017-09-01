@@ -72,6 +72,19 @@ export const unSetCurrentBoxActionCreator: ActionCreator<UnSetCurrentBoxAction> 
     currentContainer: container
 });
 
+
+export const setCurrentContainerActionAsync = (container: Container) =>
+(dispatch: Dispatch<AppState>, getState)=>{
+    Observable.of(container)
+    .subscribe(
+        data=>{
+            let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(data);
+            dispatch(setCurrentContainerAction);
+        }
+    );
+}
+
+
 export const setMyContainersActionAsync = 
 (containerService: ContainerService, alertService: AlertService, logAppStateService: LogAppStateService) =>
 (dispatch: Dispatch<AppState>, getState) =>

@@ -1,0 +1,40 @@
+<div class="ui stacked raised segments" *ngIf="selectedBoxPositions.length > 0">
+  <div class="ui center aligned tertiary inverted teal segment no_margin nopadding"><p class="no_margin nopadding">ACTION PANEL</p></div>
+  <div class="ui segment" *ngIf="action_panel_msg">
+    <!--msg-->
+    <div class="ui icon message" >
+      <i class="warning sign icon red-text"></i>
+      <div class="content">
+        <p class="red-text">{{action_panel_msg}}</p>
+      </div>
+    </div>
+    <!--msg-->
+  </div>
+  <div class="ui segment" *ngIf="selectedOccupiedSlots.length > 0">
+    <div *ngIf="selected_single_occupied_box">
+      <!--show the box layout-->
+      <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)"></app-container-box-cardview>
+    </div>
+    <!--more occuped-->
+    <div *ngIf="selectedOccupiedSlots.length > 1">
+      <div class="ui labels">
+        <div class="ui teal label" *ngFor="let occupied of selectedOccupiedSlots"><i class="circle icon"></i><span>{{ occupied.full_position }}</span></div>
+      </div>
+      <div class="ui divider"></div>
+      <div>
+        <button class="ui compact mini red button"><i class="icon external share"></i>TAKE OUT</button>
+        <button class="ui compact mini teal button" *ngIf="selectedOccupiedSlots.length == 2"><i class="icon refresh"></i>SWITCH</button>
+        <button class="ui compact mini blue button"><i class="icon move"></i>MOVE</button>
+      </div>
+    </div>
+  </div>
+  <div class="ui segment" *ngIf="selectedEmptySlots.length > 0">
+    <div class="ui labels">
+      <div class="ui label" *ngFor="let empty of selectedEmptySlots"><i class="circle icon"></i><span>{{ empty.full_position }}</span></div>
+    </div>
+    <div >
+      <div class="ui divider"></div>
+      <button class="ui mini black button"><i class="icon plus"></i>BOXES</button>
+    </div>
+  </div>
+</div>
