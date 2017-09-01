@@ -115,7 +115,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
       let index: number = positions.indexOf(box.full_position);
       if(index !== -1){
         this.selectedBoxes.splice(index, 1);
-        lastSelectedBoxPosition = this.obtainLastOccupiedBoxPosition(this.selectedBoxes);
+        lastSelectedBoxPosition = this.obtainLastOccupiedBoxPosition(this.selectedBoxes);        
       }
       else{
         this.selectedBoxes.push(box);
@@ -153,7 +153,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
     if(selectedBoxes.length > 0){
       let array: Array<BoxAvailability> = [...selectedBoxes];
       array.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
-      let all_occupied_boxes: Array<BoxAvailability> = array.filter((b, i)=>{ return b.available == true; });
+      let all_occupied_boxes: Array<BoxAvailability> = array.filter((b, i)=>{ return b.available == false; });
       if(all_occupied_boxes.length>0){
         position = all_occupied_boxes[all_occupied_boxes.length -1].full_position;
       }

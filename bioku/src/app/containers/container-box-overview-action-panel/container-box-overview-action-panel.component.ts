@@ -22,8 +22,8 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   _container: Container;
   _selectedBoxes: Array<BoxAvailability>;
   selectedBoxPositions: Array<string> = new Array<string>();
-  action_panel_msg: string = "this is the panel error message!";
-  selected_single_occupied_box: Box = new Box();
+  action_panel_msg: string = null;
+  selected_single_occupied_box: Box = null;
   //all container boxes;
   all_boxes: Array<Box> = new Array<Box>();
   //selected empty slots
@@ -75,6 +75,8 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
 
   //display the selected box
   displaySelectedBox(box: Box): void {
+    let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(this._container, box);
+    this.appStore.dispatch(setCurrentBoxAction);
     this.router.navigate(['/containers', this._container.pk, box.box_position]);  
   }
 
@@ -83,7 +85,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
     if(change["container"] != undefined){
       this._container = this.container;     
     }
-    if(change["lastSelectedOccupiedBox"] != undefined){   
+    if(change["lastSelectedOccupiedBox"] != undefined){
       if(this.lastSelectedOccupiedBox != null){
         this.containerService.getContainerBox(this._container.pk, this.lastSelectedOccupiedBox)
         .subscribe((data: Box) =>{
