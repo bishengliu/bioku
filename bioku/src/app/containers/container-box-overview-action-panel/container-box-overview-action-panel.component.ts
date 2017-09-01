@@ -81,6 +81,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   }
 
   ngOnInit() {}
+
   ngOnChanges(change: SimpleChanges){
     if(change["container"] != undefined){
       this._container = this.container;     
@@ -96,6 +97,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
       }
     }
   }
+  
   //performace not optimized/hit
   ngDoCheck(){   
     this._selectedBoxes = [...this.selectedBoxes];
