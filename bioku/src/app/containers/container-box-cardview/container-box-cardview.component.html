@@ -1,18 +1,14 @@
 <!-- one card -->
-<div class="content" [style.background-color]="color">
+<div class="content" [style.background-color]="color" *ngIf="box != null">
   <div class="header right floated">Box: {{box.box_position}} </div>
   <img *ngIf="user != null && user.profile.photo" class="ui avatar image" src="{{appUrl + user.profile.photo}}"><span class="meta">{{user.first_name.toUpperCase()+ " " + user.last_name.toUpperCase()}}</span>         
 </div>
 <app-box-layout-simple class="attached" [box]="box"></app-box-layout-simple>
-<!--<div class="content">  
-  <div class="description">{{box.description}}</div>
-</div>-->
-<div class="content">
+<div class="content" *ngIf="box != null">
   <span class="ui bottom right floated">
     <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
     <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
   </span>
   <i class="icon pie chart"></i>{{currentSampleCount}} Samples
 </div>
-
 <!-- end one card -->

@@ -11,7 +11,7 @@
     <!--msg-->
   </div>
   <div class="ui segment" *ngIf="selectedOccupiedSlots.length > 0">
-    <div *ngIf="selected_single_occupied_box">
+    <div *ngIf="selected_single_occupied_box != null">
       <!--show the box layout-->
       <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)"></app-container-box-cardview>
     </div>

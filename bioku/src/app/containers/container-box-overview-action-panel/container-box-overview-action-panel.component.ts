@@ -18,6 +18,7 @@ import { setCurrentContainerActionAsync, SetCurrentBoxAction, setCurrentBoxActio
 export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   @Input() container: Container;
   @Input() selectedBoxes: Array<BoxAvailability>;
+  @Input() lastSelectedOccupiedBox: string;
   _container: Container;
   _selectedBoxes: Array<BoxAvailability>;
   selectedBoxPositions: Array<string> = new Array<string>();
@@ -80,13 +81,17 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   ngOnInit() {}
   ngOnChanges(change: SimpleChanges){
     if(change["container"] != undefined){
-      this._container = this.container;
-      this.containerService.containerGroupBoxes(this._container.pk)
-      .subscribe((data: Array<Box>) =>{
-        this.all_boxes = data;        
-      }, ()=>{
-        this.action_panel_msg= "fail to retrieve box details";
-      });
+      this._container = this.container;     
+    }
+    if(change["lastSelectedOccupiedBox"] != undefined){   
+      if(this.lastSelectedOccupiedBox != null){
+        this.containerService.getContainerBox(this._container.pk, this.lastSelectedOccupiedBox)
+        .subscribe((data: Box) =>{
+          this.selected_single_occupied_box = data;          
+        }, ()=>{
+          this.action_panel_msg= "fail to retrieve box details";
+        });
+      }
     }
   }
   //performace not optimized/hit
@@ -95,12 +100,6 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
     this.selectedBoxPositions = this.obtainBoxPostions(this._selectedBoxes);
     this.selectedEmptySlots = this.getSelectedEmptySlots(this._selectedBoxes);
     this.selectedOccupiedSlots = this.getSelectedOccupiedSlots(this._selectedBoxes);
-    if(this.selectedOccupiedSlots.length ===1){
-      this.retrieveBox(this.selectedOccupiedSlots[0]);
-    }
-    else{
-      this.selected_single_occupied_box = null;
-    }
   }
 
 }

@@ -20,7 +20,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
   selectedBoxes: Array<BoxAvailability> = new Array<BoxAvailability>();
   selectedBoxPositions: Array<string> = new Array<string>();
   @Output() boxesSelected: EventEmitter<Array<BoxAvailability>> = new EventEmitter<Array<BoxAvailability>> ();
-
+  @Output() lastSelectedOccupiedSlot: EventEmitter<string> = new EventEmitter<string> ();
   _towers: Array<ContainerTower>;
   _shelfBoxes: Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
   _container: Container;
@@ -103,8 +103,10 @@ export class ContainerBoxOverviewComponent implements OnInit {
   }
 
   toggleSelection(box: BoxAvailability){
+    let lastSelectedBoxPosition: string = null;
     if(this.selectedBoxes.length === 0){
       this.selectedBoxes.push(box);
+      lastSelectedBoxPosition = box.available == false? box.full_position : null ;
     }
     else
     {
@@ -113,13 +115,17 @@ export class ContainerBoxOverviewComponent implements OnInit {
       let index: number = positions.indexOf(box.full_position);
       if(index !== -1){
         this.selectedBoxes.splice(index, 1);
+        lastSelectedBoxPosition = this.obtainLastOccupiedBoxPosition(this.selectedBoxes);
       }
       else{
         this.selectedBoxes.push(box);
-      }
+        lastSelectedBoxPosition = box.available == false? box.full_position : this.obtainLastOccupiedBoxPosition(this.selectedBoxes);
+      }    
     }
+    this.selectedBoxes.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+    this.lastSelectedOccupiedSlot.emit(lastSelectedBoxPosition);
     this.boxesSelected.emit(this.selectedBoxes);
-    this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);
+    this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);    
   }
 
   obtainBoxPostions(selectedBoxes: Array<BoxAvailability>): Array<string>{
@@ -140,5 +146,19 @@ export class ContainerBoxOverviewComponent implements OnInit {
       });
     }
     return positions
+  }
+
+  obtainLastOccupiedBoxPosition(selectedBoxes: Array<BoxAvailability>): string{
+    let position = null;
+    if(selectedBoxes.length > 0){
+      let array: Array<BoxAvailability> = [...selectedBoxes];
+      array.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+      let all_occupied_boxes: Array<BoxAvailability> = array.filter((b, i)=>{ return b.available == true; });
+      if(all_occupied_boxes.length>0){
+        position = all_occupied_boxes[all_occupied_boxes.length -1].full_position;
+      }
+
+    }  
+    return position;
   }
 }

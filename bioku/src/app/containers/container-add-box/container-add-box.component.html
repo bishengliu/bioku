@@ -14,9 +14,9 @@
 
 <div class="ui grid small_padding stackable">
     <div class="twelve wide tablet thirteen wide computer column" >
-        <app-container-box-overview [container]="container" [towers]="containerTowers" (boxesSelected)="captureBoxesSelected($event)"></app-container-box-overview>
+        <app-container-box-overview [container]="container" [towers]="containerTowers" (boxesSelected)="captureBoxesSelected($event)" (lastSelectedOccupiedSlot)="captureLastSelectedBox($event)"></app-container-box-overview>
       </div>
       <div class="four wide tablet three wide computer column ui sticky">
-          <app-container-box-overview-action-panel [selectedBoxes]="selectedBoxes" [container]="container"></app-container-box-overview-action-panel>
+          <app-container-box-overview-action-panel [selectedBoxes]="selectedBoxes" [lastSelectedOccupiedBox]="lastSelectedOccupiedBox" [container]="container"></app-container-box-overview-action-panel>
       </div> 
 </div>
