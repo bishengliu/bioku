@@ -29,21 +29,26 @@
 </div>
 <br/>
 <br/>
-<div class="ui horizontal segments tiny_vertial_padding fixed_width_huge">
-  <div class="ui compact segment tiny_vertial_padding">
-    <div class="fix_size_div bordered inline"></div>
-    <div class="inline"><small class="small_padding"> EMPTY SLOT</small></div>
+<div class="ui raised segments tiny_vertial_padding fixed_width_huge">
+  <div class="ui horizontal attached segments tiny_vertial_padding fixed_width_huge">
+        <div class="ui compact segment tiny_vertial_padding">
+          <div class="fix_size_div bordered inline"></div>
+          <div class="inline"><small class="small_padding"> EMPTY SLOT</small></div>
+        </div>
+        <div class="ui compact segment tiny_vertial_padding">
+          <div class="fix_size_div inline" style="background-color: teal;"></div>
+          <div class="inline"><small class="small_padding"> OCCUPIED SLOT</small></div>
+        </div>
+        <div class="ui compact segment tiny_vertial_padding">
+          <div class="fix_size_div not_permitted_box inline"></div>
+          <div class="inline"><small class="small_padding"> INSUFFICIENT PERMISSION</small></div>
+        </div>
+        <div class="ui compact segment tiny_vertial_padding">
+          <div class="fix_size_div box-selected inline"></div>
+          <div class="inline"><small class="small_padding"> SELECTED SLOT</small></div>
+        </div>
   </div>
-  <div class="ui compact segment tiny_vertial_padding">
-    <div class="fix_size_div inline" style="background-color: teal;"></div>
-    <div class="inline"><small class="small_padding"> OCCUPIED SLOT</small></div>
-  </div>
-  <div class="ui compact segment tiny_vertial_padding">
-    <div class="fix_size_div not_permitted_box inline"></div>
-    <div class="inline"><small class="small_padding"> INSUFFICIENT PERMISSION</small></div>
-  </div>
-  <div class="ui compact segment tiny_vertial_padding">
-    <div class="fix_size_div box-selected inline"></div>
-    <div class="inline"><small class="small_padding"> SELECTED SLOT</small></div>
+  <div class="ui mini green bottom attached button" tabindex="0" (click)="clearSelection()">
+      <i class="icon trash"></i>RESET ALL SELECTION
   </div>
 </div>

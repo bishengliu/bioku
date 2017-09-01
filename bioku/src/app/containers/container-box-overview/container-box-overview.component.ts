@@ -161,4 +161,10 @@ export class ContainerBoxOverviewComponent implements OnInit {
     }  
     return position;
   }
+  clearSelection(){
+    this.selectedBoxes = [];
+    this.selectedBoxPositions = [];
+    this.boxesSelected.emit([]);
+    this.lastSelectedOccupiedSlot.emit(null);
+  };
 }
