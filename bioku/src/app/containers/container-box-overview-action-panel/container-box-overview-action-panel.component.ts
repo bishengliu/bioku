@@ -19,6 +19,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   @Input() container: Container;
   @Input() selectedBoxes: Array<BoxAvailability>;
   @Input() lastSelectedOccupiedBox: string;
+
   _container: Container;
   _selectedBoxes: Array<BoxAvailability>;
   selectedBoxPositions: Array<string> = new Array<string>();
@@ -30,6 +31,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   selectedEmptySlots: Array<BoxAvailability> = new Array<BoxAvailability>();
   //selected occupied slots
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
+
   constructor(@Inject(AppStore) private appStore, private router: Router,private containerService: ContainerService) {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -90,20 +92,17 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
       if(this.lastSelectedOccupiedBox != null){
         this.containerService.getContainerBox(this._container.pk, this.lastSelectedOccupiedBox)
         .subscribe((data: Box) =>{
-          this.selected_single_occupied_box = data;          
+          this.selected_single_occupied_box = data;  
         }, ()=>{
           this.action_panel_msg= "fail to retrieve box details";
         });
       }
     }
+    if(change["selectedBoxes"] != undefined){
+      this._selectedBoxes = [...this.selectedBoxes];
+      this.selectedBoxPositions = this.obtainBoxPostions(this._selectedBoxes);
+      this.selectedEmptySlots = this.getSelectedEmptySlots(this._selectedBoxes);
+      this.selectedOccupiedSlots = this.getSelectedOccupiedSlots(this._selectedBoxes);
+    }
   }
-  
-  //performace not optimized/hit
-  ngDoCheck(){   
-    this._selectedBoxes = [...this.selectedBoxes];
-    this.selectedBoxPositions = this.obtainBoxPostions(this._selectedBoxes);
-    this.selectedEmptySlots = this.getSelectedEmptySlots(this._selectedBoxes);
-    this.selectedOccupiedSlots = this.getSelectedOccupiedSlots(this._selectedBoxes);
-  }
-
 }

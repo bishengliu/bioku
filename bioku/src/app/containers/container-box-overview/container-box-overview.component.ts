@@ -22,7 +22,8 @@ export class ContainerBoxOverviewComponent implements OnInit {
   @Output() boxesSelected: EventEmitter<Array<BoxAvailability>> = new EventEmitter<Array<BoxAvailability>> ();
   @Output() lastSelectedOccupiedSlot: EventEmitter<string> = new EventEmitter<string> ();
   _towers: Array<ContainerTower>;
-  _shelfBoxes: Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
+  box_count_per_shelf: number = 1;
+  //_shelfBoxes: Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
   _container: Container;
 
   //all the group box
@@ -31,8 +32,8 @@ export class ContainerBoxOverviewComponent implements OnInit {
   //how many towers to show in a table
   tower_per_table: number = 10;
   towers_splited: Array<Array<ContainerTower>> = new Array<Array<ContainerTower>>();
-  shelfBoxes_splited : Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
-
+  transformed_towers : Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
+  splited_towers_post_transformation: Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
   constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService) { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
   }
@@ -43,10 +44,13 @@ export class ContainerBoxOverviewComponent implements OnInit {
     //console.log(change);
     if(change["towers"] != undefined){
       this._towers = this.towers;
+      this.box_count_per_shelf = this._towers.length > 0 ? this._towers[0].shelves[0].boxAvailabilities.length : 1;
+      this.transformed_towers = this.transformTowers(this._towers);
+      console.log(this.transformed_towers);  
+      this.splited_towers_post_transformation = this.spliteTowerAfterTransform(this.transformed_towers, this.tower_per_table, this._towers);
+      console.log(this.splited_towers_post_transformation);  
       //splite towers
-      this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
-      //console.log(this.towers_splited);
-      this._shelfBoxes = this.transformTowers(this._towers);
+      //this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
     }
     if(change["container"] != undefined){
       this._container = this.container;
@@ -60,7 +64,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
     }
   }
 
-  //splite towers for multiple tables
+  //not used anymore, due to performace issue. splite towers for multiple tables
   splitTowers(towers: Array<ContainerTower>, tower_per_table: number): Array<Array<ContainerTower>>{
     let _towers_splited: Array<Array<ContainerTower>> = [];
     if(towers.length <= tower_per_table){
@@ -78,6 +82,36 @@ export class ContainerBoxOverviewComponent implements OnInit {
       }
     }
     return _towers_splited;
+  }
+
+  //alternative way of splite towers
+  spliteTowerAfterTransform(shelves: Array<Array<BoxAvailability>>, tower_per_table: number, towers: Array<ContainerTower>): Array<Array<Array<BoxAvailability>>>{
+    if(towers.length == 0) return [];
+    let box_count_per_shelf = towers[0].shelves[0].boxAvailabilities.length;
+    let _shelves_splited: Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
+    if(shelves == null) return [];
+    let total_box_per_table: number = tower_per_table * box_count_per_shelf;
+    let total_box_per_shelf = shelves[0].length;
+    if(shelves[0].length < total_box_per_table){
+      total_box_per_table = total_box_per_shelf;
+    };
+
+    for(let c = 0; c < total_box_per_shelf; c = c + total_box_per_table){
+      let shelves_per_split : Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
+      shelves.forEach((shelf, i)=>{
+        let box_per_shelf: Array<BoxAvailability> = [];
+        for(let x = 0; x < total_box_per_table; x++){
+          if(x+c < total_box_per_shelf){
+            box_per_shelf.push(shelf[x+c]); 
+          }           
+        }
+        if(box_per_shelf.length>0){
+          shelves_per_split.push(box_per_shelf); 
+        }         
+      });
+      _shelves_splited.push(shelves_per_split);
+    }
+    return _shelves_splited;
   }
 
   transformTowers(towers: Array<ContainerTower>): Array<Array<BoxAvailability>>{
@@ -103,6 +137,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
   }
 
   toggleSelection(box: BoxAvailability){
+    //fire the selection event
     let lastSelectedBoxPosition: string = null;
     if(this.selectedBoxes.length === 0){
       this.selectedBoxes.push(box);
@@ -124,7 +159,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
     }
     this.selectedBoxes.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
     this.lastSelectedOccupiedSlot.emit(lastSelectedBoxPosition);
-    this.boxesSelected.emit(this.selectedBoxes);
+    this.boxesSelected.emit([...this.selectedBoxes]); //emit new obj to force the change detection
     this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);    
   }
 
@@ -161,10 +196,14 @@ export class ContainerBoxOverviewComponent implements OnInit {
     }  
     return position;
   }
+
   clearSelection(){
     this.selectedBoxes = [];
     this.selectedBoxPositions = [];
     this.boxesSelected.emit([]);
     this.lastSelectedOccupiedSlot.emit(null);
   };
+  genTowerCount(c: number){
+    return this.utilityService.genArray(c);
+  }
 }

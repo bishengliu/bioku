@@ -1,16 +1,16 @@
 <div class="ui row" *ngIf="_towers" style="overflow-y:hidden;white-space:nowrap;">
-    <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of towers_splited">
+    <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of splited_towers_post_transformation">
       <thead>
           <tr>
               <th></th>
-              <th *ngFor="let tower of tws" [attr.colspan]="tower.shelves[0].boxAvailabilities.length" class="center aligned">
-                <em>TOWER{{tower.tower}}</em><br/>
+              <th *ngFor="let tower of genTowerCount(tws[0].length/box_count_per_shelf)" [attr.colspan]="box_count_per_shelf" class="center aligned">
+                <em>TOWER{{ tower }}</em><br/>
                 <small class="">BOXES</small>
               </th>
           </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let shelf of transformTowers(tws); let s = index">
+        <tr *ngFor="let shelf of tws; let s = index">
           <th><em><small class="">SHELF{{s+1}}</small></em></th>
           <td 
             *ngFor="let box of shelf; let t = index" 
