@@ -3,9 +3,12 @@
     <h3 class="ui orange left aligned header"><i class="icon user"></i>USERS</h3>
   </div>
   <div class="ten wide column">
-    <div class="ui toggle checkbox" suiPopup popupText="List View">
+    <div class="ui slider checkbox">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view"><span class="orange-text">LIST</span></label>
+      <label for="table_view">
+        <span *ngIf="tableView" class="orange-text">CARD OVERVIEW</span>
+        <span *ngIf="!tableView" class="orange-text">LIST OVERVIEW</span>
+      </label>
     </div>
   </div>
 </div>

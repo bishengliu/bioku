@@ -19,6 +19,7 @@ import { SetCurrentBoxAction, setCurrentBoxActionCreator, setCurrentBoxActionAsy
   styleUrls: ['./container-box-list.component.css']
 })
 export class ContainerBoxListComponent implements OnInit, OnDestroy {
+  loading: boolean = true;
   //route param
   id: number;
   private sub: any; //subscribe to params observable
@@ -43,6 +44,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     }
   }
   updateBoxList(boxFilter:BoxFilter){
+    this.loading = true;
     //restore the complete boxes
     this.searchedBoxes = this.myBoxes;
     //filter the machted boxes
@@ -58,7 +60,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
           isSelected = false;
         }
         return isSelected;      
-      }); 
+      });
+      this.loading = false;
   }
   displaySelectedBox(box: Box): void {
     let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(this.container, box);
@@ -69,7 +72,6 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     this.sub = this.route.params
       .mergeMap((params) =>{
         this.id = +params['id'];
-
         if(this.container != null){
           return Observable.of(this.container);
         }else{
@@ -84,6 +86,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       .subscribe((data: any)=>{
         this.myBoxes = data;
         this.searchedBoxes = data;
+        this.loading = false;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }

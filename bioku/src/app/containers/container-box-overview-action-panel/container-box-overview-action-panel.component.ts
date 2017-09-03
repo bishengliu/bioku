@@ -92,7 +92,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
       if(this.lastSelectedOccupiedBox != null){
         this.containerService.getContainerBox(this._container.pk, this.lastSelectedOccupiedBox)
         .subscribe((data: Box) =>{
-          this.selected_single_occupied_box = data;  
+          this.selected_single_occupied_box = data; 
         }, ()=>{
           this.action_panel_msg= "fail to retrieve box details";
         });

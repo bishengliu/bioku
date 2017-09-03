@@ -16,9 +16,20 @@
     <a class="ui orange inverted button float-right" [routerLink]="['/containers/addbox/', container.pk]"><i class="icon search"></i>SAMPLES</a>
   </div>
 </div>
-
-<div class="ui grid row small_padding stackable">
-  <div class="ui link cards">
-    <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">loading container boxes ... </p>
+</div>
+<!--after loading-->
+<div class="ui grid row small_padding stackable" *ngIf="loading==false">
+  <div *ngIf="searchedBoxes.length > 0">
+      <div class="ui link cards">
+          <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
+        </div>
   </div>
+</div>
+<!--no record-->
+<div *ngIf="loading==false && (searchedBoxes == null || searchedBoxes.length == 0)" class="ui tertiary segment container center aligned">
+    <p class="">no box found!</p>
 </div>

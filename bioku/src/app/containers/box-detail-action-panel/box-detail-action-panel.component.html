@@ -1,12 +1,20 @@
 <div class="ui stacked raised segments">
-  <div class="ui center aligned tertiary inverted segment no_margin nopadding" [style.background-color]="box.color"><p class="no_margin nopadding">ACTION PANEL</p></div>
+  <div class="ui center aligned tertiary inverted segment no_margin nopadding" [style.background-color]="box.color">
+    <p class="no_margin nopadding">ACTION PANEL</p>
+  </div>
+  <div class="ui icon mini message" *ngIf="error_msg">
+      <i class="warning sign icon red-text"></i>
+      <div class="content">
+        <p class="red-text">{{error_msg}}</p>
+      </div>
+    </div>
   <div class="ui segment">
     <div *ngIf="samplePKs != null">
       <!--single selection-->
       <div *ngIf="samplePKs.length == 1">
         <div>
           <!--msg-->
-          <div class="ui icon message" *ngIf="action_panel_msg">
+          <div class="ui icon mini message" *ngIf="action_panel_msg">
             <i class="warning sign icon red-text"></i>
             <div class="content">
               <p class="red-text">{{action_panel_msg}}</p>

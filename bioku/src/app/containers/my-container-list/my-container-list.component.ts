@@ -19,6 +19,7 @@ import { setMyContainersActionAsync, SetMyContainersAction, setMyContainersActio
   styleUrls: ['./my-container-list.component.css']
 })
 export class MyContainerListComponent implements OnInit {
+  loading: boolean = true;
   containers: Array<Container> = null;
   constructor(private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private logAppStateService: LogAppStateService, private containerService: ContainerService)
@@ -31,6 +32,9 @@ export class MyContainerListComponent implements OnInit {
     let state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.containers){
       this.containers = state.containerInfo.containers;
+      if(this.containers.length>0){
+        this.loading = false;
+      }
     }
   }
   displayContainerBoxes(container_pk: number){

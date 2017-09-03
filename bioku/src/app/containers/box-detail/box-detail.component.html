@@ -12,23 +12,32 @@
     <h3 class="ui violet left aligned header"><i class="icon list layout"></i>BOX SAMPLES</h3>
   </div>
   <div class="six wide column">
-    <div *ngIf="box_view" class="ui toggle checkbox float-right" suiPopup popupText="List View of All Samples">
-      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view"><span class="violet-text">Sample List</span></label>
-    </div>
-    <div *ngIf="!box_view" class="ui toggle checkbox float-right" suiPopup popupText="Box View of All Samples">
-      <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view"><span class="violet-text">Box View</span></label>
-    </div>
+      <div class="ui slider checkbox float-right">
+        <input type="checkbox" name="" id="table_view" (change)="toggleList()">
+        <label for="table_view">
+          <span *ngIf="box_view" class="violet-text">LIST SAMPLES</span>
+          <span *ngIf="!box_view" class="violet-text">BOX OVERVIEW</span>
+        </label>
+      </div>
   </div>
 </div>
-
-<div class="ui small_padding stackable grid">
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">loading box samples ... </p>
+</div>
+<!--after loading-->
+<div class="ui small_padding stackable grid" *ngIf="loading==false">
   <div class="ten wide tablet twelve wide computer column" >
-    <app-sample-table *ngIf="!box_view" [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
+    <app-sample-table *ngIf="!box_view && searchedSamples.length > 0 " [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
     <app-box-layout *ngIf="box_view" [samples]="samples" [searchedBoxSamples]="searchedBoxSamples" (sampleSelected)="captureSampleSelected($event)" (cellSelected)="captureCellSelected($event)"></app-box-layout>   
   </div>
   <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" class="six wide tablet four wide computer column ui sticky">
       <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()" [selectedCells]="selectedCells.toString()"></app-box-detail-action-panel>
   </div>
+</div>
+
+<!--no record FOR LIST VIEW-->
+<div *ngIf="loading==false && !box_view && (searchedSamples== null || searchedSamples.length == 0)" class="ui tertiary segment container center aligned">
+    <p class="">no sample found! You can switch to box overview to add sample(s). </p>
 </div>

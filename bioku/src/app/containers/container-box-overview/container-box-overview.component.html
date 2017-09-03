@@ -1,4 +1,9 @@
-<div *ngIf="loading==true" class="ui loading segment center aligned"><br/><br/><br/><br/><p class="brown-text">loading container overview ... </p></div>
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">loading container overview ... </p>
+</div>
+<!--after loading-->
 <div class="ui row" *ngIf="_towers && loading==false" style="overflow-y:hidden;white-space:nowrap;">
     <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of splited_towers_post_transformation">
       <thead>

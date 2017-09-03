@@ -63,6 +63,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
+  error_msg: string = null;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
@@ -101,7 +102,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     return samples;
   }
-
   parseFreezingDate(date: string){
       let freezing_date = {};
       if(date){
@@ -110,6 +110,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
       return freezing_date;
   }
   updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
+    this.error_msg = null;
     if((value == "" || value == null) && required){
       this.action_panel_msg = data_attr + " is required!"}
     else{
@@ -120,7 +121,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
         sample.freezing_date =  value;
       }      
       this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
-          .subscribe(()=>{},(err)=>console.log(err));
+          .subscribe(()=>{},(err)=>console.log(this.error_msg = "fail to update sample detail!"));
     } 
   }
   display_hposition(){
@@ -153,6 +154,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   }
   //take or put sample back
   takeSampleOut(box_position: string, sample: Sample, sample_position: string, status: boolean){
+    this.error_msg = null;
     //take sample out: status == true
     //put sample back: sample == false
     //get today 
@@ -162,13 +164,13 @@ export class BoxDetailActionPanelComponent implements OnInit {
       sample.date_out = today;
       sample.occupied = false;
       this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
-      .subscribe(()=>{},(err)=>{console.log(err);});
+      .subscribe(()=>{},(err)=>{console.log(this.error_msg = "fail to take the sample out!");});
     }
     else{
       sample.date_out = null;
       sample.occupied = true;
       this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
-      .subscribe(()=>{},(err)=>{console.log(err);});
+      .subscribe(()=>{},(err)=>{console.log(this.error_msg = "fail to put the sample back!");});
     }    
   }
   //check whether a cell has a sample

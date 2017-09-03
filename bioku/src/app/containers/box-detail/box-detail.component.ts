@@ -20,7 +20,7 @@ import { SetCurrentBoxAction, setCurrentBoxActionCreator } from '../../_redux/co
   styleUrls: ['./box-detail.component.css']
 })
 export class BoxDetailComponent implements OnInit, OnDestroy {
-
+  loading: boolean = true;
   //route param
   ct_pk: number;
   box_pos: string;
@@ -48,7 +48,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
       this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition')).sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
-
       this.searchedSamples = this.samples;
     }
   }
@@ -57,10 +56,11 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.box_view = !this.box_view;
     //empty all the arrays
     this.selectedCells = [];
-    this.selectedSamples = [];    
+    this.selectedSamples = [];
   }
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
+    this.loading = true;
     //restore the complete samples for list view
     //hard copy of the array
     this.searchedSamples = this.samples.filter((e:Sample) => e.pk != null);
@@ -68,7 +68,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.searchedBoxSamples = [];
     //filter the machted boxes
     if(sampleFilter.value != null){
-          this.searchedSamples = this.samples.filter((e: Sample)=> {
+        this.searchedSamples = this.samples.filter((e: Sample)=> {
         if(sampleFilter.key=="label"){
           //get the attachment label
           if (e.attachments != null && e.attachments.length > 0){
@@ -100,7 +100,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       //for box searched samples
        let matchedBoxSamples = this.searchedSamples.filter((s:Sample)=>s.occupied == true);
        matchedBoxSamples.forEach((s:Sample)=>this.searchedBoxSamples.push(s.position));
-    }
+    };
+    this.loading = false;
   }
   //capture emit from sample-table
   captureSampleSelected(pks: Array<number>){
@@ -131,8 +132,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe((box: Box)=>{
         this.box = box;
+        this.loading = false;
     },        
-      () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
+      () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 

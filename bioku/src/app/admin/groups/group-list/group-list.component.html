@@ -3,9 +3,12 @@
     <h3 class="ui teal left aligned header"><i class="icon users"></i>RESEARCH GROUPS</h3>
   </div>
   <div class="ten wide column">
-    <div class="ui toggle checkbox" suiPopup popupText="List View">
+    <div class="ui slider checkbox">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
-      <label for="table_view"><span class="teal-text">LIST</span></label>
+      <label for="table_view">
+        <span *ngIf="tableView" class="teal-text">CARD OVERVIEW</span>
+        <span *ngIf="!tableView" class="teal-text">LIST OVERVIEW</span>
+      </label>
     </div>
   </div>
   <!-- new group -->
@@ -14,6 +17,7 @@
   </div>
   <!-- end new group -->
 </div>
+
 <div class="ui grid small_padding">
   <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">

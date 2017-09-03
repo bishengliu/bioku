@@ -8,8 +8,21 @@
     <a class="ui orange inverted button float-right" suiPopup popupText="search samples in all containers"><i class="icon search"></i>SAMPLES</a>
   </div>
 </div>
-<div class="ui grid small_padding">
-    <div class="ui link cards">
-        <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card" (click)="displayContainerBoxes(container.pk)" [displayMode]="'editable'"></app-container-detail>
-    </div>
+
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">loading containers ... </p>
+</div>
+<!--after loading-->
+<div class="ui grid small_padding" *ngIf="loading == false">
+    <div *ngIf="containers.length > 0">
+        <div class="ui link cards">
+            <app-container-detail *ngFor="let container of containers" [container]="container" class="ui black raised card" (click)="displayContainerBoxes(container.pk)" [displayMode]="'editable'"></app-container-detail>
+        </div>
+    </div>   
+</div>
+<!--no record-->
+<div *ngIf="loading==false && (containers== null || containers.length == 0)" class="ui tertiary segment container center aligned">
+    <p class="">no container found! You can click the button above to add a container. </p>
 </div>
