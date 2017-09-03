@@ -34,6 +34,10 @@ export class ContainerBoxOverviewComponent implements OnInit {
   towers_splited: Array<Array<ContainerTower>> = new Array<Array<ContainerTower>>();
   transformed_towers : Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
   splited_towers_post_transformation: Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
+
+    //loading 
+    loading: boolean = true;
+
   constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService) { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
   }
@@ -46,9 +50,8 @@ export class ContainerBoxOverviewComponent implements OnInit {
       this._towers = this.towers;
       this.box_count_per_shelf = this._towers.length > 0 ? this._towers[0].shelves[0].boxAvailabilities.length : 1;
       this.transformed_towers = this.transformTowers(this._towers);
-      console.log(this.transformed_towers);  
       this.splited_towers_post_transformation = this.spliteTowerAfterTransform(this.transformed_towers, this.tower_per_table, this._towers);
-      console.log(this.splited_towers_post_transformation);  
+      //this.loading = true;
       //splite towers
       //this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
     }
@@ -111,6 +114,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
       });
       _shelves_splited.push(shelves_per_split);
     }
+    this.loading = false;
     return _shelves_splited;
   }
 
