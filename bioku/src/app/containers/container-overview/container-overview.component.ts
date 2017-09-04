@@ -10,7 +10,7 @@ import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import {  ContainerService } from '../../_services/ContainerService';
-import { SuiModule} from 'ng2-semantic-ui';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -45,7 +45,7 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
   lastSelectedOccupiedBox: string = null;
 
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router, private http: Http, private containerService: ContainerService,)
+              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
    { 
      appStore.subscribe(()=> this.updateState());
      this.updateState();
@@ -89,6 +89,12 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
       //generate current free positions
       this.containerTowers = this.getContainerBoxAvailablity(this.container, this.occupied_postions);
       //console.log(this.containerTowers);
+      if(this.localStorageService.boxAvailabilities != null && this.localStorageService.boxAvailabilities.length > 0){
+        this.selectedBoxes = [...this.localStorageService.boxAvailabilities];
+      }
+      if(this.localStorageService.lastSelectedOccupiedBox != null ){
+        this.lastSelectedOccupiedBox =this.localStorageService.lastSelectedOccupiedBox;
+      }
     },
     (err)=>{console.log(err)});
   }

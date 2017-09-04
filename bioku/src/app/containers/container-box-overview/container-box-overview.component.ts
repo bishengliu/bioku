@@ -7,6 +7,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import {  ContainerService } from '../../_services/ContainerService';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 
 @Component({
   selector: 'app-container-box-overview',
@@ -40,11 +41,18 @@ export class ContainerBoxOverviewComponent implements OnInit {
   //loading 
   loading: boolean = true;
 
-  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService) { 
+  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, 
+              private containerService: ContainerService, private localStorageService: LocalStorageService) 
+  { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(this.localStorageService.boxAvailabilities != null && this.localStorageService.boxAvailabilities.length > 0){
+      this.selectedBoxes = [...this.localStorageService.boxAvailabilities];
+      this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);
+    }
+  }
 
   ngOnChanges(change: SimpleChanges){
     //console.log(change);

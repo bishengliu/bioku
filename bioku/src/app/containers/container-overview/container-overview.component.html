@@ -16,16 +16,16 @@
     <div class="twelve wide tablet thirteen wide computer column" >
         <app-container-box-overview 
         [container]="container" 
-        [towers]="containerTowers" 
+        [towers]="containerTowers"
         (boxesSelected)="captureBoxesSelected($event)" 
         (lastSelectedOccupiedSlot)="captureLastSelectedBox($event)">
       </app-container-box-overview>
-      </div>
-      <div class="four wide tablet three wide computer column ui sticky">
+    </div>
+    <div class="four wide tablet three wide computer column ui sticky">
         <app-container-box-overview-action-panel 
           [selectedBoxes]="selectedBoxes" 
           [lastSelectedOccupiedBox]="lastSelectedOccupiedBox" 
           [container]="container">
         </app-container-box-overview-action-panel>
-      </div> 
+    </div> 
 </div>

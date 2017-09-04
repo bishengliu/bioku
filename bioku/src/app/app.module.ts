@@ -20,6 +20,7 @@ import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 import { GuardProviders } from './_providers/GuardProviders';
+import { LocalStorageServiceProvider } from './_providers/LocalStorageServiceProvider';
 //UtilityServiceProvider
 import { UtilityServiceProvider } from './_providers/UtilityServiceProvider';
 //custom form validators
@@ -67,7 +68,6 @@ import { SampleFilterComponent } from './containers/sample-filter/sample-filter.
 import { SampleTableComponent } from './containers/sample-table/sample-table.component';
 import { BoxDetailActionPanelComponent } from './containers/box-detail-action-panel/box-detail-action-panel.component';
 import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-layout-simple.component';
-// import { ContainerAddBoxComponent } from './containers/container-add-box/container-add-box.component';
 import { ContainerOverviewComponent } from './containers/container-overview/container-overview.component';
 import { ContainerBoxOverviewComponent } from './containers/container-box-overview/container-box-overview.component';
 import { ContainerBoxOverviewActionPanelComponent } from './containers/container-box-overview-action-panel/container-box-overview-action-panel.component';
@@ -146,7 +146,8 @@ import { ContainerBoxMoveComponent } from './containers/container-box-move/conta
     APIServiceProviders,
     LogerProvider,
     CustomFormValidatorsProvider,
-    UtilityServiceProvider,
+    UtilityServiceProvider,,
+    LocalStorageServiceProvider,
     ],
   bootstrap: [AppComponent]
 })

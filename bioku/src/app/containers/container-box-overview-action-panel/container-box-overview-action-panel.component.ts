@@ -9,6 +9,7 @@ import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import {  ContainerService } from '../../_services/ContainerService';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 import { setCurrentContainerActionAsync, SetCurrentBoxAction, setCurrentBoxActionCreator, SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 @Component({
   selector: 'app-container-box-overview-action-panel',
@@ -32,7 +33,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   //selected occupied slots
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
 
-  constructor(@Inject(AppStore) private appStore, private router: Router,private containerService: ContainerService) {
+  constructor(@Inject(AppStore) private appStore, private router: Router,private containerService: ContainerService, private localStorageService: LocalStorageService) {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
    }
@@ -108,12 +109,18 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
 
   //add boxes
   addBox(){
-    this.router.navigate(['/containers', this._container.pk]);  
+    this.router.navigate(['/containers/overview/addbox', this._container.pk]);  
+    this.localStorageService.boxAvailabilities = [];
+    this.localStorageService.boxAvailabilities = [...this.selectedEmptySlots];
+    this.localStorageService.lastSelectedOccupiedBox = this.lastSelectedOccupiedBox;
   }
 
   //moveBox
   moveBox(){
-    this.router.navigate(['/containers', this._container.pk]);  
+    this.router.navigate(['containers/overview/movebox', this._container.pk]);  
+    this.localStorageService.boxAvailabilities = [];
+    this.localStorageService.boxAvailabilities = [...this.selectedOccupiedSlots];
+    this.localStorageService.lastSelectedOccupiedBox = this.lastSelectedOccupiedBox;
   }
 
   //switch box
