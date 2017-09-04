@@ -16,11 +16,11 @@
       <div class="ui link card">
         <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)"></app-container-box-cardview>
       </div>
+      <div class="ui divider"></div>
     </div>
     
     <!--more occuped-->
-    <div *ngIf="selectedOccupiedSlots.length > 0">
-      <div class="ui divider"></div>
+    <div *ngIf="selectedOccupiedSlots.length > 0"> 
       <div class="ui labels">
         <div class="ui teal label" *ngFor="let occupied of selectedOccupiedSlots">
           <!-- <i class="circle icon"></i> -->
@@ -42,7 +42,7 @@
     </div>
     <div >
       <div class="ui divider"></div>
-      <button class="ui mini black button"><i class="icon plus"></i>BOXES</button>
+      <button class="ui mini black button" (click)="addBox()"><i class="icon plus"></i>BOXES</button>
     </div>
   </div>
 </div>

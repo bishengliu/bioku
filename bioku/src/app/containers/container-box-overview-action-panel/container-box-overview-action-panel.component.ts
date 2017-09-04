@@ -105,4 +105,9 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
       this.selectedOccupiedSlots = this.getSelectedOccupiedSlots(this._selectedBoxes);
     }
   }
+
+  //add boxes
+  addBox(){
+    
+  }
 }

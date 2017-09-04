@@ -29,3 +29,14 @@
         </app-container-box-overview-action-panel>
       </div> 
 </div>
+
+<ng-template let-context let-modal="modal" #modalTemplate>
+    <div class="header">Example</div>
+    <div class="content">
+        <p>Data</p>
+    </div>
+    <div class="actions">
+        <button class="ui red button" (click)="modal.deny('denied')">Cancel</button>
+        <button class="ui green button" (click)="modal.approve('approved')" autofocus>OK</button>
+    </div>
+</ng-template>

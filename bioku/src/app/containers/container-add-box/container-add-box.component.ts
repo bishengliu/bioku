@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import {  ContainerService } from '../../_services/ContainerService';
+import { SuiModule} from 'ng2-semantic-ui';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -142,5 +143,11 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
   captureLastSelectedBox(position: string){
     this.lastSelectedOccupiedBox = position;
   }
+
+
+openModal(){
+
+}
+
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
