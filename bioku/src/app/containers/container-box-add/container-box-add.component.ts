@@ -24,22 +24,27 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
   //auth user
   user: User = null;
   token: string = null;
-
   //route param
   id: number;
   private sub: any; //subscribe to params observable
   //CURRENT CONTAINER
   container: Container;
   boxes: Array<BoxAvailability> = new Array<BoxAvailability>();
+  //container towers
+  //container shevels
+  //container box
+  container_tower: number;
+  container_shelf: number;
+  container_box: number;
+  
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-  private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
+              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
   { 
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
   updateState(){
-    let state= this.appStore.getState()
-
+    let state= this.appStore.getState();
     //set auth user
     if(state.authInfo){
     this.user = state.authInfo.authUser;
@@ -62,10 +67,11 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     });
 
     //container and boxes observable
-    this.sub.subscribe((container: Container)=>{this.container = container}, (err)=>{console.log(err)});
+    this.sub.subscribe(
+      (container: Container)=> { this.container = container; }, 
+      (err)=>{console.log(err)}
+    );
     this.boxes = this.localStorageService.boxAvailabilities;
-    console.log(this.container);
-    console.log(this.boxes);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

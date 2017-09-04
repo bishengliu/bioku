@@ -11,3 +11,41 @@
     <a class="ui teal button float-right" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
   </div>
 </div>
+
+<div>
+  <table class="ui small celled teal single line compact structured unstackable collapsing table">
+      <thead>
+        <tr>
+          <th>BOX</th>
+          <th>MOVE TO CONTAINER</th>
+          <th>MOVE TO BOX</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let box of boxes">
+          <td>
+            <div class="ui teal image label">
+              <img *ngIf="container.photo" src="{{appUrl + container.photo}}">
+              <span>{{ container.name }}: {{ box.full_position }}</span>
+            </div>
+          </td>
+          <td>
+              <div class="">            
+                  <select class="ui dropdown fluid selection"  [ngModel]="container.pk" (change)="selectContainer(container.pk, selectionCtl)" #selectionCtl>
+                    <option 
+                    [ngValue]="my_container.pk"
+                    *ngFor="let my_container of my_containers"> 
+                    {{my_container.name}} 
+                    </option>
+                  </select>
+                </div>
+          </td>
+          <td>
+              <button class="circular ui small icon button">
+                  <i class="icon angle down"></i>
+                </button>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+<div>

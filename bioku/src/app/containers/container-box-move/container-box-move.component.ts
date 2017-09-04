@@ -24,7 +24,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   //auth user
   user: User = null;
   token: string = null;
-
+  appUrl: string = null;
   //route param
   id: number;
   private sub: any; //subscribe to params observable
@@ -32,9 +32,12 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   container: Container;
   //boxes passed
   boxes: Array<BoxAvailability> = new Array<BoxAvailability>();
+  //all my group containers
+  my_containers: Array<Container> = new Array<Container>();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-  private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
+              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
   { 
+    this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
@@ -60,12 +63,23 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
       else{
         return this.containerService.containerDetail(this.id);}
     });
-    
+    let containers$ = this.sub
+    .map((container: Container) => { this.container = container; })
+    .mergeMap(()=>{
+      //get all my group containers
+      return this.containerService.myContainers();
+    });
     //container and boxes observable
-    this.sub.subscribe((container: Container)=>{this.container = container}, (err)=>{console.log(err)});
+    containers$.subscribe(
+      (containers: Array<Container>)=> { this.my_containers = containers; }, 
+      (err)=>{console.log(err)}
+    );
+
+    //get the passed boxes
     this.boxes = this.localStorageService.boxAvailabilities;
-    console.log(this.container);
-    console.log(this.boxes);
+  }
+  selectContainer(){
+    
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 

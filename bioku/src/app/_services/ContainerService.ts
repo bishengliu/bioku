@@ -142,8 +142,6 @@ export class ContainerService{
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 
-
-
     ////////////////////////////////////////////////PI OR assistants or researchers/////////////////////////////////////
     myContainers(){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
