@@ -14,7 +14,7 @@
               *ngFor="let tower of genTowerCount(tws[0].length/box_count_per_shelf);" 
               [attr.colspan]="box_count_per_shelf"
               class="center aligned clickable tower_effect" 
-              (click)="toggleTowerSelection(tower, index_tower+1)">
+              (click)="toggleTowerSelection(tower, index_tower)">
                 <em>TOWER{{ tower }}</em><br/>
                 <small class="">BOXES</small>
               </th>

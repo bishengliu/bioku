@@ -22,7 +22,9 @@
     <div *ngIf="selectedOccupiedSlots.length > 0">
       <div class="ui divider"></div>
       <div class="ui labels">
-        <div class="ui teal label" *ngFor="let occupied of selectedOccupiedSlots"><i class="circle icon"></i><span>{{ occupied.full_position }}</span></div>
+        <div class="ui teal label" *ngFor="let occupied of selectedOccupiedSlots">
+          <!-- <i class="circle icon"></i> -->
+          <span>{{ occupied.full_position }}</span></div>
       </div>
       <div class="ui divider"></div>
       <div>
@@ -34,7 +36,9 @@
   </div>
   <div class="ui segment" *ngIf="selectedEmptySlots.length > 0">
     <div class="ui labels">
-      <div class="ui label" *ngFor="let empty of selectedEmptySlots"><i class="circle icon"></i><span>{{ empty.full_position }}</span></div>
+      <div class="ui label" *ngFor="let empty of selectedEmptySlots">
+        <!-- <i class="circle icon"></i> -->
+        <span>{{ empty.full_position }}</span></div>
     </div>
     <div >
       <div class="ui divider"></div>

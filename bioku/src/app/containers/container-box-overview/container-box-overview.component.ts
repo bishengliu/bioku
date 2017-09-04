@@ -215,7 +215,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
   }
   
   toggleTowerSelection(tower: number, count: number){
-    let tower_clicked = tower * count;
+    let tower_clicked = tower + count * this.tower_per_table;
     //find the tower_clicked in the tower_selected
     let index_clicked = this.tower_selected.indexOf(tower_clicked);
     if(index_clicked != -1){
@@ -231,9 +231,17 @@ export class ContainerBoxOverviewComponent implements OnInit {
       if(this._towers.length > 0 && (tower_clicked -1) < this._towers.length ){
         let containerTower: ContainerTower = this._towers[ tower_clicked -1 ];
         containerTower.shelves.forEach((shelf, si)=>{
-          shelf.boxAvailabilities.forEach((box, bi)=>{
-            this.selectedBoxes = [...this.selectedBoxes, box];
-          });
+          //filter out not permitted boxes
+          this.selectedBoxes = [
+            ...this.selectedBoxes, 
+            ...shelf.boxAvailabilities.filter((box, i)=>{
+              return box.available == true;
+            }),
+            ...shelf.boxAvailabilities.filter((box, i)=>{
+              return this.permited_box_positions.indexOf(box.full_position) != -1;
+            })
+          ];
+          //end filter out block
         });
       }
     }
