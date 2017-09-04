@@ -111,7 +111,11 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   addBox(){
     this.router.navigate(['/containers/overview/addbox', this._container.pk]);  
     this.localStorageService.boxAvailabilities = [];
-    this.localStorageService.boxAvailabilities = [...this.selectedEmptySlots];
+    this.localStorageService.selectedEmptySlots = [];
+    this.localStorageService.selectedOccupiedSlots = [];
+    this.localStorageService.boxAvailabilities = [...this._selectedBoxes];
+    this.localStorageService.selectedEmptySlots = [...this.selectedEmptySlots];
+    this.localStorageService.selectedOccupiedSlots = [...this.selectedOccupiedSlots];
     this.localStorageService.lastSelectedOccupiedBox = this.lastSelectedOccupiedBox;
   }
 
@@ -119,7 +123,11 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   moveBox(){
     this.router.navigate(['containers/overview/movebox', this._container.pk]);  
     this.localStorageService.boxAvailabilities = [];
-    this.localStorageService.boxAvailabilities = [...this.selectedOccupiedSlots];
+    this.localStorageService.selectedEmptySlots = [];
+    this.localStorageService.selectedOccupiedSlots = [];
+    this.localStorageService.boxAvailabilities = [...this._selectedBoxes];
+    this.localStorageService.selectedEmptySlots = [...this.selectedEmptySlots];
+    this.localStorageService.selectedOccupiedSlots = [...this.selectedOccupiedSlots];
     this.localStorageService.lastSelectedOccupiedBox = this.lastSelectedOccupiedBox;
   }
 

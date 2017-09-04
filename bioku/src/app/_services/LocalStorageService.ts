@@ -7,4 +7,6 @@ export class LocalStorageService
 {
     boxAvailabilities: Array<BoxAvailability>;
     lastSelectedOccupiedBox: string;
+    selectedOccupiedSlots: Array<BoxAvailability>;
+    selectedEmptySlots: Array<BoxAvailability>;
 }

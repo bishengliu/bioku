@@ -76,7 +76,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     );
 
     //get the passed boxes
-    this.boxes = this.localStorageService.boxAvailabilities;
+    this.boxes = this.localStorageService.selectedOccupiedSlots;
   }
   selectContainer(){
     

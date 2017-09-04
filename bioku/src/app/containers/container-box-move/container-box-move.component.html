@@ -12,11 +12,11 @@
   </div>
 </div>
 
-<div>
-  <table class="ui small celled teal single line compact structured unstackable collapsing table">
+<div class="ui grid container">
+  <table class="ui small celled teal single line compact structured unstackable table">
       <thead>
         <tr>
-          <th>BOX</th>
+          <th>BOXES</th>
           <th>MOVE TO CONTAINER</th>
           <th>MOVE TO BOX</th>
         </tr>
@@ -24,10 +24,15 @@
       <tbody>
         <tr *ngFor="let box of boxes">
           <td>
-            <div class="ui teal image label">
-              <img *ngIf="container.photo" src="{{appUrl + container.photo}}">
-              <span>{{ container.name }}: {{ box.full_position }}</span>
-            </div>
+            <h4 class="ui image header">
+                <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui mini rounded image">
+                <div class="content">
+                  <div class="ui blue label">
+                      <span>BOX: {{ box.full_position }}</span>
+                  </div>
+                  <div class="sub header"><small>CONTAINER: {{ container.name }}</small></div>
+                </div>
+            </h4>
           </td>
           <td>
               <div class="">            
@@ -35,7 +40,7 @@
                     <option 
                     [ngValue]="my_container.pk"
                     *ngFor="let my_container of my_containers"> 
-                    {{my_container.name}} 
+                    {{my_container.name + ' (' + my_container.temperature + '&deg;C' + ', ' + my_container.room + ')'}}
                     </option>
                   </select>
                 </div>

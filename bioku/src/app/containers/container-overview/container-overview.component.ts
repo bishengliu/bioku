@@ -95,6 +95,12 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
       if(this.localStorageService.lastSelectedOccupiedBox != null ){
         this.lastSelectedOccupiedBox =this.localStorageService.lastSelectedOccupiedBox;
       }
+
+      //clean up the saved data
+      this.localStorageService.boxAvailabilities = [];
+      this.localStorageService.lastSelectedOccupiedBox = null;
+      this.localStorageService.selectedEmptySlots = [];
+      this.localStorageService.selectedOccupiedSlots = [];
     },
     (err)=>{console.log(err)});
   }
@@ -150,5 +156,7 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
     this.lastSelectedOccupiedBox = position;
   }
 
-  ngOnDestroy() { this.sub.unsubscribe(); }
+  ngOnDestroy() { 
+    this.sub.unsubscribe();
+   }
 }

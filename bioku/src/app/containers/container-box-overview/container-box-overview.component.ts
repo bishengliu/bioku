@@ -243,10 +243,10 @@ export class ContainerBoxOverviewComponent implements OnInit {
           this.selectedBoxes = [
             ...this.selectedBoxes, 
             ...shelf.boxAvailabilities.filter((box, i)=>{
-              return box.available == true;
+              return box.available == true && this.selectedBoxPositions.indexOf(box.full_position) == -1;
             }),
             ...shelf.boxAvailabilities.filter((box, i)=>{
-              return this.permited_box_positions.indexOf(box.full_position) != -1;
+              return this.permited_box_positions.indexOf(box.full_position) != -1 && this.selectedBoxPositions.indexOf(box.full_position) == -1;
             })
           ];
           //end filter out block

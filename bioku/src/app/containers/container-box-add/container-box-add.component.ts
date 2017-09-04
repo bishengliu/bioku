@@ -71,7 +71,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       (container: Container)=> { this.container = container; }, 
       (err)=>{console.log(err)}
     );
-    this.boxes = this.localStorageService.boxAvailabilities;
+    this.boxes = this.localStorageService.selectedEmptySlots;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
