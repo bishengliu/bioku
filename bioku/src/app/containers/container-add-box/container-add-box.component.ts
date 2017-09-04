@@ -144,10 +144,5 @@ export class ContainerAddBoxComponent implements OnInit, OnDestroy {
     this.lastSelectedOccupiedBox = position;
   }
 
-
-openModal(){
-
-}
-
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

@@ -70,6 +70,8 @@ import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-lay
 import { ContainerAddBoxComponent } from './containers/container-add-box/container-add-box.component';
 import { ContainerBoxOverviewComponent } from './containers/container-box-overview/container-box-overview.component';
 import { ContainerBoxOverviewActionPanelComponent } from './containers/container-box-overview-action-panel/container-box-overview-action-panel.component';
+import { ContainerBoxAddComponent } from './containers/container-box-add/container-box-add.component';
+import { ContainerBoxMoveComponent } from './containers/container-box-move/container-box-move.component';
 
 
 @NgModule({
@@ -112,6 +114,8 @@ import { ContainerBoxOverviewActionPanelComponent } from './containers/container
     ContainerAddBoxComponent,
     ContainerBoxOverviewComponent,
     ContainerBoxOverviewActionPanelComponent,
+    ContainerBoxAddComponent,
+    ContainerBoxMoveComponent,
   ],
   imports: [
     BrowserModule,
