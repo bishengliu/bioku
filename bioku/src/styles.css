@@ -58,7 +58,7 @@ body{
 }
 
 .clickable{
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .table-td-selected{
   background-color: #C5CAE9 !important;
@@ -300,4 +300,10 @@ div [class*="right floated"] {
 }
 .inline{
   float:left;
+}
+.tower_effect:hover{
+  background-color: #EFEBE9 !important;
+  border-top: 2px solid rgba(34,36,38,.15);
+  border-top-color:orangered !important;
+
 }

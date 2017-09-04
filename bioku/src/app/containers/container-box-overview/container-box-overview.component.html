@@ -5,11 +5,16 @@
 </div>
 <!--after loading-->
 <div class="ui row" *ngIf="_towers && loading==false" style="overflow-y:hidden;white-space:nowrap;">
-    <table class="ui small celled teal single line compact structured unstackable collapsing table" *ngFor="let tws of splited_towers_post_transformation">
+    <table class="ui small celled teal single line compact structured unstackable collapsing table" 
+    *ngFor="let tws of splited_towers_post_transformation; let index_tower= index;">
       <thead>
           <tr>
               <th></th>
-              <th *ngFor="let tower of genTowerCount(tws[0].length/box_count_per_shelf)" [attr.colspan]="box_count_per_shelf" class="center aligned">
+              <th 
+              *ngFor="let tower of genTowerCount(tws[0].length/box_count_per_shelf);" 
+              [attr.colspan]="box_count_per_shelf"
+              class="center aligned clickable tower_effect" 
+              (click)="toggleTowerSelection(tower, index_tower+1)">
                 <em>TOWER{{ tower }}</em><br/>
                 <small class="">BOXES</small>
               </th>
@@ -35,8 +40,9 @@
 </div>
 <br/>
 <br/>
+<!--buttons-->
 <div *ngIf="loading==false" class="ui raised segments tiny_vertial_padding fixed_width_huge">
-  <div class="ui horizontal attached segments tiny_vertial_padding fixed_width_huge">
+  <div class="ui horizontal attached segments">
         <div class="ui compact segment tiny_vertial_padding">
           <div class="fix_size_div bordered inline"></div>
           <div class="inline"><small class="small_padding"> EMPTY SLOT</small></div>
@@ -54,7 +60,7 @@
           <div class="inline"><small class="small_padding"> SELECTED SLOT</small></div>
         </div>
   </div>
-  <div class="ui mini green bottom attached button" tabindex="0" (click)="clearSelection()">
+  <div class="ui mini green bottom attached button tiny_vertial_padding" tabindex="0" (click)="clearSelection()">
       <i class="icon undo"></i>CLEAR ALL SELECTION
   </div>
 </div>

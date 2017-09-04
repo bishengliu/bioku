@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
@@ -19,6 +19,8 @@ export class ContainerBoxOverviewComponent implements OnInit {
   //for selected boxes
   selectedBoxes: Array<BoxAvailability> = new Array<BoxAvailability>();
   selectedBoxPositions: Array<string> = new Array<string>();
+  //towers selected
+  tower_selected: Array<number> = new Array<number>();
   @Output() boxesSelected: EventEmitter<Array<BoxAvailability>> = new EventEmitter<Array<BoxAvailability>> ();
   @Output() lastSelectedOccupiedSlot: EventEmitter<string> = new EventEmitter<string> ();
   _towers: Array<ContainerTower>;
@@ -35,8 +37,8 @@ export class ContainerBoxOverviewComponent implements OnInit {
   transformed_towers : Array<Array<BoxAvailability>> = new Array<Array<BoxAvailability>>();
   splited_towers_post_transformation: Array<Array<Array<BoxAvailability>>> = new Array<Array<Array<BoxAvailability>>>();
 
-    //loading 
-    loading: boolean = true;
+  //loading 
+  loading: boolean = true;
 
   constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService) { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
@@ -206,8 +208,38 @@ export class ContainerBoxOverviewComponent implements OnInit {
     this.selectedBoxPositions = [];
     this.boxesSelected.emit([]);
     this.lastSelectedOccupiedSlot.emit(null);
-  };
+  }
+
   genTowerCount(c: number){
     return this.utilityService.genArray(c);
+  }
+  
+  toggleTowerSelection(tower: number, count: number){
+    let tower_clicked = tower * count;
+    //find the tower_clicked in the tower_selected
+    let index_clicked = this.tower_selected.indexOf(tower_clicked);
+    if(index_clicked != -1){
+      this.tower_selected.splice(index_clicked, 1);
+      //clear all the selected all boxes in the current tower
+      this.selectedBoxes = this.selectedBoxes.filter((box, i)=>{
+        return box.full_position.startsWith(tower_clicked+"-") === false;
+      });
+    }
+    else{
+      this.tower_selected.push(tower_clicked);
+      //select all the boxes in the current tower
+      if(this._towers.length > 0 && (tower_clicked -1) < this._towers.length ){
+        let containerTower: ContainerTower = this._towers[ tower_clicked -1 ];
+        containerTower.shelves.forEach((shelf, si)=>{
+          shelf.boxAvailabilities.forEach((box, bi)=>{
+            this.selectedBoxes = [...this.selectedBoxes, box];
+          });
+        });
+      }
+    }
+    this.selectedBoxes.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+    this.boxesSelected.emit([...this.selectedBoxes]); //emit new obj to force the change detection
+    this.selectedBoxPositions = this.obtainBoxPostions(this.selectedBoxes);
+    this.lastSelectedOccupiedSlot.emit(this.obtainLastOccupiedBoxPosition(this.selectedBoxes));
   }
 }
