@@ -16,9 +16,9 @@
   <table class="ui small celled teal single line compact structured unstackable table">
       <thead>
         <tr>
-          <th>BOXES</th>
-          <th>MOVE TO CONTAINER</th>
-          <th>MOVE TO POSITION</th>
+          <th class="center aligned">BOXES</th>
+          <th class="center aligned">MOVE TO CONTAINER</th>
+          <th class="center aligned">MOVE TO POSITION</th>
         </tr>
       </thead>
       <tbody>
@@ -39,7 +39,7 @@
                   <select class="ui dropdown fluid selection"
                   [attr.id]="box.full_position"
                   [ngModel]="container.pk" 
-                  (change)="selectContainer(container.pk, box.full_position, bindex, $event)" #containerCtl>
+                  (change)="selectContainer(box.full_position, $event)" #containerCtl>
                     <option 
                     [ngValue]="my_container.pk"
                     *ngFor="let my_container of my_containers"> 
@@ -49,23 +49,29 @@
                 </div>
           </td>
           <td>
-              <div class="four wide column ui form tiny small_vertial_padding">
+              <div class="ui form equal width tiny small_vertial_padding">
                   <div class="ui inline fields">
-                    <div class="field">
-                      <select name="tower" class="ui fluid dropdown" (change)="display_shelf()" #tower>
-                        <option *ngFor="let option of tower_options" value="{{option}}">{{option}}</option>
+                    <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                      <label>TOWER: </label>
+                      <select name="tower" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'tower', $event)" #towerCtl>
+                        <option> - </option>                  
+                        <option *ngFor="let option of genOptions(box.full_position, 'tower')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
-                    <!-- <div class="field" *ngIf="container_shelf">
-                      <select name="shelf" class="ui fluid dropdown" (change)="display_box()" #shelf>
-                        <option *ngFor="let option of shelf_options" value="{{option}}">{{option}}</option>
+                    <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                      <label>SHELF: </label>
+                      <select name="shelf" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'shelf', $event)" #shelfCtl>
+                        <option> - </option>
+                        <option *ngFor="let option of genOptions(box.full_position, 'shelf')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
-                    <div class="field" *ngIf="container_box">
-                        <select name="box" class="ui fluid dropdown" (change)="move_box()" #shelf>
-                          <option *ngFor="let option of shelf_options" value="{{option}}">{{option}}</option>
+                    <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                        <label>BOX: </label>
+                        <select name="box" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'box', $event)" #boxCtl>
+                          <option> - </option>
+                          <option *ngFor="let option of genOptions(box.full_position, 'box')" value="{{option}}">{{option}}</option>
                         </select>
-                    </div> -->
+                    </div>
                   </div>                       
               </div>
           </td>

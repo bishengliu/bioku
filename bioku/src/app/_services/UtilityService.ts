@@ -30,7 +30,7 @@ export class UtilityService{
     }
 
     //generate array form a number
-    genArray(num : number){
+    genArray(num : number): Array<number>{
     let array: Array<number> = [];
     if(num >= 1){
       for(let x = 1; x <= num; x++){
