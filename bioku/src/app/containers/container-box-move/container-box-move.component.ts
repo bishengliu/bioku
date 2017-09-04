@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ViewChild, ElementRef } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -34,6 +34,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   boxes: Array<BoxAvailability> = new Array<BoxAvailability>();
   //all my group containers
   my_containers: Array<Container> = new Array<Container>();
+  // @ViewChild('containerCtl') containerCtl:ElementRef;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
   { 
@@ -78,8 +79,17 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     //get the passed boxes
     this.boxes = this.localStorageService.selectedOccupiedSlots;
   }
-  selectContainer(){
-    
+  selectContainer(container_pk: number, box_full_position: string, bindex: number, event: any){
+    console.log('===========');
+    console.log([container_pk, box_full_position, bindex]);
+    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    console.log(eventObj);
+    console.log(target);
+    //id
+    console.log(target.id);
+    //value
+    console.log(target.value);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 

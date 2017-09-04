@@ -45,7 +45,7 @@
                           </select>
                         </div>
                         <div class="field" *ngIf="box_hposition">
-                          <select name="vposition" class="ui fluid dropdown" (change)="updateSamplePosition(sample, box.box_position, sample.position)" #hposition>
+                          <select name="hposition" class="ui fluid dropdown" (change)="updateSamplePosition(sample, box.box_position, sample.position)" #hposition>
                             <option *ngFor="let option of horizontal_options" value="{{option.value}}">{{option.name}}</option>
                           </select>
                         </div>
