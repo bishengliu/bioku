@@ -108,6 +108,16 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
 
   //add boxes
   addBox(){
-    
+    this.router.navigate(['/containers', this._container.pk]);  
+  }
+
+  //moveBox
+  moveBox(){
+    this.router.navigate(['/containers', this._container.pk]);  
+  }
+
+  //switch box
+  switchBox(){
+    console.log(this.selectedOccupiedSlots);
   }
 }

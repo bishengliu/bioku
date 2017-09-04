@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContainerAddBoxComponent } from './container-add-box.component';
+import { ContainerOverviewComponent } from './container-overview.component';
 
-describe('ContainerAddBoxComponent', () => {
-  let component: ContainerAddBoxComponent;
-  let fixture: ComponentFixture<ContainerAddBoxComponent>;
+describe('ContainerOverviewComponent', () => {
+  let component: ContainerOverviewComponent;
+  let fixture: ComponentFixture<ContainerOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContainerAddBoxComponent ]
+      declarations: [ ContainerOverviewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContainerAddBoxComponent);
+    fixture = TestBed.createComponent(ContainerOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

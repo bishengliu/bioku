@@ -29,8 +29,8 @@
       <div class="ui divider"></div>
       <div>
         <!-- <button class="ui compact mini red button"><i class="icon external share"></i>TAKE OUT</button> -->
-        <button class="ui compact mini inverted red button" *ngIf="selectedOccupiedSlots.length == 2"><i class="icon refresh"></i>SWITCH</button>
-        <button class="ui compact mini inverted violet button"><i class="icon move"></i>MOVE</button>
+        <button class="ui compact mini inverted red button" *ngIf="selectedOccupiedSlots.length == 2" (click)="switchBox()"><i class="icon refresh"></i>SWITCH</button>
+        <button class="ui compact mini inverted violet button" (click)="moveBox()"><i class="icon move"></i>MOVE</button>
       </div>
     </div>
   </div>

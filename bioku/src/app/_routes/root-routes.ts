@@ -12,7 +12,8 @@ import { MyContainerListComponent } from '../containers/my-container-list/my-con
 import { AddContainerComponent } from '../admin/containers/add-container/add-container.component';
 import { EditContainerComponent } from '../admin/containers/edit-container/edit-container.component';
 import { DeleteContainerComponent } from '../admin/containers/delete-container/delete-container.component';
-import { ContainerAddBoxComponent } from '../containers/container-add-box/container-add-box.component';
+//import { ContainerAddBoxComponent } from '../containers/container-add-box/container-add-box.component';
+import { ContainerOverviewComponent } from '../containers/container-overview/container-overview.component';
 import { ContainerBoxListComponent } from '../containers/container-box-list/container-box-list.component';
 import { BoxDetailComponent } from '../containers/box-detail/box-detail.component';
 //guards
@@ -33,7 +34,8 @@ export const routes: Routes = [
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes},
   {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/addbox/:id', component: ContainerAddBoxComponent, canActivate: [AuthGuard, ] },
+  // {path: 'containers/addbox/:id', component: ContainerAddBoxComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [AuthGuard, ] },

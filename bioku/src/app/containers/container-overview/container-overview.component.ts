@@ -17,11 +17,11 @@ import { AppState , AppPartialState} from '../../_redux/root/state';
 import { SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 
 @Component({
-  selector: 'app-container-add-box',
-  templateUrl: './container-add-box.component.html',
-  styleUrls: ['./container-add-box.component.css']
+  selector: 'app-container-overview',
+  templateUrl: './container-overview.component.html',
+  styleUrls: ['./container-overview.component.css']
 })
-export class ContainerAddBoxComponent implements OnInit, OnDestroy {
+export class ContainerOverviewComponent implements OnInit, OnDestroy {
   //auth user
   user: User = null;
   token: string = null;
