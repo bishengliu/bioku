@@ -28,7 +28,7 @@ export class BoxLayoutSimpleComponent implements OnInit {
     this.appUrl = this.appSetting.URL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;    
    }
-   genLetterArray(num:number): Array<string>{
+  genLetterArray(num:number): Array<string>{
     return this.box_letters.slice(0, num);
   }
   pickerSamples(h: number, v: string): Array<Sample>{

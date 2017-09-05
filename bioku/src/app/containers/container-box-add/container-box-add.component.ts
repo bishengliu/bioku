@@ -13,6 +13,7 @@ import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/
 import {  ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import { UtilityService } from '../../_services/UtilityService';
+import {  AlertService } from '../../_services/AlertService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -35,18 +36,20 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
   add_boxes: Array<AddBox> = new Array<AddBox>();
   box_horizontal: number;
   hArray:Array<number> = new Array<number>();
-  box_vertical: number;
-  vArray:Array<number> = new Array<number>();
+  box_vertical: string;
+  vArray:Array<string> = new Array<string>();
+  //allow change the box layout
+  allow_change_box_layout: boolean = false;
   //add box
   adding: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
-              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
+              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService)
   { 
     appStore.subscribe(()=> this.updateState());
     this.updateState();
     //SET THE DEFAULT BOX LAYOUT
-    this.box_horizontal = this.appSetting.box_horizontal;
-    this.box_vertical = this.appSetting.box_vertical;
+    this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
+    this.box_vertical = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.appSetting.BOX_VERTICAL - 1);
   }
   updateState(){
     let state= this.appStore.getState();
@@ -75,7 +78,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       (container: Container)=> { this.container = container; }, 
       (err)=>{console.log(err)}
     );
-    this.boxes = this.localStorageService.selectedEmptySlots.sort(this.utilityService.sortArrayBySingleProperty('full_position'));;
+    this.boxes = this.localStorageService.selectedEmptySlots.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
     //generate add_boxes
     this.boxes.forEach((ab, i)=>{
       let add_box: AddBox = new AddBox();
@@ -87,17 +90,92 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     this.box_horizontal = (this.container.boxes != null && this.container.boxes.length > 0) 
                           ? this.container.boxes[0].box_horizontal : this.box_horizontal;
     this.box_vertical = (this.container.boxes != null && this.container.boxes.length > 0) 
-                          ? this.container.boxes[0].box_vertical : this.box_vertical;
+                          ? this.appSetting.BOX_POSITION_LETTERS[this.container.boxes[0].box_vertical - 1]
+                          : this.box_vertical;
+    //update box layout
     this.hArray = this.utilityService.genArray(this.box_horizontal);
-    this.vArray = this.utilityService.genArray(this.box_vertical);
+    this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
+    //allow change box layout ?
+    if(this.container.boxes.length === 0){
+      this.allow_change_box_layout = true;
+    }   
+  }
+  //generate extra options for dropdow
+  genVerticalOptions(){
+    return [...this.vArray, ...this.appSetting.BOX_POSITION_LETTERS.slice(this.vArray.length, this.vArray.length + this.appSetting.BOX_EXTRA_LAYOYT)];
+  }
+  genHorizontalOptions(){
+    return this.utilityService.genArray(this.hArray.length + this.appSetting.BOX_EXTRA_LAYOYT);
   }
   toggleBox(box_full_position: string, bindex: number): void{
     if(this.add_boxes[bindex].box_full_position === box_full_position){
       this.add_boxes[bindex].is_excluded = !this.add_boxes[bindex].is_excluded;
     }
   }
-  add_box(){
+  updateLayout(event: any, type: string, ){
+    //event is the value of changes
+    if(type=='horizontal'){
+      this.box_horizontal = +event;
+      this.hArray = this.utilityService.genArray(this.box_horizontal);
+
+    }
+    if(type=='vertical'){
+      this.box_vertical = event;
+      this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
+    }
+  }
+  save_add_box(){
+    this.adding = true;
     console.log(this.add_boxes);
+    let boxes  = this.filterAddBoxes(this.add_boxes);
+    if(boxes.length == 0){
+      this.localStorageService.boxAvailabilities = [];
+      this.localStorageService.lastSelectedOccupiedBox = null;
+      this.localStorageService.selectedEmptySlots = [];
+      this.localStorageService.selectedOccupiedSlots = [];
+      this.alertService.error("Nothing to add, please make sure you've selected at least one slot to add!", true);
+      this.adding = false;
+      this.router.navigate(['/containers', this.container.pk]);
+    }
+    else{
+      let failed_boxes: string = null;
+      let count: number = 0;
+      boxes.forEach((box, i)=>{
+        count++;
+        this.containerService.addContainerBox(this.container.pk, box.box_full_position, this.box_horizontal, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1)
+        .subscribe(()=>{
+          if(count == boxes.length){
+            //after saving
+            this.localStorageService.boxAvailabilities = [];
+            this.localStorageService.lastSelectedOccupiedBox = null;
+            this.localStorageService.selectedEmptySlots = [];
+            this.localStorageService.selectedOccupiedSlots = [];
+            this.alertService.success("All boxes are added successfully!", true);
+            this.adding = false;
+            this.router.navigate(['/containers', this.container.pk]);
+          }         
+        }, 
+        (err)=>{
+          failed_boxes += box.box_full_position + ' ';
+          if(count == boxes.length){
+            //after saving
+            this.localStorageService.boxAvailabilities = [];
+            this.localStorageService.lastSelectedOccupiedBox = null;
+            this.localStorageService.selectedEmptySlots = [];
+            this.localStorageService.selectedOccupiedSlots = [];
+            this.alertService.error("Something went wrong, failed to add boxes: " + failed_boxes + "!", true);
+            this.adding = false;
+            this.router.navigate(['/containers', this.container.pk]);
+          }
+          console.log(err);
+        });
+      });
+    }
+  }
+  filterAddBoxes(add_boxes: Array<AddBox>){
+    return add_boxes.filter((ab, i)=>{
+      return ab.is_excluded != true;
+    });
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

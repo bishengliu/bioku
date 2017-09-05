@@ -12,9 +12,12 @@
   </div>
 </div>
 
-<div class="ui container segments">
+<div class="ui container segments" *ngIf="adding==false">
     <div class="ui grid attached horizontal segments">
-      <div class="ui ten wide column segment">       
+      <div class="ui ten wide column segment">
+        <div class="ui center aligned positive message">
+          <p>BOXES WILL BE ADDED TO THE FOLLOWING SLOTS</p>
+        </div>     
         <a class="ui label fix_label_width" 
           [ngClass]="{'disabled': box.is_excluded == true, 'green_bordered':  box.is_excluded != true }"
           *ngFor="let box of add_boxes; let bindex = index;" 
@@ -24,14 +27,37 @@
         </a>
       </div>
       <div class="ui gird six wide column secondary segment">
-        <div class="ui teal card">
+        <div class="ui center aligned positive message">
+          <p>BOX LAYOUT TO BE ADDED</p>
+        </div>
+        <div class="ui teal raised card">
           <div class="content">
-            <a class="header">Box Layout</a>
-            <div class="meta">
-                <i class="announcement icon"></i><span>Select the dropdowns below to change the layout</span>
+            <div class="header">Box Layout (<span>{{box_horizontal}}X{{vArray.length}}</span>)</div>
+            <div class="meta" *ngIf="allow_change_box_layout">
+                <i class="announcement icon"></i>
+                <span>Select the dropdowns below to change the layout. Please be aware of this: all the boxes in the same contaier should have the same layout!</span>
             </div>
-            <div class="description">
-              <i class="announcement icon"></i><small>SELECT THE DROPDOWNS ABOVE TO CHANGE THE LAYOUT</small>
+            <div class="meta" *ngIf="allow_change_box_layout==false">
+              <i class="announcement icon"></i>
+              <span>Change is not allowed!</span>
+            </div>
+            <div class="description" *ngIf="allow_change_box_layout==false">
+              <div class="ui form tiny small_vertial_padding">
+                <div class="ui inline fields">
+                  <div class="field">
+                    <label>horizontal: </label>
+                    <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')" #horizontalCtl>               
+                      <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>vertical: </label>
+                    <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')" #verticalCtl>               
+                      <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
+                    </select>
+                  </div>
+                </div>                       
+              </div>
             </div>
           </div>
           <div class="">
@@ -56,8 +82,8 @@
         </div>
       </div>
     </div>
-    <div class="ui violet inverted bottom attached button" (click)="add_box()">
-      <p>Add Boxes</p>
+    <div class="ui violet inverted bottom attached button" (click)="save_add_box()">
+      <p>Add Boxes To Contaier: {{container.name}}</p>
     </div>
   </div>
 

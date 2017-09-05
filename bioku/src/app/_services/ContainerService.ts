@@ -199,7 +199,7 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
-    //move boxes
+    //move one box
     moveContainerBoxes(original_container: number, box_full_position: string, target_container: number, target_box_full_position: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "move_box/";
         let body: string = JSON.stringify({
@@ -211,7 +211,18 @@ export class ContainerService{
                     .map((response: Response) =>response.json())          
                     .catch((error:any) => Observable.throw(error || 'Server error'));
     }
-
+    //add one box
+    addContainerBox(container_pk: number, box_full_position: string, box_horizontal: number, box_vertical: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/add_box/";
+        let body: string = JSON.stringify({
+            'container_pk': container_pk, 
+            'box_full_position': box_full_position, 
+            'box_horizontal': box_horizontal, 
+            'box_vertical': box_vertical});
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+            .map((response: Response) =>response.json())          
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
     //////////////////////////////////samples//////////////////////////////////////////
     updateSampleDetail(container_pk: number, box_position: string, sample_position: string, data_attr: string, value: any){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/update/";
