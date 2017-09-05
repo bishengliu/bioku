@@ -6,4 +6,5 @@ export class MoveBox{
     target_tower: number;
     target_shelf: number;
     target_box: number;
+    is_excluded: boolean;
 }

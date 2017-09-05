@@ -16,19 +16,26 @@
   <table class="ui small celled teal single line compact structured unstackable table">
       <thead>
         <tr>
+          <th></th>
           <th class="center aligned">BOXES</th>
           <th class="center aligned">MOVE TO CONTAINER</th>
           <th class="center aligned">MOVE TO POSITION</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let box of boxes; let bindex = index;">
-          <td>
+        <tr *ngFor="let box of move_boxes;">
+          <td class="collapsing">
+            <div class="ui fitted slider checkbox">
+              <input type="checkbox" (change)="toggle_box_exclusion(box.box_full_position)">
+              <label></label>
+            </div>
+          </td>
+          <td class="">
             <h4 class="ui image header">
                 <img *ngIf="container.photo" src="{{appUrl + container.photo}}" class="ui mini rounded image">
                 <div class="content">
-                  <div class="ui blue label">
-                      <span>BOX: {{ box.full_position }}</span>
+                  <div class="ui label" [ngClass]="{'blue': box.is_excluded == false}">
+                      <span>BOX: {{ box.box_full_position }}</span>
                   </div>
                   <div class="sub header"><small>CONTAINER: {{ container.name }}</small></div>
                 </div>
@@ -36,10 +43,10 @@
           </td>
           <td>
               <div class="">            
-                  <select class="ui dropdown fluid selection"
-                  [attr.id]="box.full_position"
+                  <select class="ui dropdown fluid selection" 
+                  [ngClass]="{'disabled': box.is_excluded == true }"
                   [ngModel]="container.pk" 
-                  (change)="selectContainer(box.full_position, $event)" #containerCtl>
+                  (change)="selectContainer(box.box_full_position, $event)" #containerCtl>
                     <option 
                     [ngValue]="my_container.pk"
                     *ngFor="let my_container of my_containers"> 
@@ -48,28 +55,28 @@
                   </select>
                 </div>
           </td>
-          <td>
+          <td  class="collapsing">
               <div class="ui form equal width tiny small_vertial_padding">
                   <div class="ui inline fields">
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
-                      <label>TOWER: </label>
-                      <select name="tower" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'tower', $event)" #towerCtl>
+                      <label [ngClass]="{'grey-text': box.is_excluded == true }">TOWER: </label>
+                      <select name="tower" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'tower', $event)" #towerCtl>
                         <option> - </option>                  
-                        <option *ngFor="let option of genOptions(box.full_position, 'tower')" value="{{option}}">{{option}}</option>
+                        <option *ngFor="let option of genOptions(box.box_full_position, 'tower')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
-                      <label>SHELF: </label>
-                      <select name="shelf" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'shelf', $event)" #shelfCtl>
+                      <label [ngClass]="{'grey-text': box.is_excluded == true }">SHELF: </label>
+                      <select name="shelf" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'shelf', $event)" #shelfCtl>
                         <option> - </option>
-                        <option *ngFor="let option of genOptions(box.full_position, 'shelf')" value="{{option}}">{{option}}</option>
+                        <option *ngFor="let option of genOptions(box.box_full_position, 'shelf')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
-                        <label>BOX: </label>
-                        <select name="box" class="ui fluid dropdown" (change)="updateTarget(box.full_position, 'box', $event)" #boxCtl>
+                        <label [ngClass]="{'grey-text': box.is_excluded == true }">BOX: </label>
+                        <select name="box" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'box', $event)" #boxCtl>
                           <option> - </option>
-                          <option *ngFor="let option of genOptions(box.full_position, 'box')" value="{{option}}">{{option}}</option>
+                          <option *ngFor="let option of genOptions(box.box_full_position, 'box')" value="{{option}}">{{option}}</option>
                         </select>
                     </div>
                   </div>                       

@@ -100,6 +100,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
         move_box.target_tower = null;
         move_box.target_shelf = null;
         move_box.target_box = null;
+        move_box.is_excluded = false;
         this.move_boxes.push(move_box);
       });
     }
@@ -178,6 +179,14 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     return val;
   }
 
+  toggle_box_exclusion(box_full_position: string){
+    let all_box_positions:Array<string> = this.obtainBoxPostions(this.boxes);
+    let box_index: number = all_box_positions.indexOf(box_full_position);
+    if(box_index != -1){
+      this.move_boxes[box_index].is_excluded = !this.move_boxes[box_index].is_excluded;
+    }
+  }
+  
   ngOnDestroy() { this.sub.unsubscribe(); }
 
 }

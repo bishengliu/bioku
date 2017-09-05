@@ -166,7 +166,7 @@ body{
   height: 1.5rem !important;
 }
 .grey-text{
-  color: rgb(158, 158, 158);
+  color: rgb(158, 158, 158) !important;
 }
 .teal-text{
   color: #00B5AD;
