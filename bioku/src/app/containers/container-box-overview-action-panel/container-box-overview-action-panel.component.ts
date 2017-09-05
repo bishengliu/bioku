@@ -5,10 +5,12 @@ import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
+import { MoveBox } from '../../_classes/MoveBox';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import {  ContainerService } from '../../_services/ContainerService';
+import {  AlertService } from '../../_services/AlertService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import { setCurrentContainerActionAsync, SetCurrentBoxAction, setCurrentBoxActionCreator, SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 @Component({
@@ -33,7 +35,8 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   //selected occupied slots
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
 
-  constructor(@Inject(AppStore) private appStore, private router: Router,private containerService: ContainerService, private localStorageService: LocalStorageService) {
+  constructor(@Inject(AppStore) private appStore, private router: Router,
+              private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService) {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
    }
@@ -133,6 +136,26 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
 
   //switch box
   switchBox(){
+    //validate only 2 occupied box selected
+    if(this.selectedOccupiedSlots.length === 2){
+      //generate switch boxes
+      let swtich_box: MoveBox = new MoveBox();
+      swtich_box.box_full_position = this.selectedOccupiedSlots[0].full_position;
+      swtich_box.original_container = this.container.pk;
+      swtich_box.target_box_full_position = this.selectedOccupiedSlots[1].full_position;
+      swtich_box.target_container = this.container.pk;
+      this.containerService.moveContainerBoxes(swtich_box.original_container, swtich_box.box_full_position, swtich_box.target_container, swtich_box.target_box_full_position)
+      .subscribe(()=>{
+        this.alertService.success("Boxes are swtiched successfully!", true);       
+      }, 
+      (err)=>{
+        this.alertService.error("Something went wrong, failed to switch boxes!", true);
+        console.log(err);
+      });
+    }
+    else{
+      this.alertService.error("Boxes not switched, please make sure you only selected 2 occuped boxes!", true);
+    }
     console.log(this.selectedOccupiedSlots);
   }
 }

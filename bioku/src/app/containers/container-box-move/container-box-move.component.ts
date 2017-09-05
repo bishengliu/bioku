@@ -164,7 +164,6 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     if(box_index != -1){
       this.move_boxes[box_index][type] = val;
     }
-    console.log(this.move_boxes);
   }
 
   obtainBoxPostions(selectedBoxes: Array<BoxAvailability>): Array<string>{
@@ -196,7 +195,6 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     this.moving = true;
     //validate data objects
     let filteredMoveBoxes = this.filterMoveBoxes(this.move_boxes);
-    console.log(filteredMoveBoxes);
     if(filteredMoveBoxes.length >0){
       let failed_boxes: string = null;
       let count: number = 0;

@@ -8,7 +8,7 @@ import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
 import {  ContainerService } from '../../_services/ContainerService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
-
+import { UtilityService } from '../../_services/UtilityService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -27,7 +27,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   currentBox: Box = null;
   myBoxes: Array<Box> = [];
   searchedBoxes: Array<Box> = [];
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private logAppStateService: LogAppStateService)
   { 
     //subscribe store state changes
@@ -46,7 +46,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   updateBoxList(boxFilter:BoxFilter){
     this.loading = true;
     //restore the complete boxes
-    this.searchedBoxes = this.myBoxes;
+    this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
     //filter the machted boxes
     this.searchedBoxes = this.myBoxes.filter((e: Box)=> {
         let isSelected = true;
@@ -84,8 +84,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
         return this.containerService.containerGroupBoxes(this.id)
       })
       .subscribe((data: any)=>{
-        this.myBoxes = data;
-        this.searchedBoxes = data;
+        this.myBoxes = data.sort(this.utilityService.sortArrayBySingleProperty('full_position'));;
+        this.searchedBoxes = this.myBoxes;
         this.loading = false;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
