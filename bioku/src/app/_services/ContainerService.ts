@@ -5,7 +5,6 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
-import { MoveBox } from '../_classes/MoveBox';
 //redux
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -201,9 +200,13 @@ export class ContainerService{
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     //move boxes
-    moveContainerBoxes(container_pk: number, move_boxes: Array<MoveBox>){
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/move_box/";
-        let body: string = JSON.stringify({'container_pk': container_pk, 'move_boxes': move_boxes });
+    moveContainerBoxes(original_container: number, box_full_position: string, target_container: number, target_box_full_position: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "move_box/";
+        let body: string = JSON.stringify({
+            'original_container': original_container, 
+            'box_full_position': box_full_position, 
+            'target_container': target_container, 
+            'target_box_full_position': target_box_full_position});
         return this.http.post(query_url, body, this.options)
                     .map((response: Response) =>response.json())          
                     .catch((error:any) => Observable.throw(error || 'Server error'));
