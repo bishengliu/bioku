@@ -192,6 +192,13 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   save_move_box(){
     this.moving = true;
     console.log(this.move_boxes);
+
+    //after saving
+    this.localStorageService.boxAvailabilities = [];
+    this.localStorageService.lastSelectedOccupiedBox = null;
+    this.localStorageService.selectedEmptySlots = [];
+    this.localStorageService.selectedOccupiedSlots = [];
+    this.router.navigate(['/containers', this.container.pk]);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 
