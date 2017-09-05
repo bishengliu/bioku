@@ -38,6 +38,8 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   my_containers: Array<Container> = new Array<Container>();
   //data holding the moving info
   move_boxes: Array<MoveBox> = new Array<MoveBox>();
+  //saving move box
+  moving: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
               private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
   { 
@@ -186,7 +188,11 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
       this.move_boxes[box_index].is_excluded = !this.move_boxes[box_index].is_excluded;
     }
   }
-  
+  //save
+  save_move_box(){
+    this.moving = true;
+    console.log(this.move_boxes);
+  }
   ngOnDestroy() { this.sub.unsubscribe(); }
 
 }

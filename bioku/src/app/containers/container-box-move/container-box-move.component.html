@@ -8,16 +8,15 @@
     <h3 class="ui violet left aligned header"><i class="icon move"></i>MOVE CONTAINER BOX(ES)</h3>
   </div>
   <div class="six wide column">
-    <a class="ui teal button float-right" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
+    <a class="ui teal button float-right" [ngClass]="{'disabled': moving == true }" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
   </div>
 </div>
 
-<div class="ui grid container">
+<div class="ui grid container" *ngIf="moving==false">
   <table class="ui small celled teal single line compact structured unstackable table">
       <thead>
         <tr>
-          <th></th>
-          <th class="center aligned">BOXES</th>
+          <th class="center aligned" colspan="2">BOXES TO MOVE</th>
           <th class="center aligned">MOVE TO CONTAINER</th>
           <th class="center aligned">MOVE TO POSITION</th>
         </tr>
@@ -55,7 +54,7 @@
                   </select>
                 </div>
           </td>
-          <td  class="collapsing">
+          <td class="collapsing">
               <div class="ui form equal width tiny small_vertial_padding">
                   <div class="ui inline fields">
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
@@ -84,5 +83,20 @@
           </td>
         </tr>
       </tbody>
+      <tfoot class="full-width">
+          <tr>
+            <th colspan="4">
+              <div class="ui right floated small inverted red labeled icon button" (click)="save_move_box()">
+                <i class="angle double right icon"></i> MOVE BOXES
+              </div>
+            </th>
+          </tr>
+        </tfoot>
   </table>
-<div>
+</div>
+
+<!--saving info-->
+<div *ngIf="moving==true" class="ui loading raised segment container center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">moving boxes ... </p>
+</div>
