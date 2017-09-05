@@ -13,6 +13,7 @@ import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/
 import { ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import {  UtilityService } from '../../_services/UtilityService';
+import {  AlertService } from '../../_services/AlertService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -41,7 +42,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   //saving move box
   moving: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
-              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
+              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService)
   { 
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
@@ -188,18 +189,56 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
       this.move_boxes[box_index].is_excluded = !this.move_boxes[box_index].is_excluded;
     }
   }
+
   //save
   save_move_box(){
     this.moving = true;
-    console.log(this.move_boxes);
-
-    //after saving
-    this.localStorageService.boxAvailabilities = [];
-    this.localStorageService.lastSelectedOccupiedBox = null;
-    this.localStorageService.selectedEmptySlots = [];
-    this.localStorageService.selectedOccupiedSlots = [];
-    this.router.navigate(['/containers', this.container.pk]);
+    //validate data objects
+    let filteredMoveBoxes = this.filterMoveBoxes(this.move_boxes);
+    console.log(filteredMoveBoxes);
+    if(filteredMoveBoxes.length >0){
+      this.containerService.moveContainerBoxes(this.container.pk, filteredMoveBoxes)
+          .subscribe(()=>{
+            this.alertService.error("Boxes are moved successfully!", true);
+            this.router.navigate(['/containers', this.container.pk]);
+          }, (err)=>{
+            console.log(err);
+            this.alertService.error("Something went wrong, moving boxes failed!", true);
+            this.router.navigate(['/containers', this.container.pk]);
+          });
+          //after saving
+          this.localStorageService.boxAvailabilities = [];
+          this.localStorageService.lastSelectedOccupiedBox = null;
+          this.localStorageService.selectedEmptySlots = [];
+          this.localStorageService.selectedOccupiedSlots = [];
+    }
+    else{
+      //after saving
+      this.localStorageService.boxAvailabilities = [];
+      this.localStorageService.lastSelectedOccupiedBox = null;
+      this.localStorageService.selectedEmptySlots = [];
+      this.localStorageService.selectedOccupiedSlots = [];
+      this.alertService.error("Nothing to move, please make sure you've selected all the the positions to move!", true);
+      this.router.navigate(['/containers', this.container.pk]);
+    }
   }
-  ngOnDestroy() { this.sub.unsubscribe(); }
+  //filter move_boxes objects
+  filterMoveBoxes(move_boxes: Array<MoveBox>){
+    if(move_boxes.length > 0){
+      //filter excluded and emtpty tower, shelf and box
+      let step1: Array<MoveBox> = move_boxes.filter((box, i)=>{
+        return (box.is_excluded == null || box.is_excluded == false) && (box.target_tower != null && box.target_shelf != null && box.target_box != null);
+      });
+      if(step1.length >0){
+        //formate target_box_full_position
+        step1.forEach((box, i)=>{
+          box.target_box_full_position = box.target_tower + '-' + box.target_shelf + '-' + box.target_box;
+        });
+        return [...step1];
+      }   
+    }
+    return new Array<MoveBox>();
+  }
 
+  ngOnDestroy() { this.sub.unsubscribe(); }
 }

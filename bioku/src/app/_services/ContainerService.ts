@@ -5,6 +5,7 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
+import { MoveBox } from '../_classes/MoveBox';
 //redux
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -198,6 +199,14 @@ export class ContainerService{
         return this.http.put(query_url, body, this.options) //do provide header accorrding to django
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //move boxes
+    moveContainerBoxes(container_pk: number, move_boxes: Array<MoveBox>){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/move_box/";
+        let body: string = JSON.stringify({'container_pk': container_pk, 'move_boxes': move_boxes });
+        return this.http.post(query_url, body, this.options)
+                    .map((response: Response) =>response.json())          
+                    .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 
     //////////////////////////////////samples//////////////////////////////////////////
