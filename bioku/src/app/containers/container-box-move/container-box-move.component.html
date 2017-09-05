@@ -59,21 +59,21 @@
                   <div class="ui inline fields">
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
                       <label [ngClass]="{'grey-text': box.is_excluded == true }">TOWER: </label>
-                      <select name="tower" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'tower', $event)" #towerCtl>
+                      <select name="tower" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'target_tower', $event)" #towerCtl>
                         <option> - </option>                  
                         <option *ngFor="let option of genOptions(box.box_full_position, 'tower')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
                       <label [ngClass]="{'grey-text': box.is_excluded == true }">SHELF: </label>
-                      <select name="shelf" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'shelf', $event)" #shelfCtl>
+                      <select name="shelf" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'target_shelf', $event)" #shelfCtl>
                         <option> - </option>
                         <option *ngFor="let option of genOptions(box.box_full_position, 'shelf')" value="{{option}}">{{option}}</option>
                       </select>
                     </div>
                     <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
                         <label [ngClass]="{'grey-text': box.is_excluded == true }">BOX: </label>
-                        <select name="box" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'box', $event)" #boxCtl>
+                        <select name="box" class="ui fluid dropdown" [ngClass]="{'disabled': box.is_excluded == true }" (change)="updateTarget(box.box_full_position, 'target_box', $event)" #boxCtl>
                           <option> - </option>
                           <option *ngFor="let option of genOptions(box.box_full_position, 'box')" value="{{option}}">{{option}}</option>
                         </select>

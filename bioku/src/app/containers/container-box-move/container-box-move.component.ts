@@ -164,6 +164,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     if(box_index != -1){
       this.move_boxes[box_index][type] = val;
     }
+    console.log(this.move_boxes);
   }
 
   obtainBoxPostions(selectedBoxes: Array<BoxAvailability>): Array<string>{
@@ -197,38 +198,38 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     let filteredMoveBoxes = this.filterMoveBoxes(this.move_boxes);
     console.log(filteredMoveBoxes);
     if(filteredMoveBoxes.length >0){
-      let move_success: boolean = false;
       let failed_boxes: string = null;
+      let count: number = 0;
       filteredMoveBoxes.forEach((mb, i)=>{
+        count++;
         this.containerService.moveContainerBoxes(mb.original_container, mb.box_full_position, mb.target_container, mb.target_box_full_position)
         .subscribe(()=>{
-          move_success = true; 
+          if(count == filteredMoveBoxes.length){
+            //after saving
+            this.localStorageService.boxAvailabilities = [];
+            this.localStorageService.lastSelectedOccupiedBox = null;
+            this.localStorageService.selectedEmptySlots = [];
+            this.localStorageService.selectedOccupiedSlots = [];
+            this.alertService.success("All boxes are moved successfully!", true);
+            this.moving = false;
+            this.router.navigate(['/containers', this.container.pk]);
+          }         
         }, 
         (err)=>{
-          console.log(err);
-          move_success = false;
           failed_boxes += mb.box_full_position + ' ';
+          if(count == filteredMoveBoxes.length){
+            //after saving
+            this.localStorageService.boxAvailabilities = [];
+            this.localStorageService.lastSelectedOccupiedBox = null;
+            this.localStorageService.selectedEmptySlots = [];
+            this.localStorageService.selectedOccupiedSlots = [];
+            this.alertService.error("Something went wrong, boxes: " + failed_boxes + " failed to move!", true);
+            this.moving = false;
+            this.router.navigate(['/containers', this.container.pk]);
+          }
+          console.log(err);
         });
       });
-      if(move_success){
-        //after saving
-        this.localStorageService.boxAvailabilities = [];
-        this.localStorageService.lastSelectedOccupiedBox = null;
-        this.localStorageService.selectedEmptySlots = [];
-        this.localStorageService.selectedOccupiedSlots = [];
-        this.alertService.error("All boxes are moved successfully!", true);
-        this.router.navigate(['/containers', this.container.pk]);
-      }
-      else{
-        //after saving
-        this.localStorageService.boxAvailabilities = [];
-        this.localStorageService.lastSelectedOccupiedBox = null;
-        this.localStorageService.selectedEmptySlots = [];
-        this.localStorageService.selectedOccupiedSlots = [];
-        this.alertService.error("Something went wrong, boxes: " + failed_boxes + " failed to move!", true);
-        this.router.navigate(['/containers', this.container.pk]);
-      }
-
     }
     else{
       //after saving
@@ -237,6 +238,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
       this.localStorageService.selectedEmptySlots = [];
       this.localStorageService.selectedOccupiedSlots = [];
       this.alertService.error("Nothing to move, please make sure you've selected all the the positions to move!", true);
+      this.moving = false;
       this.router.navigate(['/containers', this.container.pk]);
     }
   }
