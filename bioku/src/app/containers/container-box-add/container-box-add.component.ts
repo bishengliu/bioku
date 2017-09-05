@@ -138,7 +138,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       this.router.navigate(['/containers', this.container.pk]);
     }
     else{
-      let failed_boxes: string = null;
+      let failed_boxes: string = '';
       let count: number = 0;
       boxes.forEach((box, i)=>{
         count++;
