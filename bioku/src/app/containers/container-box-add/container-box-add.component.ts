@@ -34,7 +34,9 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
   boxes: Array<BoxAvailability> = new Array<BoxAvailability>();
   add_boxes: Array<AddBox> = new Array<AddBox>();
   box_horizontal: number;
+  hArray:Array<number> = new Array<number>();
   box_vertical: number;
+  vArray:Array<number> = new Array<number>();
   //add box
   adding: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
@@ -82,8 +84,20 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       this.add_boxes.push(add_box);
     });
     //get the first box
-    this.box_horizontal = (this.container.boxes != null && this.container.boxes.length > 0) ? this.container.boxes[0].box_horizontal : this.box_horizontal;
-    this.box_vertical = (this.container.boxes != null && this.container.boxes.length > 0) ? this.container.boxes[0].box_vertical : this.box_vertical;
+    this.box_horizontal = (this.container.boxes != null && this.container.boxes.length > 0) 
+                          ? this.container.boxes[0].box_horizontal : this.box_horizontal;
+    this.box_vertical = (this.container.boxes != null && this.container.boxes.length > 0) 
+                          ? this.container.boxes[0].box_vertical : this.box_vertical;
+    this.hArray = this.utilityService.genArray(this.box_horizontal);
+    this.vArray = this.utilityService.genArray(this.box_vertical);
+  }
+  toggleBox(box_full_position: string, bindex: number): void{
+    if(this.add_boxes[bindex].box_full_position === box_full_position){
+      this.add_boxes[bindex].is_excluded = !this.add_boxes[bindex].is_excluded;
+    }
+  }
+  add_box(){
+    console.log(this.add_boxes);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

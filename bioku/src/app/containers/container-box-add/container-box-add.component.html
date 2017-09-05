@@ -15,17 +15,49 @@
 <div class="ui container segments">
     <div class="ui grid attached horizontal segments">
       <div class="ui ten wide column segment">       
-        <a class="ui label fix_label_width" *ngFor="let box of add_boxes">
-            <i class="grid layout icon violet-text"></i>
+        <a class="ui label fix_label_width" 
+          [ngClass]="{'disabled': box.is_excluded == true, 'green_bordered':  box.is_excluded != true }"
+          *ngFor="let box of add_boxes; let bindex = index;" 
+          (click)="toggleBox(box.box_full_position, bindex)">
+            <i class="grid layout icon" [ngClass]="{'violet-text': box.is_excluded != true }"></i>
             <span class="">{{box.box_full_position}}</span>
         </a>
       </div>
       <div class="ui gird six wide column secondary segment">
-        <p>right</p>
+        <div class="ui teal card">
+          <div class="content">
+            <a class="header">Box Layout</a>
+            <div class="meta">
+                <i class="announcement icon"></i><span>Select the dropdowns below to change the layout</span>
+            </div>
+            <div class="description">
+              <i class="announcement icon"></i><small>SELECT THE DROPDOWNS ABOVE TO CHANGE THE LAYOUT</small>
+            </div>
+          </div>
+          <div class="">
+            <table class="ui small unstackable celled single line fixed table">
+              <thead>
+                <tr>
+                  <th class="nopadding"></th>
+                  <th *ngFor="let h of hArray" class="left aligned nopadding"><small class="">{{h}}</small></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let v of vArray">
+                  <th class="center aligned nopadding"><small class="">{{v}}</small></th>
+                  <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
+                    <div class="fix_size_div">
+                    </div>                   
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="ui violet inverted bottom attached button">
-      <p>Bottom</p>
+    <div class="ui violet inverted bottom attached button" (click)="add_box()">
+      <p>Add Boxes</p>
     </div>
   </div>
 

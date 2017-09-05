@@ -308,6 +308,8 @@ div [class*="right floated"] {
 }
 
 .fix_label_width{
-  width:95px !important;
-  border: 1px solid teal !important; 
+  width:95px !important; 
+}
+.green_bordered{
+  border: 1px solid teal !important;
 }
