@@ -35,7 +35,8 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
   add_boxes: Array<AddBox> = new Array<AddBox>();
   box_horizontal: number;
   box_vertical: number;
-  
+  //add box
+  adding: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
               private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
   { 

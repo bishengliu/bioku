@@ -8,6 +8,29 @@
     <h3 class="ui violet left aligned header"><i class="icon add square"></i>CONTAINER ADD BOX(ES)</h3>
   </div>
   <div class="six wide column">
-    <a class="ui teal button float-right" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
+    <a class="ui teal button float-right" [ngClass]="{'disabled': adding == true }" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
   </div>
+</div>
+
+<div class="ui container segments">
+    <div class="ui grid attached horizontal segments">
+      <div class="ui ten wide column segment">       
+        <a class="ui label fix_label_width" *ngFor="let box of add_boxes">
+            <i class="grid layout icon violet-text"></i>
+            <span class="">{{box.box_full_position}}</span>
+        </a>
+      </div>
+      <div class="ui gird six wide column secondary segment">
+        <p>right</p>
+      </div>
+    </div>
+    <div class="ui violet inverted bottom attached button">
+      <p>Bottom</p>
+    </div>
+  </div>
+
+<!--adding info-->
+<div *ngIf="adding==true" class="ui loading raised segment container center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">adding boxes ... </p>
 </div>

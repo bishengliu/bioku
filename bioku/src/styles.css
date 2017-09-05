@@ -305,5 +305,9 @@ div [class*="right floated"] {
   background-color: #EFEBE9 !important;
   border-top: 2px solid rgba(34,36,38,.15);
   border-top-color:orangered !important;
+}
 
+.fix_label_width{
+  width:95px !important;
+  border: 1px solid teal !important; 
 }
