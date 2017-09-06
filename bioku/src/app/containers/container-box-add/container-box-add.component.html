@@ -17,7 +17,7 @@
       <div class="ui ten wide column segment">
         <div class="ui center aligned positive message">
           <p>BOXES WILL BE ADDED TO THE FOLLOWING SLOTS</p>
-        </div>     
+        </div>
         <a class="ui label fix_label_width" 
           [ngClass]="{'disabled': box.is_excluded == true, 'green_bordered':  box.is_excluded != true }"
           *ngFor="let box of add_boxes; let bindex = index;" 

@@ -15,7 +15,7 @@
               [attr.colspan]="box_count_per_shelf"
               class="center aligned clickable tower_effect" 
               (click)="toggleTowerSelection(tower, index_tower)">
-                <em>TOWER{{ tower }}</em><br/>
+                <em>TOWER{{ tower + index_tower * tower_per_table }}</em><br/>
                 <small class="">BOXES</small>
               </th>
           </tr>
