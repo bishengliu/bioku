@@ -8,8 +8,17 @@
 </div>
 
 <div class="ui grid row small_padding">
-  <div class="ten wide column">
+  <div class="five wide column">
     <h3 class="ui violet left aligned header"><i class="icon table"></i>MY BOXES</h3>
+  </div>
+  <div class="five wide column">
+    <div class="ui slider checkbox">
+      <input type="checkbox" name="" id="show_all" (change)="toggleBoxShow()">
+      <label for="show_all">
+        <span *ngIf="show_all" class="teal-text">SHOW FAVOURITE</span>
+        <span *ngIf="!show_all" class="teal-text">SHOW ALL</span>
+      </label>
+    </div>
   </div>
   <div class="six wide column"> 
     <a class="ui violet button float-right" [routerLink]="['/containers/overview/', container.pk]"><i class="icon pie chart"></i>OVERVIEW</a>
@@ -30,6 +39,9 @@
   </div>
 </div>
 <!--no record-->
-<div *ngIf="loading==false && (searchedBoxes == null || searchedBoxes.length == 0)" class="ui tertiary segment container center aligned">
-    <p class="">no box found!</p>
+<div *ngIf="loading==false && myBoxes.length > 0 && (searchedBoxes == null || searchedBoxes.length == 0)" class="ui segments segment container center aligned">
+    <p class="">no favourite box found, you can show click the "SHOW ALL" slider to show all my boxes!</p>
+</div>
+<div *ngIf="loading==false && (myBoxes == null || myBoxes.length == 0)" class="ui tertiary segment container center aligned">
+  <p class="">no box found!</p>
 </div>

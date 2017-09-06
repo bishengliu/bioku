@@ -1,0 +1,2713 @@
+[
+  {
+    "name": "AppRoutingModule",
+    "file": "__path__/app/app-routing.module.ts",
+    "providers": [],
+    "declarations": [],
+    "imports": [
+      {
+        "ns": "RouterModule",
+        "name": "RouterModule.forRoot(args)"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RouterModule"
+      }
+    ],
+    "bootstrap": [],
+    "__raw": [
+      {
+        "kind": 253,
+        "pos": 178,
+        "end": 220,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 178,
+          "end": 188,
+          "flags": 0,
+          "text": "imports"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 189,
+          "end": 220,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 174,
+              "pos": 191,
+              "end": 219,
+              "flags": 0,
+              "expression": {
+                "kind": 172,
+                "pos": 191,
+                "end": 211,
+                "flags": 0,
+                "expression": {
+                  "kind": 69,
+                  "pos": 191,
+                  "end": 203,
+                  "flags": 0,
+                  "text": "RouterModule"
+                },
+                "name": {
+                  "kind": 69,
+                  "pos": 204,
+                  "end": 211,
+                  "flags": 0,
+                  "text": "forRoot"
+                }
+              },
+              "arguments": [
+                {
+                  "kind": 69,
+                  "pos": 212,
+                  "end": 218,
+                  "flags": 0,
+                  "text": "routes"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 221,
+        "end": 247,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 221,
+          "end": 231,
+          "flags": 0,
+          "text": "exports"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 232,
+          "end": 247,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 234,
+              "end": 246,
+              "flags": 0,
+              "text": "RouterModule"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "SidebarModule",
+    "file": "ng-sidebar/src/sidebar.module.ts",
+    "providers": [
+      {
+        "name": "SidebarService"
+      }
+    ],
+    "declarations": [
+      {
+        "name": "Sidebar",
+        "file": "ng-sidebar/src/sidebar.component.ts",
+        "selector": "ng-sidebar",
+        "providers": [],
+        "templateUrl": [],
+        "styleUrls": [],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 391,
+            "end": 416,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 391,
+              "end": 402,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 403,
+              "end": 416,
+              "flags": 0,
+              "text": "ng-sidebar"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 417,
+            "end": 881,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 417,
+              "end": 428,
+              "flags": 0,
+              "text": "template"
+            },
+            "initializer": {
+              "kind": 11,
+              "pos": 429,
+              "end": 881,
+              "flags": 0,
+              "text": "\n    <aside #sidebar\n      role=\"complementary\"\n      [attr.aria-hidden]=\"!opened\"\n      [attr.aria-label]=\"ariaLabel\"\n      class=\"ng-sidebar ng-sidebar--{{opened ? 'opened' : 'closed'}} ng-sidebar--{{position}} ng-sidebar--{{mode}}\"\n      [class.ng-sidebar--inert]=\"!opened && mode !== 'dock'\"\n      [class.ng-sidebar--animate]=\"animate\"\n      [ngClass]=\"sidebarClass\"\n      [ngStyle]=\"_getStyle()\">\n      <ng-content></ng-content>\n    </aside>\n  "
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 882,
+            "end": 1705,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 882,
+              "end": 891,
+              "flags": 0,
+              "text": "styles"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 892,
+              "end": 1705,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 11,
+                  "pos": 894,
+                  "end": 1704,
+                  "flags": 0,
+                  "text": "\n    .ng-sidebar {\n      background-color: #fff;\n      overflow: auto;\n      pointer-events: auto;\n      position: fixed;\n      will-change: initial;\n      z-index: 99999999;\n    }\n\n      .ng-sidebar--left {\n        bottom: 0;\n        left: 0;\n        top: 0;\n      }\n\n      .ng-sidebar--right {\n        bottom: 0;\n        right: 0;\n        top: 0;\n      }\n\n      .ng-sidebar--top {\n        left: 0;\n        right: 0;\n        top: 0;\n      }\n\n      .ng-sidebar--bottom {\n        bottom: 0;\n        left: 0;\n        right: 0;\n      }\n\n    .ng-sidebar--inert {\n      pointer-events: none;\n      will-change: transform;\n    }\n\n    .ng-sidebar--animate.ng-sidebar {\n      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n    }\n  "
+                }
+              ]
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1706,
+            "end": 1756,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1706,
+              "end": 1724,
+              "flags": 0,
+              "text": "changeDetection"
+            },
+            "initializer": {
+              "kind": 172,
+              "pos": 1725,
+              "end": 1756,
+              "flags": 0,
+              "expression": {
+                "kind": 69,
+                "pos": 1725,
+                "end": 1749,
+                "flags": 0,
+                "text": "ChangeDetectionStrategy"
+              },
+              "name": {
+                "kind": 69,
+                "pos": 1750,
+                "end": 1756,
+                "flags": 0,
+                "text": "OnPush"
+              }
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1757,
+            "end": 1797,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1757,
+              "end": 1773,
+              "flags": 0,
+              "text": "encapsulation"
+            },
+            "initializer": {
+              "kind": 172,
+              "pos": 1774,
+              "end": 1797,
+              "flags": 0,
+              "expression": {
+                "kind": 69,
+                "pos": 1774,
+                "end": 1792,
+                "flags": 0,
+                "text": "ViewEncapsulation"
+              },
+              "name": {
+                "kind": 69,
+                "pos": 1793,
+                "end": 1797,
+                "flags": 0,
+                "text": "None"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "SidebarContainer",
+        "file": "ng-sidebar/src/sidebar-container.component.ts",
+        "selector": "ng-sidebar-container",
+        "providers": [],
+        "templateUrl": [],
+        "styleUrls": [],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 433,
+            "end": 468,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 433,
+              "end": 444,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 445,
+              "end": 468,
+              "flags": 0,
+              "text": "ng-sidebar-container"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 469,
+            "end": 862,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 469,
+              "end": 480,
+              "flags": 0,
+              "text": "template"
+            },
+            "initializer": {
+              "kind": 11,
+              "pos": 481,
+              "end": 862,
+              "flags": 0,
+              "text": "\n    <ng-content select=\"ng-sidebar\"></ng-content>\n\n    <div *ngIf=\"showBackdrop\"\n      aria-hidden=\"true\"\n      class=\"ng-sidebar__backdrop\"\n      [ngClass]=\"backdropClass\"\n      (click)=\"_onBackdropClicked()\"></div>\n\n    <div class=\"ng-sidebar__content\"\n      [ngClass]=\"sidebarContentClass\"\n      [ngStyle]=\"_getContentStyles()\">\n      <ng-content></ng-content>\n    </div>\n  "
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 863,
+            "end": 1721,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 863,
+              "end": 872,
+              "flags": 0,
+              "text": "styles"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 873,
+              "end": 1721,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 11,
+                  "pos": 875,
+                  "end": 1720,
+                  "flags": 0,
+                  "text": "\n    ng-sidebar-container {\n      box-sizing: border-box;\n      display: block;\n      position: relative;\n    }\n\n      ng-sidebar-container.ng-sidebar-container--animate {\n        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      }\n\n    .ng-sidebar__backdrop {\n      background: #000;\n      height: 100%;\n      left: 0;\n      opacity: 0.75;\n      pointer-events: auto;\n      position: fixed;\n      top: 0;\n      width: 100%;\n      z-index: 99999998;\n    }\n\n    .ng-sidebar__content {\n      display: block;\n      height: 100%;\n      overflow: auto;\n    }\n\n      .ng-sidebar-container--animate .ng-sidebar__content {\n        -webkit-transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);\n        transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);\n      }\n  "
+                }
+              ]
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1722,
+            "end": 1791,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1722,
+              "end": 1729,
+              "flags": 0,
+              "text": "host"
+            },
+            "initializer": {
+              "kind": 171,
+              "pos": 1730,
+              "end": 1791,
+              "flags": 0,
+              "multiLine": true,
+              "properties": [
+                {
+                  "kind": 253,
+                  "pos": 1732,
+                  "end": 1787,
+                  "flags": 0,
+                  "name": {
+                    "kind": 9,
+                    "pos": 1732,
+                    "end": 1776,
+                    "flags": 0,
+                    "text": "[class.ng-sidebar-container--animate]"
+                  },
+                  "initializer": {
+                    "kind": 9,
+                    "pos": 1777,
+                    "end": 1787,
+                    "flags": 0,
+                    "text": "animate"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1792,
+            "end": 1842,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1792,
+              "end": 1810,
+              "flags": 0,
+              "text": "changeDetection"
+            },
+            "initializer": {
+              "kind": 172,
+              "pos": 1811,
+              "end": 1842,
+              "flags": 0,
+              "expression": {
+                "kind": 69,
+                "pos": 1811,
+                "end": 1835,
+                "flags": 0,
+                "text": "ChangeDetectionStrategy"
+              },
+              "name": {
+                "kind": 69,
+                "pos": 1836,
+                "end": 1842,
+                "flags": 0,
+                "text": "OnPush"
+              }
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1843,
+            "end": 1883,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1843,
+              "end": 1859,
+              "flags": 0,
+              "text": "encapsulation"
+            },
+            "initializer": {
+              "kind": 172,
+              "pos": 1860,
+              "end": 1883,
+              "flags": 0,
+              "expression": {
+                "kind": 69,
+                "pos": 1860,
+                "end": 1878,
+                "flags": 0,
+                "text": "ViewEncapsulation"
+              },
+              "name": {
+                "kind": 69,
+                "pos": 1879,
+                "end": 1883,
+                "flags": 0,
+                "text": "None"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "CloseSidebar"
+      }
+    ],
+    "imports": [
+      {
+        "name": "CommonModule"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Sidebar"
+      },
+      {
+        "name": "SidebarContainer"
+      },
+      {
+        "name": "CloseSidebar"
+      }
+    ],
+    "bootstrap": [],
+    "__raw": [
+      {
+        "kind": 253,
+        "pos": 343,
+        "end": 401,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 343,
+          "end": 358,
+          "flags": 0,
+          "text": "declarations"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 359,
+          "end": 401,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 361,
+              "end": 368,
+              "flags": 0,
+              "text": "Sidebar"
+            },
+            {
+              "kind": 69,
+              "pos": 369,
+              "end": 386,
+              "flags": 0,
+              "text": "SidebarContainer"
+            },
+            {
+              "kind": 69,
+              "pos": 387,
+              "end": 400,
+              "flags": 0,
+              "text": "CloseSidebar"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 402,
+        "end": 428,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 402,
+          "end": 412,
+          "flags": 0,
+          "text": "imports"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 413,
+          "end": 428,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 415,
+              "end": 427,
+              "flags": 0,
+              "text": "CommonModule"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 429,
+        "end": 482,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 429,
+          "end": 439,
+          "flags": 0,
+          "text": "exports"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 440,
+          "end": 482,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 442,
+              "end": 449,
+              "flags": 0,
+              "text": "Sidebar"
+            },
+            {
+              "kind": 69,
+              "pos": 450,
+              "end": 467,
+              "flags": 0,
+              "text": "SidebarContainer"
+            },
+            {
+              "kind": 69,
+              "pos": 468,
+              "end": 481,
+              "flags": 0,
+              "text": "CloseSidebar"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 483,
+        "end": 513,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 483,
+          "end": 495,
+          "flags": 0,
+          "text": "providers"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 496,
+          "end": 513,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 498,
+              "end": 512,
+              "flags": 0,
+              "text": "SidebarService"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "AppModule",
+    "file": "src/app/app.module.ts",
+    "providers": [
+      {
+        "name": "GuardProviders"
+      },
+      {
+        "name": "AlertServiceProvider"
+      },
+      {
+        "name": "AppSettingProvider"
+      },
+      {
+        "name": "StoreProviders"
+      },
+      {
+        "name": "APIServiceProviders"
+      },
+      {
+        "name": "LogerProvider"
+      },
+      {
+        "name": "CustomFormValidatorsProvider"
+      },
+      {
+        "name": "UtilityServiceProvider"
+      },
+      {
+        "name": "{  }"
+      },
+      {
+        "name": "LocalStorageServiceProvider"
+      }
+    ],
+    "declarations": [
+      {
+        "name": "AppComponent",
+        "file": "src/app/app.component.ts",
+        "selector": "app-root",
+        "providers": [],
+        "templateUrl": [
+          "app.component.html"
+        ],
+        "styleUrls": [
+          "app.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 58,
+            "end": 82,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 58,
+              "end": 70,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 71,
+              "end": 82,
+              "flags": 0,
+              "text": "app-root"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 83,
+            "end": 122,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 83,
+              "end": 98,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 99,
+              "end": 122,
+              "flags": 0,
+              "text": "./app.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 123,
+            "end": 161,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 123,
+              "end": 136,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 137,
+              "end": 161,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 139,
+                  "end": 160,
+                  "flags": 0,
+                  "text": "./app.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "HomeComponent"
+      },
+      {
+        "name": "AdminComponent",
+        "file": "app/admin/admin.component.ts",
+        "selector": "app-admin",
+        "providers": [],
+        "templateUrl": [
+          "admin.component.html"
+        ],
+        "styleUrls": [
+          "admin.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 515,
+            "end": 540,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 515,
+              "end": 527,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 528,
+              "end": 540,
+              "flags": 0,
+              "text": "app-admin"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 541,
+            "end": 582,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 541,
+              "end": 556,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 557,
+              "end": 582,
+              "flags": 0,
+              "text": "./admin.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 583,
+            "end": 623,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 583,
+              "end": 596,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 597,
+              "end": 623,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 599,
+                  "end": 622,
+                  "flags": 0,
+                  "text": "./admin.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "AccountComponent",
+        "file": "app/account/account.component.ts",
+        "selector": "app-account",
+        "providers": [],
+        "templateUrl": [
+          "account.component.html"
+        ],
+        "styleUrls": [
+          "account.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 66,
+            "end": 93,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 66,
+              "end": 78,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 79,
+              "end": 93,
+              "flags": 0,
+              "text": "app-account"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 94,
+            "end": 137,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 94,
+              "end": 109,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 110,
+              "end": 137,
+              "flags": 0,
+              "text": "./account.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 138,
+            "end": 180,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 138,
+              "end": 151,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 152,
+              "end": 180,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 154,
+                  "end": 179,
+                  "flags": 0,
+                  "text": "./account.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "RegisterComponent",
+        "file": "account/register/register.component.ts",
+        "selector": "app-register",
+        "providers": [],
+        "templateUrl": [
+          "register.component.html"
+        ],
+        "styleUrls": [
+          "register.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1196,
+            "end": 1224,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1196,
+              "end": 1208,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1209,
+              "end": 1224,
+              "flags": 0,
+              "text": "app-register"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1225,
+            "end": 1269,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1225,
+              "end": 1240,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1241,
+              "end": 1269,
+              "flags": 0,
+              "text": "./register.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1270,
+            "end": 1313,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1270,
+              "end": 1283,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1284,
+              "end": 1313,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1286,
+                  "end": 1312,
+                  "flags": 0,
+                  "text": "./register.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ChangePasswordComponent",
+        "file": "account/change-password/change-password.component.ts",
+        "selector": "app-change-password",
+        "providers": [],
+        "templateUrl": [
+          "change-password.component.html"
+        ],
+        "styleUrls": [
+          "change-password.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1015,
+            "end": 1050,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1015,
+              "end": 1027,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1028,
+              "end": 1050,
+              "flags": 0,
+              "text": "app-change-password"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1051,
+            "end": 1102,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1051,
+              "end": 1066,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1067,
+              "end": 1102,
+              "flags": 0,
+              "text": "./change-password.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1103,
+            "end": 1153,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1103,
+              "end": 1116,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1117,
+              "end": 1153,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1119,
+                  "end": 1152,
+                  "flags": 0,
+                  "text": "./change-password.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ProfileComponent",
+        "file": "account/profile/profile.component.ts",
+        "selector": "app-profile",
+        "providers": [],
+        "templateUrl": [
+          "profile.component.html"
+        ],
+        "styleUrls": [
+          "profile.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1234,
+            "end": 1261,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1234,
+              "end": 1246,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1247,
+              "end": 1261,
+              "flags": 0,
+              "text": "app-profile"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1262,
+            "end": 1305,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1262,
+              "end": 1277,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1278,
+              "end": 1305,
+              "flags": 0,
+              "text": "./profile.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1306,
+            "end": 1348,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1306,
+              "end": 1319,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1320,
+              "end": 1348,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1322,
+                  "end": 1347,
+                  "flags": 0,
+                  "text": "./profile.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "PageNotFoundComponent"
+      },
+      {
+        "name": "LoginComponent",
+        "file": "account/login/login.component.ts",
+        "selector": "app-login",
+        "providers": [],
+        "templateUrl": [
+          "login.component.html"
+        ],
+        "styleUrls": [
+          "login.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 966,
+            "end": 991,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 966,
+              "end": 978,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 979,
+              "end": 991,
+              "flags": 0,
+              "text": "app-login"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 992,
+            "end": 1033,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 992,
+              "end": 1007,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1008,
+              "end": 1033,
+              "flags": 0,
+              "text": "./login.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1034,
+            "end": 1074,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1034,
+              "end": 1047,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1048,
+              "end": 1074,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1050,
+                  "end": 1073,
+                  "flags": 0,
+                  "text": "./login.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "AlertComponent"
+      },
+      {
+        "name": "GroupComponent",
+        "file": "account/group/group.component.ts",
+        "selector": "app-group",
+        "providers": [],
+        "templateUrl": [
+          "group.component.html"
+        ],
+        "styleUrls": [
+          "group.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1261,
+            "end": 1286,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1261,
+              "end": 1273,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1274,
+              "end": 1286,
+              "flags": 0,
+              "text": "app-group"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1287,
+            "end": 1328,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1287,
+              "end": 1302,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1303,
+              "end": 1328,
+              "flags": 0,
+              "text": "./group.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1329,
+            "end": 1369,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1329,
+              "end": 1342,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1343,
+              "end": 1369,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1345,
+                  "end": 1368,
+                  "flags": 0,
+                  "text": "./group.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "PermissionDeniedComponent"
+      },
+      {
+        "name": "GroupListComponent",
+        "file": "groups/group-list/group-list.component.ts",
+        "selector": "app-group-list",
+        "providers": [],
+        "templateUrl": [
+          "group-list.component.html"
+        ],
+        "styleUrls": [
+          "group-list.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 581,
+            "end": 611,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 581,
+              "end": 593,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 594,
+              "end": 611,
+              "flags": 0,
+              "text": "app-group-list"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 612,
+            "end": 658,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 612,
+              "end": 627,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 628,
+              "end": 658,
+              "flags": 0,
+              "text": "./group-list.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 659,
+            "end": 704,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 659,
+              "end": 672,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 673,
+              "end": 704,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 675,
+                  "end": 703,
+                  "flags": 0,
+                  "text": "./group-list.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "AddGroupComponent",
+        "file": "groups/add-group/add-group.component.ts",
+        "selector": "app-add-group",
+        "providers": [],
+        "templateUrl": [
+          "add-group.component.html"
+        ],
+        "styleUrls": [
+          "add-group.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1091,
+            "end": 1120,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1091,
+              "end": 1103,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1104,
+              "end": 1120,
+              "flags": 0,
+              "text": "app-add-group"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1121,
+            "end": 1166,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1121,
+              "end": 1136,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1137,
+              "end": 1166,
+              "flags": 0,
+              "text": "./add-group.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1167,
+            "end": 1211,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1167,
+              "end": 1180,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1181,
+              "end": 1211,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1183,
+                  "end": 1210,
+                  "flags": 0,
+                  "text": "./add-group.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "EditGroupComponent",
+        "file": "groups/edit-group/edit-group.component.ts",
+        "selector": "app-edit-group",
+        "providers": [],
+        "templateUrl": [
+          "edit-group.component.html"
+        ],
+        "styleUrls": [
+          "edit-group.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1107,
+            "end": 1137,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1107,
+              "end": 1119,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1120,
+              "end": 1137,
+              "flags": 0,
+              "text": "app-edit-group"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1138,
+            "end": 1184,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1138,
+              "end": 1153,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1154,
+              "end": 1184,
+              "flags": 0,
+              "text": "./edit-group.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1185,
+            "end": 1230,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1185,
+              "end": 1198,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1199,
+              "end": 1230,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1201,
+                  "end": 1229,
+                  "flags": 0,
+                  "text": "./edit-group.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DeleteGroupComponent",
+        "file": "groups/delete-group/delete-group.component.ts",
+        "selector": "app-delete-group",
+        "providers": [],
+        "templateUrl": [
+          "delete-group.component.html"
+        ],
+        "styleUrls": [
+          "delete-group.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 760,
+            "end": 792,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 760,
+              "end": 772,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 773,
+              "end": 792,
+              "flags": 0,
+              "text": "app-delete-group"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 793,
+            "end": 841,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 793,
+              "end": 808,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 809,
+              "end": 841,
+              "flags": 0,
+              "text": "./delete-group.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 842,
+            "end": 889,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 842,
+              "end": 855,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 856,
+              "end": 889,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 858,
+                  "end": 888,
+                  "flags": 0,
+                  "text": "./delete-group.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "UserListComponent",
+        "file": "users/user-list/user-list.component.ts",
+        "selector": "app-user-list",
+        "providers": [],
+        "templateUrl": [
+          "user-list.component.html"
+        ],
+        "styleUrls": [
+          "user-list.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 516,
+            "end": 545,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 516,
+              "end": 528,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 529,
+              "end": 545,
+              "flags": 0,
+              "text": "app-user-list"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 546,
+            "end": 591,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 546,
+              "end": 561,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 562,
+              "end": 591,
+              "flags": 0,
+              "text": "./user-list.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 592,
+            "end": 636,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 592,
+              "end": 605,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 606,
+              "end": 636,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 608,
+                  "end": 635,
+                  "flags": 0,
+                  "text": "./user-list.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ContainerListComponent",
+        "file": "containers/container-list/container-list.component.ts",
+        "selector": "app-container-list",
+        "providers": [],
+        "templateUrl": [
+          "container-list.component.html"
+        ],
+        "styleUrls": [
+          "container-list.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 799,
+            "end": 833,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 799,
+              "end": 811,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 812,
+              "end": 833,
+              "flags": 0,
+              "text": "app-container-list"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 834,
+            "end": 884,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 834,
+              "end": 849,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 850,
+              "end": 884,
+              "flags": 0,
+              "text": "./container-list.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 885,
+            "end": 934,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 885,
+              "end": 898,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 899,
+              "end": 934,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 901,
+                  "end": 933,
+                  "flags": 0,
+                  "text": "./container-list.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "AddContainerComponent",
+        "file": "containers/add-container/add-container.component.ts",
+        "selector": "app-add-container",
+        "providers": [],
+        "templateUrl": [
+          "add-container.component.html"
+        ],
+        "styleUrls": [
+          "add-container.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1041,
+            "end": 1074,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1041,
+              "end": 1053,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1054,
+              "end": 1074,
+              "flags": 0,
+              "text": "app-add-container"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1075,
+            "end": 1124,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1075,
+              "end": 1090,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1091,
+              "end": 1124,
+              "flags": 0,
+              "text": "./add-container.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1125,
+            "end": 1173,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1125,
+              "end": 1138,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1139,
+              "end": 1173,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1141,
+                  "end": 1172,
+                  "flags": 0,
+                  "text": "./add-container.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "EditContainerComponent",
+        "file": "containers/edit-container/edit-container.component.ts",
+        "selector": "app-edit-container",
+        "providers": [],
+        "templateUrl": [
+          "edit-container.component.html"
+        ],
+        "styleUrls": [
+          "edit-container.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 1124,
+            "end": 1158,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1124,
+              "end": 1136,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1137,
+              "end": 1158,
+              "flags": 0,
+              "text": "app-edit-container"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1159,
+            "end": 1209,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1159,
+              "end": 1174,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 1175,
+              "end": 1209,
+              "flags": 0,
+              "text": "./edit-container.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 1210,
+            "end": 1259,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 1210,
+              "end": 1223,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 1224,
+              "end": 1259,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 1226,
+                  "end": 1258,
+                  "flags": 0,
+                  "text": "./edit-container.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "DeleteContainerComponent",
+        "file": "containers/delete-container/delete-container.component.ts",
+        "selector": "app-delete-container",
+        "providers": [],
+        "templateUrl": [
+          "delete-container.component.html"
+        ],
+        "styleUrls": [
+          "delete-container.component.css"
+        ],
+        "__raw": [
+          {
+            "kind": 253,
+            "pos": 778,
+            "end": 814,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 778,
+              "end": 790,
+              "flags": 0,
+              "text": "selector"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 791,
+              "end": 814,
+              "flags": 0,
+              "text": "app-delete-container"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 815,
+            "end": 867,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 815,
+              "end": 830,
+              "flags": 0,
+              "text": "templateUrl"
+            },
+            "initializer": {
+              "kind": 9,
+              "pos": 831,
+              "end": 867,
+              "flags": 0,
+              "text": "./delete-container.component.html"
+            }
+          },
+          {
+            "kind": 253,
+            "pos": 868,
+            "end": 919,
+            "flags": 0,
+            "name": {
+              "kind": 69,
+              "pos": 868,
+              "end": 881,
+              "flags": 0,
+              "text": "styleUrls"
+            },
+            "initializer": {
+              "kind": 170,
+              "pos": 882,
+              "end": 919,
+              "flags": 0,
+              "elements": [
+                {
+                  "kind": 9,
+                  "pos": 884,
+                  "end": 918,
+                  "flags": 0,
+                  "text": "./delete-container.component.css"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "ContainerDetailComponent"
+      },
+      {
+        "name": "ContainerBoxListComponent"
+      },
+      {
+        "name": "BoxDetailComponent"
+      },
+      {
+        "name": "MyContainerListComponent"
+      },
+      {
+        "name": "FooterComponent"
+      },
+      {
+        "name": "TopNavbarComponent"
+      },
+      {
+        "name": "ContainerBoxesFilterComponent"
+      },
+      {
+        "name": "ContainerBoxNavbarComponent"
+      },
+      {
+        "name": "ContainerBoxCardviewComponent"
+      },
+      {
+        "name": "BoxLayoutComponent"
+      },
+      {
+        "name": "SampleFilterComponent"
+      },
+      {
+        "name": "SampleTableComponent"
+      },
+      {
+        "name": "BoxDetailActionPanelComponent"
+      },
+      {
+        "name": "BoxLayoutSimpleComponent"
+      },
+      {
+        "name": "ContainerOverviewComponent"
+      },
+      {
+        "name": "ContainerBoxOverviewComponent"
+      },
+      {
+        "name": "ContainerBoxOverviewActionPanelComponent"
+      },
+      {
+        "name": "ContainerBoxAddComponent"
+      },
+      {
+        "name": "ContainerBoxMoveComponent"
+      }
+    ],
+    "imports": [
+      {
+        "name": "BrowserModule"
+      },
+      {
+        "name": "FormsModule"
+      },
+      {
+        "name": "ReactiveFormsModule"
+      },
+      {
+        "name": "HttpModule"
+      },
+      {
+        "name": "SuiModule"
+      },
+      {
+        "name": "MyDatePickerModule"
+      },
+      {
+        "name": "ColorPickerModule"
+      },
+      {
+        "ns": "SidebarModule",
+        "name": "SidebarModule.forRoot()"
+      },
+      {
+        "ns": "RouterModule",
+        "name": "RouterModule.forRoot(args)"
+      },
+      {
+        "name": "SwiperModule"
+      }
+    ],
+    "exports": [],
+    "bootstrap": [
+      {
+        "name": "AppComponent"
+      }
+    ],
+    "__raw": [
+      {
+        "kind": 253,
+        "pos": 5352,
+        "end": 6533,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 5352,
+          "end": 5368,
+          "flags": 0,
+          "text": "declarations"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 5369,
+          "end": 6533,
+          "flags": 0,
+          "multiLine": true,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 5371,
+              "end": 5389,
+              "flags": 0,
+              "text": "AppComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5390,
+              "end": 5409,
+              "flags": 0,
+              "text": "HomeComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5410,
+              "end": 5430,
+              "flags": 0,
+              "text": "AdminComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5431,
+              "end": 5453,
+              "flags": 0,
+              "text": "AccountComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5454,
+              "end": 5477,
+              "flags": 0,
+              "text": "RegisterComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5478,
+              "end": 5507,
+              "flags": 0,
+              "text": "ChangePasswordComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5508,
+              "end": 5530,
+              "flags": 0,
+              "text": "ProfileComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5531,
+              "end": 5558,
+              "flags": 0,
+              "text": "PageNotFoundComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5559,
+              "end": 5579,
+              "flags": 0,
+              "text": "LoginComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5580,
+              "end": 5600,
+              "flags": 0,
+              "text": "AlertComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5601,
+              "end": 5621,
+              "flags": 0,
+              "text": "GroupComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5622,
+              "end": 5653,
+              "flags": 0,
+              "text": "PermissionDeniedComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5654,
+              "end": 5678,
+              "flags": 0,
+              "text": "GroupListComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5679,
+              "end": 5702,
+              "flags": 0,
+              "text": "AddGroupComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5703,
+              "end": 5727,
+              "flags": 0,
+              "text": "EditGroupComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5728,
+              "end": 5754,
+              "flags": 0,
+              "text": "DeleteGroupComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5755,
+              "end": 5778,
+              "flags": 0,
+              "text": "UserListComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5779,
+              "end": 5807,
+              "flags": 0,
+              "text": "ContainerListComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5808,
+              "end": 5835,
+              "flags": 0,
+              "text": "AddContainerComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5836,
+              "end": 5864,
+              "flags": 0,
+              "text": "EditContainerComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5865,
+              "end": 5895,
+              "flags": 0,
+              "text": "DeleteContainerComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5896,
+              "end": 5926,
+              "flags": 0,
+              "text": "ContainerDetailComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5927,
+              "end": 5958,
+              "flags": 0,
+              "text": "ContainerBoxListComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5959,
+              "end": 5983,
+              "flags": 0,
+              "text": "BoxDetailComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 5984,
+              "end": 6014,
+              "flags": 0,
+              "text": "MyContainerListComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6015,
+              "end": 6036,
+              "flags": 0,
+              "text": "FooterComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6037,
+              "end": 6061,
+              "flags": 0,
+              "text": "TopNavbarComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6062,
+              "end": 6097,
+              "flags": 0,
+              "text": "ContainerBoxesFilterComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6098,
+              "end": 6131,
+              "flags": 0,
+              "text": "ContainerBoxNavbarComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6132,
+              "end": 6167,
+              "flags": 0,
+              "text": "ContainerBoxCardviewComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6168,
+              "end": 6192,
+              "flags": 0,
+              "text": "BoxLayoutComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6193,
+              "end": 6220,
+              "flags": 0,
+              "text": "SampleFilterComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6221,
+              "end": 6247,
+              "flags": 0,
+              "text": "SampleTableComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6248,
+              "end": 6283,
+              "flags": 0,
+              "text": "BoxDetailActionPanelComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6284,
+              "end": 6314,
+              "flags": 0,
+              "text": "BoxLayoutSimpleComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6315,
+              "end": 6381,
+              "flags": 0,
+              "text": "ContainerOverviewComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6382,
+              "end": 6417,
+              "flags": 0,
+              "text": "ContainerBoxOverviewComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6418,
+              "end": 6464,
+              "flags": 0,
+              "text": "ContainerBoxOverviewActionPanelComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6465,
+              "end": 6495,
+              "flags": 0,
+              "text": "ContainerBoxAddComponent"
+            },
+            {
+              "kind": 69,
+              "pos": 6496,
+              "end": 6527,
+              "flags": 0,
+              "text": "ContainerBoxMoveComponent"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 6534,
+        "end": 6941,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 6534,
+          "end": 6545,
+          "flags": 0,
+          "text": "imports"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 6546,
+          "end": 6941,
+          "flags": 0,
+          "multiLine": true,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 6548,
+              "end": 6567,
+              "flags": 0,
+              "text": "BrowserModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6568,
+              "end": 6585,
+              "flags": 0,
+              "text": "FormsModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6586,
+              "end": 6611,
+              "flags": 0,
+              "text": "ReactiveFormsModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6612,
+              "end": 6628,
+              "flags": 0,
+              "text": "HttpModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6629,
+              "end": 6664,
+              "flags": 0,
+              "text": "SuiModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6665,
+              "end": 6709,
+              "flags": 0,
+              "text": "MyDatePickerModule"
+            },
+            {
+              "kind": 69,
+              "pos": 6710,
+              "end": 6758,
+              "flags": 0,
+              "text": "ColorPickerModule"
+            },
+            {
+              "kind": 174,
+              "pos": 6759,
+              "end": 6803,
+              "flags": 0,
+              "expression": {
+                "kind": 172,
+                "pos": 6759,
+                "end": 6801,
+                "flags": 0,
+                "expression": {
+                  "kind": 69,
+                  "pos": 6759,
+                  "end": 6793,
+                  "flags": 0,
+                  "text": "SidebarModule"
+                },
+                "name": {
+                  "kind": 69,
+                  "pos": 6794,
+                  "end": 6801,
+                  "flags": 0,
+                  "text": "forRoot"
+                }
+              },
+              "arguments": []
+            },
+            {
+              "kind": 174,
+              "pos": 6804,
+              "end": 6867,
+              "flags": 0,
+              "expression": {
+                "kind": 172,
+                "pos": 6804,
+                "end": 6859,
+                "flags": 0,
+                "expression": {
+                  "kind": 69,
+                  "pos": 6804,
+                  "end": 6851,
+                  "flags": 0,
+                  "text": "RouterModule"
+                },
+                "name": {
+                  "kind": 69,
+                  "pos": 6852,
+                  "end": 6859,
+                  "flags": 0,
+                  "text": "forRoot"
+                }
+              },
+              "arguments": [
+                {
+                  "kind": 69,
+                  "pos": 6860,
+                  "end": 6866,
+                  "flags": 0,
+                  "text": "routes"
+                }
+              ]
+            },
+            {
+              "kind": 69,
+              "pos": 6868,
+              "end": 6935,
+              "flags": 0,
+              "text": "SwiperModule"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 6942,
+        "end": 7219,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 6942,
+          "end": 6955,
+          "flags": 0,
+          "text": "providers"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 6956,
+          "end": 7219,
+          "flags": 0,
+          "multiLine": true,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 6958,
+              "end": 6992,
+              "flags": 0,
+              "text": "GuardProviders"
+            },
+            {
+              "kind": 69,
+              "pos": 6993,
+              "end": 7019,
+              "flags": 0,
+              "text": "AlertServiceProvider"
+            },
+            {
+              "kind": 69,
+              "pos": 7020,
+              "end": 7045,
+              "flags": 0,
+              "text": "AppSettingProvider"
+            },
+            {
+              "kind": 69,
+              "pos": 7046,
+              "end": 7066,
+              "flags": 0,
+              "text": "StoreProviders"
+            },
+            {
+              "kind": 69,
+              "pos": 7067,
+              "end": 7092,
+              "flags": 0,
+              "text": "APIServiceProviders"
+            },
+            {
+              "kind": 69,
+              "pos": 7093,
+              "end": 7112,
+              "flags": 0,
+              "text": "LogerProvider"
+            },
+            {
+              "kind": 69,
+              "pos": 7113,
+              "end": 7147,
+              "flags": 0,
+              "text": "CustomFormValidatorsProvider"
+            },
+            {
+              "kind": 69,
+              "pos": 7148,
+              "end": 7176,
+              "flags": 0,
+              "text": "UtilityServiceProvider"
+            },
+            {
+              "kind": 193,
+              "pos": 7177,
+              "end": 7177,
+              "flags": 0
+            },
+            {
+              "kind": 69,
+              "pos": 7178,
+              "end": 7211,
+              "flags": 0,
+              "text": "LocalStorageServiceProvider"
+            }
+          ]
+        }
+      },
+      {
+        "kind": 253,
+        "pos": 7220,
+        "end": 7249,
+        "flags": 0,
+        "name": {
+          "kind": 69,
+          "pos": 7220,
+          "end": 7233,
+          "flags": 0,
+          "text": "bootstrap"
+        },
+        "initializer": {
+          "kind": 170,
+          "pos": 7234,
+          "end": 7249,
+          "flags": 0,
+          "elements": [
+            {
+              "kind": 69,
+              "pos": 7236,
+              "end": 7248,
+              "flags": 0,
+              "text": "AppComponent"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -84,7 +84,6 @@ export const setCurrentContainerActionAsync = (container: Container) =>
     );
 }
 
-
 export const setMyContainersActionAsync = 
 (containerService: ContainerService, alertService: AlertService, logAppStateService: LogAppStateService) =>
 (dispatch: Dispatch<AppState>, getState) =>

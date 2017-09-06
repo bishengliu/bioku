@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^4.0.2",
     "@angular/platform-browser-dynamic": "^4.0.2",
     "@angular/router": "^4.0.2",
+    "angular-popper": "^1.0.0-beta-1",
     "angular2-useful-swiper": "^4.0.5",
     "core-js": "^2.4.1",
     "mydatepicker": "^1.9.9",

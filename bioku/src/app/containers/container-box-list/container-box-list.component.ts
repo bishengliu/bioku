@@ -23,10 +23,12 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   //route param
   id: number;
   private sub: any; //subscribe to params observable
+  containers: Array<Container> = new Array<Container>();
   container: Container = null;
   currentBox: Box = null;
   myBoxes: Array<Box> = [];
   searchedBoxes: Array<Box> = [];
+  show_all: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private logAppStateService: LogAppStateService)
   { 
@@ -42,11 +44,14 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentBox){
       this.currentBox = state.containerInfo.currentBox;
     }
+    if (state.containerInfo && state.containerInfo.containers){
+      this.containers = state.containerInfo.containers;
+    }
   }
   updateBoxList(boxFilter:BoxFilter){
     this.loading = true;
     //restore the complete boxes
-    this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+    this.searchedBoxes = this.myBoxes;
     //filter the machted boxes
     this.searchedBoxes = this.myBoxes.filter((e: Box)=> {
         let isSelected = true;
@@ -84,11 +89,33 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
         return this.containerService.containerGroupBoxes(this.id)
       })
       .subscribe((data: any)=>{
-        this.myBoxes = data.sort(this.utilityService.sortArrayBySingleProperty('full_position'));;
-        this.searchedBoxes = this.myBoxes;
+        this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+        //this.searchedBoxes = this.myBoxes;
+        if(this.show_all){
+          //show all
+          this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+        }
+        else{
+          this.searchedBoxes = this.myBoxes.filter((box, i)=>{
+            return box.rate != null;
+          });
+        };
         this.loading = false;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
+  }
+  toggleBoxShow(){
+    this.loading = true;
+    this.show_all = !this.show_all;
+    if(this.show_all){
+      //show all
+      this.searchedBoxes = this.myBoxes;
+    }
+    else{
+      //show favourite
+      this.searchedBoxes = this.myBoxes.filter((box, i)=>{ return box.rate != null; });
+    }
+    this.loading = false;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
