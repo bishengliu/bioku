@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject, Input, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
@@ -64,7 +65,8 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService, private alertService: AlertService) { 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private containerService: ContainerService, private alertService: AlertService, private router: Router) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
@@ -191,27 +193,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
     return (findSamples != null && findSamples.length >0)? true : false;
   }
 
-  takeMultipleSampleout(){
-    console.log('take multiple sample out ...');
-    let today = new Date()
-    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
-    let failed_samples='';
-    let count: number = 0;
-    if(this.occupiedSamples.length > 0){
-      this.occupiedSamples.forEach((sample, i)=>{
-        count++;
-        this.containerService.takeSampleOut(this.container.pk, this.box.box_position, sample.position)
-          .subscribe(()=>{},(err)=>{
-            console.log(err);
-            failed_samples = sample.position +" ";
-            if(count == this.occupiedSamples.length){
-              this.alertService.error("Something went wrong, failed to take out samples at: " + failed_samples + "!", true);
-            }
-          });
-      });
-    }
-  }
-
   //store new samples into the box
   storeSamples(){
     console.log('store samples ...');
@@ -225,11 +206,20 @@ export class BoxDetailActionPanelComponent implements OnInit {
     let failed_samples='';
     let count: number = 0;
     if(this.preoccupiedSamples.length>0){
+      let sample_put_back: boolean = true;
       this.preoccupiedSamples.forEach((sample,i)=>{
         count++;
         this.containerService.putSampleBack(this.container.pk, this.box.box_position, sample.position)
-        .subscribe(()=>{},(err)=>{
+        .subscribe(()=>{
+          if(count == this.preoccupiedSamples.length){
+            this.router.navigate(['/containers', this.container.pk]);
+            if(sample_put_back){
+              this.alertService.success("All samples put back!", true);
+            }
+          }
+        },(err)=>{
           console.log(err);
+          sample_put_back = false;
           failed_samples = sample.position +" ";
           if(count == this.preoccupiedSamples.length){
             this.alertService.error("Something went wrong, failed to put back samples at: " + failed_samples + "!", true);
@@ -238,18 +228,47 @@ export class BoxDetailActionPanelComponent implements OnInit {
       });
     }
   }
-
+  //take multiple sample out
+  takeMultipleSampleout(){   
+    let today = new Date()
+    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+    let failed_samples='';
+    let count: number = 0;
+    if(this.occupiedSamples.length > 0){
+      let sample_token_out: boolean = true;
+      this.occupiedSamples.forEach((sample, i)=>{
+        count++;
+        this.containerService.takeSampleOut(this.container.pk, this.box.box_position, sample.position)
+          .subscribe(()=>{
+            if(count == this.occupiedSamples.length){
+              this.router.navigate(['/containers', this.container.pk]);
+              if(sample_token_out){
+                this.alertService.success("All samples token out!", true);
+              }
+            }
+          },(err)=>{
+            sample_token_out = false;
+            console.log(err);
+            failed_samples = sample.position +" ";
+            if(count == this.occupiedSamples.length){
+              this.alertService.error("Something went wrong, failed to take out samples at: " + failed_samples + "!", true);
+            }
+          });
+      });
+    }
+  }
   //switch samples
-  switch2Sampleout(){
-    console.log('switch samples ...');
-    console.log(this.occupiedSamples);
+  switch2Samples(){
     if(this.occupiedSamples.length ===2){
       let first_sample_position = this.occupiedSamples[0].position;
       let second_sample_position = this.occupiedSamples[1].position;
       this.containerService.switchSamplePosition(this.container.pk, this.box.box_position, first_sample_position, second_sample_position)
-      .subscribe(()=>{}, ()=>{
+      .subscribe(()=>{
+        this.alertService.success("Samples posiitons were switched!", true);
+        this.router.navigate(['/containers', this.container.pk]);
+      }, ()=>{
         this.alertService.error("Something went wrong, samples were not switched!", true);
-      });
+      });      
     }
     else{
       this.alertService.error("Something went wrong, can only switch on 2 samples!", true);
@@ -259,6 +278,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     console.log('moving samples...');
     console.log(this.occupiedSamples);
   }
+
   ngOnInit() {}
 
   ngOnChanges(){

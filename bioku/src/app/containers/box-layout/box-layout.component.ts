@@ -137,9 +137,9 @@ export class BoxLayoutComponent implements OnInit {
   ngOnChanges(){
     //sample
     this.selectedSamples = []; //clear selected samples
-    this.sampleSelected.emit(null); //emit selected sample pk
+    this.sampleSelected.emit([]); //emit selected sample pk
     //cells
     this.selectedCells = []; //clear selected cells
-    this.cellSelected.emit(null); //emit selected cells
+    this.cellSelected.emit([]); //emit selected cells
   }
 }

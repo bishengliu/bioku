@@ -147,7 +147,7 @@
     <div class="ui divider"></div>
     <div class="" *ngIf="occupiedSamples.length >= 1">
       <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-      <button class="ui compact mini inverted green button right floated" *ngIf="occupiedSamples.length == 2" (click)="switch2Sampleout()"><i class="icon refresh"></i>SWITCH</button>
+      <button class="ui compact mini inverted green button right floated" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
       <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
     </div>
   </div>

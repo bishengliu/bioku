@@ -110,6 +110,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   captureCellSelected(cells: Array<string>){
     this.selectedCells = cells;
   }
+
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{

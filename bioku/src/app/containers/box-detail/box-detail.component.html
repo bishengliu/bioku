@@ -29,11 +29,23 @@
 <!--after loading-->
 <div class="ui small_padding stackable grid" *ngIf="loading==false">
   <div class="ten wide tablet twelve wide computer column" >
-    <app-sample-table *ngIf="!box_view && searchedSamples.length > 0 " [samples]="searchedSamples" (sampleSelected)="captureSampleSelected($event)"></app-sample-table> 
-    <app-box-layout *ngIf="box_view" [samples]="samples" [searchedBoxSamples]="searchedBoxSamples" (sampleSelected)="captureSampleSelected($event)" (cellSelected)="captureCellSelected($event)"></app-box-layout>   
+    <app-sample-table *ngIf="!box_view && searchedSamples.length > 0 " 
+      [samples]="searchedSamples" 
+      (sampleSelected)="captureSampleSelected($event)">
+    </app-sample-table> 
+    <app-box-layout *ngIf="box_view" 
+      [samples]="samples"
+      [searchedBoxSamples]="searchedBoxSamples"
+      (sampleSelected)="captureSampleSelected($event)" 
+      (cellSelected)="captureCellSelected($event)">
+    </app-box-layout>   
   </div>
-  <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" class="six wide tablet four wide computer column ui sticky">
-      <app-box-detail-action-panel [selectedSamples]="selectedSamples.toString()" [selectedCells]="selectedCells.toString()"></app-box-detail-action-panel>
+  <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
+    class="six wide tablet four wide computer column ui sticky">
+      <app-box-detail-action-panel 
+      [selectedSamples]="selectedSamples.toString()" 
+      [selectedCells]="selectedCells.toString()">
+      </app-box-detail-action-panel>
   </div>
 </div>
 
