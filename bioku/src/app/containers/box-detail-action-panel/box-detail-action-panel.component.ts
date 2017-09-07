@@ -238,11 +238,22 @@ export class BoxDetailActionPanelComponent implements OnInit {
       });
     }
   }
-  
+
   //switch samples
   switch2Sampleout(){
     console.log('switch samples ...');
     console.log(this.occupiedSamples);
+    if(this.occupiedSamples.length ===2){
+      let first_sample_position = this.occupiedSamples[0].position;
+      let second_sample_position = this.occupiedSamples[1].position;
+      this.containerService.switchSamplePosition(this.container.pk, this.box.box_position, first_sample_position, second_sample_position)
+      .subscribe(()=>{}, ()=>{
+        this.alertService.error("Something went wrong, samples were not switched!", true);
+      });
+    }
+    else{
+      this.alertService.error("Something went wrong, can only switch on 2 samples!", true);
+    }
   }
   moveSamples(){
     console.log('moving samples...');

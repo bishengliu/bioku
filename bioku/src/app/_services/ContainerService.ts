@@ -231,10 +231,21 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
-    //switch sample position
+    //update sample position
     updateSamplePosition(container_pk: number, box_position: string, sample_position: string, new_vposition: string, new_hposition: number){
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/switch_position/";
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/update_position/";
         let body: string = JSON.stringify({'new_vposition': new_vposition, 'new_hposition': new_hposition });
+        return this.http.put(query_url, body, this.options)
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //switch sample positions
+    switchSamplePosition(container_pk: number, box_position: string, first_sample_position: string, second_sample_position: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/switch_positions/";
+        let body: string = JSON.stringify({
+            'box_full_position': box_position, 
+            'first_sample': first_sample_position,
+            'second_sample': second_sample_position});
         return this.http.put(query_url, body, this.options)
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
