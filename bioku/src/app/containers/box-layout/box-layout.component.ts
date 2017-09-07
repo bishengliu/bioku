@@ -76,7 +76,7 @@ export class BoxLayoutComponent implements OnInit {
     //console.log(this.selectedSamples);
     //emit observable
     this.sampleSelected.emit(this.selectedSamples);
-    this.cellSelected.emit(this.selectedCells);
+    this.cellSelected.emit(this.selectedCells.sort());
   }
   updateState(){
     let state = this.appStore.getState();

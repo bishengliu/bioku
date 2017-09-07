@@ -3,12 +3,12 @@
     <p class="no_margin nopadding">ACTION PANEL</p>
   </div>
 
-  <div class="ui segment" *ngIf="action_panel_msg || error_msg">
+  <div class="ui segment" *ngIf="action_panel_msg">
     <!--msg-->
     <div class="ui icon message" >
       <i class="warning sign icon red-text"></i>
       <div class="content">
-        <p class="red-text">{{action_panel_msg}} {{error_msg}}</p>
+        <p class="red-text">{{action_panel_msg}}</p>
       </div>
     </div>
     <!--msg-->
@@ -128,10 +128,10 @@
        <tr>
          <td colspan="2">
            <div class="two ui mini buttons" *ngIf="sample.date_out == null">
-              <button class="fluid ui mini blue button" (click)="takeSampleOut(box.box_position, sample, sample.position, true)">TAKE SAMPLE OUT</button>
-              <button class="fluid ui mini inverted violet button right floated"><i class="icon move"></i>MOVE</button>
+              <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position, true)">TAKE SAMPLE OUT</button>
+              <button class="fluid ui mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
            </div>           
-            <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" (click)="takeSampleOut(box.box_position, sample, sample.position, false)">PUT SAMPLE BACK</button>
+            <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position, false)">PUT SAMPLE BACK</button>
          </td>
        </tr>
      </tbody>
@@ -146,9 +146,9 @@
     </div>
     <div class="ui divider"></div>
     <div class="" *ngIf="occupiedSamples.length >= 1">
-      <button class="ui compact mini inverted red button"><i class="icon external share"></i>TAKE OUT</button>
-      <button class="ui compact mini inverted green button right floated" *ngIf="occupiedSamples.length == 2"><i class="icon refresh"></i>SWITCH</button>
-      <button class="ui compact mini inverted violet button right floated"><i class="icon move"></i>MOVE</button>
+      <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
+      <button class="ui compact mini inverted green button right floated" *ngIf="occupiedSamples.length == 2" (click)="switch2Sampleout()"><i class="icon refresh"></i>SWITCH</button>
+      <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
     </div>
   </div>
 
@@ -159,7 +159,7 @@
       <div class="ui label" *ngFor="let sample of preoccupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
     </div>
     <div class="ui divider"></div>
-    <button class="ui compact mini inverted brown button"><i class="icon reply"></i>PUT SAMPLES BACK</button>
+    <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT SAMPLES BACK</button>
   </div>  
 
   <!--empty box cells: for box view only-->
@@ -169,7 +169,7 @@
     </div>
     <div >
       <div class="ui divider"></div>
-       <button class="ui compact mini inverted primary button"><i class="icon add circle"></i>STORE SAMPLES</button>
+       <button class="ui compact mini inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
     </div> 
   </div> 
 </div>
