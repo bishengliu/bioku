@@ -66,7 +66,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private containerService: ContainerService, private alertService: AlertService, private router: Router) { 
+              private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
@@ -240,6 +240,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
         count++;
         this.containerService.takeSampleOut(this.container.pk, this.box.box_position, sample.position)
           .subscribe(()=>{
+            //this.router.navigate(['/containers', this.container.pk, this.box.box_position], { queryParams: { 'refresh': 1 } });
             if(count == this.occupiedSamples.length){
               this.router.navigate(['/containers', this.container.pk]);
               if(sample_token_out){
@@ -279,7 +280,9 @@ export class BoxDetailActionPanelComponent implements OnInit {
     console.log(this.occupiedSamples);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe(val => console.log(val))
+  }
 
   ngOnChanges(){
     //samples
