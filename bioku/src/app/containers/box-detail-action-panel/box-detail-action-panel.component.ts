@@ -6,6 +6,7 @@ import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { ContainerService } from '../../_services/ContainerService';
+import {  AlertService } from '../../_services/AlertService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -63,7 +64,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService, private alertService: AlertService) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
@@ -84,6 +85,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.boxDescription = this.box.description;
     }
   }
+
   renderOptions(count: number, letter: boolean){
     let options = [];
     options.push({name:'-', value:null});
@@ -93,6 +95,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     return options;
   }
+
   //find the samples from selected pks
   findSamples(pks: Array<number>){
     let samples = [];
@@ -101,6 +104,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     return samples;
   }
+
   parseFreezingDate(date: string){
       let freezing_date = {};
       if(date){
@@ -108,6 +112,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
         freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
       return freezing_date;
   }
+
   updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
     this.action_panel_msg = null;
     if((value == "" || value == null) && required){
@@ -123,6 +128,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
           .subscribe(()=>{},(err)=>console.log(this.action_panel_msg = "fail to update sample detail!"));
     } 
   }
+
   display_hposition(){
     if(this.vposition.nativeElement.value == null || this.vposition.nativeElement.value == ""){
       this.box_hposition = false;
@@ -134,6 +140,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.box_hposition = true;
     }    
   }
+
   updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
     this.action_panel_msg = null;
     this.action_loader = true;
@@ -151,52 +158,87 @@ export class BoxDetailActionPanelComponent implements OnInit {
       }
     }      
   }
+
   //take or put sample back
   //need to fix the issue here
-  takeSingleSampleOut(box_position: string, sample: Sample, sample_position: string, status: boolean){
-    console.log('take single sample out/put single sample back...');
+  takeSingleSampleOut(box_position: string, sample: Sample, sample_position: string){
+    console.log('take single sample out...');
     this.action_panel_msg = null;
-    //take sample out: status == true
-    //put sample back: sample == false
     //get today 
     let today = new Date()
     let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
-    if(status){
-      sample.date_out = today;
-      sample.occupied = false;
-      this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
-      .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to take the sample out!");});
-    }
-    else{
-      sample.date_out = null;
-      sample.occupied = true;
-      this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
-      .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to put the sample back!");});
-    }    
+    sample.date_out = today;
+    sample.occupied = false;
+    this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
+    .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to take the sample out!");});   
   }
+
+  //put single sample back
+  putSingleSampleBack(box_position: string, sample: Sample, sample_position: string){
+    console.log('put sample back ...');
+    this.action_panel_msg = null;
+    let today = new Date()
+    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+    sample.date_out = null;
+    sample.occupied = true;
+    this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
+    .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to put the sample back!");});
+  }
+
   //check whether a cell has a sample
   checkSamplebyCell(cell:string){
     let findSamples = this.occupiedSamples.filter((s:Sample)=> s.position.toLowerCase()===cell.toLowerCase());
     return (findSamples != null && findSamples.length >0)? true : false;
   }
+
   takeMultipleSampleout(){
     console.log('take multiple sample out ...');
-    console.log(this.occupiedSamples);
+    let today = new Date()
+    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+    let failed_samples='';
+    let count: number = 0;
+    if(this.occupiedSamples.length > 0){
+      this.occupiedSamples.forEach((sample, i)=>{
+        count++;
+        this.containerService.takeSampleOut(this.container.pk, this.box.box_position, sample.position)
+          .subscribe(()=>{},(err)=>{
+            console.log(err);
+            failed_samples = sample.position +" ";
+            if(count == this.occupiedSamples.length){
+              this.alertService.error("Something went wrong, failed to take out samples at: " + failed_samples + "!", true);
+            }
+          });
+      });
+    }
   }
+
   //store new samples into the box
   storeSamples(){
     console.log('store samples ...');
     console.log(this.emptySelectedCells);
   }
-  //put single sample back
-  putSingleSampleBack(box_position: string, sample: Sample, sample_position: string){
-    console.log('put sample back ...');
-  }
+  
   //put multiple sample back
   putMultipleSampleBack(){
     console.log('put multiple sample back ...');
     console.log(this.preoccupiedSamples);
+    let failed_samples='';
+    let count: number = 0;
+    if(this.preoccupiedSamples.length>0){
+      this.preoccupiedSamples.forEach((sample,i)=>{
+        count++;
+        this.containerService.putSampleBack(this.container.pk, this.box.box_position, sample.position)
+        .subscribe(()=>{},(err)=>{
+          console.log(err);
+          failed_samples = sample.position +" ";
+          if(count == this.preoccupiedSamples.length){
+            this.alertService.error("Something went wrong, failed to put back samples at: " + failed_samples + "!", true);
+          }
+        });
+      });
+    }
   }
+  
   //switch samples
   switch2Sampleout(){
     console.log('switch samples ...');
