@@ -254,4 +254,3 @@ export class ContainerService{
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 }
-
