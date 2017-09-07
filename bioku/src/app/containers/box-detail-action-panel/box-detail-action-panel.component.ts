@@ -179,6 +179,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     return (findSamples != null && findSamples.length >0)? true : false;
   }
   ngOnInit() {}
+  
   ngOnChanges(){
     //samples
     this.samplePKs = [];
