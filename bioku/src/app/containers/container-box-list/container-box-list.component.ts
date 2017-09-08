@@ -23,6 +23,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   //route param
   id: number;
   private sub: any; //subscribe to params observable
+  // private querySub: any;
   containers: Array<Container> = new Array<Container>();
   container: Container = null;
   currentBox: Box = null;
@@ -74,6 +75,15 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/containers', this.container.pk, box.box_position]);  
   }
   ngOnInit() {
+    // this.querySub = this.route.queryParams
+    //   .subscribe(params=>{
+    //     console.log(params);
+    //     console.log(params['box_position']);
+    //     if(params['box_position'] != undefined){
+    //       this.displaySelectedBox(this.currentBox);
+    //     }
+    //   });
+
     this.sub = this.route.params
       .mergeMap((params) =>{
         this.id = +params['id'];
@@ -117,5 +127,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     }
     this.loading = false;
   }
-  ngOnDestroy() { this.sub.unsubscribe(); }
+  ngOnDestroy() { 
+    this.sub.unsubscribe(); 
+    // this.querySub.unsubscribe();
+  }
 }

@@ -242,6 +242,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
           .subscribe(()=>{
             //this.router.navigate(['/containers', this.container.pk, this.box.box_position], { queryParams: { 'refresh': 1 } });
             if(count == this.occupiedSamples.length){
+              //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
               this.router.navigate(['/containers', this.container.pk]);
               if(sample_token_out){
                 this.alertService.success("All samples token out!", true);
@@ -266,7 +267,8 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.containerService.switchSamplePosition(this.container.pk, this.box.box_position, first_sample_position, second_sample_position)
       .subscribe(()=>{
         this.alertService.success("Samples posiitons were switched!", true);
-        this.router.navigate(['/containers', this.container.pk]);
+        //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
+        //this.router.navigate(['/containers', this.container.pk]);
       }, ()=>{
         this.alertService.error("Something went wrong, samples were not switched!", true);
       });      
