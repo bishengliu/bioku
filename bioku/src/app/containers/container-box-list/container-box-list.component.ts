@@ -86,35 +86,38 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       })
       .mergeMap((container: any)=>{
         this.container = container;
-        //get group boxes of the container
-        return this.containerService.containerGroupBoxes(this.id)
+        this.querySub = this.route.queryParams
+        return this.querySub;
       })
-      .subscribe((data: any)=>{
-        this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
-        //this.searchedBoxes = this.myBoxes;
-        if(this.show_all){
-          //show all
-          this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+      .mergeMap((params)=>{
+        if(params && params['box_position'] != undefined){
+          //find only one box
+          return this.containerService.getContainerBox(this.container.pk, params['box_position']);
         }
         else{
-          this.searchedBoxes = this.myBoxes.filter((box, i)=>{
-            return box.rate != null;
-          });
-        };
-        //refresh page and jump
-        this.querySub = this.route.queryParams
-        .subscribe(params=>{
-          if(params && params['box_position'] != undefined){
-            //get new box
-
-            let new_box = this.myBoxes.filter((box, i)=>{ return box.box_position == params['box_position']});
-            if(new_box != null && new_box.length>0){
-              this.displaySelectedBox(new_box[0]);
-            }     
+          //get group boxes of the container
+        return this.containerService.containerGroupBoxes(this.id)
+        }
+      })
+      .subscribe((data: any)=>{
+        if(Array.isArray(data)){
+          //if it array, then is the inital loading
+          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+          //this.searchedBoxes = this.myBoxes;
+          if(this.show_all){
+            //show all
+            this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
           }
-        });
-        //end page refresh and jump
-
+          else{
+            this.searchedBoxes = this.myBoxes.filter((box, i)=>{
+              return box.rate != null;
+            });
+          };
+        }
+        else{
+          //is not an array, force jumping to the box
+          this.displaySelectedBox(<Box>data);
+        }
         this.loading = false;
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
