@@ -82,6 +82,7 @@ export class SampleDetailComponent implements OnInit {
 
   ngOnInit() {
   }
+
   ngOnChanges(){
     if(this.samplePK != null){
       this.sample = this.findSample(this.samplePK);
@@ -104,6 +105,7 @@ export class SampleDetailComponent implements OnInit {
     }   
     return sample;
   }
+
   renderOptions(count: number, letter: boolean){
     let options = [];
     options.push({name:'-', value:null});
@@ -113,6 +115,7 @@ export class SampleDetailComponent implements OnInit {
     }
     return options;
   }
+
   parseFreezingDate(date: string){
     let freezing_date = {};
     if(date){
@@ -120,6 +123,7 @@ export class SampleDetailComponent implements OnInit {
       freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
     return freezing_date;
   }
+
   //route force refrsh
   forceRefresh(){
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
@@ -136,6 +140,7 @@ export class SampleDetailComponent implements OnInit {
       this.box_hposition = true;
     }    
   }
+  
   updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
     this.action_panel_msg = null;
     if((value == "" || value == null) && required){
