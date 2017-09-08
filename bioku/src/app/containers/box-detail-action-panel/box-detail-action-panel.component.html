@@ -18,14 +18,27 @@
   <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" class="ui violet segment">
    <table class="ui sortable small striped compact padded single line table">
      <tbody *ngFor="let sample of findSamples(samplePKs)">
-       <tr><td class="six wide">Name</td>
+        <tr>
+          <td colspan="2">
+            <div class="three ui mini buttons" *ngIf="sample.date_out == null">
+              <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">TAKE SAMPLE OUT</button>
+              <button class="fluid ui mini inverted violet button" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
+              <button class="fluid ui mini inverted green button" (click)="EditSamples()"><i class="icon edit"></i>MODIFY</button>
+            </div>
+            <div class="two ui mini buttons" *ngIf="sample.date_out != null">
+              <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT SAMPLE BACK</button>
+              <button class="fluid ui mini inverted violet button" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
+            </div>  
+          </td>
+        </tr>
+       <tr><th class="six wide" [style.color]="sample.color">Name</th>
          <td class="ten wide">
            <div class="ui icon input wide-form">
              <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'name', true)"><i class="edit icon"></i>
-           </div>                                              
+           </div>                                
          </td>
        </tr>
-       <tr><td class="">Position</td>
+       <tr><th class="" [style.color]="sample.color">Position</th>
          <td class="">
            <div class="ui grid">                    
              <div class="four wide column"><span>{{sample.position}}</span></div>
@@ -110,10 +123,16 @@
              </div> 
            </td>
        </tr>
-       <tr><td class="">Remarks</td>
-         <td class="ten wide">
-           <div class="ui icon input wide-form">
-             <input class="" type="text" [(ngModel)]="sample.description" placeholder="update sample description ..." (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'description', false)"><i class="edit icon"></i>
+       <tr>
+         <td class="">Remarks</td>
+         <td class="ui form">
+           <div class="field wide-form">
+             <textarea class=""
+             rows="2"
+             [(ngModel)]="sample.description" 
+             placeholder="update sample description ..." 
+             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'description', false)">
+             </textarea>
            </div>                                              
          </td>
        </tr>
@@ -124,16 +143,7 @@
            </div>
            <color-picker [(ngModel)]="sample.color" (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>                                            
          </td>
-       </tr>
-       <tr>
-         <td colspan="2">
-           <div class="two ui mini buttons" *ngIf="sample.date_out == null">
-              <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">TAKE SAMPLE OUT</button>
-              <button class="fluid ui mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
-           </div>           
-            <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT SAMPLE BACK</button>
-         </td>
-       </tr>
+       </tr>      
      </tbody>
    </table>      
  </div>
@@ -147,7 +157,7 @@
     <div class="ui divider"></div>
     <div class="" *ngIf="occupiedSamples.length >= 1">
       <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-      <button class="ui compact mini inverted green button right floated" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
+      <button class="ui compact mini inverted green button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
       <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
     </div>
   </div>
