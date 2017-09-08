@@ -11,10 +11,10 @@ import {  AlertService } from '../../_services/AlertService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
-//mydatepicker
-import {IMyOptions} from 'mydatepicker';
-//color picker
-import { IColorPickerConfiguration } from 'ng2-color-picker';
+// //mydatepicker
+// import {IMyOptions} from 'mydatepicker';
+// //color picker
+// import { IColorPickerConfiguration } from 'ng2-color-picker';
 
 @Component({
   selector: 'app-box-detail-action-panel',
@@ -30,46 +30,46 @@ export class BoxDetailActionPanelComponent implements OnInit {
   appUrl: string;
   container: Container = null;
   box: Box = null;
-  boxDescription: string;  
-  freezing_date = {}; //for only select one sample
+  // //boxDescription: string;  
+  // freezing_date = {}; //for only select one sample
   action_panel_msg: string= null;
-  //Box position letters
-  box_letters: Array<string> = [];
-  //box hposition
-  box_hposition: boolean = false;
-  //mydatepicker
-  private myDatePickerOptions: IMyOptions = {
-        // other options...
-        todayBtnTxt: 'Today',
-        dateFormat: 'yyyy-mm-dd',
-        openSelectorTopOfInput: true,
-        showSelectorArrow: false,
-        editableDateField: false,
-        openSelectorOnInputClick: true};
+  // //Box position letters
+  // box_letters: Array<string> = [];
+  // //box hposition
+  // box_hposition: boolean = false;
+  // //mydatepicker
+  // private myDatePickerOptions: IMyOptions = {
+  //       // other options...
+  //       todayBtnTxt: 'Today',
+  //       dateFormat: 'yyyy-mm-dd',
+  //       openSelectorTopOfInput: true,
+  //       showSelectorArrow: false,
+  //       editableDateField: false,
+  //       openSelectorOnInputClick: true};
 
-  //color picker
-  availableColors: Array<string> = [];
-  pickerOptions: IColorPickerConfiguration = {
-    width: 8,
-    height: 8,
-    borderRadius: 2};
-  //selection options
-  vertical_options = [];
-  horizontal_options = [];
-  //loader
-  action_loader: boolean = false;
+  // //color picker
+  // availableColors: Array<string> = [];
+  // pickerOptions: IColorPickerConfiguration = {
+  //   width: 8,
+  //   height: 8,
+  //   borderRadius: 2};
+  // //selection options
+  // vertical_options = [];
+  // horizontal_options = [];
+  ////loader
+  //action_loader: boolean = false;
   //when multiple samples selected
   occupiedSamples: Array<Sample> =[];//occupied samples
   preoccupiedSamples: Array<Sample> =[]; //previous occupied samples
   emptySelectedCells: Array<string> =[]; //selected cells that are empty
-  //view child
-  @ViewChild('vposition') vposition:ElementRef;
-  @ViewChild('hposition') hposition:ElementRef;
+  // //view child
+  // @ViewChild('vposition') vposition:ElementRef;
+  // @ViewChild('hposition') hposition:ElementRef;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
-    this.availableColors = this.appSetting.APP_COLORS;
-    this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
+    // this.availableColors = this.appSetting.APP_COLORS;
+    // this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -84,19 +84,19 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      this.boxDescription = this.box.description;
+      //this.boxDescription = this.box.description;
     }
   }
 
-  renderOptions(count: number, letter: boolean){
-    let options = [];
-    options.push({name:'-', value:null});
-    for(let i=1; i<= count; i++){
-      let obj = letter? {name:this.box_letters[i-1], value:this.box_letters[i-1]}: {name:i, value:i};
-      options.push(obj)
-    }
-    return options;
-  }
+  // renderOptions(count: number, letter: boolean){
+  //   let options = [];
+  //   options.push({name:'-', value:null});
+  //   for(let i=1; i<= count; i++){
+  //     let obj = letter? {name:this.box_letters[i-1], value:this.box_letters[i-1]}: {name:i, value:i};
+  //     options.push(obj)
+  //   }
+  //   return options;
+  // }
 
   //find the samples from selected pks
   findSamples(pks: Array<number>){
@@ -106,104 +106,103 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     return samples;
   }
+  ////////////////////////////////
+  // parseFreezingDate(date: string){
+  //     let freezing_date = {};
+  //     if(date){
+  //       let dArray = date.split('-');
+  //       freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
+  //     return freezing_date;
+  // }
 
-  parseFreezingDate(date: string){
-      let freezing_date = {};
-      if(date){
-        let dArray = date.split('-');
-        freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
-      return freezing_date;
-  }
+  // updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
+  //   this.action_panel_msg = null;
+  //   if((value == "" || value == null) && required){
+  //     this.action_panel_msg = data_attr + " is required!"}
+  //   else{
+  //     this.action_panel_msg = null;            
+  //     //sample.freezing_date
+  //     if(data_attr == "freezing_date") { 
+  //       value = value.formatted;
+  //       sample.freezing_date =  value;
+  //     }      
+  //     this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
+  //         .subscribe(()=>{},(err)=>console.log(this.action_panel_msg = "fail to update sample detail!"));
+  //   } 
+  // }
+  // display_hposition(){
+  //   if(this.vposition.nativeElement.value == null || this.vposition.nativeElement.value == ""){
+  //     this.box_hposition = false;
+  //   }
+  //   else{
+  //     if(this.hposition){
+  //       this.hposition.nativeElement.value = null;
+  //     }      
+  //     this.box_hposition = true;
+  //   }    
+  // }
 
-  updateSampleDetail(value:any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean){
-    this.action_panel_msg = null;
-    if((value == "" || value == null) && required){
-      this.action_panel_msg = data_attr + " is required!"}
-    else{
-      this.action_panel_msg = null;            
-      //sample.freezing_date
-      if(data_attr == "freezing_date") { 
-        value = value.formatted;
-        sample.freezing_date =  value;
-      }      
-      this.containerService.updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
-          .subscribe(()=>{},(err)=>console.log(this.action_panel_msg = "fail to update sample detail!"));
-    } 
-  }
+  // updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
+  //   this.action_panel_msg = null;
+  //   this.action_loader = true;
+  //   var new_hposition = this.hposition.nativeElement.value;
+  //   var new_vposition = this.vposition.nativeElement.value;
+  //   sample.position = new_vposition + new_hposition;
+  //   if((!isNaN(+new_hposition) && +new_hposition >=1) && (new_vposition != "" && new_vposition != null) ){
+  //     if((new_vposition === sample.vposition.toLowerCase()) && +new_hposition === +sample.hposition){
+  //       this.action_panel_msg = "The new position is the same as current sample position, sample position not changed!";
+  //     }
+  //       else{
+  //       this.action_panel_msg = null;
+  //       this.containerService.updateSamplePosition(this.container.pk, box_position, sample_position, new_vposition, new_hposition)
+  //       .subscribe(()=>{
+  //         this.action_loader = false;
+  //         this.alertService.success("sample is moved to the new position (" + new_vposition + new_hposition + ")!", true);
+  //         this.forceRefresh();
+  //       },(err)=>{
+  //         this.alertService.error("Something went wrong, failed to move the sample to new position(" + new_vposition + new_hposition + ")!", true);
+  //         this.forceRefresh();
+  //       });
+  //     }
+  //   }      
+  // }
 
-  display_hposition(){
-    if(this.vposition.nativeElement.value == null || this.vposition.nativeElement.value == ""){
-      this.box_hposition = false;
-    }
-    else{
-      if(this.hposition){
-        this.hposition.nativeElement.value = null;
-      }      
-      this.box_hposition = true;
-    }    
-  }
+  // //take or put sample back
+  // //need to fix the issue here
+  // takeSingleSampleOut(box_position: string, sample: Sample, sample_position: string){
+  //   this.action_panel_msg = null;
+  //   //get today 
+  //   let today = new Date()
+  //   let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+  //   sample.date_out = today;
+  //   sample.occupied = false;
+  //   this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
+  //   .subscribe(()=>{
+  //     this.alertService.success("sample at: " + sample_position + " is token out!", true);
+  //     this.forceRefresh();
+  //   },(err)=>{
+  //     this.alertService.error("Something went wrong, failed to take out the sample at: " + sample_position + "!", true);
+  //     this.forceRefresh();
+  //   });   
+  // }
 
-  updateSamplePosition(sample: Sample, box_position: string, sample_position: string){
-    this.action_panel_msg = null;
-    this.action_loader = true;
-    var new_hposition = this.hposition.nativeElement.value;
-    var new_vposition = this.vposition.nativeElement.value;
-    sample.position = new_vposition + new_hposition;
-    if((!isNaN(+new_hposition) && +new_hposition >=1) && (new_vposition != "" && new_vposition != null) ){
-      if((new_vposition === sample.vposition.toLowerCase()) && +new_hposition === +sample.hposition){
-        this.action_panel_msg = "The new position is the same as current sample position, sample position not changed!";
-      }
-        else{
-        this.action_panel_msg = null;
-        this.containerService.updateSamplePosition(this.container.pk, box_position, sample_position, new_vposition, new_hposition)
-        .subscribe(()=>{
-          this.action_loader = false;
-          this.alertService.success("sample is moved to the new position (" + new_vposition + new_hposition + ")!", true);
-          this.forceRefresh();
-        },(err)=>{
-          this.alertService.error("Something went wrong, failed to move the sample to new position(" + new_vposition + new_hposition + ")!", true);
-          this.forceRefresh();
-        });
-      }
-    }      
-  }
-
-  //take or put sample back
-  //need to fix the issue here
-  takeSingleSampleOut(box_position: string, sample: Sample, sample_position: string){
-    this.action_panel_msg = null;
-    //get today 
-    let today = new Date()
-    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
-    sample.date_out = today;
-    sample.occupied = false;
-    this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
-    .subscribe(()=>{
-      this.alertService.success("sample at: " + sample_position + " is token out!", true);
-      this.forceRefresh();
-    },(err)=>{
-      this.alertService.error("Something went wrong, failed to take out the sample at: " + sample_position + "!", true);
-      this.forceRefresh();
-    });   
-  }
-
-  //put single sample back
-  putSingleSampleBack(box_position: string, sample: Sample, sample_position: string){
-    this.action_panel_msg = null;
-    let today = new Date()
-    let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
-    sample.date_out = null;
-    sample.occupied = true;
-    this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
-    .subscribe(()=>{
-      this.alertService.success("sample at: " + sample_position + " is put back!", true);
-      this.forceRefresh();
-    },(err)=>{
-      this.alertService.error("Something went wrong, failed to put back the sample at: " + sample_position + "! The slot could have been occupied, try to move the sample instead!", true);
-      this.forceRefresh();
-    });
-  }
-
+  // //put single sample back
+  // putSingleSampleBack(box_position: string, sample: Sample, sample_position: string){
+  //   this.action_panel_msg = null;
+  //   let today = new Date()
+  //   let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
+  //   sample.date_out = null;
+  //   sample.occupied = true;
+  //   this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
+  //   .subscribe(()=>{
+  //     this.alertService.success("sample at: " + sample_position + " is put back!", true);
+  //     this.forceRefresh();
+  //   },(err)=>{
+  //     this.alertService.error("Something went wrong, failed to put back the sample at: " + sample_position + "! The slot could have been occupied, try to move the sample instead!", true);
+  //     this.forceRefresh();
+  //   });
+  // }
+  ////////////////////////////////
   //check whether a cell has a sample
   checkSamplebyCell(cell:string){
     let findSamples = this.occupiedSamples.filter((s:Sample)=> s.position.toLowerCase()===cell.toLowerCase());
@@ -218,7 +217,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   
   //put multiple sample back
   putMultipleSampleBack(){
-    console.log(this.preoccupiedSamples);
+    // console.log(this.preoccupiedSamples);
     let failed_samples='';
     let count: number = 0;
     if(this.preoccupiedSamples.length>0){
@@ -293,6 +292,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.alertService.error("Something went wrong, can only switch on 2 samples!", true);
     }
   }
+  //move multiple samples
   moveSamples(){
     console.log('moving samples...');
     console.log(this.occupiedSamples);
@@ -309,12 +309,12 @@ export class BoxDetailActionPanelComponent implements OnInit {
         if(!isNaN(+sArray[i])){
           this.samplePKs.push(+sArray[i]);}
         }
-      if(this.samplePKs != null && this.samplePKs.length==1)  {
-        let samples = this.findSamples(this.samplePKs);
-        this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
-        this.vertical_options = this.renderOptions(this.box.box_vertical, true);
-        this.horizontal_options = this.renderOptions(this.box.box_horizontal, false);
-      } 
+      // if(this.samplePKs != null && this.samplePKs.length==1)  {
+      //   let samples = this.findSamples(this.samplePKs);
+      //   this.freezing_date = this.parseFreezingDate(samples[0].freezing_date);
+      //   this.vertical_options = this.renderOptions(this.box.box_vertical, true);
+      //   this.horizontal_options = this.renderOptions(this.box.box_horizontal, false);
+      // } 
       //more sample selects
       if(this.samplePKs != null && this.samplePKs.length >=1){
         let samples = this.findSamples(this.samplePKs);
