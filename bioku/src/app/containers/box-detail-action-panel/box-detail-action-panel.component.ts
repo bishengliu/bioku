@@ -156,7 +156,14 @@ export class BoxDetailActionPanelComponent implements OnInit {
         else{
         this.action_panel_msg = null;
         this.containerService.updateSamplePosition(this.container.pk, box_position, sample_position, new_vposition, new_hposition)
-        .subscribe(()=>{this.action_loader = false;},(err)=>{console.log(err);this.action_loader = false;});
+        .subscribe(()=>{
+          this.action_loader = false;
+          this.alertService.success("sample is moved to the new position (" + new_vposition + new_hposition + ")!", true);
+          this.forceRefresh();
+        },(err)=>{
+          this.alertService.error("Something went wrong, failed to move the sample to new position(" + new_vposition + new_hposition + ")!", true);
+          this.forceRefresh();
+        });
       }
     }      
   }
@@ -164,7 +171,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //take or put sample back
   //need to fix the issue here
   takeSingleSampleOut(box_position: string, sample: Sample, sample_position: string){
-    console.log('take single sample out...');
     this.action_panel_msg = null;
     //get today 
     let today = new Date()
@@ -172,19 +178,30 @@ export class BoxDetailActionPanelComponent implements OnInit {
     sample.date_out = today;
     sample.occupied = false;
     this.containerService.takeSampleOut(this.container.pk, box_position, sample_position)
-    .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to take the sample out!");});   
+    .subscribe(()=>{
+      this.alertService.success("sample at: " + sample_position + " is token out!", true);
+      this.forceRefresh();
+    },(err)=>{
+      this.alertService.error("Something went wrong, failed to take out the sample at: " + sample_position + "!", true);
+      this.forceRefresh();
+    });   
   }
 
   //put single sample back
   putSingleSampleBack(box_position: string, sample: Sample, sample_position: string){
-    console.log('put sample back ...');
     this.action_panel_msg = null;
     let today = new Date()
     let date_out = today.getFullYear() + '-'+ (today.getMonth() + 1) + '-'+ today.getDate();
     sample.date_out = null;
     sample.occupied = true;
     this.containerService.putSampleBack(this.container.pk, box_position, sample_position)
-    .subscribe(()=>{},(err)=>{console.log(this.action_panel_msg = "fail to put the sample back!");});
+    .subscribe(()=>{
+      this.alertService.success("sample at: " + sample_position + " is put back!", true);
+      this.forceRefresh();
+    },(err)=>{
+      this.alertService.error("Something went wrong, failed to put back the sample at: " + sample_position + "! The slot could have been occupied, try to move the sample instead!", true);
+      this.forceRefresh();
+    });
   }
 
   //check whether a cell has a sample
@@ -201,7 +218,6 @@ export class BoxDetailActionPanelComponent implements OnInit {
   
   //put multiple sample back
   putMultipleSampleBack(){
-    console.log('put multiple sample back ...');
     console.log(this.preoccupiedSamples);
     let failed_samples='';
     let count: number = 0;
@@ -211,11 +227,11 @@ export class BoxDetailActionPanelComponent implements OnInit {
         count++;
         this.containerService.putSampleBack(this.container.pk, this.box.box_position, sample.position)
         .subscribe(()=>{
-          if(count == this.preoccupiedSamples.length){
-            this.router.navigate(['/containers', this.container.pk]);
+          if(count == this.preoccupiedSamples.length){       
             if(sample_put_back){
               this.alertService.success("All samples put back!", true);
             }
+            this.forceRefresh();
           }
         },(err)=>{
           console.log(err);
@@ -223,6 +239,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
           failed_samples = sample.position +" ";
           if(count == this.preoccupiedSamples.length){
             this.alertService.error("Something went wrong, failed to put back samples at: " + failed_samples + "!", true);
+            this.forceRefresh();
           }
         });
       });
@@ -240,13 +257,11 @@ export class BoxDetailActionPanelComponent implements OnInit {
         count++;
         this.containerService.takeSampleOut(this.container.pk, this.box.box_position, sample.position)
           .subscribe(()=>{
-            //this.router.navigate(['/containers', this.container.pk, this.box.box_position], { queryParams: { 'refresh': 1 } });
-            if(count == this.occupiedSamples.length){
-              //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
-              this.router.navigate(['/containers', this.container.pk]);
+            if(count == this.occupiedSamples.length){         
               if(sample_token_out){
                 this.alertService.success("All samples token out!", true);
               }
+              this.forceRefresh();
             }
           },(err)=>{
             sample_token_out = false;
@@ -254,6 +269,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
             failed_samples = sample.position +" ";
             if(count == this.occupiedSamples.length){
               this.alertService.error("Something went wrong, failed to take out samples at: " + failed_samples + "!", true);
+              this.forceRefresh();       
             }
           });
       });
@@ -267,10 +283,10 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.containerService.switchSamplePosition(this.container.pk, this.box.box_position, first_sample_position, second_sample_position)
       .subscribe(()=>{
         this.alertService.success("Samples posiitons were switched!", true);
-        //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
-        //this.router.navigate(['/containers', this.container.pk]);
+        this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
       }, ()=>{
         this.alertService.error("Something went wrong, samples were not switched!", true);
+        this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
       });      
     }
     else{
@@ -282,9 +298,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     console.log(this.occupiedSamples);
   }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(val => console.log(val))
-  }
+  ngOnInit() {}
 
   ngOnChanges(){
     //samples
@@ -315,5 +329,9 @@ export class BoxDetailActionPanelComponent implements OnInit {
     }
     //get positions that are not occupied
     this.emptySelectedCells = this.cells.filter((cell:string) => !this.checkSamplebyCell(cell));
+  }
+  //route force refrsh
+  forceRefresh(){
+    this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
   }
 }
