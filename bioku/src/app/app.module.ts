@@ -146,7 +146,7 @@ import { ContainerBoxMoveComponent } from './containers/container-box-move/conta
     APIServiceProviders,
     LogerProvider,
     CustomFormValidatorsProvider,
-    UtilityServiceProvider,,
+    UtilityServiceProvider,
     LocalStorageServiceProvider,
     ],
   bootstrap: [AppComponent]
