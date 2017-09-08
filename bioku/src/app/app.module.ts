@@ -74,6 +74,8 @@ import { ContainerBoxOverviewActionPanelComponent } from './containers/container
 import { ContainerBoxAddComponent } from './containers/container-box-add/container-box-add.component';
 import { ContainerBoxMoveComponent } from './containers/container-box-move/container-box-move.component';
 import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
+import { MoveSampleComponent } from './containers/move-sample/move-sample.component';
+import { StoreSampleComponent } from './containers/store-sample/store-sample.component';
 
 
 @NgModule({
@@ -120,6 +122,8 @@ import { SampleDetailComponent } from './containers/sample-detail/sample-detail.
     ContainerBoxAddComponent,
     ContainerBoxMoveComponent,
     SampleDetailComponent,
+    MoveSampleComponent,
+    StoreSampleComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,6 +17,8 @@ import { ContainerBoxListComponent } from '../containers/container-box-list/cont
 import { BoxDetailComponent } from '../containers/box-detail/box-detail.component';
 import { ContainerBoxAddComponent } from '../containers/container-box-add/container-box-add.component';
 import { ContainerBoxMoveComponent } from '../containers/container-box-move/container-box-move.component';
+import { MoveSampleComponent } from '../containers/move-sample/move-sample.component';
+import { StoreSampleComponent } from '../containers/store-sample/store-sample.component';
 //guards
 import { AuthGuard } from  '../_guards/AuthGuard';
 import { AdminGuard } from  '../_guards/AdminGuard';
@@ -42,6 +44,8 @@ export const routes: Routes = [
   {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

@@ -8,13 +8,10 @@ import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
+import {  LocalStorageService } from '../../_services/LocalStorageService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
-// //mydatepicker
-// import {IMyOptions} from 'mydatepicker';
-// //color picker
-// import { IColorPickerConfiguration } from 'ng2-color-picker';
 
 @Component({
   selector: 'app-box-detail-action-panel',
@@ -35,7 +32,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   preoccupiedSamples: Array<Sample> =[]; //previous occupied samples
   emptySelectedCells: Array<string> =[]; //selected cells that are empty
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
@@ -74,8 +71,15 @@ export class BoxDetailActionPanelComponent implements OnInit {
 
   //store new samples into the box
   storeSamples(){
-    console.log('store samples ...');
-    console.log(this.emptySelectedCells);
+    this.localStorageService.curContainer = this.container;
+    this.localStorageService.curBox= this.box;
+    this.localStorageService.allCellsSelected = this.cells;
+    this.localStorageService.emptySelectedCells = this.emptySelectedCells;
+    this.localStorageService.occupiedSamples = this.occupiedSamples;
+    this.localStorageService.preoccupiedSamples = this.preoccupiedSamples;
+    this.localStorageService.singleSample = null;
+    //route to move sample cmp
+    this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'store_samples']);  
   }
   
   //put multiple sample back
@@ -157,8 +161,15 @@ export class BoxDetailActionPanelComponent implements OnInit {
   }
   //move multiple samples
   moveSamples(){
-    console.log('moving samples...');
-    console.log(this.occupiedSamples);
+    this.localStorageService.curContainer = this.container;
+    this.localStorageService.curBox= this.box;
+    this.localStorageService.allCellsSelected = this.cells;
+    this.localStorageService.emptySelectedCells = this.emptySelectedCells;
+    this.localStorageService.occupiedSamples = this.occupiedSamples;
+    this.localStorageService.preoccupiedSamples = this.preoccupiedSamples;
+    this.localStorageService.singleSample = null;
+    //route to move sample cmp
+    this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'move_samples']);  
   }
 
   ngOnInit() {}
@@ -188,7 +199,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
     //get positions that are not occupied
     this.emptySelectedCells = this.cells.filter((cell:string) => !this.checkSamplebyCell(cell));
   }
-  
+
   //route force refrsh
   forceRefresh(){
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
