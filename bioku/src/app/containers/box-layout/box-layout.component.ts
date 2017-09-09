@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 //color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
 
@@ -11,6 +12,7 @@ import { Container } from '../../_classes/Container';
 import { Sample, Attachment, Tissue } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
+import {  AlertService } from '../../_services/AlertService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -51,7 +53,9 @@ export class BoxLayoutComponent implements OnInit {
   dragulaOptions: any = {
     revertOnSpill: true
   }
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  //droping
+  dropped: boolean = false;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private alertService: AlertService,
               private containerService: ContainerService, private utilityService: UtilityService, private dragulaService: DragulaService)
   { 
     this.appUrl = this.appSetting.URL;
@@ -60,23 +64,32 @@ export class BoxLayoutComponent implements OnInit {
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
-
-    this.dragulaService.drop.subscribe((value) => {
-      console.log(`drop: ${value}`);
-      //el, target, source, sibling
-      //save the data tp back-end
-      this.onDrop(value);
-    });
   }
   //dragula events
-  private onDrop(args) {
-    console.log('===========================');
-    console.log(args);
+  private onDrop(source_slot: string, target_slot: string) {
+    let source_sample_positions = source_slot.split('-');
+    let target_sample_positions = target_slot.split('-');
+    if(!this.dropped && source_sample_positions.length == 2 && target_sample_positions.length ==2 && !isNaN(+target_sample_positions[1])){
+      this.containerService
+      .updateSamplePosition(this.container.pk, this.box.box_position, 
+        source_sample_positions[0]+source_sample_positions[1], 
+        target_sample_positions[0], +target_sample_positions[1])
+      .subscribe(()=>{
+        this.alertService.success("sample is moved to the new position!", true);
+        this.dropped = true;        
+        this.forceRefresh();
+      }, ()=>{
+        this.alertService.error("Something went wrong, sample fails to move to the new position!", true);
+        this.dropped = true;
+        this.forceRefresh();
+      });
+    }
   }
 
   genLetterArray(num:number){
     return this.box_letters.slice(0, num);
   }
+
   toggleSelection(h: number, v: string){
     //all samples selected
     let filterSamples = this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
@@ -144,6 +157,9 @@ export class BoxLayoutComponent implements OnInit {
   pickerSamples(h: number, v: string){
     return this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
   }
+  forceRefresh(){
+    this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
+  }
   ngOnInit() {
     this.sampleSelected.emit([]);//emit empty sample selected
     this.cellSelected.emit([]);////emit selected cells
@@ -153,6 +169,15 @@ export class BoxLayoutComponent implements OnInit {
       this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
     }
+    //dragular
+    this.dragulaService.drop.subscribe((value) => {
+      //console.log(`drop: ${value[1]}`);
+      //el, target, source, sibling
+      let source_slot = value[3].attributes["position"].value;
+      let target_slot = value[2].attributes["position"].value;
+      //console.log([source_slot, target_slot]);
+      this.onDrop(source_slot, target_slot);
+    });
   }
   ngOnChanges(){
     //sample

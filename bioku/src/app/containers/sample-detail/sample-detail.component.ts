@@ -168,7 +168,7 @@ export class SampleDetailComponent implements OnInit {
       if((new_vposition === sample.vposition.toLowerCase()) && +new_hposition === +sample.hposition){
         this.action_panel_msg = "The new position is the same as current sample position, sample position not changed!";
       }
-        else{
+      else{
         this.action_panel_msg = null;
         this.containerService.updateSamplePosition(this.container.pk, box_position, sample_position, new_vposition, new_hposition)
         .subscribe(()=>{
@@ -230,6 +230,7 @@ export class SampleDetailComponent implements OnInit {
     //route to move sample cmp
     this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'move_samples']);  
   }
+  
   EditSample(){
 
   }
