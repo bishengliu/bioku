@@ -14,6 +14,8 @@ import {  UtilityService } from '../../_services/UtilityService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
+//dragula
+import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 @Component({
   selector: 'app-box-layout',
@@ -45,7 +47,12 @@ export class BoxLayoutComponent implements OnInit {
   vArray:Array<string> = [];
   //tfoot colspan
   colspanCount: number =1;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService, private utilityService: UtilityService)
+  //dragular driective options
+  dragulaOptions: any = {
+    revertOnSpill: true
+  }
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private containerService: ContainerService, private utilityService: UtilityService, private dragulaService: DragulaService)
   { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
@@ -53,7 +60,20 @@ export class BoxLayoutComponent implements OnInit {
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
+
+    this.dragulaService.drop.subscribe((value) => {
+      console.log(`drop: ${value}`);
+      //el, target, source, sibling
+      //save the data tp back-end
+      this.onDrop(value);
+    });
   }
+  //dragula events
+  private onDrop(args) {
+    console.log('===========================');
+    console.log(args);
+  }
+
   genLetterArray(num:number){
     return this.box_letters.slice(0, num);
   }

@@ -11,6 +11,8 @@ import { ColorPickerModule } from 'ng2-color-picker';
 import { SidebarModule } from 'ng-sidebar';
 
 import {SuiModule} from 'ng2-semantic-ui';
+//dragula
+import { DragulaModule } from 'ng2-dragula';
 //routing
 import { RouterModule} from '@angular/router';
 //app root routes
@@ -142,6 +144,8 @@ import { StoreSampleComponent } from './containers/store-sample/store-sample.com
     RouterModule.forRoot(routes),
     //npm install --save angular2-useful-swiper
     SwiperModule,
+    //dragula
+    DragulaModule,
   ],
   providers: [
     //guards
