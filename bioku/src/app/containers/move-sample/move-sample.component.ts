@@ -27,6 +27,8 @@ export class MoveSampleComponent implements OnInit {
   private sub: any; //subscribe to params observable
   private querySub: any;
 
+  //all my group containers
+  my_containers: Array<Container> = new Array<Container>();
 
   moving: boolean = false;
   user: User;
@@ -78,6 +80,10 @@ export class MoveSampleComponent implements OnInit {
       this.firstHArray = this.utilityService.genArray(this.firstBox.box_horizontal);
       this.firstVArray = this.genLetterArray(this.firstBox.box_vertical);
     }
+    //get all my contaoners
+    if (state.containerInfo && state.containerInfo.containers){
+      this.my_containers = state.containerInfo.containers;
+    }
   }
   genLetterArray(num:number){
     return this.box_letters.slice(0, num);
@@ -99,6 +105,44 @@ export class MoveSampleComponent implements OnInit {
   }
   forceRefresh(){
     //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.firstBox.box_position } });  
+  }
+  selectContainer(event: any){
+    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    let target_container_pk = this.parseContainerSelectionVale(target.value);
+    if(target_container_pk != null){
+      let filtered_containers = this.my_containers.filter((c, i)=>{return c.pk === target_container_pk});
+      if(filtered_containers.length >0){
+        this.secondConatiner = filtered_containers[0];
+      }
+      else{
+        this.secondConatiner = this.container;
+      }
+    }
+    //get the second container box
+
+    //
+  }
+  updateTarget(container_pk: any, type: string, event: any){
+    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    let val: number = +target.value;
+    console.log(val);
+  }
+  //update tower-shelf-box dropdown
+  genOptions(container_pk: number, type: string): Array<number>{
+    let my_container = this.my_containers.filter((c, i)=>{
+      return c.pk === container_pk;
+    })
+    if(my_container.length == 0){
+      return [];
+    }
+    return this.utilityService.genArray(my_container[0][type])
+  }
+  parseContainerSelectionVale(target_value: string){
+    let array: Array<string> = target_value.split(': ');
+    let val = array.length ==2 ? +array[1] : null;
+    return val;
   }
   ngOnInit() {
     this.sub = this.route.params
@@ -128,7 +172,7 @@ export class MoveSampleComponent implements OnInit {
         return this.containerService.getContainerBox(+params['second_container'], params['second_box_position']);
       }
       else{
-        this.loading = false;
+        this.secondConatiner = this.container;
         //get group boxes of the container
         return Observable.of(null);
       }

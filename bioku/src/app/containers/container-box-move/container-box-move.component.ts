@@ -63,7 +63,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     //get all my contaoners
     if (state.containerInfo && state.containerInfo.containers){
       this.my_containers = state.containerInfo.containers;
-      }
+    }
   }
 
   ngOnInit() {

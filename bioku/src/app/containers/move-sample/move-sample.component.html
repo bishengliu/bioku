@@ -20,20 +20,66 @@
   <table class="ui small single line compact structured unstackable table">
       <thead>
           <tr>
-            <th class="center aligned eight wide" colspan="2">FIRST BOX</th>
-            <th class="center aligned eight wide" colspan="2">SECOND BOX</th>
+            <th class="center aligned eight wide ui header" colspan="2" [style.border-top]="genBorderStyle(firstColor)">FIRST BOX</th>
+            <th class="center aligned eight wide ui header teal_border_left" colspan="2">SECOND BOX</th>
           </tr>
           <tr>
-              <th class="center aligned four wide">CONTAINER: {{container.name}}</th>
-              <th class="center aligned four wide">BOX: {{firstBox.box_position}}</th>
-              <th class="center aligned four wide">CONTAINER</th>
-              <th class="center aligned four wide">BOX</th>
+              <th class="center aligned four wide" [style.background-color]="firstColor"><strong><em>CONTAINER: {{container.name}}</em></strong></th>
+              <th class="center aligned four wide" [style.background-color]="firstColor"><strong><em>BOX: {{firstBox.box_position}}</em></strong></th>
+              <th class="center aligned four wide teal_border_left tiny_around" [style.background-color]="secondColor">
+                <div class="ui form tiny">
+                  <div class="ui inline fields">
+                    <div class="field" [ngClass]="{'error': containerCtl.value == '-' }">
+                        <label><strong><em>CONTAINER: </em></strong></label>
+                        <select class="ui dropdown fluid selection" 
+                        [ngModel]="secondConatiner.pk" 
+                        (change)="selectContainer($event)" #containerCtl>
+                          <option 
+                          [ngValue]="my_container.pk"
+                          *ngFor="let my_container of my_containers"> 
+                          {{my_container.name + ' (' + my_container.temperature + '&deg;C' + ', ' + my_container.room + ')'}}
+                          </option>
+                        </select>
+                    </div>
+                  </div>
+                </div> 
+              </th>
+              <th class="center aligned four wide tiny_around" [style.background-color]="secondColor">     
+                <div class="ui form equal width tiny">
+                    <div class="ui inline fields">
+                        <div class="field">
+                            <label><strong><em>BOX: </em></strong></label>
+                          </div>
+                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                        <label>TOWER </label>
+                        <select name="tower" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_tower', $event)" #towerCtl>
+                          <option> - </option>                  
+                          <option *ngFor="let option of genOptions(secondConatiner.pk, 'tower')" value="{{option}}">{{option}}</option>
+                        </select>
+                      </div>
+                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                        <label>SHELF </label>
+                        <select name="shelf" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_shelf', $event)" #shelfCtl>
+                          <option> - </option>
+                          <option *ngFor="let option of genOptions(secondConatiner.pk, 'shelf')" value="{{option}}">{{option}}</option>
+                        </select>
+                      </div>
+                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                          <label>BOX </label>
+                          <select name="box" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_box', $event)" #boxCtl>
+                            <option> - </option>
+                            <option *ngFor="let option of genOptions(secondConatiner.pk, 'box')" value="{{option}}">{{option}}</option>
+                          </select>
+                      </div>
+                    </div>                       
+                </div>
+              </th>
             </tr>
         </thead>
         <tbody>
           <tr>
-              <td class="center aligned" colspan="2">
-                  <table class="ui small unstackable celled single line fixed padded table" [style.border-top]="genBorderStyle(firstColor)">
+              <td class="center aligned tight_around" colspan="2">
+                  <table class="ui small unstackable celled single line fixed padded table">
                       <thead>
                         <tr>
                           <th></th>
@@ -42,7 +88,7 @@
                       </thead>
                       <tbody class="wrapper">
                         <tr *ngFor="let v of firstVArray">
-                          <td class="center aligned"><em class="">{{v}}</em></td>
+                          <th class="center aligned"><em class="">{{v}}</em></th>
                           <td class="center aligned sample-cell container"
                             [attr.position]="container.pk + '|' + firstBox.box_position + '|' + v +'-'+h"
                             [dragula]='"bag-first-box"' 
@@ -60,7 +106,7 @@
                       </tbody>
                     </table>
               </td>
-              <td class="center aligned" colspan="2"></td>
+              <td class="center aligned teal_border_left" colspan="2"></td>
           </tr>
         </tbody>
   </table>

@@ -142,6 +142,9 @@ body{
   margin: 0px 0px 0px 0px !important;
   padding: 0px 0px 0px 0px !important;
 }
+.tiny_around{
+  padding: 5px 0px 0px 0px !important;
+}
 .small_padding{
   padding-left: 10px !important;
   padding-right: 10px !important;
@@ -344,4 +347,7 @@ div [class*="right floated"] {
 
 .movable{
   cursor: move;
+}
+.teal_border_left{
+  border-left: 1px dashed teal !important;
 }
