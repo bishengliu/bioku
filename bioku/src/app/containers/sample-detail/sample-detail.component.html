@@ -2,16 +2,16 @@
     <tbody>
        <tr>
          <td colspan="2">
-           <div class="three ui mini buttons" *ngIf="sample.date_out == null">
-             <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">TAKE SAMPLE OUT</button>
-             <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button>
-             <button class="fluid ui mini inverted green button" (click)="EditSample()"><i class="icon edit"></i>MODIFY</button>
+           <div class="two ui mini buttons" *ngIf="sample.date_out == null">
+             <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">
+               <i class="icon external share"></i>TAKE OUT</button>
+             <!-- <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button> -->
+             <button class="fluid ui mini inverted violet button" (click)="EditSample()"><i class="icon edit"></i>MODIFY</button>
            </div>
-           <div class="two ui mini buttons" *ngIf="sample.date_out != null">
-             <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" 
-             (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT SAMPLE BACK</button>
-             <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button>
-           </div>  
+           <!-- <div class="two ui mini buttons" *ngIf="sample.date_out != null"></div> -->
+           <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" 
+           (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT BACK</button>
+           <!-- <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button> --> 
          </td>
        </tr>
       <tr><th class="six wide" [style.color]="sample.color">Name</th>

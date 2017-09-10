@@ -26,10 +26,10 @@
       <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
     </div>
     <div class="ui divider"></div>
-    <div class="" *ngIf="occupiedSamples.length >= 1">
+    <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
       <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-      <button class="ui compact mini inverted green button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
-      <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button>
+      <button class="ui compact mini inverted violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
+      <!-- <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button> -->
     </div>
   </div>
 
@@ -37,10 +37,13 @@
 <!--previous occupied sample-->       
   <div *ngIf="samplePKs.length > 1 && preoccupiedSamples.length >= 1" class="ui grey segment">
     <div class="ui labels">
-      <div class="ui label" *ngFor="let sample of preoccupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
+      <div class="ui label" *ngFor="let sample of preoccupiedSamples">
+        <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
+        <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span>
+      </div>
     </div>
     <div class="ui divider"></div>
-    <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT SAMPLES BACK</button>
+    <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
   </div>  
 
   <!--empty box cells: for box view only-->
@@ -50,7 +53,7 @@
     </div>
     <div >
       <div class="ui divider"></div>
-       <button class="ui compact mini inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
+      <button class="ui compact mini inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
     </div> 
   </div> 
 </div>

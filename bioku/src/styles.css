@@ -264,8 +264,10 @@ div [class*="right floated"] {
   color: rgba(34,36,38,.15);
 }
 .sample-cell:hover{
-  background-color: #EFEBE9;
-  border: 0.5px solid #9CD8FA !important;
+  background-color: #E0E0E0;
+  border-radius: 5px;
+  border-left: 1px solid #BDBDBD !important;
+  border-right: 1px solid #BDBDBD !important;
 }
 .sample-cell-selected{
   background-color: #C5CAE9 !important;

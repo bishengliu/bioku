@@ -9,7 +9,8 @@
     <tbody>
       <tr *ngFor="let v of vArray">
         <th class="center aligned nopadding"><small class="">{{v}}</small></th>
-        <td class="center aligned clickable sample-cell tight_around" *ngFor="let h of hArray">
+        <!--clickable sample-cell-->
+        <td class="center aligned tight_around" *ngFor="let h of hArray">
           <div *ngFor="let sample of pickerSamples(h,v)" class="fix_size_div" [style.background-color]="genBackgroundColor(sample.color)">
             <!--<i class="icon circle tight_around" [style.color]="sample.color"></i>-->
           </div>                   

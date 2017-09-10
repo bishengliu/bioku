@@ -159,18 +159,18 @@ export class BoxDetailActionPanelComponent implements OnInit {
       this.alertService.error("Something went wrong, can only switch on 2 samples!", true);
     }
   }
-  //move multiple samples
-  moveSamples(){
-    this.localStorageService.curContainer = this.container;
-    this.localStorageService.curBox= this.box;
-    this.localStorageService.allCellsSelected = this.cells;
-    this.localStorageService.emptySelectedCells = this.emptySelectedCells;
-    this.localStorageService.occupiedSamples = this.occupiedSamples;
-    this.localStorageService.preoccupiedSamples = this.preoccupiedSamples;
-    this.localStorageService.singleSample = null;
-    //route to move sample cmp
-    this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'move_samples']);  
-  }
+  // //move multiple samples
+  // moveSamples(){
+  //   this.localStorageService.curContainer = this.container;
+  //   this.localStorageService.curBox= this.box;
+  //   this.localStorageService.allCellsSelected = this.cells;
+  //   this.localStorageService.emptySelectedCells = this.emptySelectedCells;
+  //   this.localStorageService.occupiedSamples = this.occupiedSamples;
+  //   this.localStorageService.preoccupiedSamples = this.preoccupiedSamples;
+  //   this.localStorageService.singleSample = null;
+  //   //route to move sample cmp
+  //   this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'move_samples']);  
+  // }
 
   ngOnInit() {}
 

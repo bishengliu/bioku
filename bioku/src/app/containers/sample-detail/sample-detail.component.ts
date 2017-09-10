@@ -59,7 +59,7 @@ export class SampleDetailComponent implements OnInit {
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
@@ -219,19 +219,7 @@ export class SampleDetailComponent implements OnInit {
     });
   }
 
-  moveSingleSample(){
-    this.localStorageService.curContainer = this.container;
-    this.localStorageService.curBox= this.box;
-    this.localStorageService.allCellsSelected = [];
-    this.localStorageService.emptySelectedCells = [];
-    this.localStorageService.occupiedSamples = [];
-    this.localStorageService.preoccupiedSamples = [];
-    this.localStorageService.singleSample = this.sample;
-    //route to move sample cmp
-    this.router.navigate(['/containers/', this.container.pk, this.box.box_position, 'move_samples']);  
-  }
-  
   EditSample(){
-
+    console.log("edit a sample...");
   }
 }
