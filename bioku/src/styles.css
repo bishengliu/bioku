@@ -341,3 +341,7 @@ div [class*="right floated"] {
   filter: alpha(opacity=20);
 }
 /* end dragula */
+
+.movable{
+  cursor: move;
+}

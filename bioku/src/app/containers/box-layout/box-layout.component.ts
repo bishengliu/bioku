@@ -50,6 +50,7 @@ export class BoxLayoutComponent implements OnInit {
   //tfoot colspan
   colspanCount: number =1;
   //dragular driective options
+  private dragulaDrop$: any
   dragulaOptions: any = {
     revertOnSpill: true
   }
@@ -170,7 +171,7 @@ export class BoxLayoutComponent implements OnInit {
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
     }
     //dragular
-    this.dragulaService.drop.subscribe((value) => {
+    this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
       //console.log(`drop: ${value[1]}`);
       //el, target, source, sibling
       let source_slot = value[3].attributes["position"].value;
@@ -187,4 +188,11 @@ export class BoxLayoutComponent implements OnInit {
     this.selectedCells = []; //clear selected cells
     this.cellSelected.emit([]); //emit selected cells
   }
+
+  ngOnDestroy() { 
+    if(this.dragulaDrop$ != undefined){
+      this.dragulaDrop$.unsubscribe();
+    }
+  }
+
 }

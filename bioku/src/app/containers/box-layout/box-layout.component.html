@@ -1,8 +1,13 @@
-  <div class="">
+<div class="">
   <table class="ui small unstackable celled single line fixed padded table" [style.border-top]="genBorderStyle(color)">
     <thead>
       <tr>
-        <th></th>
+        <th class="center aligned">
+          <a suiPopup popupHeader="Help" 
+            popupText="drag and drop a sample to change its position; click on samples or empty slots to take further actions">
+            <i class="icon large help circle grey-text"></i>
+          </a>
+        </th>
         <th *ngFor="let h of hArray" class="center aligned"><em class="">{{h}}</em></th>
       </tr>
     </thead>

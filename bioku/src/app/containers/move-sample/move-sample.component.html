@@ -5,13 +5,63 @@
 </div>
 <div class="ui grid row small_padding">
     <div class="ten wide column">
-      <h3 class="ui violet left aligned header"><i class="icon move"></i>MOVE SAMPLE(S)</h3>
+      <h3 class="ui violet left aligned header"><i class="icon move"></i>SAMPLE(S) BETWEEN 2 BOXES</h3>
     </div>
     <div class="six wide column">
       <a class="ui teal button float-right" 
         [ngClass]="{'disabled': moving == true }" 
-        [routerLink]="['/containers/', container.pk, box.box_position]">
+        [routerLink]="['/containers/', container.pk, firstBox.box_position]">
         <i class="icon caret left"></i>BACK
       </a>
     </div>
+</div>
+
+<div class="ui grid sixteen wide column" *ngIf="loading==false">
+  <table class="ui small single line compact structured unstackable table">
+      <thead>
+          <tr>
+            <th class="center aligned eight wide" colspan="2">FIRST BOX</th>
+            <th class="center aligned eight wide" colspan="2">SECOND BOX</th>
+          </tr>
+          <tr>
+              <th class="center aligned four wide">CONTAINER: {{container.name}}</th>
+              <th class="center aligned four wide">BOX: {{firstBox.box_position}}</th>
+              <th class="center aligned four wide">CONTAINER</th>
+              <th class="center aligned four wide">BOX</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td class="center aligned" colspan="2">
+                  <table class="ui small unstackable celled single line fixed padded table" [style.border-top]="genBorderStyle(firstColor)">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th *ngFor="let h of firstHArray" class="center aligned"><em class="">{{h}}</em></th>
+                        </tr>
+                      </thead>
+                      <tbody class="wrapper">
+                        <tr *ngFor="let v of firstVArray">
+                          <td class="center aligned"><em class="">{{v}}</em></td>
+                          <td class="center aligned sample-cell container"
+                            [attr.position]="container.pk + '|' + firstBox.box_position + '|' + v +'-'+h"
+                            [dragula]='"bag-first-box"' 
+                            [dragulaOptions]="dragulaOptions"
+                            *ngFor="let h of firstHArray">
+                            <div *ngFor="let sample of pickerSamples(h,v, true)" class="movable">
+                                <span [style.color]="sample.color"><strong>{{sample.name}}</strong></span><br/>
+                                <span>{{sample.freezing_date}}</span>
+                              <!-- <div class="ui horizontal label">
+                                <span [style.color]="sample.color">{{sample.name}}</span></div>
+                              <div>{{sample.freezing_date}}</div> -->
+                            </div>                   
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </td>
+              <td class="center aligned" colspan="2"></td>
+          </tr>
+        </tbody>
+  </table>
 </div>

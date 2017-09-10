@@ -8,9 +8,15 @@
 </div>
 
 <div class="ui grid row small_padding stackable">
-  <div class="ten wide column">
+  <div class="five wide column">
     <h3 class="ui violet left aligned header"><i class="icon list layout"></i>BOX SAMPLES</h3>
   </div>
+  <div class="five wide column">
+      <a class="ui violet inverted button"
+       [routerLink]="['/containers', container.pk, box.box_position, 'move_samples']">
+        <i class="icon exchange"></i>SAMPLES BETWEEN BOXES
+      </a>
+    </div>
   <div class="six wide column">
       <div class="ui slider checkbox float-right">
         <input type="checkbox" name="" id="table_view" (change)="toggleList()">
