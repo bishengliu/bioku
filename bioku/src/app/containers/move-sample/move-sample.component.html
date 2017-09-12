@@ -16,19 +16,25 @@
     </div>
 </div>
 
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">loading boxes ... </p>
+</div>
+<!-- loaded -->
 <div class="ui grid sixteen wide column" *ngIf="loading==false">
   <table class="ui small single line compact structured unstackable table">
       <thead>
           <tr>
             <th class="center aligned eight wide ui header" colspan="2" [style.border-top]="genBorderStyle(firstColor)">FIRST BOX</th>
-            <th class="center aligned eight wide ui header teal_border_left" colspan="2">SECOND BOX</th>
+            <th class="center aligned eight wide ui header teal_border_left" colspan="2" [style.border-top]="genBorderStyle(secondColor)">SECOND BOX</th>
           </tr>
-          <tr>
-              <th class="center aligned four wide" [style.background-color]="firstColor"><strong><em>CONTAINER: {{container.name}}</em></strong></th>
-              <th class="center aligned four wide" [style.background-color]="firstColor"><strong><em>BOX: {{firstBox.box_position}}</em></strong></th>
-              <th class="center aligned four wide teal_border_left tiny_around" [style.background-color]="secondColor">
-                <div class="ui form tiny">
-                  <div class="ui inline fields">
+          <tr class="">
+              <th class="center aligned four wide tight_around" [style.background-color]="firstColor"><strong><em>CONTAINER: {{container.name}}</em></strong></th>
+              <th class="center aligned four wide tight_around" [style.background-color]="firstColor"><strong><em>BOX: {{firstBox.box_position}}</em></strong></th>
+              <th class="center aligned four wide teal_border_left tight_around" [style.background-color]="secondColor">
+                <div class="ui form tiny center aligned">
+                  <div class="ui inline fields tight_around">
                     <div class="field" [ngClass]="{'error': containerCtl.value == '-' }">
                         <label><strong><em>CONTAINER: </em></strong></label>
                         <select class="ui dropdown fluid selection" 
@@ -44,9 +50,9 @@
                   </div>
                 </div> 
               </th>
-              <th class="center aligned four wide tiny_around" [style.background-color]="secondColor">     
+              <th class="center aligned four wide tight_around" [style.background-color]="secondColor">     
                 <div class="ui form equal width tiny">
-                    <div class="ui inline fields">
+                    <div class="ui inline fields tight_around">
                         <div class="field">
                             <label><strong><em>BOX: </em></strong></label>
                           </div>
@@ -75,8 +81,8 @@
                 </div>
               </th>
             </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
           <tr>
               <td class="center aligned tight_around" colspan="2">
                   <table class="ui small unstackable celled single line fixed padded table">
@@ -106,8 +112,37 @@
                       </tbody>
                     </table>
               </td>
-              <td class="center aligned teal_border_left" colspan="2"></td>
+              <td class="center aligned tight_around teal_border_left" colspan="2">
+                <table class="ui small unstackable celled single line fixed padded table" *ngIf="loading_box2 == false">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th *ngFor="let h of secondHArray" class="center aligned"><em class="">{{h}}</em></th>
+                    </tr>
+                  </thead>
+                  <tbody class="wrapper">
+                    <tr *ngFor="let v of secondVArray">
+                      <th class="center aligned"><em class="">{{v}}</em></th>
+                      <td class="center aligned sample-cell container"
+                        [attr.position]="secondConatiner.pk + '|' + secondBox.box_position + '|' + v +'-'+h"
+                        [dragula]='"bag-second-box"' 
+                        [dragulaOptions]="dragulaOptions"
+                        *ngFor="let h of secondHArray">
+                        <div *ngFor="let sample of pickerSamples(h,v, false)" class="movable">
+                            <span [style.color]="sample.color"><strong>{{sample.name}}</strong></span><br/>
+                            <span>{{sample.freezing_date}}</span>
+                        </div>                   
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!--loading box 2info-->
+                <div *ngIf="loading_box2==true" class="ui loading segment center aligned">
+                  <br/><br/><br/><br/>
+                  <p class="brown-text">loading second box ... </p>
+                </div>
+              </td>
           </tr>
-        </tbody>
+      </tbody>
   </table>
 </div>

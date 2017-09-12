@@ -52,6 +52,11 @@ export class MoveSampleComponent implements OnInit {
   //box hArray and vArray
   secondHArray: Array<number> = [];
   secondVArray:Array<string> = [];
+  //second box
+  secondBoxTower: number = null;
+  secondBoxShelf: number = null;
+  secondBoxBox: number = null;
+  loading_box2: boolean = false;
   //dragular driective options
   private dragulaDrop$: any
   dragulaOptions: any = {
@@ -119,15 +124,40 @@ export class MoveSampleComponent implements OnInit {
         this.secondConatiner = this.container;
       }
     }
-    //get the second container box
-
-    //
   }
   updateTarget(container_pk: any, type: string, event: any){
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     let val: number = +target.value;
     console.log(val);
+    if(type=="target_tower" && !isNaN(+val)){
+      this.secondBoxTower = +val;
+    }
+    if(type=="target_shelf" && !isNaN(+val)){
+      this.secondBoxShelf = +val;
+    }
+    if(type=="target_box" && !isNaN(+val)){
+      this.secondBoxBox = +val;
+    }
+    if(this.secondBoxTower != null && this.secondBoxTower >0 && this.secondBoxShelf != null && this.secondBoxShelf > 0 && this.secondBoxBox != null && this.secondBoxBox >0){
+      //second box positon
+      let second_box_position = this.secondBoxTower + '-' + this.secondBoxShelf + '-' + this.secondBoxBox;
+      //load second box
+      this.loading_box2 = true;
+      this.containerService.getContainerBox(this.secondConatiner.pk, second_box_position)
+      .subscribe((box: Box)=>{
+        this.secondBox = box;
+        this.secondBoxSamples = [...this.secondBox.samples];
+        this.secondColor = this.secondBox.color == null ? "#ffffff" : this.secondBox.color;   
+        this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
+        this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);
+        this.loading_box2 = false;
+        console.log(this.secondBox);     
+      }, (err)=>{
+        console.log(err);
+        this.alertService.error("fail to load the second box!", true)
+      });
+    }
   }
   //update tower-shelf-box dropdown
   genOptions(container_pk: number, type: string): Array<number>{
@@ -174,21 +204,24 @@ export class MoveSampleComponent implements OnInit {
       else{
         this.secondConatiner = this.container;
         //get group boxes of the container
-        return Observable.of(null);
+        return Observable.of(this.firstBox);
       }
     })
     .subscribe((second_box: any)=>{
       if(second_box != null){
         this.secondBox = second_box;
         this.secondBoxSamples = [...this.secondBox.samples];
-        this.secondColor = this.secondBox.color == null ? "#ffffff" : this.secondBox.color;        
+        this.secondColor = this.secondBox.color == null ? "#ffffff" : this.secondBox.color;
+        this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
+        this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);      
       }
       
       if(this.firstBox != null){ 
         this.firstBoxSamples = [...this.firstBox.samples];
         this.firstColor = this.firstBox.color == null ? "#ffffff" : this.firstBox.color;
+        this.firstHArray = this.utilityService.genArray(this.firstBox.box_horizontal);
+        this.firstVArray = this.genLetterArray(this.firstBox.box_vertical);
       }
-          
       this.loading = false;
       }, 
       (err)=>{
