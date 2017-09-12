@@ -35,10 +35,10 @@
               <th class="center aligned four wide teal_border_left tight_around" [style.background-color]="secondColor">
                 <div class="ui form tiny center aligned">
                   <div class="ui inline fields tight_around">
-                    <div class="field" [ngClass]="{'error': containerCtl.value == '-' }">
+                    <div class="field">
                         <label><strong><em>CONTAINER: </em></strong></label>
                         <select class="ui dropdown fluid selection" 
-                        [ngModel]="secondConatiner.pk" 
+                        [ngModel]="secondContainer.pk" 
                         (change)="selectContainer($event)" #containerCtl>
                           <option 
                           [ngValue]="my_container.pk"
@@ -60,27 +60,27 @@
                         <label>TOWER </label>
                         <select name="tower" class="ui fluid dropdown" 
                         [ngModel]="secondBoxTower"
-                        (change)="updateTarget(secondConatiner.pk, 'target_tower', $event)" #towerCtl>
+                        (change)="updateTarget(secondContainer.pk, 'target_tower', $event)" #towerCtl>
                           <!-- <option> - </option>   -->
-                          <option *ngFor="let option of genOptions(secondConatiner.pk, 'tower')" value="{{option}}">{{option}}</option>
+                          <option *ngFor="let option of genOptions(secondContainer.pk, 'tower')" value="{{option}}">{{option}}</option>
                         </select>
                       </div>
                       <div class="field">
                         <label>SHELF </label>
                         <select name="shelf" class="ui fluid dropdown"
                         [ngModel]="secondBoxShelf"
-                         (change)="updateTarget(secondConatiner.pk, 'target_shelf', $event)" #shelfCtl>
+                         (change)="updateTarget(secondContainer.pk, 'target_shelf', $event)" #shelfCtl>
                           <!-- <option> - </option> -->
-                          <option *ngFor="let option of genOptions(secondConatiner.pk, 'shelf')" value="{{option}}">{{option}}</option>
+                          <option *ngFor="let option of genOptions(secondContainer.pk, 'shelf')" value="{{option}}">{{option}}</option>
                         </select>
                       </div>
                       <div class="field">
                           <label>BOX </label>
                           <select name="box" class="ui fluid dropdown"
                           [ngModel]="secondBoxBox"
-                           (change)="updateTarget(secondConatiner.pk, 'target_box', $event)" #boxCtl>
+                           (change)="updateTarget(secondContainer.pk, 'target_box', $event)" #boxCtl>
                             <!-- <option> - </option> -->
-                            <option *ngFor="let option of genOptions(secondConatiner.pk, 'box')" value="{{option}}">{{option}}</option>
+                            <option *ngFor="let option of genOptions(secondContainer.pk, 'box')" value="{{option}}">{{option}}</option>
                           </select>
                       </div>
                     </div>                       
@@ -103,7 +103,7 @@
                           <th class="center aligned"><em class="">{{v}}</em></th>
                           <td class="center aligned sample-cell container"
                             [attr.position]="container.pk + '|' + firstBox.box_position + '|' + v +'-'+h"
-                            [dragula]='"bag-first-box"' 
+                            [dragula]='"bag"' 
                             [dragulaOptions]="dragulaOptions"
                             *ngFor="let h of firstHArray">
                             <div *ngFor="let sample of pickerSamples(h,v, true)" class="movable">
@@ -127,8 +127,8 @@
                     <tr *ngFor="let v of secondVArray">
                       <th class="center aligned"><em class="">{{v}}</em></th>
                       <td class="center aligned sample-cell container"
-                        [attr.position]="secondConatiner.pk + '|' + secondBox.box_position + '|' + v +'-'+h"
-                        [dragula]='"bag-second-box"' 
+                        [attr.position]="secondContainer.pk + '|' + secondBox.box_position + '|' + v +'-'+h"
+                        [dragula]='"bag"' 
                         [dragulaOptions]="dragulaOptions"
                         *ngFor="let h of secondHArray">
                         <div *ngFor="let sample of pickerSamples(h,v, false)" class="movable">

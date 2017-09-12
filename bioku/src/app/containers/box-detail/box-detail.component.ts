@@ -25,6 +25,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   ct_pk: number;
   box_pos: string;
   private sub: any; //subscribe to params observable
+  private querySub: any;
   container: Container = null;
   box: Box = null;
   samples: Array<Sample> = [];
@@ -113,15 +114,37 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params
-      .mergeMap((params) =>{
+      .mergeMap(params=>{
         this.ct_pk = +params['ct_pk'];
         this.box_pos = params['box_pos'];
-        if(this.container != null){
+        this.querySub = this.route.queryParams
+        return this.querySub;
+      })
+      .mergeMap((params)=>{
+        if(params && params['second_container'] != undefined && params['second_box_position'] != undefined){
+          //find only one box
+          //redirection
+          this.router.navigate(['/containers', this.ct_pk, this.box_pos, 'move_samples'], 
+          { queryParams: { 'second_container': params['second_container'], 'second_box_position': params['second_box_position'] } });
           return Observable.of(this.container);
-        }else{
-          return this.containerService.containerDetail(this.ct_pk)
+        }
+        else{
+          if(this.container != null){
+            return Observable.of(this.container);
+          }else{
+            return this.containerService.containerDetail(this.ct_pk)
+          }
         }
       })
+      // .mergeMap((params) =>{
+      //   this.ct_pk = +params['ct_pk'];
+      //   this.box_pos = params['box_pos'];
+      //   if(this.container != null){
+      //     return Observable.of(this.container);
+      //   }else{
+      //     return this.containerService.containerDetail(this.ct_pk)
+      //   }
+      // })      
       .mergeMap((container: any)=>{
         //set the container
         this.container = container;
@@ -134,7 +157,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       .subscribe((box: Box)=>{
         this.box = box;
         this.loading = false;
-    },        
+      },        
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }
   ngOnDestroy() { this.sub.unsubscribe(); }

@@ -45,7 +45,7 @@ export class MoveSampleComponent implements OnInit {
   firstHArray: Array<number> = [];
   firstVArray:Array<string> = [];
   //second box and container
-  secondConatiner: Container = null;
+  secondContainer: Container = null;
   secondBox: Box = null;
   secondBoxSamples: Array<Sample> = new Array<Sample>();
   secondColor: string = "#ffffff"; //box color
@@ -73,6 +73,7 @@ export class MoveSampleComponent implements OnInit {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
+
   updateState(){
     let state = this.appStore.getState();
     if (state.authInfo && state.authInfo.authUser){
@@ -91,9 +92,11 @@ export class MoveSampleComponent implements OnInit {
       this.my_containers = state.containerInfo.containers;
     }
   }
+
   genLetterArray(num:number){
     return this.box_letters.slice(0, num);
   }
+
   genBorderStyle(color: string){
     let cssValue: string = "1px solid rgba(34,36,38,.15)";
     if(color != null){
@@ -101,6 +104,7 @@ export class MoveSampleComponent implements OnInit {
     }
     return cssValue;
   }
+
   pickerSamples(h: number, v: string, current_box: boolean){
     if(current_box){
       return this.firstBoxSamples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
@@ -109,30 +113,22 @@ export class MoveSampleComponent implements OnInit {
       return this.secondBoxSamples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
     }
   }
+
   forceRefresh(){
-    //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.firstBox.box_position } });  
+    this.router.navigate(['/containers', this.container.pk, this.firstBox.box_position], { queryParams: { 'second_container': this.secondContainer.pk, 'second_box_position': this.secondBox.box_position } });  
   }
   
   selectContainer(event: any){
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     let target_container_pk = this.parseContainerSelectionVale(target.value);
-    if(target_container_pk != null){
-      let filtered_containers = this.my_containers.filter((c, i)=>{return c.pk === target_container_pk});
-      if(filtered_containers.length >0){
-        this.secondConatiner = filtered_containers[0];
-      }
-      else{
-        this.secondConatiner = this.container;
-      }
-    }
+    this.secondContainer = this.getSecondContainer(target_container_pk);
   }
 
   updateTarget(container_pk: any, type: string, event: any){
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
     let val: number = +target.value;
-    console.log(val);
     if(type=="target_tower" && !isNaN(+val)){
       this.secondBoxTower = +val;
     }
@@ -149,7 +145,7 @@ export class MoveSampleComponent implements OnInit {
       let second_box_position = this.secondBoxTower + '-' + this.secondBoxShelf + '-' + this.secondBoxBox;
       //load second box
       this.loading_box2 = true;
-      this.containerService.getContainerBox(this.secondConatiner.pk, second_box_position)
+      this.containerService.getContainerBox(this.secondContainer.pk, second_box_position)
       .subscribe((box: Box)=>{
         this.secondBox = box;
         this.secondBoxSamples = [...this.secondBox.samples];
@@ -165,6 +161,7 @@ export class MoveSampleComponent implements OnInit {
       });
     }
   }
+
   //update tower-shelf-box dropdown
   genOptions(container_pk: number, type: string): Array<number>{
     let my_container = this.my_containers.filter((c, i)=>{
@@ -206,11 +203,13 @@ export class MoveSampleComponent implements OnInit {
     })
     .mergeMap((params)=>{
       if(params && params['second_container'] != undefined && params['second_box_position'] != undefined){
-        //find only one box
+        //set the second container
+        this.secondContainer = this.getSecondContainer(+params['second_container']);
+        //find only one box    
         return this.containerService.getContainerBox(+params['second_container'], params['second_box_position']);
       }
       else{
-        this.secondConatiner = this.container;
+        this.secondContainer = this.container;
         //get group boxes of the container
         return Observable.of(this.firstBox);
       }
@@ -251,8 +250,23 @@ export class MoveSampleComponent implements OnInit {
     });
   }
 
-  private onDrop(source_slot: string, target_slot: string) {
+  //get the second container
+  getSecondContainer(pk: number){
+    let container: Container = new Container();
+    if(pk != null){
+      let filtered_containers = this.my_containers.filter((c, i)=>{return c.pk === pk});
+      if(filtered_containers.length >0){
+        container = filtered_containers[0];
+      }
+      else{
+        container = this.container;
+      }
+    }
+    return container;
+  }
 
+  private onDrop(source_slot: string, target_slot: string) {
+    this.forceRefresh();
   }
   
   ngOnDestroy() { 
