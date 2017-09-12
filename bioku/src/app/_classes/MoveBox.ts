@@ -1,5 +1,6 @@
 //for moving boxes between containers
-export class MoveBox{
+export class MoveBox
+{
     original_container : number;
     box_full_position: string;
     target_container: number;

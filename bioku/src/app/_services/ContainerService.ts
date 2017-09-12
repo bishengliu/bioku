@@ -5,6 +5,7 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
+import { MoveSample } from '../_classes/MoveSample';
 //redux
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -249,6 +250,14 @@ export class ContainerService{
         return this.http.put(query_url, body, this.options)
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //switch sample positon between 2 boxes
+    switchSample2Boxes(moveSample: MoveSample){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "/switch_positions/";
+        let body: string = JSON.stringify(moveSample);
+        return this.http.put(query_url, body, this.options)
+            .map((response: Response) =>response.json())          
+            .catch((error:any) => Observable.throw(error || 'Server error'));
     }
     takeSampleOut(container_pk: number, box_position: string, sample_position: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/" + sample_position + "/take/";

@@ -7,6 +7,7 @@ import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
+import { MoveSample } from '../../_classes/MoveSample';
 import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
 import {  UtilityService } from '../../_services/UtilityService';
@@ -266,9 +267,54 @@ export class MoveSampleComponent implements OnInit {
   }
 
   private onDrop(source_slot: string, target_slot: string) {
-    this.forceRefresh();
+    if(source_slot != null && target_slot != null){
+      let moveSample: MoveSample = this.parseDropSlot(source_slot, target_slot);
+      //save to database
+      this.containerService.switchSample2Boxes(moveSample)
+      .subscribe(()=>{
+        this.alertService.success('Sample positon updated!', true);
+        this.forceRefresh();
+      }, ()=>{
+        this.alertService.error('Something went wrong, fail to move/switch samples!', true);
+        this.forceRefresh();
+      });
+      
+    }
   }
   
+  parseDropSlot(source_slot: string, target_slot: string): MoveSample {
+    let obj: MoveSample = new MoveSample();;
+
+    //source
+    let farray = source_slot.split('|');
+    let fcontainer_pk = +farray[0];
+    obj.first_container_pk = fcontainer_pk;
+
+    let fbp_array = farray[1].split('-');
+    obj.first_box_tower = +fbp_array[0];
+    obj.first_box_shelf = +fbp_array[1];
+    obj.first_box_box = +fbp_array[2];
+
+    let fsp_array = farray[2].split('-');
+    obj.first_sample_vposition = fsp_array[0];
+    obj.first_sample_hposition = +fsp_array[1];
+
+    //target
+    let sarray = source_slot.split('|');
+    let scontainer_pk = +farray[0];
+    obj.second_container_pk = fcontainer_pk;
+
+    let sbp_array = farray[1].split('-');
+    obj.second_box_tower = +fbp_array[0];
+    obj.second_box_shelf = +fbp_array[1];
+    obj.second_box_box = +fbp_array[2];
+
+    let ssp_array = farray[2].split('-');
+    obj.second_sample_vposition = fsp_array[0];
+    obj.second_sample_hposition = +fsp_array[1];
+    return obj;
+  }
+
   ngOnDestroy() { 
     if(this.dragulaDrop$ != undefined){
       this.dragulaDrop$.unsubscribe();
