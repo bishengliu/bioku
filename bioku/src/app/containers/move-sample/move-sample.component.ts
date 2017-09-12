@@ -57,6 +57,7 @@ export class MoveSampleComponent implements OnInit {
   secondBoxShelf: number = null;
   secondBoxBox: number = null;
   loading_box2: boolean = false;
+  box2_not_found: boolean = false;
   //dragular driective options
   private dragulaDrop$: any
   dragulaOptions: any = {
@@ -111,6 +112,7 @@ export class MoveSampleComponent implements OnInit {
   forceRefresh(){
     //this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.firstBox.box_position } });  
   }
+  
   selectContainer(event: any){
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
@@ -125,6 +127,7 @@ export class MoveSampleComponent implements OnInit {
       }
     }
   }
+
   updateTarget(container_pk: any, type: string, event: any){
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
@@ -140,6 +143,8 @@ export class MoveSampleComponent implements OnInit {
       this.secondBoxBox = +val;
     }
     if(this.secondBoxTower != null && this.secondBoxTower >0 && this.secondBoxShelf != null && this.secondBoxShelf > 0 && this.secondBoxBox != null && this.secondBoxBox >0){
+      //box 2
+      this.box2_not_found = false;
       //second box positon
       let second_box_position = this.secondBoxTower + '-' + this.secondBoxShelf + '-' + this.secondBoxBox;
       //load second box
@@ -152,10 +157,11 @@ export class MoveSampleComponent implements OnInit {
         this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
         this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);
         this.loading_box2 = false;
-        console.log(this.secondBox);     
       }, (err)=>{
         console.log(err);
-        this.alertService.error("fail to load the second box!", true)
+        this.alertService.error("fail to load the second box!", true);
+        this.box2_not_found = true;
+        this.loading_box2 = false;
       });
     }
   }
@@ -169,11 +175,13 @@ export class MoveSampleComponent implements OnInit {
     }
     return this.utilityService.genArray(my_container[0][type])
   }
+
   parseContainerSelectionVale(target_value: string){
     let array: Array<string> = target_value.split(': ');
     let val = array.length ==2 ? +array[1] : null;
     return val;
   }
+
   ngOnInit() {
     this.sub = this.route.params
     .mergeMap((params) =>{
@@ -213,7 +221,10 @@ export class MoveSampleComponent implements OnInit {
         this.secondBoxSamples = [...this.secondBox.samples];
         this.secondColor = this.secondBox.color == null ? "#ffffff" : this.secondBox.color;
         this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
-        this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);      
+        this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);
+        this.secondBoxTower = this.secondBox.tower;
+        this.secondBoxShelf = this.secondBox.shelf;
+        this.secondBoxBox = this.secondBox.box;    
       }
       
       if(this.firstBox != null){ 
@@ -239,9 +250,11 @@ export class MoveSampleComponent implements OnInit {
       this.onDrop(source_slot, target_slot);
     });
   }
+
   private onDrop(source_slot: string, target_slot: string) {
 
   }
+  
   ngOnDestroy() { 
     if(this.dragulaDrop$ != undefined){
       this.dragulaDrop$.unsubscribe();

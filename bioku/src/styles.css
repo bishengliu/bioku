@@ -349,5 +349,5 @@ div [class*="right floated"] {
   cursor: move;
 }
 .teal_border_left{
-  border-left: 1px dashed teal !important;
+  border-left: 10px solid white !important;
 }

@@ -56,24 +56,30 @@
                         <div class="field">
                             <label><strong><em>BOX: </em></strong></label>
                           </div>
-                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                      <div class="field">
                         <label>TOWER </label>
-                        <select name="tower" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_tower', $event)" #towerCtl>
-                          <option> - </option>                  
+                        <select name="tower" class="ui fluid dropdown" 
+                        [ngModel]="secondBoxTower"
+                        (change)="updateTarget(secondConatiner.pk, 'target_tower', $event)" #towerCtl>
+                          <!-- <option> - </option>   -->
                           <option *ngFor="let option of genOptions(secondConatiner.pk, 'tower')" value="{{option}}">{{option}}</option>
                         </select>
                       </div>
-                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                      <div class="field">
                         <label>SHELF </label>
-                        <select name="shelf" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_shelf', $event)" #shelfCtl>
-                          <option> - </option>
+                        <select name="shelf" class="ui fluid dropdown"
+                        [ngModel]="secondBoxShelf"
+                         (change)="updateTarget(secondConatiner.pk, 'target_shelf', $event)" #shelfCtl>
+                          <!-- <option> - </option> -->
                           <option *ngFor="let option of genOptions(secondConatiner.pk, 'shelf')" value="{{option}}">{{option}}</option>
                         </select>
                       </div>
-                      <div class="field" [ngClass]="{'error': towerCtl.value == '-' }">
+                      <div class="field">
                           <label>BOX </label>
-                          <select name="box" class="ui fluid dropdown" (change)="updateTarget(secondConatiner.pk, 'target_box', $event)" #boxCtl>
-                            <option> - </option>
+                          <select name="box" class="ui fluid dropdown"
+                          [ngModel]="secondBoxBox"
+                           (change)="updateTarget(secondConatiner.pk, 'target_box', $event)" #boxCtl>
+                            <!-- <option> - </option> -->
                             <option *ngFor="let option of genOptions(secondConatiner.pk, 'box')" value="{{option}}">{{option}}</option>
                           </select>
                       </div>
@@ -83,7 +89,7 @@
             </tr>
       </thead>
       <tbody>
-          <tr>
+          <tr class="wrapper">
               <td class="center aligned tight_around" colspan="2">
                   <table class="ui small unstackable celled single line fixed padded table">
                       <thead>
@@ -92,7 +98,7 @@
                           <th *ngFor="let h of firstHArray" class="center aligned"><em class="">{{h}}</em></th>
                         </tr>
                       </thead>
-                      <tbody class="wrapper">
+                      <tbody class="">
                         <tr *ngFor="let v of firstVArray">
                           <th class="center aligned"><em class="">{{v}}</em></th>
                           <td class="center aligned sample-cell container"
@@ -103,9 +109,6 @@
                             <div *ngFor="let sample of pickerSamples(h,v, true)" class="movable">
                                 <span [style.color]="sample.color"><strong>{{sample.name}}</strong></span><br/>
                                 <span>{{sample.freezing_date}}</span>
-                              <!-- <div class="ui horizontal label">
-                                <span [style.color]="sample.color">{{sample.name}}</span></div>
-                              <div>{{sample.freezing_date}}</div> -->
                             </div>                   
                           </td>
                         </tr>
@@ -113,14 +116,14 @@
                     </table>
               </td>
               <td class="center aligned tight_around teal_border_left" colspan="2">
-                <table class="ui small unstackable celled single line fixed padded table" *ngIf="loading_box2 == false">
+                <table class="ui small unstackable celled single line fixed padded table" *ngIf="loading_box2 == false && box2_not_found==false">
                   <thead>
                     <tr>
                       <th></th>
                       <th *ngFor="let h of secondHArray" class="center aligned"><em class="">{{h}}</em></th>
                     </tr>
                   </thead>
-                  <tbody class="wrapper">
+                  <tbody class="">
                     <tr *ngFor="let v of secondVArray">
                       <th class="center aligned"><em class="">{{v}}</em></th>
                       <td class="center aligned sample-cell container"
@@ -140,6 +143,11 @@
                 <div *ngIf="loading_box2==true" class="ui loading segment center aligned">
                   <br/><br/><br/><br/>
                   <p class="brown-text">loading second box ... </p>
+                </div>
+                <!-- box 2 not found-->
+                <div *ngIf="loading_box2==false && box2_not_found==true" class="ui segment center aligned">
+                  <br/><br/><br/><br/>
+                  <p class="red-text"> second box not found! </p>
                 </div>
               </td>
           </tr>
