@@ -59,11 +59,23 @@
         </tr>
         <tr>
           <th colspan="13">
-            <span class="header">BOX DESCRIPTION: </span>
-              <div class="ui fluid icon input">
-                <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
-                <i class="refresh icon"></i>
-              </div>
+            <div class="ui grid">
+                <div class="ten wide column">
+                    <span class="header">BOX DESCRIPTION: </span>
+                    <div class="ui fluid icon input">
+                      <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
+                      <i class="refresh icon"></i>
+                    </div>
+                </div>
+                <div class="six wide column">
+                    <span class="header">BOX LABEL: </span>
+                    <div class="ui fluid icon input">
+                      <input class="" type="text" [(ngModel)]="box.label" placeholder="user defined box label ..." (ngModelChange)="updateLabel($event, box.box_position)">
+                      <i class="refresh icon"></i>
+                    </div>
+                </div> 
+            </div>
+            
           </th>
         </tr>      
         <tr>        

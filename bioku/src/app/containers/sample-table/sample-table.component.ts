@@ -100,6 +100,11 @@ export class SampleTableComponent implements OnInit {
     this.containerService.updateBoxDescription(this.container.pk, box_position, text)
     .subscribe(()=>{},(err)=>console.log(err));
   }
+  //update box label
+  updateLabel(text: string, box_position: string){
+    this.containerService.updateBoxLabel(this.container.pk, box_position, text)
+    .subscribe(()=>{},(err)=>console.log(err));
+  }
   ngOnInit() {
     this.sampleSelected.emit([]);//emit empty sample selected
     if(this.box != null){
