@@ -23,8 +23,11 @@ export class ContainerBoxCardviewComponent implements OnInit {
   appUrl: string;
   container: Container = null;
   currentSampleCount : number = 0;
+  //show user defined box label?
+  show_user_defined_label: boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private containerService: ContainerService,) { 
     this.appUrl = this.appSetting.URL;
+    this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();

@@ -16,9 +16,11 @@ import { AppState , AppPartialState} from '../../_redux/root/state';
 export class ContainerBoxNavbarComponent implements OnInit {
   currentContaner: Container= null;
   currentBox: Box = null;
+  show_user_defined_label: boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private router: Router) 
   {
+    this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();

@@ -3,6 +3,7 @@ import { Sample } from './Sample';
 
 export class Box{
     pk: number;
+    label: string;
     box_position: string;
     box_vertical: number;
     box_horizontal: number;

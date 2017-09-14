@@ -155,6 +155,11 @@ export class BoxLayoutComponent implements OnInit {
     this.containerService.updateBoxDescription(this.container.pk, box_position, text)
     .subscribe(()=>{},(err)=>console.log(err));
   }
+  //update box label
+  updateLabel(text: string, box_position: string){
+    this.containerService.updateBoxLabel(this.container.pk, box_position, text)
+    .subscribe(()=>{},(err)=>console.log(err));
+  }
   pickerSamples(h: number, v: string){
     return this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
   }

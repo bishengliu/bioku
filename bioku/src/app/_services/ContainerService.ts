@@ -200,6 +200,14 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    //put box label
+    updateBoxLabel(container_pk: number, box_position: string, label: string){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/" + box_position + "/label/";
+        let body: string = JSON.stringify({'label': label });
+        return this.http.put(query_url, body, this.options) //do provide header accorrding to django
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
     //move one box
     moveContainerBoxes(original_container: number, box_full_position: string, target_container: number, target_box_full_position: string){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "move_box/";
