@@ -26,12 +26,18 @@
   <table class="ui small single line compact structured unstackable table">
       <thead>
           <tr>
-            <th class="center aligned eight wide ui header" colspan="2" [style.border-top]="genBorderStyle(firstColor)">FIRST BOX</th>
-            <th class="center aligned eight wide ui header teal_border_left" colspan="2" [style.border-top]="genBorderStyle(secondColor)">SECOND BOX</th>
+            <th class="center aligned eight wide ui header" colspan="2" [style.border-top]="genBorderStyle(firstColor)">
+              FIRST BOX <span *ngIf="show_user_defined_label && firstBox.label"> :{{firstBox.label}}</span>
+            </th>
+            <th class="center aligned eight wide ui header teal_border_left" colspan="2" [style.border-top]="genBorderStyle(secondColor)">
+              SECOND BOX <span *ngIf="show_user_defined_label && secondBox.label"> :{{secondBox.label}}</span>
+            </th>
           </tr>
           <tr class="">
               <th class="center aligned four wide tight_around" [style.background-color]="firstColor"><strong><em>CONTAINER: {{container.name}}</em></strong></th>
-              <th class="center aligned four wide tight_around" [style.background-color]="firstColor"><strong><em>BOX: {{firstBox.box_position}}</em></strong></th>
+              <th class="center aligned four wide tight_around" [style.background-color]="firstColor">
+                <strong><em>BOX: {{firstBox.box_position}}</em></strong>
+            </th>
               <th class="center aligned four wide teal_border_left tight_around" [style.background-color]="secondColor">
                 <div class="ui form tiny center aligned">
                   <div class="ui inline fields tight_around">

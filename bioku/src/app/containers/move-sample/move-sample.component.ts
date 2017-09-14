@@ -59,6 +59,8 @@ export class MoveSampleComponent implements OnInit {
   secondBoxBox: number = null;
   loading_box2: boolean = false;
   box2_not_found: boolean = false;
+  //show user defined box label?
+  show_user_defined_label: boolean = false;
   //dragular driective options
   private dragulaDrop$: any
   dragulaOptions: any = {
@@ -69,6 +71,7 @@ export class MoveSampleComponent implements OnInit {
               private route: ActivatedRoute, private dragulaService: DragulaService) 
   { 
     this.appUrl = this.appSetting.URL;
+    this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
