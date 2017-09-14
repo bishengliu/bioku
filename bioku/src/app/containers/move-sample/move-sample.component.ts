@@ -272,7 +272,7 @@ export class MoveSampleComponent implements OnInit {
       //save to database
       this.containerService.switchSample2Boxes(moveSample)
       .subscribe(()=>{
-        this.alertService.success('Sample positon updated!', true);
+        //this.alertService.success('Sample positon updated!', true);
         this.forceRefresh();
       }, ()=>{
         this.alertService.error('Something went wrong, fail to move/switch samples!', true);
@@ -300,18 +300,18 @@ export class MoveSampleComponent implements OnInit {
     obj.first_sample_hposition = +fsp_array[1];
 
     //target
-    let sarray = source_slot.split('|');
-    let scontainer_pk = +farray[0];
-    obj.second_container_pk = fcontainer_pk;
+    let sarray = target_slot.split('|');
+    let scontainer_pk = +sarray[0];
+    obj.second_container_pk = scontainer_pk;
 
-    let sbp_array = farray[1].split('-');
-    obj.second_box_tower = +fbp_array[0];
-    obj.second_box_shelf = +fbp_array[1];
-    obj.second_box_box = +fbp_array[2];
+    let sbp_array = sarray[1].split('-');
+    obj.second_box_tower = +sbp_array[0];
+    obj.second_box_shelf = +sbp_array[1];
+    obj.second_box_box = +sbp_array[2];
 
-    let ssp_array = farray[2].split('-');
-    obj.second_sample_vposition = fsp_array[0];
-    obj.second_sample_hposition = +fsp_array[1];
+    let ssp_array = sarray[2].split('-');
+    obj.second_sample_vposition = ssp_array[0];
+    obj.second_sample_hposition = +ssp_array[1];
     return obj;
   }
 

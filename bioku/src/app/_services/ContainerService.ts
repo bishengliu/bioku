@@ -253,7 +253,7 @@ export class ContainerService{
     }
     //switch sample positon between 2 boxes
     switchSample2Boxes(moveSample: MoveSample){
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "/switch_positions/";
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "switch_samples/";
         let body: string = JSON.stringify(moveSample);
         return this.http.put(query_url, body, this.options)
             .map((response: Response) =>response.json())          
