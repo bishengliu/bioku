@@ -1,5 +1,6 @@
   <div class="">
-  <table class="ui small unstackable single line fixed padded table" [style.border-top]="genBorderStyle(color)">
+  <table class="ui small unstackable single line fixed padded teal table" >
+      <!-- [style.border-top]="genBorderStyle(color)" -->
     <thead>
       <tr>
         <th class="">Name</th>
@@ -18,8 +19,12 @@
       </tr>      
     </thead>
     <tbody>
-      <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
-        <td class="collapsing" [style.border-left]="genBorderStyle(sample.color)">{{sample.name}}</td>
+      <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" 
+        [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
+        <td class="collapsing">
+          <span [style.color]="sample.color">{{sample.name}}</span>
+          <sup *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</sup>
+        </td>
         <td class="collapsing">{{sample.position}}</td>
         <td class="collapsing">{{sample.quantity}}</td>
         <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td>
