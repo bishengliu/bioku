@@ -42,7 +42,7 @@ export class SampleGeneral {
     attachments: Array<Attachment>;
     description: string;
 }
-export class SampleConstruct {
+export class SampleConstruct extends SampleGeneral {
     clone_number: string;
     against_260_280: number;
     feature: string;
@@ -55,14 +55,14 @@ export class SampleConstruct {
     strain: string;
 }
 
-export class SampleVirus {
+export class SampleVirus extends SampleGeneral {
     passage_number: string;
     cell_amount: string;
     project: string;
     creator: string;
 }
 
-export class SampleOligo {
+export class SampleOligo extends SampleGeneral {
     oligo_name: string;
     s_or_as: boolean;
     oligo_sequence: string;
@@ -71,7 +71,7 @@ export class SampleOligo {
     target_sequence: string;
 }
 
-export class SampleCellLine {
+export class SampleCellLine extends SampleGeneral {
     plasmid: string;
     titration_titer: string;
     titration_unit: string;
@@ -79,7 +79,7 @@ export class SampleCellLine {
     titration_code: string;
 }
 
-export class SampleTissue {
+export class SampleTissue extends SampleGeneral{
     pathology_code: string;
     tissues: Array<Tissue>;
 }
