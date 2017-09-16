@@ -20,7 +20,7 @@ export class SampleGeneral {
     box_id: number;
     color: string;
     date_in: Date;
-    date_out: Date;
+    date_out: Date;    
     type: string;
     name: string;
     official_name: string;

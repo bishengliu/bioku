@@ -1,28 +1,59 @@
 <table class="ui sortable small striped compact padded single line table">
     <tbody>
+      <!-- buttons -->
        <tr>
          <td colspan="2">
            <div class="two ui mini buttons" *ngIf="sample.date_out == null">
              <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">
                <i class="icon external share"></i>TAKE OUT</button>
-             <!-- <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button> -->
              <button class="fluid ui mini inverted violet button" (click)="EditSample()"><i class="icon edit"></i>MODIFY</button>
            </div>
-           <!-- <div class="two ui mini buttons" *ngIf="sample.date_out != null"></div> -->
            <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" 
            (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT BACK</button>
-           <!-- <button class="fluid ui mini inverted violet button" (click)="moveSingleSample()"><i class="icon move"></i>MOVE</button> --> 
          </td>
        </tr>
-      <tr><th class="six wide" [style.color]="sample.color">Name</th>
+       <!-- general -->
+      <tr>
+        <th class="six wide" [style.color]="sample.color">content</th>
         <td class="ten wide">
-          <div class="ui icon input wide-form">
+          <div class="ui input wide-form">
             <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." 
-            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'name', true)"><i class="edit icon"></i>
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'name', true)">
+            <select class="ui tiny tight_around dropdown" [(ngModel)]="sample.type"
+                    (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'type', true)">
+                <option value="GENERAL">GENERAL</option>
+                <option value="CELL">CELL</option>
+                <option value="CONSTRUCT">CONSTRUCT</option>
+                <option value="OLIGO">OLIGO</option>
+                <option value="TISSUE">TISSUE</option>
+                <option value="VIRUS">VIRUS</option>
+            </select>
+            <!-- <i class="edit icon"></i> -->
           </div>                                
         </td>
       </tr>
-      <tr><th class="" [style.color]="sample.color">Position</th>
+      <tr>
+          <td class="six wide" [style.color]="sample.color">code & tag </td>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.registration_code" placeholder="sample primary code ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'registration_code', false)">
+              <input class="" type="text" [(ngModel)]="sample.tag" placeholder="sample tag ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'tag', false)">
+            </div>                                              
+          </td>
+      </tr>
+      <tr>
+          <th class="six wide">official name</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.official_name" placeholder="update sample official name ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'official_name', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr>
+        <th class="">position</th>
         <td class="">
           <div class="ui grid">                    
             <div class="four wide column"><span>{{sample.position}}</span></div>
@@ -47,53 +78,56 @@
           </div>
         </td>
       </tr>
-      <tr><td class="">Quantity</td>
+      <tr>
+          <th class="six wide">label</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.label" placeholder="user defined sample position ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'label', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr>
+        <td class="">quantity</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
             <input class="" type="numner" min="1" 
-            [(ngModel)]="sample.quantity" placeholder="update sample quantity ..." 
+            [(ngModel)]="sample.quantity" placeholder="sample quantity ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
-            <i class="edit icon"></i>
+            <input class="" type="text" 
+            [(ngModel)]="sample.quantity_unit" placeholder="unit ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity_unit', true)">
           </div>                                              
         </td>
       </tr>
-      <tr><td class="">Freezing Date</td>            
+      <tr>
+        <td class="">freezing date</td>            
         <input class="hidden" [(ngModel)]="sample.freezing_date">          
         <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
         (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_date', true)" required>
         </my-date-picker>
       </tr>
-      <tr><td class="">Freezing Code</td>
+      <tr>
+        <td class="">freezing code</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_code', false)">
-            <i class="edit icon"></i>
           </div>                                              
         </td>
       </tr>
-      <tr><td class="">Sample Code</td>
-        <td class="ten wide">
-          <div class="ui icon input wide-form">
-            <input class="" type="text" [(ngModel)]="sample.registration_code" placeholder="update sample resgistration code ..." 
-            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'registration_code', false)">
-            <i class="edit icon"></i>
-          </div>                                              
-        </td>
-      </tr>
-      <tr><td class="">Pathology Code</td>
+      <!-- pathology only -->
+      <tr *ngIf="sample_type==='TISSUE'">
+        <td class="">pathology code</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.pathology_code" placeholder="update sample pathology code ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'pathology_code', false)">
-            <i class="edit icon"></i>
           </div>                                              
         </td>
       </tr>
-      <tr><td class="">Date In</td><td class="">{{sample.date_in | date: 'yyyy-MM-dd'}}</td></tr>
-      <tr><td class="">Date Out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
-      <tr>
-        <td class="">Tissue</td>
+      <tr *ngIf="sample_type==='TISSUE'">
+        <td class="">tissue</td>
         <td class="">
             <a class="ui right floated"><i class="edit icon grey-text"></i></a>
             <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
@@ -103,8 +137,11 @@
             </div>   
           </td>
       </tr>
+      <!-- not occupied -->
+      <tr *ngIf="!sample.occupied"><td class="">date out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
+      <!-- general -->
       <tr>
-        <td class="">Attachment</td>
+        <td class="">attachments</td>
         <td class="">
             <a class="ui right floated"><i class="edit icon grey-text"></i></a>
             <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
@@ -115,9 +152,8 @@
           </td>
         </tr>
       <tr>
-        <td class="">Researcher</td>
+        <td class="">researcher</td>
         <td class="">
-            <a class="ui right floated"><i class="edit icon grey-text"></i></a>
             <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
               <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
                 {{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}
@@ -126,7 +162,7 @@
           </td>
       </tr>
       <tr>
-        <td class="">Remarks</td>
+        <td class="">comments</td>
         <td class="ui form">
           <div class="field wide-form">
             <textarea class=""

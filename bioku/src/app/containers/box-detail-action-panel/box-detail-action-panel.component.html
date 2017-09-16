@@ -15,7 +15,7 @@
   </div>
 
   <!--single selection-->
-  <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" class="ui violet segment">
+  <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" class="ui violet segment" style="overflow-y:scroll;white-space:nowrap;">
     <app-sample-detail [samplePK]="samplePKs[0]"></app-sample-detail>
  </div>
 

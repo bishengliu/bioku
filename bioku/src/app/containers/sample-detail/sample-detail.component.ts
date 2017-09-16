@@ -25,6 +25,10 @@ import { AppState } from '../../_redux/root/state';
 export class SampleDetailComponent implements OnInit {
   @Input() samplePK: number;
   sample: Sample = new Sample();
+  //SAPMPLE TYPE
+  sample_type: string = 'GENERAL';
+  //ALL SAMPLE TYPES
+  all_sample_types: Array<String> = new Array<String>();
   user: User;
   appUrl: string;
   container: Container = null;
@@ -64,6 +68,7 @@ export class SampleDetailComponent implements OnInit {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
+    this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
@@ -91,6 +96,12 @@ export class SampleDetailComponent implements OnInit {
         this.freezing_date = this.parseFreezingDate(this.sample.freezing_date.toString());
         this.vertical_options = this.renderOptions(this.box.box_vertical, true);
         this.horizontal_options = this.renderOptions(this.box.box_horizontal, false);
+        if (this.sample.type != null){
+          this.sample_type = this.all_sample_types.indexOf(this.sample.type) != -1 ? this.sample.type : "GENERAL";
+        }
+        else{
+          this.sample_type = "GENERAL";
+        }
       }
     }  
   }
