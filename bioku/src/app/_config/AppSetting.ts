@@ -17,18 +17,18 @@ export const AppSetting = {
     //sample search keywords
     SAMPLE_KEYWORDS: [
         //GENERAL
-        'type','name','official_name','tag','registration_code','reference_code',
-        'freezing_code','occupied','researchers','attachments','description',
+        'Sample Type','Sample Name','Official Name','Sample Tag','Sample Code','Reference Code',
+        'Freezing Code','Occupied','Researcher','Attachment','Comments',
         //CONSTRUCT
-        'feature','backbone','insert','marker',
+        'Feature','Backbone','Insert','Marker',
         //CELL
         //'project','creator',
         //OLIGO
-        'oligo_name',
+        'Oligo Name',
         //VIRUS
-        'plasmid','titration_cell_type','titration_code',
+        'Plasmid','Titration Celltype','Titration Code',
         //PATHOLOGY
-        'pathology_code','tissues'
+        'Pathology Code','Tissue'
     ],
     SAMPLE_PARSEDKEYWORDS: [
         //GENERAL

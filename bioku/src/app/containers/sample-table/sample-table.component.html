@@ -53,7 +53,7 @@
         </td>
         <td class="collapsing">{{sample.reference_code}}</td>            
         <td class="collapsing">
-            {{ (sample.description.length>15)? (sample.description | slice:0:15)+'..':(sample.description) }}
+            {{ (sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
         </td>  
       </tr>
     </tbody>
