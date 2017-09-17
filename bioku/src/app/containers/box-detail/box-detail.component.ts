@@ -93,8 +93,13 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
             return true;}         
         }
         else{
-          if(e[sampleFilter.key].toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1){
-            return true;}
+          if(e[sampleFilter.key] == null){
+            return false;
+          }
+          else{
+            if(e[sampleFilter.key].toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1)
+            { return true; }
+          }          
         }
         return false;
       });

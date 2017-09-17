@@ -21,8 +21,9 @@ export class SampleFilterComponent implements OnInit {
   @ViewChild('filterValue') filterValue:ElementRef;
 
   constructor() {
-    this.keywords = [ 'Sample Name', 'Sample Registration Code', 'Sample Pathology Code', 'Sample Freezing Code', 'Sample Quantity', 'Sample Attachment Name', 'Sample Tissue'];
-    this.parsedKeys = [ 'name', 'registration_code', 'pathology_code', 'freezing_code', 'quantity', 'label', 'tissue'];}
+    this.keywords = [ 'Sample Type', 'Sample Name', 'Sample Code', 'Sample Tag', 'Comments'];
+    this.parsedKeys = [ 'type', 'name', 'registration_code', 'tag', 'description'];
+  }
   
   ngOnInit() {
     Observable.fromEvent(this.filterkey.nativeElement, 'change')
