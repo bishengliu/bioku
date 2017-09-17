@@ -21,7 +21,7 @@
           *ngFor="let h of hArray" (click)="toggleSelection(h,v)" 
           [ngClass]="{'sample-cell-selected': selectedCells.indexOf(v+h) !==- 1, 'search-matched-sample': searchedBoxSamples.indexOf(v+h) !==- 1 }">
           <div *ngFor="let sample of pickerSamples(h,v)">
-            <div *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</div>              
+            <div *ngIf="sample.tag" class="ui mini grey circular label">{{sample.tag}}</div>              
             <div class="ui label"><span [style.color]="sample.color"> {{ (sample.name.length>10)? (sample.name | slice:0:10)+'..':(sample.name) }} </span></div>
             <div class="small">{{sample.registration_code}}</div>
           </div>                   

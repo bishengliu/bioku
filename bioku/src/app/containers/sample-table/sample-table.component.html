@@ -1,54 +1,60 @@
   <div class="">
-  <table class="ui small unstackable single line fixed padded teal table" >
+  <table class="ui small unstackable padded teal table" >
       <!-- [style.border-top]="genBorderStyle(color)" -->
     <thead>
       <tr>
-        <th class="">content</th>
+        <th class="">name</th>
+        <th class="">code</th>
         <th class="">position</th>
         <th class="">quantity</th>
-        <th class="">freezing fate</th>
-        <th class="">freezing code</th>
-        <th class="">sample code</th>
-        <th class="">pathology code</th>
-        <th class="">Date In</th>
-        <th class="">date out</th>
-        <th class="">Tissue</th>
-        <th class="">Attachment</th>
-        <th class="">Researcher</th>
-        <th class="">Remarks</th>
+        <th class="">date</th>
+        <th class="">tokenout</th>     
+        <th class="">attachment</th>     
+        <th class="">researcher</th>
+        <th class="">reference</th>
+        <th class="">comments</th>
       </tr>      
     </thead>
     <tbody>
       <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" 
         [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
         <td class="collapsing">
-          <span [style.color]="sample.color">{{sample.name}}</span>
-          <sup *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</sup>
+          <div>
+            <span [style.color]="sample.color">{{ (sample.name.length>15)? (sample.name | slice:0:15)+'..':(sample.name) }}</span>
+            <sup *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</sup>
+          </div>       
+          <div class="ui mini label">{{sample.type}}</div>
         </td>
-        <td class="collapsing">{{sample.position}}</td>
-        <td class="collapsing">{{sample.quantity}}</td>
-        <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td>
-        <td class="collapsing">{{sample.freezing_code}}</td>
         <td class="collapsing">{{sample.registration_code}}</td>
-        <td class="collapsing">{{sample.pathology_code}}</td>
-        <td class="collapsing">{{sample.date_in | date: 'yyyy-MM-dd'}}</td>
-        <td class="collapsing">{{sample.date_out| date: 'yyyy-MM-dd'}}</td>        
         <td class="collapsing">
-          <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
-            <p class="nopadding no_margin" *ngFor="let tissue of sample.tissues">{{tissue.tissue != null ? tissue.tissue +' (' + tissue.system + ')' : ""}}</p>
-          </div>   
+          <span>{{sample.position}}</span>
+          <p *ngIf="sample.label">{{sample.label}}</p>
         </td>
+        <td class="collapsing">
+            <span *ngIf="sample.type ==='CELL'">{{sample.amount}}</span>
+            <span *ngIf="sample.type ==='VIRUS'">{{sample.titration_titer? sample.titration_titer:''}}{{sample.titration_unit? sample.titration_unit:''}}</span>
+            <span *ngIf="sample.type !=='CELL' && sample.type !=='VIRUS'">{{sample.quantity? sample.quantity:'' }}{{ sample.quantity_unit ? sample.quantity_unit:''}}</span>          
+        </td>
+        <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td>   
+        <td class="collapsing">{{sample.date_out| date: 'yyyy-MM-dd'}}</td>            
         <td class="collapsing">
           <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
-            <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments"><a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a></p>
+            <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
+              <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
+            </p>
           </div>   
         </td>
         <td class="collapsing">
           <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
-            <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">{{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}</p>
+            <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
+              {{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}
+            </p>
           </div> 
         </td>
-        <td class="collapsing">{{sample.description}}</td>  
+        <td class="collapsing">{{sample.reference_code}}</td>            
+        <td class="collapsing">
+            {{ (sample.description.length>15)? (sample.description | slice:0:15)+'..':(sample.description) }}
+        </td>  
       </tr>
     </tbody>
     <tfoot class="full-width">
