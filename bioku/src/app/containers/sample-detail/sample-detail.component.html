@@ -25,7 +25,7 @@
                 <option value="CELL">CELL</option>
                 <option value="CONSTRUCT">CONSTRUCT</option>
                 <option value="OLIGO">OLIGO</option>
-                <option value="OLIGO">gRNA OLIGO</option>
+                <option value="gRNA_OLIGO">gRNA OLIGO</option>
                 <option value="TISSUE">TISSUE</option>
                 <option value="VIRUS">VIRUS</option>
             </select>
@@ -43,7 +43,7 @@
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'tag', false)">
             </div>                                              
           </td>
-      </tr>
+      </tr>     
       <tr>
           <th class="six wide">official name</th>
           <td class="ten wide">
@@ -84,8 +84,8 @@
             </div>
           </div>
         </td>
-      </tr>
-      <tr>
+      </tr>      
+      <tr *ngIf="sample.type !=='CELL' && sample.type !=='VIRUS'">
         <td class="">quantity</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -98,9 +98,79 @@
           </div>                                              
         </td>
       </tr>
-
+      <!-- virus-->
+      <tr *ngIf="sample.type === 'VIRUS'">
+          <th class="six wide">plasmid</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.plasmid" placeholder="update plasmid ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'plasmid', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr *ngIf="sample.type === 'VIRUS'">
+          <th class="six wide">titer & unit</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.titration_titer" placeholder="titer ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_titer', true)">
+              <input class="" type="text" [(ngModel)]="sample.titration_unit" placeholder="unit ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_unit', true)">              
+            </div>                                
+          </td>
+      </tr>
+      <tr *ngIf="sample.type === 'VIRUS'">
+          <th class="six wide">celltype & code</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+                <input class="" type="text" [(ngModel)]="sample.titration_cell_type" placeholder="cell type ..." 
+                (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_cell_type', true)">
+              <input class="" type="text" [(ngModel)]="sample.titration_code" placeholder="titration code ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_code', true)">
+            </div>                                
+          </td>
+      </tr>
+      <!-- Oligo OR gRNA OLIGO-->
+      <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
+          <th class="six wide">oligo name</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.oligo_name" placeholder="update oligo name ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_name', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
+          <th class="six wide">oligo sequence</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.oligo_sequence" placeholder="update oligo sequence ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_sequence', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
+          <th class="six wide">length & %GC</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.oligo_length" placeholder="update oligo length ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_length', true)">
+              <input class="" type="number" step="0.1" [(ngModel)]="sample.oligo_GC" placeholder="update oligo %GC ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_GC', true)">
+            </div>                                
+          </td>
+      </tr>
+      <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
+          <th class="six wide">target sequence</th>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.target_sequence" placeholder="update oligo target sequence ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'target_sequence', true)">
+            </div>                                
+          </td>
+      </tr>
       <!-- construct only -->
-      <tr *ngIf="sample_type==='CONSTRUCT'">
+      <tr *ngIf="sample.type==='CONSTRUCT'">
         <td class="">clone nr. & 1st maxi</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -111,7 +181,7 @@
           </div>                                              
         </td>
       </tr>
-      <tr *ngIf="sample_type==='CONSTRUCT'">
+      <tr *ngIf="sample.type==='CONSTRUCT'">
         <td class="">260/280 & R.E. analysis</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -122,7 +192,7 @@
           </div>                                              
         </td>
       </tr>
-      <tr *ngIf="sample_type==='CONSTRUCT'">
+      <tr *ngIf="sample.type==='CONSTRUCT'">
         <td class="">feature & marker</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -133,7 +203,7 @@
           </div>                                              
         </td>
       </tr>
-      <tr *ngIf="sample_type==='CONSTRUCT'">
+      <tr *ngIf="sample.type==='CONSTRUCT'">
         <td class="">backbone & insert</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -144,7 +214,7 @@
           </div>                                              
         </td>
       </tr>      
-      <tr *ngIf="sample_type==='CONSTRUCT'">
+      <tr *ngIf="sample.type==='CONSTRUCT'">
         <td class="">glycerol stock & strain</td>
         <td class="ten wide">
           <div class="ui input wide-form">
@@ -158,8 +228,33 @@
           </div>
         </td>
       </tr>
+
+      <!-- cell line only  -->
+      <tr *ngIf="sample.type==='CELL'">
+          <td class="">passage nr. & amount</td>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.passage_number" placeholder="passage number ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'passage_number', false)">
+              <input class="" type="text" [(ngModel)]="sample.amount" placeholder=" amount ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'amount', false)">
+            </div>                                              
+          </td>
+      </tr>
+      <tr *ngIf="sample.type==='CELL'">
+          <td class="">project & creator</td>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.project" placeholder="project ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'project', false)">
+              <input class="" type="text" [(ngModel)]="sample.creator" placeholder=" creator ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'creator', false)">
+            </div>                                              
+          </td>
+      </tr>
+
       <!-- pathology only -->
-      <tr *ngIf="sample_type==='TISSUE'">
+      <tr *ngIf="sample.type==='TISSUE'">
         <td class="">pathology code</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
@@ -168,7 +263,7 @@
           </div>                                              
         </td>
       </tr>
-      <tr *ngIf="sample_type==='TISSUE'">
+      <tr *ngIf="sample.type==='TISSUE'">
         <td class="">tissue</td>
         <td class="">
             <a class="ui right floated"><i class="edit icon grey-text"></i></a>
@@ -179,6 +274,7 @@
             </div>   
           </td>
       </tr>
+
       <!-- not occupied -->
       <tr *ngIf="!sample.occupied"><td class="">date out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
       <!-- general -->
@@ -198,6 +294,15 @@
           </div>                                              
         </td>
       </tr>
+      <tr>
+          <td class="six wide">external code </td>
+          <td class="ten wide">
+            <div class="ui icon input wide-form">
+              <input class="" type="text" [(ngModel)]="sample.reference_code" placeholder="reference to external or another sample ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'reference_code', false)">
+            </div>                                              
+          </td>
+      </tr> 
       <tr>
         <td class="">attachments</td>
         <td class="">

@@ -55,7 +55,7 @@ export class SampleConstruct extends SampleGeneral {
     strain: string;
 }
 
-export class SampleVirus extends SampleGeneral {
+export class SampleCell extends SampleGeneral {
     passage_number: string;
     cell_amount: string;
     project: string;
@@ -71,7 +71,7 @@ export class SampleOligo extends SampleGeneral {
     target_sequence: string;
 }
 
-export class SampleCellLine extends SampleGeneral {
+export class SampleVirus extends SampleGeneral {
     plasmid: string;
     titration_titer: string;
     titration_unit: string;
