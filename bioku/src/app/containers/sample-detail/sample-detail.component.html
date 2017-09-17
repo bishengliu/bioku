@@ -14,7 +14,7 @@
        </tr>
        <!-- general -->
       <tr>
-        <th class="six wide" [style.color]="sample.color">content</th>
+        <th class="six wide" [style.color]="sample.color">name & type</th>
         <td class="ten wide">
           <div class="ui input wide-form">
             <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." 
@@ -25,6 +25,7 @@
                 <option value="CELL">CELL</option>
                 <option value="CONSTRUCT">CONSTRUCT</option>
                 <option value="OLIGO">OLIGO</option>
+                <option value="OLIGO">gRNA OLIGO</option>
                 <option value="TISSUE">TISSUE</option>
                 <option value="VIRUS">VIRUS</option>
             </select>
@@ -56,12 +57,12 @@
         <th class="">position</th>
         <td class="">
           <div class="ui grid">                    
-            <div class="four wide column"><span>{{sample.position}}</span></div>
-            <div *ngIf="sample.occupied" class="four wide column" suiPopup popupText="Move/switch current sample to another position in the box">
+            <div class="three wide column"><span>{{sample.position}}</span></div>
+            <div *ngIf="sample.occupied" class="two wide column" suiPopup popupText="Move/switch current sample to another position in the box">
               <i *ngIf="!action_loader" class="refresh icon grey-text"></i>
               <i *ngIf="action_loader" class="ui active mini loader"></i>
             </div>
-            <div *ngIf="sample.occupied" class="four wide column ui form tiny small_vertial_padding">
+            <div *ngIf="sample.occupied" class="three wide column ui form tiny small_vertial_padding">
               <div class="ui inline fields">
                 <div class="field">
                   <select name="vposition" class="ui fluid dropdown" (change)="display_hposition()" #vposition>
@@ -74,18 +75,15 @@
                   </select>
                 </div>
               </div>                       
-            </div> 
+            </div>
+            <div class="eight wide column">
+                <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="sample.label" placeholder="user defined sample position ..." 
+                    (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'label', true)">
+                </div>  
+            </div>
           </div>
         </td>
-      </tr>
-      <tr>
-          <th class="six wide">label</th>
-          <td class="ten wide">
-            <div class="ui icon input wide-form">
-              <input class="" type="text" [(ngModel)]="sample.label" placeholder="user defined sample position ..." 
-              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'label', true)">
-            </div>                                
-          </td>
       </tr>
       <tr>
         <td class="">quantity</td>
@@ -100,20 +98,64 @@
           </div>                                              
         </td>
       </tr>
-      <tr>
-        <td class="">freezing date</td>            
-        <input class="hidden" [(ngModel)]="sample.freezing_date">          
-        <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
-        (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_date', true)" required>
-        </my-date-picker>
-      </tr>
-      <tr>
-        <td class="">freezing code</td>
+
+      <!-- construct only -->
+      <tr *ngIf="sample_type==='CONSTRUCT'">
+        <td class="">clone nr. & 1st maxi</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
-            <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." 
-            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_code', false)">
+            <input class="" type="text" [(ngModel)]="sample.clone_number" placeholder="construct clone number ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'clone_number', false)">
+            <input class="" type="text" [(ngModel)]="sample.first_max" placeholder="1st maxi ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'first_max', false)">
           </div>                                              
+        </td>
+      </tr>
+      <tr *ngIf="sample_type==='CONSTRUCT'">
+        <td class="">260/280 & R.E. analysis</td>
+        <td class="ten wide">
+          <div class="ui icon input wide-form">
+            <input class="" type="number" step="0.01" [(ngModel)]="sample.against_260_280" placeholder="construct 260/280 ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'against_260_280', false)">
+            <input class="" type="text" [(ngModel)]="sample.r_e_analysis" placeholder="construct R.E. analysis ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'r_e_analysis', false)">
+          </div>                                              
+        </td>
+      </tr>
+      <tr *ngIf="sample_type==='CONSTRUCT'">
+        <td class="">feature & marker</td>
+        <td class="ten wide">
+          <div class="ui icon input wide-form">
+            <input class="" type="text" [(ngModel)]="sample.feature" placeholder="construct feature ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'feature', false)">
+            <input class="" type="text" [(ngModel)]="sample.marker" placeholder="construct marker ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'marker', false)">
+          </div>                                              
+        </td>
+      </tr>
+      <tr *ngIf="sample_type==='CONSTRUCT'">
+        <td class="">backbone & insert</td>
+        <td class="ten wide">
+          <div class="ui icon input wide-form">
+            <input class="" type="text" [(ngModel)]="sample.backbone" placeholder="construct backbone ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'backbone', false)">
+            <input class="" type="text" [(ngModel)]="sample.insert" placeholder="construct insert ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'insert', false)">
+          </div>                                              
+        </td>
+      </tr>      
+      <tr *ngIf="sample_type==='CONSTRUCT'">
+        <td class="">glycerol stock & strain</td>
+        <td class="ten wide">
+          <div class="ui input wide-form">
+              <div class="ui slider checkbox">
+                  <input type="checkbox" [(ngModel)]="sample.has_glycerol_stock" id="glycerol_stock"
+                  (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'has_glycerol_stock', true)">
+                  <label for="glycerol_stock"><small>YES</small></label>
+              </div>
+              <input class="" type="text" [(ngModel)]="sample.strain" placeholder="strain ..." [ngClass]="{'hidden': !sample.has_glycerol_stock == 1}"
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'strain', false)">
+          </div>
         </td>
       </tr>
       <!-- pathology only -->
@@ -140,6 +182,22 @@
       <!-- not occupied -->
       <tr *ngIf="!sample.occupied"><td class="">date out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
       <!-- general -->
+      <tr>
+        <td class="">freezing date</td>            
+        <input class="hidden" [(ngModel)]="sample.freezing_date">          
+        <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
+        (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_date', true)" required>
+        </my-date-picker>
+      </tr>
+      <tr>
+        <td class="">freezing code</td>
+        <td class="ten wide">
+          <div class="ui icon input wide-form">
+            <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_code', false)">
+          </div>                                              
+        </td>
+      </tr>
       <tr>
         <td class="">attachments</td>
         <td class="">
