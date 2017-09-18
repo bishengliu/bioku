@@ -3,13 +3,12 @@
       <!-- buttons -->
        <tr>
          <td colspan="2">
-           <div class="two ui mini buttons" *ngIf="sample.date_out == null">
-             <button class="fluid ui mini blue button" (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">
-               <i class="icon external share"></i>TAKE OUT</button>
-             <button class="fluid ui mini inverted violet button" (click)="EditSample()"><i class="icon edit"></i>MODIFY</button>
-           </div>
-           <button *ngIf="sample.date_out != null" class="fluid ui mini grey button" 
-           (click)="putSingleSampleBack(box.box_position, sample, sample.position)">PUT BACK</button>
+            <button *ngIf="sample.occupied" class="fluid ui mini blue button" 
+            (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">
+                <i class="icon external share"></i>TAKE OUT</button>
+           <button *ngIf="sample.date_out != null || !sample.occupied" class="fluid ui mini grey button" 
+           (click)="putSingleSampleBack(box.box_position, sample, sample.position)">
+                <i class="icon reply"></i>PUT BACK</button>
          </td>
        </tr>
        <!-- general -->

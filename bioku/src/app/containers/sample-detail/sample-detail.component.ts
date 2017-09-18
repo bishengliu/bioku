@@ -229,8 +229,4 @@ export class SampleDetailComponent implements OnInit {
       this.forceRefresh();
     });
   }
-
-  EditSample(){
-    console.log("edit a sample...");
-  }
 }
