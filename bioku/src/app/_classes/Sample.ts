@@ -14,6 +14,7 @@ export class Attachment {
     attachment: string;
     description: string;
 }
+
 export class SampleGeneral {
     pk: number;
     box: string;
@@ -42,6 +43,7 @@ export class SampleGeneral {
     attachments: Array<Attachment>;
     description: string;
 }
+
 export class SampleConstruct extends SampleGeneral {
     clone_number: string;
     against_260_280: number;

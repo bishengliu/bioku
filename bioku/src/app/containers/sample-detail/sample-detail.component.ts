@@ -63,7 +63,14 @@ export class SampleDetailComponent implements OnInit {
   //view child
   @ViewChild('vposition') vposition:ElementRef;
   @ViewChild('hposition') hposition:ElementRef;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+
+  //attachment upload
+  attachment_upload: boolean = false;
+  //attchment to delete
+  attachment_to_delete: string ="";
+  attachment_delete: boolean = false;
+  attachment_pk_to_delete: number = null;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
@@ -229,4 +236,49 @@ export class SampleDetailComponent implements OnInit {
       this.forceRefresh();
     });
   }
+
+  displayAttachmentUpload(){
+    this.attachment_upload = true;
+    this.cancelAttachmentDelete();
+  }
+
+  hideAttachmentUpload(){
+    this.attachment_upload = false;
+  }
+
+  attachment2Delete(attachment_pk: number, attachment_name: string){
+    this.attachment_delete = true;
+    this.attachment_pk_to_delete = attachment_pk;
+    this.attachment_to_delete = attachment_name;
+    //clear the attachment upload
+    this.attachment_upload = false;
+    //need to clear the attachment upload
+  }
+
+  cancelAttachmentDelete(){
+    this.attachment_delete = false;
+    this.attachment_pk_to_delete = null;
+    this.attachment_to_delete = '';
+  }
+
+  performAttachmentDelete(){
+    this.containerService.deleteAttachment(this.sample.pk, this.attachment_pk_to_delete)
+        .subscribe(()=>{
+          //update sample view
+          this.updateSampleAttchment(this.attachment_pk_to_delete);
+          this.cancelAttachmentDelete();
+          this.hideAttachmentUpload();
+        }, ()=>{
+          this.alertService.error("failed to delete sample attachments!", true);
+        });
+    
+  }
+
+  //remove attachments of the sample
+  updateSampleAttchment(attachment_pk_to_delete: number){
+    if(attachment_pk_to_delete != null){
+      this.sample.attachments = [...this.sample.attachments.filter(a=>{ return a.pk != attachment_pk_to_delete})];
+    }
+  }
+
 }

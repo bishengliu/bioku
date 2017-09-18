@@ -281,4 +281,13 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+
+    //delete an attachment
+    deleteAttachment(sample_pk: number, attachment_pk: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "samples/" + sample_pk + "/" + attachment_pk + "/";
+        let body: string = JSON.stringify({ });
+        return this.http.put(query_url, body, this.options)
+                .map((response: Response) =>response.json())          
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }
