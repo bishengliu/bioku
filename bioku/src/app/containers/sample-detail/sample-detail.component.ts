@@ -6,6 +6,7 @@ import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
+import { Attachment} from '../../_classes/Sample';
 import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
 import {  LocalStorageService } from '../../_services/LocalStorageService';
@@ -70,6 +71,14 @@ export class SampleDetailComponent implements OnInit {
   attachment_to_delete: string ="";
   attachment_delete: boolean = false;
   attachment_pk_to_delete: number = null;
+  //upload
+  //for attchment upload
+  @ViewChild('attachmentLabel') attachmentLabelInput:ElementRef;
+  @ViewChild('attachmentDescription') attachmentDescriptionInput:ElementRef;
+  file: File;
+  attchment_name: string;
+  attchament_is2large: boolean = false;
+
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
@@ -244,6 +253,9 @@ export class SampleDetailComponent implements OnInit {
 
   hideAttachmentUpload(){
     this.attachment_upload = false;
+    this.file = null;
+    this.attchment_name = null;
+    this.attchament_is2large = false;
   }
 
   attachment2Delete(attachment_pk: number, attachment_name: string){
@@ -251,8 +263,7 @@ export class SampleDetailComponent implements OnInit {
     this.attachment_pk_to_delete = attachment_pk;
     this.attachment_to_delete = attachment_name;
     //clear the attachment upload
-    this.attachment_upload = false;
-    //need to clear the attachment upload
+    this.hideAttachmentUpload();
   }
 
   cancelAttachmentDelete(){
@@ -265,20 +276,69 @@ export class SampleDetailComponent implements OnInit {
     this.containerService.deleteAttachment(this.sample.pk, this.attachment_pk_to_delete)
         .subscribe(()=>{
           //update sample view
-          this.updateSampleAttchment(this.attachment_pk_to_delete);
+          this.updateSampleAttchmentDeletion(this.attachment_pk_to_delete);
           this.cancelAttachmentDelete();
           this.hideAttachmentUpload();
         }, ()=>{
           this.alertService.error("failed to delete sample attachments!", true);
-        });
-    
+        }); 
   }
 
-  //remove attachments of the sample
-  updateSampleAttchment(attachment_pk_to_delete: number){
+  //remove attachments of the sample after ajax call
+  updateSampleAttchmentDeletion(attachment_pk_to_delete: number){
     if(attachment_pk_to_delete != null){
       this.sample.attachments = [...this.sample.attachments.filter(a=>{ return a.pk != attachment_pk_to_delete})];
     }
   }
+  //uploaded after ajax call
+  updateSampleAttchmentUpload(attachment: Attachment){
+    if(attachment != null){
+      this.sample.attachments = [...this.sample.attachments, attachment];
+    }
+  }
 
+  //check upload attachment
+  validateAttachmentUpload(event: EventTarget) {    
+    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    let files: FileList = target.files;
+    this.file = files[0];
+    //console.log(this.file);
+    this.attchment_name = this.file.name;
+    //check file size
+    let size = this.file.size / 1024 / 1024
+    if (parseInt(size.toFixed(2)) > 10) {
+        this.attchament_is2large = true;
+    }
+    else{
+      this.attchament_is2large = false;
+    }
+  }
+
+  //perform upload
+  performAttachmentUpload(){
+    //attachment info
+    var label= this.attachmentLabelInput.nativeElement.value
+    var description = this.attachmentDescriptionInput.nativeElement.value;
+    var obj ={
+      'sample_pk': this.sample.pk,
+      'label': label,
+      'description': description
+    }
+    let formData: FormData = new FormData();
+    formData.append("obj", JSON.stringify(obj));
+    if (this.file){
+      formData.append("file", this.file, this.file.name);
+    }
+    //post call
+    this.containerService.uploadSampleAttachment(formData, this.sample.pk)
+    .subscribe(
+      (data: Attachment)=> {
+        //update sample attachment//need to return the sample object
+        this.updateSampleAttchmentUpload(data);
+        this.alertService.success('Attchament uploaded!', true)
+      },
+      () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
+    );
+  }
 }

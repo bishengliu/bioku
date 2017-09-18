@@ -312,12 +312,18 @@
               </a>
             <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
               <span class="nopadding no_margin" *ngFor="let attachment of sample.attachments;">
-                <a class="mini compact labeled icon ui button" target="_blank" href="{{appUrl + attachment.attachment}}">
-                  {{attachment.label != null ? 
-                    attachment.label > 20 ? (attachment.label | slice:0:20) + '..': attachment.label
-                    : null}}
-                  <i class="delete icon" suiPopup popupText="remove this attachment" (click)="attachment2Delete(attachment.pk, attachment.label)"></i>
-                </a>
+                <div class="ui mini icon buttons">
+                    <a class="ui basic button" (click)="attachment2Delete(attachment.pk, attachment.label)">
+                        <i class="delete icon red-text" suiPopup popupText="remove this attachment" ></i>
+                    </a>
+                    <a class="ui basic button" target="_blank" href="{{appUrl + attachment.attachment}}">
+                        <span class="teal-text" suiPopup popupText="{{attachment.description}}">
+                          {{ attachment.label != null ? 
+                          attachment.label > 20 ? (attachment.label | slice:0:20) + '..': attachment.label
+                          : null }}
+                        </span>                        
+                      </a>                    
+                </div>
               </span>
             </div>
             <div>
@@ -330,18 +336,24 @@
                     <input type="file" id="attachment" placeholder="new attachment" 
                         class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
                   </label>
-                  <button class="ui primary mini icon button"><i class="icon check"></i></button>
+                  <button class="ui primary mini icon button" (click)="performAttachmentUpload()"><i class="icon check"></i></button>
                   <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
                 </div>
                 <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
               </div>
+              <div class="field" *ngIf="attachment_upload==true">
+                  <div class="ui mini input wide-form">
+                      <input type="text" id="attchament_label" value="{{attchment_name}}" placeholder="attchament label" #attachmentLabel>
+                      <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
+                  </div>
+                </div>
               <!-- remove attchment -->
               <div *ngIf="attachment_delete==true">                
                 <div class="ui mini right floated icon buttons">
                     <button class="ui primary icon button" (click)="performAttachmentDelete()"><i class="icon check"></i></button>
                     <button class="ui basic icon button" (click)="cancelAttachmentDelete()"><i class="icon delete"></i></button>
                 </div>
-                <p class="small red-text ">delete {{ attachment_to_delete != null ? 
+                <p class="small red-text">delete {{ attachment_to_delete != null ? 
                     attachment_to_delete > 20 ? (attachment_to_delete | slice:0:20) + '..': attachment_to_delete
                     : null}}?</p>              
               </div>

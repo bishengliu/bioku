@@ -290,4 +290,11 @@ export class ContainerService{
                 .map((response: Response) =>response.json())          
                 .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    //upload sample attachment
+    uploadSampleAttachment(formData: FormData, sample_pk: number)
+    {
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "samples/" + sample_pk + "/upload_attachment/";
+        return this.http.post(query_url, formData, this.options_NoContentType) //do provide header accorrding to django
+        .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }
