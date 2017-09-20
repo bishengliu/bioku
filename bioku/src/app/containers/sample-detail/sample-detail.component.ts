@@ -344,7 +344,8 @@ export class SampleDetailComponent implements OnInit {
           //console.log(data);
           //update sample attachment//need to return the sample object
           this.updateSampleAttchmentUpload(data);
-          this.alertService.success('Attchament uploaded!', true)
+          this.hideAttachmentUpload();
+          this.alertService.success('Attchament uploaded!', true);       
         },
         () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
       );
