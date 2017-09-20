@@ -78,6 +78,7 @@ import { ContainerBoxMoveComponent } from './containers/container-box-move/conta
 import { SampleDetailComponent } from './containers/sample-detail/sample-detail.component';
 import { MoveSampleComponent } from './containers/move-sample/move-sample.component';
 import { StoreSampleComponent } from './containers/store-sample/store-sample.component';
+import { StoreSampleFormComponent } from './containers/store-sample-form/store-sample-form.component';
 
 
 @NgModule({
@@ -126,6 +127,7 @@ import { StoreSampleComponent } from './containers/store-sample/store-sample.com
     SampleDetailComponent,
     MoveSampleComponent,
     StoreSampleComponent,
+    StoreSampleFormComponent,
   ],
   imports: [
     BrowserModule,

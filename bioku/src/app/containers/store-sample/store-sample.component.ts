@@ -23,27 +23,19 @@ export class StoreSampleComponent implements OnInit {
   box_pos: string;
   private sub: any; //subscribe to params observable
   emptySelectedCells: Array<string> = new Array<string>();
-  Cells: Array<string> = new Array<string>();
-  adding: boolean = false;
-  user: User;
-  appUrl: string;
+  cells: Array<string> = new Array<string>();
   container: Container = null;
   box: Box = null;
-  sample: Sample = new Sample();
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
-    this.appUrl = this.appSetting.URL;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
     this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
-    this.Cells = [...this.localStorageService.emptySelectedCells];
+    this.cells = [...this.localStorageService.emptySelectedCells];
   }
   updateState(){
     let state = this.appStore.getState();
-    if (state.authInfo && state.authInfo.authUser){
-      this.user = state.authInfo.authUser;
-    }
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
@@ -51,17 +43,16 @@ export class StoreSampleComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
     }
   }
-
   toggleCell(slot: string){
-    if(this.Cells.indexOf(slot) === -1){
-      this.Cells = [...this.Cells, slot];
+    if(this.cells.indexOf(slot) === -1){
+      this.cells = [...this.cells, slot];
     }
     else{
-      this.Cells = [...this.Cells.filter((s: string)=>{return s.toLowerCase() !== slot.toLowerCase();})];
+      this.cells = [...this.cells.filter((s: string)=>{return s.toLowerCase() !== slot.toLowerCase();})];
     }
   }
   cellIsExcluded(slot: string){
-    return this.Cells.indexOf(slot) === -1 ? true : false
+    return this.cells.indexOf(slot) === -1 ? true : false
   }
   ngOnInit() {
     this.sub = this.route.params

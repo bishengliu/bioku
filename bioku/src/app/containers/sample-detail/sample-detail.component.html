@@ -307,11 +307,12 @@
           
         </td>
         <td class="">
-            <a *ngIf="attachment_upload== false" class="ui right floated primary mini compact icon basic button" (click)="displayAttachmentUpload()">
+            <a *ngIf="attachment_upload== false" class="ui right floated primary mini compact icon basic button" 
+                (click)="displayAttachmentUpload()">
                 <i class="cloud upload icon"></i>
               </a>
             <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
-              <span class="nopadding no_margin" *ngFor="let attachment of sample.attachments;">
+              <div class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
                 <div class="ui mini icon buttons">
                     <a class="ui basic button" (click)="attachment2Delete(attachment.pk, attachment.label)">
                         <i class="delete icon red-text" suiPopup popupText="remove this attachment" ></i>
@@ -322,9 +323,9 @@
                           attachment.label > 20 ? (attachment.label | slice:0:20) + '..': attachment.label
                           : null }}
                         </span>                        
-                      </a>                    
+                    </a>                                     
                 </div>
-              </span>
+              </div>
             </div>
             <div>
               <div class="ui divider" *ngIf="attachment_upload==true||attachment_delete==true"></div>
