@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
@@ -18,18 +19,25 @@ import { AppState } from '../../_redux/root/state';
   styleUrls: ['./store-sample.component.css']
 })
 export class StoreSampleComponent implements OnInit {
-  
+  ct_pk: number;
+  box_pos: string;
+  private sub: any; //subscribe to params observable
+  emptySelectedCells: Array<string> = new Array<string>();
+  Cells: Array<string> = new Array<string>();
   adding: boolean = false;
   user: User;
   appUrl: string;
   container: Container = null;
   box: Box = null;
+  sample: Sample = new Sample();
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
+    this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
+    this.Cells = [...this.localStorageService.emptySelectedCells];
   }
   updateState(){
     let state = this.appStore.getState();
@@ -44,7 +52,39 @@ export class StoreSampleComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  toggleCell(slot: string){
+    if(this.Cells.indexOf(slot) === -1){
+      this.Cells = [...this.Cells, slot];
+    }
+    else{
+      this.Cells = [...this.Cells.filter((s: string)=>{return s.toLowerCase() !== slot.toLowerCase();})];
+    }
   }
-
+  cellIsExcluded(slot: string){
+    return this.Cells.indexOf(slot) === -1 ? true : false
+  }
+  ngOnInit() {
+    this.sub = this.route.params
+    .mergeMap((params) =>{
+      this.ct_pk = +params['ct_pk'];
+      this.box_pos = params['box_pos'];
+      if(this.container != null){
+        return Observable.of(this.container);
+      }else{
+        return this.containerService.containerDetail(this.ct_pk)
+      }
+    })
+    .mergeMap((container: any)=>{
+      this.container = container;
+      if(this.box != null && this.box.box_position == this.box_pos){
+        return Observable.of(this.box);
+      }else{
+        return this.containerService.getContainerBox(this.ct_pk, this.box_pos);
+      }
+    })
+    .subscribe((box: Box)=>{this.box=box}, (err)=>{
+      console.log(err);
+      this.alertService.error('Something went wrong!', true)
+    });
+  }
 }

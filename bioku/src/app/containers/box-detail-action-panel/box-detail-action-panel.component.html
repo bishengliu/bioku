@@ -49,11 +49,14 @@
   <!--empty box cells: for box view only-->
   <div *ngIf="emptySelectedCells.length > 0" class="ui blue segment">
     <div class="ui labels">
-      <div class="ui label" *ngFor="let cell of emptySelectedCells"><span [style.color]="'#BDBDBD'">{{cell}}</span></div>
+      <div class="ui label" *ngFor="let cell of emptySelectedCells">
+        <i class="circle thin icon violet-text"></i>
+        <span>{{cell}}</span>
+      </div>
     </div>
     <div >
       <div class="ui divider"></div>
-      <button class="ui compact mini inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
+      <button class="ui fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
     </div> 
   </div> 
 </div>

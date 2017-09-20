@@ -15,3 +15,26 @@
       </a>
     </div>
 </div>
+<div class="ui grid container small_padding stackable">
+    <div class="ui top attached teal segment">
+        <p class="teal-text ui center aligned">
+          Store the same samples at the following positions to 
+          <em><strong>{{container.name}}</strong></em> /
+          <em><strong>box {{box_pos}}</strong></em>: 
+        </p>
+        <a class="ui label fix_label_width" 
+        [ngClass]="{'disabled': cellIsExcluded(cell), 'green_bordered':  !cellIsExcluded(cell) }"
+        *ngFor="let cell of emptySelectedCells;" 
+        (click)="toggleCell(cell)">
+          <i class="circle thin icon" [ngClass]="{'violet-text': !cellIsExcluded(cell) }"></i>
+          <span class="">{{box_pos}}/{{cell}}</span>
+        </a>
+      </div>
+      <div class="ui attached segment">
+        <p>This segment is attached on both sides</p>
+      </div>
+
+
+  <!-- <div class="four wide column"></div>
+  <div class="twelves wide column"></div> -->
+</div>
