@@ -317,7 +317,7 @@
                         <i class="delete icon red-text" suiPopup popupText="remove this attachment" ></i>
                     </a>
                     <a class="ui basic button" target="_blank" href="{{appUrl + attachment.attachment}}">
-                        <span class="teal-text" suiPopup popupText="{{attachment.description}}">
+                        <span class="teal-text" suiPopup popupText="{{attachment.description ? attachment.description : 'no description found!'}}">
                           {{ attachment.label != null ? 
                           attachment.label > 20 ? (attachment.label | slice:0:20) + '..': attachment.label
                           : null }}
@@ -340,6 +340,7 @@
                   <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
                 </div>
                 <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                <div *ngIf="attchament_error" class="ui mini negative message">Both attachment and label are required!</div>
               </div>
               <div class="field" *ngIf="attachment_upload==true">
                   <div class="ui mini input wide-form">

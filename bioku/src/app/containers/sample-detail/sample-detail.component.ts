@@ -78,7 +78,7 @@ export class SampleDetailComponent implements OnInit {
   file: File;
   attchment_name: string;
   attchament_is2large: boolean = false;
-
+  attchament_error: boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
@@ -301,6 +301,8 @@ export class SampleDetailComponent implements OnInit {
   validateAttachmentUpload(event: EventTarget) {    
     let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
     let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    this.attchament_is2large = false;
+    this.attchament_error = false;
     let files: FileList = target.files;
     this.file = files[0];
     //console.log(this.file);
@@ -316,29 +318,36 @@ export class SampleDetailComponent implements OnInit {
   }
 
   //perform upload
-  performAttachmentUpload(){
+  performAttachmentUpload(){ 
     //attachment info
     var label= this.attachmentLabelInput.nativeElement.value
     var description = this.attachmentDescriptionInput.nativeElement.value;
-    var obj ={
-      'sample_pk': this.sample.pk,
-      'label': label,
-      'description': description
+    if(!this.file || label==""){
+      //if attachment or lable is null
+      this.attchament_error = true;
     }
-    let formData: FormData = new FormData();
-    formData.append("obj", JSON.stringify(obj));
-    if (this.file){
-      formData.append("file", this.file, this.file.name);
-    }
-    //post call
-    this.containerService.uploadSampleAttachment(formData, this.sample.pk)
-    .subscribe(
-      (data: Attachment)=> {
-        //update sample attachment//need to return the sample object
-        this.updateSampleAttchmentUpload(data);
-        this.alertService.success('Attchament uploaded!', true)
-      },
-      () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
-    );
+    else{
+      var obj ={
+        'label': label,
+        'description': description
+      }
+      let formData: FormData = new FormData();
+      formData.append("obj", JSON.stringify(obj));
+      if (this.file){
+        formData.append("file", this.file, this.file.name);
+      }
+      //post call
+      this.containerService.uploadSampleAttachment(formData, this.sample.pk)
+      .map(data=>data.json())
+      .subscribe(
+        (data: Attachment)=> {
+          //console.log(data);
+          //update sample attachment//need to return the sample object
+          this.updateSampleAttchmentUpload(data);
+          this.alertService.success('Attchament uploaded!', true)
+        },
+        () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
+      );
+    }   
   }
 }
