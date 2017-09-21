@@ -98,7 +98,8 @@ export class Sample extends SampleGeneral {
     marker: string;
     has_glycerol_stock: boolean;
     strain: string;
-    //virus
+    //cell line
+    amount: string;
     passage_number: string;
     cell_amount: string;
     project: string;
@@ -110,7 +111,7 @@ export class Sample extends SampleGeneral {
     oligo_length: number;
     oligo_GC: number;
     target_sequence: string;
-    //cell line
+    //virus
     plasmid: string;
     titration_titer: string;
     titration_unit: string;

@@ -1,3 +1,376 @@
-<p>
-  {{slots}}
-</p>
+<form [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
+  <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
+    <i class="icon add circle"></i> SAVE SAMPLES 
+  </button>  
+  <div class="ui grid">
+      <div class="eight wide column">
+          <table class="ui sortable small striped compact padded single line table">
+              <tbody>
+                <!-- general -->
+                  <tr>
+                      <td class="requied">sample type</td>
+                      <td colspan="2">
+                        <div class="ui input wide-form">                        
+                          <select class="ui tiny tight_around dropdown" id="type" [formControl]="sampleForm.controls['type']" (change)="updateType($event)">
+                              <option value="-"> -- select -- </option>
+                              <option *ngFor="let option of all_sample_types" value="{{option}}">{{option}}</option>
+                          </select>
+                        </div>
+                        <div *ngIf="sampleForm.controls['type'].hasError('required') && sampleForm.controls['type'].touched" 
+                        class="ui mini negative message">Sample type is required</div>                               
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-'">
+                      <td>sample code</td>
+                      <td colspan="2">
+                          <div class="ui icon input wide-form">
+                            <input class="" type="text" maxlength="5" id="registration_code" [formControl]="sampleForm.controls['registration_code']" 
+                            placeholder="sample primary code ...">
+                          </div>                                              
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-'">
+                        <td>official name</td>
+                        <td colspan="2">
+                          <div class="ui icon input wide-form">
+                            <input class="" id="official_name" [formControl]="sampleForm.controls['official_name']" 
+                            placeholder=" sample official name ..." >
+                          </div>                                
+                        </td>
+                  </tr>
+                  <!-- virus-->
+                  <tr *ngIf="sample_type != '-' && sample_type=='VIRUS'">
+                      <td>plasmid</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="plasmid" [formControl]="sampleForm.controls['plasmid']"
+                          placeholder="update plasmid ..." >
+                        </div>                                
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type=='VIRUS'">
+                      <td>titration celltype</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="titration_cell_type" [formControl]="sampleForm.controls['titration_cell_type']" 
+                            placeholder="cell type ...">
+                        </div>                                
+                      </td>
+                  </tr>
+                  <!-- Oligo OR gRNA OLIGO-->
+                  <tr *ngIf="sample_type != '-' && (sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO')">
+                      <td>oligo name</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="oligo_name" [formControl]="sampleForm.controls['oligo_name']" 
+                          placeholder="oligo name ..." >
+                        </div>                                
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && (sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO')">
+                      <td>length & %GC</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="number" id="oligo_length" [formControl]="sampleForm.controls['oligo_length']" 
+                          placeholder="update oligo length ..." >
+                        </div>                                
+                      </td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="number" step="0.1" id="oligo_GC" [formControl]="sampleForm.controls['oligo_GC']" 
+                          placeholder="update oligo %GC ...">
+                        </div>                                
+                      </td>
+                  </tr>
+                  <!-- construct only -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='CONSTRUCT'">
+                      <td>clone nr. & 1st maxi</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="clone_number" [formControl]="sampleForm.controls['clone_number']" 
+                          placeholder="construct clone number ...">
+                        </div>                                              
+                      </td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="first_max" [formControl]="sampleForm.controls['first_max']" 
+                          placeholder="1st maxi ..." >
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type=='CONSTRUCT'">
+                      <td>feature & marker</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="feature" [formControl]="sampleForm.controls['feature']" 
+                          placeholder="construct feature ..." >
+                        </div>                                              
+                      </td>
+                      <td>
+                          <div class="ui icon input wide-form">
+                            <input class="" type="text" id="marker" [formControl]="sampleForm.controls['marker']" 
+                            placeholder="construct marker ..." >
+                          </div>                                              
+                        </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type=='CONSTRUCT'">
+                      <th>glycerol stock & strain</th>
+                      <td>
+                        <div class="ui input wide-form">
+                            <div class="ui slider checkbox">
+                                <input type="checkbox" id="has_glycerol_stock" [formControl]="sampleForm.controls['has_glycerol_stock']">
+                                <label for="glycerol_stock"><small>YES</small></label>
+                            </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="ui input wide-form">
+                          <input class="" type="text" id="strain" [formControl]="sampleForm.controls['strain']" 
+                          placeholder="strain ...">
+                        </div>
+                      </td>
+                  </tr>
+                  <!-- cell line only  -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='CELL'">
+                      <td>passage nr. & amount</td>
+                      <td class="ten wide">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="passage_number" [formControl]="sampleForm.controls['passage_number']" 
+                          placeholder="passage number ...">
+                        </div>                                              
+                      </td>
+                      <td class="ten wide">
+                          <div class="ui icon input wide-form">
+                            <input class="" type="text" id="cell_amount" [formControl]="sampleForm.controls['cell_amount']" 
+                            placeholder=" amount ...">
+                          </div>                                              
+                      </td>
+                  </tr>
+                  <!-- pathology only -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='TISSUE'">
+                      <td>pathology code</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="pathology_code" [formControl]="sampleForm.controls['pathology_code']" 
+                          placeholder="update sample pathology code ...">
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <!-- general -->
+                  <tr *ngIf="sample_type != '-'">
+                      <td>freezing code</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="freezing_code" [formControl]="sampleForm.controls['freezing_code']" 
+                          placeholder="sample freezing code ...">
+                        </div>                                              
+                      </td>
+                  </tr>                  
+                  <tr *ngIf="sample_type != '-'">
+                        <td>comments</td>
+                        <td colspan="2" class="ui form">
+                          <div class="field wide-form">
+                            <textarea class=""
+                            rows="2"
+                            id="description" [formControl]="sampleForm.controls['description']" 
+                            placeholder="update sample description ...">
+                            </textarea>
+                          </div>                                              
+                        </td>
+                  </tr>
+              </tbody>
+          </table>       
+      </div>
+      <div class="eight wide column">
+          <table class="ui sortable small striped compact padded single line table">
+              <tbody>
+                <!-- general -->
+                  <tr *ngIf="sample_type != '-'">
+                      <td class="requied">sample name</td>
+                      <td colspan="2">
+                        <div class="ui input wide-form">
+                          <input class="" type="text" id="name" [formControl]="sampleForm.controls['name']" placeholder=" sample name ...">                        
+                        </div> 
+                        <div *ngIf="sampleForm.controls['name'].hasError('required') && sampleForm.controls['name'].touched" 
+                        class="ui mini negative message">Sample name is required</div>                                
+                      </td>
+                  </tr>                 
+                  <tr *ngIf="sample_type != '-'">
+                      <td>tag </td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">                           
+                          <input class="" type="text" id="tag" [formControl]="sampleForm.controls['tag']" 
+                          placeholder="sample tag ..." >
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type !='CELL' && sample_type !=='VIRUS'">
+                      <td>quantity & unit</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="numner" step=0.001 id="quantity" [formControl]="sampleForm.controls['quantity']"
+                          placeholder="sample quantity ..." >
+                        </div>                                              
+                      </td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="quantity_unit" [formControl]="sampleForm.controls['quantity_unit']"
+                          placeholder="unit ..." >
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <!-- virus-->
+                  <tr *ngIf="sample_type != '-' && sample_type=='VIRUS'">
+                      <td>titer & unit</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="titration_titer" [formControl]="sampleForm.controls['titration_titer']"
+                          placeholder="titer ...">            
+                        </div>                                
+                      </td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="titration_unit" [formControl]="sampleForm.controls['titration_unit']"
+                          placeholder="unit ...">              
+                        </div>  
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type=='VIRUS'">
+                      <td>titration code</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="titration_code" [formControl]="sampleForm.controls['titration_code']" 
+                          placeholder="titration code ..." >
+                        </div>                                
+                      </td>
+                  </tr>
+                  <!-- Oligo OR gRNA OLIGO-->
+                  <tr *ngIf="sample_type != '-' && (sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO')">
+                      <td>oligo sequence</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="oligo_sequence" [formControl]="sampleForm.controls['oligo_sequence']" 
+                          placeholder="update oligo sequence ...">
+                        </div>                                
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && (sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO')">
+                      <td>target sequence</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="target_sequence" [formControl]="sampleForm.controls['target_sequence']" 
+                          placeholder="update oligo target sequence ...">
+                        </div>                                
+                      </td>
+                  </tr>
+                  <!-- construct only -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='CONSTRUCT'">
+                      <td>260/280 & R.E. analysis</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="number" step="0.01" id="against_260_280" [formControl]="sampleForm.controls['against_260_280']" 
+                          placeholder="260/280 ..." >
+                        </div>                                              
+                      </td>
+                      <td>
+                          <div class="ui icon input wide-form">
+                            <input class="" type="text" id="r_e_analysis" [formControl]="sampleForm.controls['r_e_analysis']" 
+                            placeholder="R.E. analysis ..." >
+                          </div>                                              
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-' && sample_type=='CONSTRUCT'">
+                      <td>backbone & insert</td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="backbone" [formControl]="sampleForm.controls['backbone']" 
+                          placeholder="backbone ..." >
+                        </div>                                              
+                      </td>
+                      <td>
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="insert" [formControl]="sampleForm.controls['insert']" 
+                          placeholder="insert ..." >
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <!-- cell line only  -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='CELL'">
+                      <td class="">project & creator</td>
+                      <td class="ten wide">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="project" [formControl]="sampleForm.controls['project']" 
+                          placeholder="project ...">
+                        </div>                                              
+                      </td>
+                      <td class="ten wide">
+                          <div class="ui icon input wide-form">
+                            <input class="" type="text" id="creator" [formControl]="sampleForm.controls['creator']" 
+                            placeholder=" creator ...">
+                          </div>                                              
+                      </td>
+                  </tr>
+                  <!-- pathology only -->
+                  <tr *ngIf="sample_type != '-' && sample_type=='TISSUE'">
+                      <td>tissue</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="tissue" [formControl]="sampleForm.controls['tissue']" 
+                          placeholder="sample tissue ...">
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <!-- general -->
+                  <tr *ngIf="sample_type != '-'">
+                      <td>external code</td>
+                      <td colspan="2">
+                        <div class="ui icon input wide-form">
+                          <input class="" type="text" id="reference_code" [formControl]="sampleForm.controls['reference_code']" 
+                          placeholder="reference to external or another sample ...">
+                        </div>                                              
+                      </td>
+                  </tr>
+                  <tr *ngIf="sample_type != '-'">
+                      <td>attachments </td>
+                      <td colspan="2">
+                         <!-- upload -->
+                         <div class="field">
+                            <div class="ui mini input right action wide-form">
+                              <input type="text" id="attachment_name" readonly placeholder="click browse to find the attachment" value="{{attchment_name}}" #attachmentName>
+                              <label class="ui mini secondary button">Browse
+                                <input type="file" id="attachment" placeholder="new attachment" 
+                                    class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
+                              </label>
+                              <button class="ui primary mini icon button" (click)="performAttachmentUpload()"><i class="icon check"></i></button>
+                              <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
+                            </div>
+                            <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                            <div *ngIf="attchament_error" class="ui mini negative message">Both attachment and label are required!</div>
+                          </div>
+                          <div class="field">
+                              <div class="ui mini input wide-form">
+                                  <input type="text" id="attchament_label" value="{{attchment_name}}" placeholder="attchament label" #attachmentLabel>
+                                  <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
+                              </div>
+                          </div>
+                        </td>
+                  </tr>
+              </tbody>
+          </table>            
+      </div>
+  </div>
+</form>
+
+<div class="ui grid" *ngIf="sample_type != '-'">
+  <div class="eight wide column">
+      <div><span class="header">freezing date: </span></div>
+      <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
+      (ngModelChange)="updateSampleDate($event)"></my-date-picker>
+  </div>
+  <div class="eight wide column" *ngIf="sample_type != '-'">
+      <div><span class="header">Sample Color: </span></div>
+      <color-picker [(ngModel)]="color" (ngModelChange)="updateSampleColor($event)" 
+      [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
+  </div>
+</div>
+

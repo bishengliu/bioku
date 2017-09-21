@@ -88,7 +88,7 @@
         <td class="">quantity</td>
         <td class="ten wide">
           <div class="ui icon input wide-form">
-            <input class="" type="numner" min="1" 
+            <input class="" type="numner" step=0.001 
             [(ngModel)]="sample.quantity" placeholder="sample quantity ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'quantity', true)">
             <input class="" type="text" 
@@ -152,7 +152,7 @@
           <th class="six wide">length & %GC</th>
           <td class="ten wide">
             <div class="ui icon input wide-form">
-              <input class="" type="text" [(ngModel)]="sample.oligo_length" placeholder="update oligo length ..." 
+              <input class="" type="number" [(ngModel)]="sample.oligo_length" placeholder="update oligo length ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_length', true)">
               <input class="" type="number" step="0.1" [(ngModel)]="sample.oligo_GC" placeholder="update oligo %GC ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_GC', true)">
@@ -235,8 +235,8 @@
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.passage_number" placeholder="passage number ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'passage_number', false)">
-              <input class="" type="text" [(ngModel)]="sample.amount" placeholder=" amount ..." 
-              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'amount', false)">
+              <input class="" type="text" [(ngModel)]="sample.cell_amount" placeholder=" amount ..." 
+              (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'cell_amount', false)">
             </div>                                              
           </td>
       </tr>
