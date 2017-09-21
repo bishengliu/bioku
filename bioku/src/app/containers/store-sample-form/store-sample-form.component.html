@@ -182,7 +182,7 @@
           </table>       
       </div>
       <div class="eight wide column">
-          <table class="ui sortable small striped compact padded single line table">
+          <table class="ui sortable small striped compact padded single line table" *ngIf="sample_type != '-'">
               <tbody>
                 <!-- general -->
                   <tr *ngIf="sample_type != '-'">
@@ -341,8 +341,6 @@
                                 <input type="file" id="attachment" placeholder="new attachment" 
                                     class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
                               </label>
-                              <button class="ui primary mini icon button" (click)="performAttachmentUpload()"><i class="icon check"></i></button>
-                              <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
                             </div>
                             <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                             <div *ngIf="attchament_error" class="ui mini negative message">Both attachment and label are required!</div>

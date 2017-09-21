@@ -35,7 +35,7 @@ export class StoreSampleFormComponent implements OnInit {
   //ALL SAMPLE TYPES
   all_sample_types: Array<String> = new Array<String>();
   freezing_date = {};
-  color: string = null;
+  color: string = '#000000';
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
       // other options...
@@ -122,14 +122,6 @@ export class StoreSampleFormComponent implements OnInit {
     }
   }
 
-  parseFreezingDate(date: string){
-    let freezing_date = {};
-    if(date){
-      let dArray = date.split('-');
-      freezing_date ={ date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]} };}
-    return freezing_date;
-  }
-
   updateType(value:any){
     this.sample_type = value.target.value;
     console.log(this.sample_type);
@@ -154,14 +146,18 @@ export class StoreSampleFormComponent implements OnInit {
 
   updateSampleDate(value:any){
     this.freezing_date = value.formatted;
+    console.log(this.freezing_date);
   }
 
   updateSampleColor(value:any){
     this.color = value;
+    console.log(this.color);
   }
 
   onCreate(values: any){
     console.log('clicked...');
+    values.color = this.color;
+    values.freezing_date = this.freezing_date;
     console.log(values);
   }
 }
