@@ -190,43 +190,31 @@ export class StoreSampleFormComponent implements OnInit {
   
       let formData: FormData = new FormData();
       formData.append("obj", JSON.stringify(values));
+      formData.append("slots", JSON.stringify(this.slots))
       if (this.file){
         formData.append("file", this.file, this.file.name);
         var attachment_info ={
           'label': label,
+          'attachment_name': this.attchment_name,
           'description': description}
         formData.append("attachment_info", JSON.stringify(attachment_info));
       }
-      //save the data to the server
-      let count: number = 0;
       this.form_valid = true;
       this.saving = true;
-      this.slots.forEach((slot, i)=>{
-        count++;
-        this.containerService.addSamples(formData, this.container.pk, this.box.box_position)
-        .subscribe(()=>{
-          this.samples_saved.push(slot);
-          this.calProgress();
-          if(count == this.slots.length){
-            //after saving
-            this.localStorageService.emptySelectedCells = [];
-            this.saving = false;
-            this.alertService.success("Samples are stored successfully!", true);
-            this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
-          }         
-        }, 
-        (err)=>{
-          this.samples_failed.push(slot);
-          this.calProgress();
-          if(count == this.slots.length){
-            //after saving
-            this.localStorageService.emptySelectedCells = [];
-            this.saving = false;
-            this.alertService.error("Something went wrong, failed to add boxes: " + this.samples_failed + "!", true);
-            this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
-          }
-          console.log(err);
-        });
+      this.containerService.addSamples(formData, this.container.pk, this.box.box_position)
+      .subscribe(()=>{
+        //after saving
+        this.localStorageService.emptySelectedCells = [];
+        this.saving = false;
+        this.alertService.success("Samples are stored successfully!", true);
+        this.router.navigate(['/containers', this.container.pk, this.box.box_position]);       
+      }, 
+      (err)=>{
+        //after saving
+        this.localStorageService.emptySelectedCells = [];
+        this.saving = false;
+        this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
+        console.log(err);
       });
     }    
   }

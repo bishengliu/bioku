@@ -29,7 +29,7 @@
                       <td>sample code</td>
                       <td colspan="2">
                           <div class="ui icon input wide-form">
-                            <input class="" type="text" maxlength="5" id="registration_code" [formControl]="sampleForm.controls['registration_code']" 
+                            <input class="" type="text" maxlength="20" id="registration_code" [formControl]="sampleForm.controls['registration_code']" 
                             placeholder="sample primary code ...">
                           </div>                                              
                       </td>
@@ -204,7 +204,7 @@
                       <td>tag </td>
                       <td colspan="2">
                         <div class="ui icon input wide-form">                           
-                          <input class="" type="text" id="tag" [formControl]="sampleForm.controls['tag']" 
+                          <input class="" type="text" maxlength="5" id="tag" [formControl]="sampleForm.controls['tag']" 
                           placeholder="sample tag ..." >
                         </div>                                              
                       </td>
@@ -378,16 +378,8 @@
 
 
 <!-- saving-->
-<div *ngIf="saving == true">
-    <div class="ui segment">
-        <sui-progress class="active" [value]="50" [maximum]="100" [precision]="0"> Saving Samples ... </sui-progress>
-        <div class="ui mini labels">
-            <div class="ui label" *ngFor="let slot of slots" [ngClass]="{'red': sampleFailed(slot), 'green': sampleSaved(slot)}">
-                <span class="">{{box.box_position}}/{{slot}}</span>
-                <i class="spinner loading icon" *ngIf="isSaving(slot)"></i>
-                <i class="teal-text checkmark icon" *ngIf="sampleSaved(slot)"></i>
-                <i class="red-text remove icon" *ngIf="sampleFailed(slot)"></i>             
-            </div>        
-          </div>
-    </div>
+<!--loading info-->
+<div *ngIf="saving == true" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">saving the sample into box ... </p>
 </div>
