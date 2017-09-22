@@ -264,16 +264,13 @@
       </tr>
       <tr *ngIf="sample.type==='TISSUE'">
         <td class="">tissue</td>
-        <td class="">
-            <a class="ui right floated"><i class="edit icon grey-text"></i></a>
-            <div *ngIf="sample.tissues != null && sample.tissues.length > 0">
-              <p class="nopadding no_margin" *ngFor="let tissue of sample.tissues">
-                {{tissue.tissue != null ? tissue.tissue +' (' + tissue.system + ')' : ""}}
-              </p>
-            </div>   
+        <td class="ten wide">
+            <div class="ui icon input wide-form">
+                <input class="" type="text" [(ngModel)]="sample.tissue" placeholder="update sample tissue ..." 
+                (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'tissue', false)">
+            </div> 
           </td>
       </tr>
-
       <!-- not occupied -->
       <tr *ngIf="!sample.occupied"><td class="">date out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
       <!-- general -->
@@ -303,9 +300,7 @@
           </td>
       </tr> 
       <tr>
-        <td class="">attachments
-          
-        </td>
+        <td class="">attachments</td>
         <td class="">
             <a *ngIf="attachment_upload== false" class="ui right floated primary mini compact icon basic button" 
                 (click)="displayAttachmentUpload()">

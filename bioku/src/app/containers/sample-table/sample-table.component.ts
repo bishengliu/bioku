@@ -8,7 +8,7 @@ import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
-import { Sample, Attachment, Tissue } from '../../_classes/Sample';
+import { Sample, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';

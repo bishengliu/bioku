@@ -6,7 +6,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
-import { Sample, SampleFilter, Attachment, Tissue } from '../../_classes/Sample';
+import { Sample, SampleFilter, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
 //redux
@@ -78,15 +78,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
             if (attachments != null && attachments.length > 0){
               return true;}
           }
-        }
-        else if(sampleFilter.key =="tissue"){
-          //get tissues or systems
-          if (e.tissues != null && e.tissues.length > 0){
-            let tissues:Array<Tissue> = [];
-            tissues = e.tissues.filter((t: Tissue)=> t.tissue.toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1 || t.system.toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1);
-            if(tissues != null && tissues.length >0){
-              return true;}
-          }          
         }
         else if(sampleFilter.key=="quantity"){
           if(e.quantity === +sampleFilter.value) {

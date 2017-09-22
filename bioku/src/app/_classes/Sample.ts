@@ -1,11 +1,11 @@
 import { User } from './User';
 
-export class Tissue {
-    pk: number;
-    sample: string;
-    system: string;
-    tissue: string;
-}
+// export class Tissue {
+//     pk: number;
+//     sample: string;
+//     system: string;
+//     tissue: string;
+// }
 
 export class Attachment {
     pk: number;
@@ -83,7 +83,8 @@ export class SampleVirus extends SampleGeneral {
 
 export class SampleTissue extends SampleGeneral{
     pathology_code: string;
-    tissues: Array<Tissue>;
+    //tissues: Array<Tissue>;
+    tissue: string;
 }
 
 export class Sample extends SampleGeneral {
@@ -119,7 +120,8 @@ export class Sample extends SampleGeneral {
     titration_code: string;
     //tissue
     pathology_code: string;
-    tissues: Array<Tissue>;
+    tissue: string;
+    //tissues: Array<Tissue>;
 }
 
 export class SampleFilter {

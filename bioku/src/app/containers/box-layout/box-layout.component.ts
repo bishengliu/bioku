@@ -9,7 +9,7 @@ import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
-import { Sample, Attachment, Tissue } from '../../_classes/Sample';
+import { Sample, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  AlertService } from '../../_services/AlertService';
