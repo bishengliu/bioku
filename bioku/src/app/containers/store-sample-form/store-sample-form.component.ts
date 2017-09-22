@@ -30,6 +30,9 @@ export class StoreSampleFormComponent implements OnInit {
   file: File;
   attchment_name: string;
   attchament_is2large: boolean = false;
+  //for attchment upload
+  @ViewChild('attachmentLabel') attachmentLabelInput: ElementRef;
+  @ViewChild('attachmentDescription') attachmentDescriptionInput: ElementRef;
   //SAPMPLE TYPE
   sample_type: string = '-';
   //ALL SAMPLE TYPES
@@ -159,5 +162,18 @@ export class StoreSampleFormComponent implements OnInit {
     values.color = this.color;
     values.freezing_date = this.freezing_date;
     console.log(values);
+    var label= this.attachmentLabelInput.nativeElement.value
+    var description = this.attachmentDescriptionInput.nativeElement.value; 
+
+    let formData: FormData = new FormData();
+    formData.append("obj", JSON.stringify(values));
+    if (this.file){
+      formData.append("file", this.file, this.file.name);
+      var attachment_info ={
+        'label': label,
+        'description': description}
+      formData.append("attachment_info", JSON.stringify(attachment_info));
+    }
+
   }
 }

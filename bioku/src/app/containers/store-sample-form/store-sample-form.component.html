@@ -331,7 +331,7 @@
                       </td>
                   </tr>
                   <tr *ngIf="sample_type != '-'">
-                      <td>attachments </td>
+                      <td>attachment </td>
                       <td colspan="2">
                          <!-- upload -->
                          <div class="field">
@@ -343,7 +343,6 @@
                               </label>
                             </div>
                             <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
-                            <div *ngIf="attchament_error" class="ui mini negative message">Both attachment and label are required!</div>
                           </div>
                           <div class="field">
                               <div class="ui mini input wide-form">
@@ -351,14 +350,14 @@
                                   <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
                               </div>
                           </div>
-                        </td>
+                      </td>
                   </tr>
               </tbody>
           </table>            
       </div>
   </div>
 </form>
-
+<!--date and color-->
 <div class="ui grid" *ngIf="sample_type != '-'">
   <div class="eight wide column">
       <div><span class="header">freezing date: </span></div>
