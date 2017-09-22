@@ -297,4 +297,11 @@ export class ContainerService{
         return this.http.post(query_url, formData, this.options_NoContentType) //do provide header accorrding to django
         .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+
+    //save add samples
+    addSamples(formData: FormData, container_pk: number, box_position: string){
+        const create_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS+ container_pk + "/" + box_position + "/";
+        return this.http.post(create_container_url, formData, this.options_NoContentType) //do provide header accorrding to django
+                .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }

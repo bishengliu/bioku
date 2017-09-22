@@ -9,6 +9,7 @@ import { Sample } from '../../_classes/Sample';
 import { Container } from '../../_classes/Container';
 import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 //custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 //mydatepicker
@@ -24,7 +25,7 @@ export class StoreSampleFormComponent implements OnInit {
   @Input() cells: string;
   slots: Array<string> = new Array<string>();
   @Input() container: Container;
-  @Input() box: Container;
+  @Input() box: Box;
   appUrl: string;
   //upload
   file: File;
@@ -56,10 +57,15 @@ export class StoreSampleFormComponent implements OnInit {
     height: 12,
     borderRadius: 2};
   //form group
+  form_valid: boolean = true;
   sampleForm: FormGroup;
-
+  saving: boolean = false;
+  samples_saved: Array<string> = new Array<string>();
+  samples_failed: Array<string> = new Array<string>();
+  progress_value: number = 0;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private cValidators: CustomFormValidators,
-              private alertService: AlertService, private router: Router, private route: ActivatedRoute, fb: FormBuilder,) {
+              private alertService: AlertService, private router: Router, private route: ActivatedRoute, 
+              fb: FormBuilder, private localStorageService: LocalStorageService) {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
@@ -115,7 +121,6 @@ export class StoreSampleFormComponent implements OnInit {
       'tissue': [, ]
       });
   }
-
   ngOnInit() {}
   ngOnChanges(){
     //positions
@@ -157,23 +162,72 @@ export class StoreSampleFormComponent implements OnInit {
     console.log(this.color);
   }
 
+  sampleSaved(slot: string){
+    return this.samples_saved.indexOf(slot) == -1 ? false : true;
+  }
+  sampleFailed(slot: string){
+    return this.samples_failed.indexOf(slot) == -1 ? false : true;
+  }
+  isSaving(slot: string){
+    return this.sampleSaved(slot) == false && this.sampleFailed(slot) == false ? true : false;
+  }
+  //cal progress_value
+  calProgress(){
+    return Math.floor((this.samples_saved.length + this.samples_failed.length) / this.slots.length);
+  }
+
   onCreate(values: any){
     console.log('clicked...');
-    values.color = this.color;
-    values.freezing_date = this.freezing_date;
-    console.log(values);
-    var label= this.attachmentLabelInput.nativeElement.value
-    var description = this.attachmentDescriptionInput.nativeElement.value; 
-
-    let formData: FormData = new FormData();
-    formData.append("obj", JSON.stringify(values));
-    if (this.file){
-      formData.append("file", this.file, this.file.name);
-      var attachment_info ={
-        'label': label,
-        'description': description}
-      formData.append("attachment_info", JSON.stringify(attachment_info));
+    if(values.name == null || values.type == '-'){
+      this.form_valid = false;
     }
-
+    else{
+      values.color = this.color;
+      values.freezing_date = this.freezing_date;
+      console.log(values);
+      var label= this.attachmentLabelInput.nativeElement.value
+      var description = this.attachmentDescriptionInput.nativeElement.value; 
+  
+      let formData: FormData = new FormData();
+      formData.append("obj", JSON.stringify(values));
+      if (this.file){
+        formData.append("file", this.file, this.file.name);
+        var attachment_info ={
+          'label': label,
+          'description': description}
+        formData.append("attachment_info", JSON.stringify(attachment_info));
+      }
+      //save the data to the server
+      let count: number = 0;
+      this.form_valid = true;
+      this.saving = true;
+      this.slots.forEach((slot, i)=>{
+        count++;
+        this.containerService.addSamples(formData, this.container.pk, this.box.box_position)
+        .subscribe(()=>{
+          this.samples_saved.push(slot);
+          this.calProgress();
+          if(count == this.slots.length){
+            //after saving
+            this.localStorageService.emptySelectedCells = [];
+            this.saving = false;
+            this.alertService.success("Samples are stored successfully!", true);
+            this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
+          }         
+        }, 
+        (err)=>{
+          this.samples_failed.push(slot);
+          this.calProgress();
+          if(count == this.slots.length){
+            //after saving
+            this.localStorageService.emptySelectedCells = [];
+            this.saving = false;
+            this.alertService.error("Something went wrong, failed to add boxes: " + this.samples_failed + "!", true);
+            this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
+          }
+          console.log(err);
+        });
+      });
+    }    
   }
 }

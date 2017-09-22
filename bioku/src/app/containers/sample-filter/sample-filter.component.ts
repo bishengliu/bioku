@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '
 import { Observable } from 'rxjs';
 import { SampleFilter } from '../../_classes/Sample';
 
-
-
 @Component({
   selector: 'app-sample-filter',
   templateUrl: './sample-filter.component.html',

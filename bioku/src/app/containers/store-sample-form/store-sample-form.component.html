@@ -1,8 +1,13 @@
+<div class="ui negative message" *ngIf="!form_valid">
+    <div class="header">"sample name" and "sample type" are required! </div>
+</div>
+
+
 <form [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
   <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon add circle"></i> SAVE SAMPLES 
   </button>  
-  <div class="ui grid">
+  <div class="ui grid" *ngIf="saving == false">
       <div class="eight wide column">
           <table class="ui sortable small striped compact padded single line table">
               <tbody>
@@ -358,7 +363,7 @@
   </div>
 </form>
 <!--date and color-->
-<div class="ui grid" *ngIf="sample_type != '-'">
+<div class="ui grid" *ngIf="sample_type != '-' && saving == false">
   <div class="eight wide column">
       <div><span class="header">freezing date: </span></div>
       <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
@@ -371,3 +376,18 @@
   </div>
 </div>
 
+
+<!-- saving-->
+<div *ngIf="saving == true">
+    <div class="ui segment">
+        <sui-progress class="active" [value]="50" [maximum]="100" [precision]="0"> Saving Samples ... </sui-progress>
+        <div class="ui mini labels">
+            <div class="ui label" *ngFor="let slot of slots" [ngClass]="{'red': sampleFailed(slot), 'green': sampleSaved(slot)}">
+                <span class="">{{box.box_position}}/{{slot}}</span>
+                <i class="spinner loading icon" *ngIf="isSaving(slot)"></i>
+                <i class="teal-text checkmark icon" *ngIf="sampleSaved(slot)"></i>
+                <i class="red-text remove icon" *ngIf="sampleFailed(slot)"></i>             
+            </div>        
+          </div>
+    </div>
+</div>
