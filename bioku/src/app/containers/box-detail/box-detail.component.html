@@ -48,13 +48,13 @@
   </div>
   <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
     class="five wide column ui sticky">
-      <app-box-detail-action-panel 
+      <app-box-detail-action-panel ng2-sticky style="float: right; margin-right: 20px;"
       [selectedSamples]="selectedSamples.toString()" 
       [selectedCells]="selectedCells.toString()">
       </app-box-detail-action-panel>
   </div>
 </div>
-
+ 
 <!--no record FOR LIST VIEW-->
 <div *ngIf="loading==false && !box_view && (searchedSamples== null || searchedSamples.length == 0)" class="ui tertiary segment container center aligned">
     <p class="">no sample found! You can switch to box overview to add sample(s). </p>

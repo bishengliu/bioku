@@ -15,7 +15,8 @@ import { LocalStorageService } from '../../_services/LocalStorageService';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
-
+//ng2-sticky
+import { Ng2StickyModule } from 'ng2-sticky';
 @Component({
   selector: 'app-container-overview',
   templateUrl: './container-overview.component.html',
