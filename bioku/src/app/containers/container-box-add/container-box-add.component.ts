@@ -126,7 +126,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
   }
   save_add_box(){
     this.adding = true;
-    console.log(this.add_boxes);
+    //console.log(this.add_boxes);
     let boxes  = this.filterAddBoxes(this.add_boxes);
     if(boxes.length == 0){
       this.localStorageService.boxAvailabilities = [];

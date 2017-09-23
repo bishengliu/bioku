@@ -60,9 +60,6 @@ export class StoreSampleFormComponent implements OnInit {
   form_valid: boolean = true;
   sampleForm: FormGroup;
   saving: boolean = false;
-  samples_saved: Array<string> = new Array<string>();
-  samples_failed: Array<string> = new Array<string>();
-  progress_value: number = 0;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private cValidators: CustomFormValidators,
               private alertService: AlertService, private router: Router, private route: ActivatedRoute, 
               fb: FormBuilder, private localStorageService: LocalStorageService) {
@@ -132,7 +129,6 @@ export class StoreSampleFormComponent implements OnInit {
 
   updateType(value:any){
     this.sample_type = value.target.value;
-    console.log(this.sample_type);
   }
   //check upload photo
   validateAttachmentUpload(event: EventTarget) {
@@ -154,26 +150,14 @@ export class StoreSampleFormComponent implements OnInit {
 
   updateSampleDate(value:any){
     this.freezing_date = value.formatted;
-    console.log(this.freezing_date);
   }
 
   updateSampleColor(value:any){
     this.color = value;
-    console.log(this.color);
   }
-
-  sampleSaved(slot: string){
-    return this.samples_saved.indexOf(slot) == -1 ? false : true;
-  }
-  sampleFailed(slot: string){
-    return this.samples_failed.indexOf(slot) == -1 ? false : true;
-  }
-  isSaving(slot: string){
-    return this.sampleSaved(slot) == false && this.sampleFailed(slot) == false ? true : false;
-  }
-  //cal progress_value
-  calProgress(){
-    return Math.floor((this.samples_saved.length + this.samples_failed.length) / this.slots.length);
+  //route force refrsh
+  forceRefresh(){
+    this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
   }
 
   onCreate(values: any){
@@ -199,20 +183,19 @@ export class StoreSampleFormComponent implements OnInit {
       this.form_valid = true;
       this.saving = true;
       this.containerService.addSamples(formData, this.container.pk, this.box.box_position)
-      .subscribe((data: Array<Sample>)=>{
-        console.log(data);
+      .subscribe((data: any)=>{
         //after saving
         this.localStorageService.emptySelectedCells = [];
         this.saving = false;
-        this.alertService.success("Samples are stored successfully!", true);
-        this.router.navigate(['/containers', this.container.pk, this.box.box_position]);       
+        this.alertService.success("Samples at " + data.slots + " are stored successfully!", true);
+        this.forceRefresh();    
       }, 
       (err)=>{
         //after saving
         this.localStorageService.emptySelectedCells = [];
         this.saving = false;
         this.alertService.error("Failed to store the new samples!", true);
-        this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
+        this.forceRefresh();   
         console.log(err);
       });
     }    

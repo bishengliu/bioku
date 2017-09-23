@@ -1,12 +1,12 @@
-<div class="ui negative message" *ngIf="!form_valid">
+<div class="ui negative message" *ngIf="!form_valid && !saving">
     <div class="header">"sample name" and "sample type" are required! </div>
 </div>
 
-<form [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
+<form *ngIf="!saving" [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
   <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon add circle"></i> SAVE SAMPLES 
   </button>  
-  <div class="ui grid" *ngIf="saving == false">
+  <div class="ui grid">
       <div class="eight wide column">
           <table class="ui sortable small striped compact padded single line table">
               <tbody>
@@ -362,7 +362,7 @@
   </div>
 </form>
 <!--date and color-->
-<div class="ui grid" *ngIf="sample_type != '-' && saving == false">
+<div class="ui grid" *ngIf="sample_type != '-' && !saving">
   <div class="eight wide column">
       <div><span class="header">freezing date: </span></div>
       <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
@@ -379,5 +379,5 @@
 <!--loading info-->
 <div *ngIf="saving" class="ui loading segment center aligned">
   <br/><br/><br/><br/>
-  <p class="brown-text">saving the sample into box ... </p>
+  <p class="brown-text"> saving samples into box ... </p>
 </div>
