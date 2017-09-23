@@ -19,7 +19,7 @@ export class SampleFilterComponent implements OnInit {
   @ViewChild('filterValue') filterValue:ElementRef;
 
   constructor() {
-    this.keywords = [ 'Sample Type', 'Sample Name', 'Sample Code', 'Sample Tag', 'Comments'];
+    this.keywords = [ 'by sample type', 'by sample name', 'by sample code', 'by sample tag', 'by sample comments'];
     this.parsedKeys = [ 'type', 'name', 'registration_code', 'tag', 'description'];
   }
   

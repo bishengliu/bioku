@@ -62,6 +62,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
     this.loading = true;
+    //empty all the arrays
+    this.selectedCells = [];
+    this.selectedSamples = [];
     //restore the complete samples for list view
     //hard copy of the array
     this.searchedSamples = this.samples.filter((e:Sample) => e.pk != null);

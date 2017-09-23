@@ -23,7 +23,9 @@
           <div *ngFor="let sample of pickerSamples(h,v)">            
             <div>
               <span [style.color]="sample.color"> {{ (sample.name.length>10)? (sample.name | slice:0:10)+'..':(sample.name) }} </span>
-              <span *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</span>  
+              <span *ngIf="sample.tag" class="ui mini circular blue label">
+                {{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5): sample.tag}}
+              </span>  
             </div>  
             <div class="small">
               {{sample.registration_code}}

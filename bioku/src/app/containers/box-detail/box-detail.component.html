@@ -32,10 +32,10 @@
     <br/><br/><br/><br/>
     <p class="brown-text">loading box samples ... </p>
 </div>
-<!--after loading-->
+<!--after loading twelve-->
 <div class="ui small_padding stackable grid" *ngIf="loading==false">
-  <div class="ten wide tablet twelve wide computer column" >
-    <app-sample-table *ngIf="!box_view && searchedSamples.length > 0 " 
+  <div class="twelve wide column">
+    <app-sample-table *ngIf="!box_view && searchedSamples.length > 0" 
       [samples]="searchedSamples" 
       (sampleSelected)="captureSampleSelected($event)">
     </app-sample-table> 
@@ -47,7 +47,7 @@
     </app-box-layout>   
   </div>
   <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
-    class="six wide tablet four wide computer column ui sticky">
+    class="four wide column ui sticky">
       <app-box-detail-action-panel 
       [selectedSamples]="selectedSamples.toString()" 
       [selectedCells]="selectedCells.toString()">

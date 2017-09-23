@@ -199,5 +199,4 @@ export class BoxLayoutComponent implements OnInit {
       this.dragulaDrop$.unsubscribe();
     }
   }
-
 }

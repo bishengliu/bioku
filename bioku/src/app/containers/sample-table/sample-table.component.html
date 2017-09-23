@@ -3,16 +3,16 @@
       <!-- [style.border-top]="genBorderStyle(color)" -->
     <thead>
       <tr>
-        <th class="">name</th>
-        <th class="">code</th>
-        <th class="">position</th>
-        <th class="">quantity</th>
-        <th class="">date</th>
-        <th class="">tokenout</th>     
-        <th class="">attachment</th>     
-        <th class="">researcher</th>
-        <th class="">reference</th>
-        <th class="">comments</th>
+        <th class="">Name</th>
+        <th class="">Code</th>
+        <th class="">Position</th>
+        <th class="">Quantity</th>
+        <th class="">Date</th>
+        <th class="">TakeOut</th>     
+        <th class="">Attachment</th>     
+        <th class="">Researcher</th>
+        <th class="">Reference</th>
+        <th class="">Comments</th>
       </tr>      
     </thead>
     <tbody>
@@ -20,15 +20,15 @@
         [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
         <td class="collapsing">
           <div>
-            <span [style.color]="sample.color">{{ (sample.name.length>15)? (sample.name | slice:0:15)+'..':(sample.name) }}</span>
-            <sup *ngIf="sample.tag" class="ui mini red circular label">{{sample.tag}}</sup>
-          </div>       
-          <div class="ui mini label">{{sample.type}}</div>
+            <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15)? (sample.name | slice:0:15)+'..':(sample.name) }}</span>
+            <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>
+            <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
+          </div>        
         </td>
         <td class="collapsing">{{sample.registration_code}}</td>
         <td class="collapsing">
           <span>{{sample.position}}</span>
-          <p *ngIf="sample.label">{{sample.label}}</p>
+          <sup *ngIf="sample.label">{{sample.label}}</sup>
         </td>
         <td class="collapsing">
             <span *ngIf="sample.type ==='CELL'">{{sample.amount}}</span>
@@ -46,14 +46,14 @@
         </td>
         <td class="collapsing">
           <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
-            <p class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
-              {{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}
-            </p>
+            <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
+              {{researcher.first_name != null ? (researcher.first_name.toUpperCase() | slice:0:1) : ''}}{{researcher.last_name != null ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1): ' '}}
+            </span>
           </div> 
         </td>
         <td class="collapsing">{{sample.reference_code}}</td>            
         <td class="collapsing">
-            {{ (sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
+            {{ (sample.description != null && sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
         </td>  
       </tr>
     </tbody>

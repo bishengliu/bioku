@@ -48,7 +48,7 @@
                       <td colspan="2">
                         <div class="ui icon input wide-form">
                           <input class="" type="text" id="plasmid" [formControl]="sampleForm.controls['plasmid']"
-                          placeholder="update plasmid ..." >
+                          placeholder="plasmid ..." >
                         </div>                                
                       </td>
                   </tr>
@@ -76,13 +76,13 @@
                       <td>
                         <div class="ui icon input wide-form">
                           <input class="" type="number" id="oligo_length" [formControl]="sampleForm.controls['oligo_length']" 
-                          placeholder="update oligo length ..." >
+                          placeholder="oligo length ..." >
                         </div>                                
                       </td>
                       <td>
                         <div class="ui icon input wide-form">
                           <input class="" type="number" step="0.1" id="oligo_GC" [formControl]="sampleForm.controls['oligo_GC']" 
-                          placeholder="update oligo %GC ...">
+                          placeholder="oligo %GC ...">
                         </div>                                
                       </td>
                   </tr>
@@ -156,7 +156,7 @@
                       <td colspan="2">
                         <div class="ui icon input wide-form">
                           <input class="" type="text" id="pathology_code" [formControl]="sampleForm.controls['pathology_code']" 
-                          placeholder="update sample pathology code ...">
+                          placeholder="pathology code ...">
                         </div>                                              
                       </td>
                   </tr>
@@ -254,7 +254,7 @@
                       <td colspan="2">
                         <div class="ui icon input wide-form">
                           <input class="" type="text" id="oligo_sequence" [formControl]="sampleForm.controls['oligo_sequence']" 
-                          placeholder="update oligo sequence ...">
+                          placeholder="oligo sequence ...">
                         </div>                                
                       </td>
                   </tr>
@@ -263,7 +263,7 @@
                       <td colspan="2">
                         <div class="ui icon input wide-form">
                           <input class="" type="text" id="target_sequence" [formControl]="sampleForm.controls['target_sequence']" 
-                          placeholder="update oligo target sequence ...">
+                          placeholder="oligo target sequence ...">
                         </div>                                
                       </td>
                   </tr>
@@ -349,7 +349,7 @@
                             <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                           </div>
                           <div class="field">
-                              <div class="ui mini input wide-form">
+                              <div class="ui input wide-form">
                                   <input type="text" id="attchament_label" value="{{attchment_name}}" placeholder="attchament label" #attachmentLabel>
                                   <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
                               </div>
