@@ -2,7 +2,6 @@
     <div class="header">"sample name" and "sample type" are required! </div>
 </div>
 
-
 <form [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
   <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon add circle"></i> SAVE SAMPLES 
@@ -178,7 +177,7 @@
                             <textarea class=""
                             rows="2"
                             id="description" [formControl]="sampleForm.controls['description']" 
-                            placeholder="update sample description ...">
+                            placeholder="sample description ...">
                             </textarea>
                           </div>                                              
                         </td>
@@ -213,7 +212,7 @@
                       <td>quantity & unit</td>
                       <td>
                         <div class="ui icon input wide-form">
-                          <input class="" type="numner" step=0.001 id="quantity" [formControl]="sampleForm.controls['quantity']"
+                          <input class="" type="number" step=0.001 id="quantity" [formControl]="sampleForm.controls['quantity']"
                           placeholder="sample quantity ..." >
                         </div>                                              
                       </td>
@@ -376,10 +375,9 @@
   </div>
 </div>
 
-
 <!-- saving-->
 <!--loading info-->
-<div *ngIf="saving == true" class="ui loading segment center aligned">
+<div *ngIf="saving" class="ui loading segment center aligned">
   <br/><br/><br/><br/>
   <p class="brown-text">saving the sample into box ... </p>
 </div>

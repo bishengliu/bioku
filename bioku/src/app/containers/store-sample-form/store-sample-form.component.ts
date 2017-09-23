@@ -177,17 +177,14 @@ export class StoreSampleFormComponent implements OnInit {
   }
 
   onCreate(values: any){
-    console.log('clicked...');
     if(values.name == null || values.type == '-'){
       this.form_valid = false;
     }
     else{
       values.color = this.color;
       values.freezing_date = this.freezing_date;
-      console.log(values);
       var label= this.attachmentLabelInput.nativeElement.value
       var description = this.attachmentDescriptionInput.nativeElement.value; 
-  
       let formData: FormData = new FormData();
       formData.append("obj", JSON.stringify(values));
       formData.append("slots", JSON.stringify(this.slots))
@@ -202,7 +199,8 @@ export class StoreSampleFormComponent implements OnInit {
       this.form_valid = true;
       this.saving = true;
       this.containerService.addSamples(formData, this.container.pk, this.box.box_position)
-      .subscribe(()=>{
+      .subscribe((data: Array<Sample>)=>{
+        console.log(data);
         //after saving
         this.localStorageService.emptySelectedCells = [];
         this.saving = false;
@@ -213,6 +211,7 @@ export class StoreSampleFormComponent implements OnInit {
         //after saving
         this.localStorageService.emptySelectedCells = [];
         this.saving = false;
+        this.alertService.error("Failed to store the new samples!", true);
         this.router.navigate(['/containers', this.container.pk, this.box.box_position]);
         console.log(err);
       });
