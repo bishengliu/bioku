@@ -34,7 +34,7 @@
 </div>
 <!--after loading twelve-->
 <div class="ui small_padding stackable grid" *ngIf="loading==false">
-  <div class="twelve wide column">
+  <div class="eleven wide column">
     <app-sample-table *ngIf="!box_view && searchedSamples.length > 0" 
       [samples]="searchedSamples" 
       (sampleSelected)="captureSampleSelected($event)">
@@ -47,7 +47,7 @@
     </app-box-layout>   
   </div>
   <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
-    class="four wide column ui sticky">
+    class="five wide column ui sticky">
       <app-box-detail-action-panel 
       [selectedSamples]="selectedSamples.toString()" 
       [selectedCells]="selectedCells.toString()">

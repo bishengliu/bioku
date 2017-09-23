@@ -113,8 +113,15 @@
                             [dragulaOptions]="dragulaOptions"
                             *ngFor="let h of firstHArray">
                             <div *ngFor="let sample of pickerSamples(h,v, true)" class="movable">
-                                <span [style.color]="sample.color"><strong>{{sample.name}}</strong></span><br/>
-                                <span>{{sample.freezing_date}}</span>
+                                <div>
+                                  <span [style.color]="sample.color"> {{ (sample.name.length>10)? (sample.name | slice:0:10)+'..':(sample.name) }} </span>
+                                  <span *ngIf="sample.tag" class="ui mini circular blue label">
+                                    {{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5): sample.tag}}
+                                  </span>  
+                                </div>  
+                                <div class="small">{{sample.registration_code}}
+                                  <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
+                                </div> 
                             </div>                   
                           </td>
                         </tr>
@@ -138,8 +145,15 @@
                         [dragulaOptions]="dragulaOptions"
                         *ngFor="let h of secondHArray">
                         <div *ngFor="let sample of pickerSamples(h,v, false)" class="movable">
-                            <span [style.color]="sample.color"><strong>{{sample.name}}</strong></span><br/>
-                            <span>{{sample.freezing_date}}</span>
+                          <div>
+                            <span [style.color]="sample.color"> {{ (sample.name.length>10)? (sample.name | slice:0:10)+'..':(sample.name) }} </span>
+                              <span *ngIf="sample.tag" class="ui mini circular blue label">
+                                {{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5): sample.tag}}
+                            </span>  
+                          </div>  
+                          <div class="small">{{sample.registration_code}}
+                            <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
+                          </div> 
                         </div>                   
                       </td>
                     </tr>
