@@ -1,26 +1,23 @@
 <div class="ui vertical inverted masthead center aligned segment" [ngClass]="{nopadding: isLogin}">
+    <!-- after login -->
     <div class="ui right icon secondary inverted pointing menu small" *ngIf="isLogin">
         <a (click)="_toggleContainerSidebar()" class="item" *ngIf="isLogin && hasContainers">
             <i class="large grid layout teal icon"></i>                
-        </a>
-        <!--
-        <div class="item" *ngIf="isAdmin">
-            <a [routerLink]="['/admin']" ><i class="dashboard icon"></i> Admin</a>
-        </div>
-        -->           
-        <div class="right item"><em class="teal-text">An User-friendly Container System for Biomaterials</em></div>
+        </a>       
+        <div class="right item"><em class="teal-text">A user-friendly container system for biomaterials</em></div>
         <a (click)="_toggleSidebar()" class="right item">
             <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>{{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}</span>
             <img *ngIf="user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
+    <!-- before login -->
     <div *ngIf="!isLogin">
         <div class="ui container">
             <h1 class="ui inverted header bioku-header">
                 <span><em>{{appName}}</em></span>
             </h1>
             <h2 class="inverted">
-                <span><em>An User-friendly Container System for Biomaterials</em></span>
+                <span><em>A user-friendly container system for biomaterials</em></span>
             </h2>
         </div>
         <div class="ui divider"></div>
@@ -34,146 +31,147 @@
         </div>
     </div>        
 </div>
-<!-- sidebar -->
+
+<!-- account info sidebar -->
 <div class="account-sidebar">
-<ng-sidebar-container sidebarClass="">
-    <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
-        <div class="">
-        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>                      
-        <div *ngIf="isLogin" class="ui red raised card">
-            
-            <div *ngIf="user.profile.photo" class="image">                
-                <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
-            </div>
-            <div class="content">                                        
-                <span class="header">
-                    {{user.first_name +" "+ user.last_name}} 
-                    <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="_toggleSidebar()">
-                        <i class="icon red edit"></i>
-                    </a>
-                    </span>
-                <div class="meta">
-                    <span class=""><i class="user icon"></i> {{user.username}}</span>
-                    <span class=""><i class="mail icon"></i> {{user.email}}</span>
-                    <br>
-                    <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>                   
-                    <span *ngIf="user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
-                </div>  
-                <div class="meta" *ngIf="user.roles.length > 0">
-                    <i class="flag icon"></i> 
-                    <span *ngFor="let r of user.roles">{{r}}</span>
-                </div>         
-            </div>
-            <div *ngIf="isAdmin" class="mini ui buttons attached bottom">
-                <a class="ui button active" [routerLink]="['/user/password']" (click)="_toggleSidebar()"><i class="lock icon"></i>Password</a>
-                <div class="or"></div>
-                <a [routerLink]="['/admin']" class="ui red button" (click)="_toggleSidebar()"><i class="dashboard icon"></i> Admin</a>
-            </div>
-            <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="_toggleSidebar()">
-                <i class="lock icon"></i>Change Password
-            </a>
-        </div>
-        <!--groups and list all the researchers in the group when hoeving the image-->
-        <div *ngIf="isLogin">
-            <div class="ui blue raised card" *ngFor="let group of groups">
-                <!--group info-->
-                <div class="mini ui icon buttons attached">
-                    <button class="mini ui disabled button blue">
-                        <i class="group icon"></i> GROUP 
-                    </button>
-                    <button class="mini ui disabled button brown">
-                        <!--<img *ngIf="group.photo" class="ui avatar image" src="{{appUrl+group.photo}}">-->
-                        {{group.pi}}
-                    </button>
-                    <button class="mini ui button" *ngIf="group.email===user.email" (click)="editGroup(group)">
-                        <i class="ui red icon setting"></i>
-                    </button>
+    <ng-sidebar-container sidebarClass="">
+        <ng-sidebar [(opened)]="_opened" position="right" mode="push" sidebarClass="ui inverted labeled icon vertical menu" animate="true" closeOnClickOutside="true" showBackdrop="true" closeOnClickBackdrop="true" #sidebar>        
+            <div class="">
+            <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>                      
+            <div *ngIf="isLogin" class="ui red raised card">
+                
+                <div *ngIf="user.profile.photo" class="image">                
+                    <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
                 </div>
-                <div class="content">                                
+                <div class="content">                                        
+                    <span class="header">
+                        {{user.first_name +" "+ user.last_name}} 
+                        <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="_toggleSidebar()">
+                            <i class="icon red edit"></i>
+                        </a>
+                        </span>
                     <div class="meta">
-                        <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
-                        <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
-                        <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br>
-                    </div> 
-                </div>
-                <!--assistant-->
-                <div class="extra content" *ngIf="group.assistants">
-                    <div *ngIf="group.email===user.email">
-                        <div class="field" [class.error]="assistEmailInput.invalid && assistEmailInput.touched" >
-                            <div class="ui teal right labeled left icon mini input right floated">
-                                <i class="mail icon"></i>
-                                <input type="email" placeholder="user's email" [formControl]="assistEmailInput" #assistInput (mouseout)="hideValidation('assistant')" (mouseenter)="showValidation('assistant')">
-                                <a class="ui teal tag label" 
-                                    (click)="assistEmailInput.touched && !assistEmailInput.hasError('required') && !assistEmailInput.hasError('email') && assistEmailInput.hasError('emailAsyncInvalid') && addAssistant(group, assistInput.value)" 
-                                    (mouseout)="hideValidation('assistant')" 
-                                    (mouseenter)="showValidation('assistant')">
-                                    <i class="ui icon add circle"></i>
-                                    assistants
-                                </a>
-                            </div>
-                            <div class="fluid clearfix"></div>
-                            <div [ngClass]="{hidden: !showAssistantMsg}">                          
-                                <div *ngIf="assistEmailInput.hasError('required') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
-                                <div *ngIf="assistEmailInput.hasError('email') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
-                                <div *ngIf="!assistEmailInput.hasError('emailAsyncInvalid') && assistEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>
-                            </div>
-                        </div>
-                        <div class="fluid clearfix" ></div>
+                        <span class=""><i class="user icon"></i> {{user.username}}</span>
+                        <span class=""><i class="mail icon"></i> {{user.email}}</span>
                         <br>
-                    </div>
-                    <span *ngIf="group.email !== user.email" class="ui teal tag mini label right floated">assistants</span>
-                    <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
-                    <div class="ui mini labels">
-                        <span class="ui label" *ngFor="let assit of group.assistants">
-                            <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
-                            <span>{{assit.user.first_name}}</span>
-                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(group, assit)"></i>
-                        </span>                        
+                        <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>                   
+                        <span *ngIf="user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
                     </div>  
+                    <div class="meta" *ngIf="user.roles.length > 0">
+                        <i class="flag icon"></i> 
+                        <span *ngFor="let r of user.roles">{{r}}</span>
+                    </div>         
                 </div>
-                <!--members-->
-                <div class="extra content" *ngIf="group.members">
-                    <div *ngIf="group.email===user.email">
-                        <div class="field" [class.error]="memberEmailInput.invalid && memberEmailInput.touched" >
-                            <div class="ui orange right labeled left icon mini input right floated" *ngIf="group.email===user.email">
-                                <i class="mail icon"></i>
-                                <input type="email" placeholder="user's email" [formControl]="memberEmailInput" #memberInput (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')">
-                                <a class="ui orange tag label" 
-                                    (click)="memberEmailInput.touched && !memberEmailInput.hasError('required') && !memberEmailInput.hasError('email') && memberEmailInput.hasError('emailAsyncInvalid') && addMember(group, memberInput.value)" 
-                                    (mouseout)="hideValidation('member')" 
-                                    (mouseenter)="showValidation('member')"> 
-                                    <i class="ui icon add circle"></i>
-                                    members
-                                </a>
-                            </div>
-                            <div class="fluid clearfix"></div>
-                            <div [ngClass]="{hidden: !showMemberMsg}">
-                                <div *ngIf="memberEmailInput.hasError('required') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
-                                <div *ngIf="memberEmailInput.hasError('email') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
-                                <div *ngIf="!memberEmailInput.hasError('emailAsyncInvalid') && memberEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>
-                            </div>
-                        </div>
-                        <div class="fluid clearfix" ></div>
-                        <br>
+                <div *ngIf="isAdmin" class="mini ui buttons attached bottom">
+                    <a class="ui button active" [routerLink]="['/user/password']" (click)="_toggleSidebar()"><i class="lock icon"></i>Password</a>
+                    <div class="or"></div>
+                    <a [routerLink]="['/admin']" class="ui red button" (click)="_toggleSidebar()"><i class="dashboard icon"></i> Admin</a>
+                </div>
+                <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="_toggleSidebar()">
+                    <i class="lock icon"></i>Change Password
+                </a>
+            </div>
+            <!--groups and list all the researchers in the group when hoeving the image-->
+            <div *ngIf="isLogin">
+                <div class="ui blue raised card" *ngFor="let group of groups">
+                    <!--group info-->
+                    <div class="mini ui icon buttons attached">
+                        <button class="mini ui disabled button blue">
+                            <i class="group icon"></i> GROUP 
+                        </button>
+                        <button class="mini ui disabled button brown">
+                            <!--<img *ngIf="group.photo" class="ui avatar image" src="{{appUrl+group.photo}}">-->
+                            {{group.pi}}
+                        </button>
+                        <button class="mini ui button" *ngIf="group.email===user.email" (click)="editGroup(group)">
+                            <i class="ui red icon setting"></i>
+                        </button>
                     </div>
-                    
-                    <span *ngIf="group.email !== user.email" class="ui orange tag mini label right floated">members</span>
-                    <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
-                    <div class="ui mini labels">
-                        <span class="ui label" *ngFor="let r of group.members">
-                            <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
-                            <span>{{r.user.first_name}}</span>
-                            <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
-                        </span>                        
-                    </div>  
+                    <div class="content">                                
+                        <div class="meta">
+                            <span class=""><i class="user icon"></i> {{'PI: '+group.pi_fullname}}</span><br>
+                            <span class=""><i class="mail icon"></i> {{'Email: '+group.email}}</span><br>
+                            <span *ngIf="group.department" class=""><i class="building icon"></i> {{'Dpart: '+group.department}}</span><br>
+                        </div> 
+                    </div>
+                    <!--assistant-->
+                    <div class="extra content" *ngIf="group.assistants">
+                        <div *ngIf="group.email===user.email">
+                            <div class="field" [class.error]="assistEmailInput.invalid && assistEmailInput.touched" >
+                                <div class="ui teal right labeled left icon mini input right floated">
+                                    <i class="mail icon"></i>
+                                    <input type="email" placeholder="user's email" [formControl]="assistEmailInput" #assistInput (mouseout)="hideValidation('assistant')" (mouseenter)="showValidation('assistant')">
+                                    <a class="ui teal tag label" 
+                                        (click)="assistEmailInput.touched && !assistEmailInput.hasError('required') && !assistEmailInput.hasError('email') && assistEmailInput.hasError('emailAsyncInvalid') && addAssistant(group, assistInput.value)" 
+                                        (mouseout)="hideValidation('assistant')" 
+                                        (mouseenter)="showValidation('assistant')">
+                                        <i class="ui icon add circle"></i>
+                                        assistants
+                                    </a>
+                                </div>
+                                <div class="fluid clearfix"></div>
+                                <div [ngClass]="{hidden: !showAssistantMsg}">                          
+                                    <div *ngIf="assistEmailInput.hasError('required') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
+                                    <div *ngIf="assistEmailInput.hasError('email') && assistEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
+                                    <div *ngIf="!assistEmailInput.hasError('emailAsyncInvalid') && assistEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>
+                                </div>
+                            </div>
+                            <div class="fluid clearfix" ></div>
+                            <br>
+                        </div>
+                        <span *ngIf="group.email !== user.email" class="ui teal tag mini label right floated">assistants</span>
+                        <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
+                        <div class="ui mini labels">
+                            <span class="ui label" *ngFor="let assit of group.assistants">
+                                <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
+                                <span>{{assit.user.first_name}}</span>
+                                <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(group, assit)"></i>
+                            </span>                        
+                        </div>  
+                    </div>
+                    <!--members-->
+                    <div class="extra content" *ngIf="group.members">
+                        <div *ngIf="group.email===user.email">
+                            <div class="field" [class.error]="memberEmailInput.invalid && memberEmailInput.touched" >
+                                <div class="ui orange right labeled left icon mini input right floated" *ngIf="group.email===user.email">
+                                    <i class="mail icon"></i>
+                                    <input type="email" placeholder="user's email" [formControl]="memberEmailInput" #memberInput (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')">
+                                    <a class="ui orange tag label" 
+                                        (click)="memberEmailInput.touched && !memberEmailInput.hasError('required') && !memberEmailInput.hasError('email') && memberEmailInput.hasError('emailAsyncInvalid') && addMember(group, memberInput.value)" 
+                                        (mouseout)="hideValidation('member')" 
+                                        (mouseenter)="showValidation('member')"> 
+                                        <i class="ui icon add circle"></i>
+                                        members
+                                    </a>
+                                </div>
+                                <div class="fluid clearfix"></div>
+                                <div [ngClass]="{hidden: !showMemberMsg}">
+                                    <div *ngIf="memberEmailInput.hasError('required') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is required</div>
+                                    <div *ngIf="memberEmailInput.hasError('email') && memberEmailInput.touched" class="ui mini negative message nopadding">Email is invalid</div>
+                                    <div *ngIf="!memberEmailInput.hasError('emailAsyncInvalid') && memberEmailInput.touched" class="ui mini negative message nopadding">Email doesn't exist!</div>
+                                </div>
+                            </div>
+                            <div class="fluid clearfix" ></div>
+                            <br>
+                        </div>
+                        
+                        <span *ngIf="group.email !== user.email" class="ui orange tag mini label right floated">members</span>
+                        <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
+                        <div class="ui mini labels">
+                            <span class="ui label" *ngFor="let r of group.members">
+                                <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
+                                <span>{{r.user.first_name}}</span>
+                                <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
+                            </span>                        
+                        </div>  
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- logout -->
-        <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
-        </div>
-    </ng-sidebar>
-</ng-sidebar-container>
+            <!-- logout -->
+            <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>
+            </div>
+        </ng-sidebar>
+    </ng-sidebar-container>
 </div>
 
 <!-- container sidebar -->
