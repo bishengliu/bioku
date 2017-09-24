@@ -3,8 +3,11 @@
   <br/><br/><br/><br/>
   <p class="brown-text">loading container overview ... </p>
 </div>
-<!--after loading-->
+<!--after loading tiny_vertial_padding-->
 <div class="ui row" *ngIf="_towers && loading==false" style="overflow-y:hidden;white-space:nowrap;">
+    <div class="ui mini blue bottom attached button" tabindex="0" (click)="clearSelection()">
+        <i class="icon undo"></i>CLEAR ALL SELECTION
+    </div>
     <table class="ui small celled teal single line compact structured unstackable collapsing table" 
     *ngFor="let tws of splited_towers_post_transformation; let index_tower= index;">
       <thead>
@@ -37,32 +40,6 @@
         <tr>
       </tbody>
     </table>
-</div>
-<br/>
-<br/>
-<!--buttons-->
-<div *ngIf="loading==false" class="ui raised segments tiny_vertial_padding fixed_width_huge">
-  <div class="ui horizontal attached segments">
-        <div class="ui compact segment tiny_vertial_padding">
-          <div class="fix_size_div bordered inline"></div>
-          <div class="inline"><small class="small_padding"> EMPTY SLOT</small></div>
-        </div>
-        <div class="ui compact segment tiny_vertial_padding">
-          <div class="fix_size_div inline" style="background-color: teal;"></div>
-          <div class="inline"><small class="small_padding"> OCCUPIED SLOT</small></div>
-        </div>
-        <div class="ui compact segment tiny_vertial_padding">
-          <div class="fix_size_div not_permitted_box inline"></div>
-          <div class="inline"><small class="small_padding"> INSUFFICIENT PERMISSION</small></div>
-        </div>
-        <div class="ui compact segment tiny_vertial_padding">
-          <div class="fix_size_div box-selected inline"></div>
-          <div class="inline"><small class="small_padding"> SELECTED SLOT</small></div>
-        </div>
-  </div>
-  <div class="ui mini green bottom attached button tiny_vertial_padding" tabindex="0" (click)="clearSelection()">
-      <i class="icon undo"></i>CLEAR ALL SELECTION
-  </div>
 </div>
 <br/>
 <br/>

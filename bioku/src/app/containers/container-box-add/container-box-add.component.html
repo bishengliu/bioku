@@ -5,10 +5,11 @@
 </div>
 <div class="ui grid row small_padding">
   <div class="ten wide column">
-    <h3 class="ui violet left aligned header"><i class="icon add square"></i>CONTAINER ADD BOX(ES)</h3>
+    <h3 class="ui violet left aligned header"><i class="icon add square"></i>ADD BOX(ES)</h3>
   </div>
   <div class="six wide column">
-    <a class="ui teal button float-right" [ngClass]="{'disabled': adding == true }" [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
+    <a class="ui small teal button float-right" [ngClass]="{'disabled': adding == true }" 
+    [routerLink]="['/containers/overview', container.pk]"><i class="icon caret left"></i>BACK</a>
   </div>
 </div>
 
@@ -41,7 +42,7 @@
               <i class="announcement icon"></i>
               <span>Change is not allowed!</span>
             </div>
-            <div class="description" *ngIf="allow_change_box_layout==false">
+            <div class="description" *ngIf="allow_change_box_layout">
               <div class="ui form tiny small_vertial_padding">
                 <div class="ui inline fields">
                   <div class="field">
@@ -83,7 +84,7 @@
       </div>
     </div>
     <div class="ui violet inverted bottom attached button" (click)="save_add_box()">
-      <p>Add Boxes To Contaier: {{container.name}}</p>
+      <p>Add Boxes To Container: {{container.name}}</p>
     </div>
   </div>
 

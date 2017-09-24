@@ -235,7 +235,7 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
       this.localStorageService.lastSelectedOccupiedBox = null;
       this.localStorageService.selectedEmptySlots = [];
       this.localStorageService.selectedOccupiedSlots = [];
-      this.alertService.error("Nothing to move, please make sure you've selected all the the positions to move!", true);
+      this.alertService.error("Nothing to move, please make sure you've selected at least one box to move!", true);
       this.moving = false;
       this.router.navigate(['/containers', this.container.pk]);
     }

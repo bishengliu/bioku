@@ -3,15 +3,36 @@
     <app-container-box-navbar></app-container-box-navbar>
   </div>
 </div>
-<div class="ui grid row small_padding">
-  <div class="ten wide column">
-    <h3 class="ui violet left aligned header"><i class="icon braille"></i>CONTAINER BOX OVERVIEW</h3>
+<!-- header -->
+<div class="ui grid row small_padding stackable">
+  <div class="twelve wide column"> 
+    <h3 class="ui violet left aligned header"><i class="icon braille"></i>CONTAINER BOXES</h3>
+    <div>
+        <div class="ui horizontal attached segments">
+            <div class="ui compact segment tiny_vertial_padding">
+              <div class="fix_size_div bordered inline"></div>
+              <div class="inline"><small class="small_padding">EMPTY</small></div>
+            </div>
+            <div class="ui compact segment tiny_vertial_padding">
+              <div class="fix_size_div inline" style="background-color: teal;"></div>
+              <div class="inline"><small class="small_padding">OCCUPIED</small></div>
+            </div>
+            <div class="ui compact segment tiny_vertial_padding">
+              <div class="fix_size_div not_permitted_box inline"></div>
+              <div class="inline"><small class="small_padding">NO PERMISSION</small></div>
+            </div>
+            <div class="ui compact segment tiny_vertial_padding">
+              <div class="fix_size_div box-selected inline"></div>
+              <div class="inline"><small class="small_padding">SELECTED</small></div>
+            </div>
+          </div>
+    </div>
   </div>
-  <div class="six wide column">
-    <a class="ui teal button float-right" [routerLink]="['/containers/', container.pk]"><i class="icon caret left"></i>BACK</a>
+  <div class="four wide column">
+    <a class="ui violet small button float-right" [routerLink]="['/containers/', container.pk]"><i class="icon caret left"></i>BACK</a>
   </div>
 </div>
-
+<!-- overview and action panel -->
 <div class="ui grid small_padding stackable">
     <div class="twelve wide column" >
         <app-container-box-overview 
@@ -22,7 +43,7 @@
       </app-container-box-overview>
     </div>
     <div class="four wide column ui sticky" *ngIf="selectedBoxes.length > 0">
-        <app-container-box-overview-action-panel ng2-sticky style="float: right; margin-right: 20px;"
+        <app-container-box-overview-action-panel ng2-sticky style="float: right; min-width: 320px; margin-right: 20px;"
           [selectedBoxes]="selectedBoxes" 
           [lastSelectedOccupiedBox]="lastSelectedOccupiedBox" 
           [container]="container">

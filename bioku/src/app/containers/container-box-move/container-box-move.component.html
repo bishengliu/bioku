@@ -25,7 +25,7 @@
         <tr *ngFor="let box of move_boxes;">
           <td class="collapsing">
             <div class="ui fitted slider checkbox">
-              <input type="checkbox" (change)="toggle_box_exclusion(box.box_full_position)">
+              <input type="checkbox" (change)="toggle_box_exclusion(box.box_full_position)" checked="checked">
               <label></label>
             </div>
           </td>

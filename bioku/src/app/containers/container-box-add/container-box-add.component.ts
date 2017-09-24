@@ -49,7 +49,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     this.updateState();
     //SET THE DEFAULT BOX LAYOUT
     this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
-    this.box_vertical = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.appSetting.BOX_VERTICAL - 1);
+    this.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; //a letter
   }
   updateState(){
     let state= this.appStore.getState();
@@ -98,7 +98,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     //allow change box layout ?
     if(this.container.boxes.length === 0){
       this.allow_change_box_layout = true;
-    }   
+    }
   }
   //generate extra options for dropdow
   genVerticalOptions(){
