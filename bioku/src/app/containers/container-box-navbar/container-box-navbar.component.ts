@@ -32,8 +32,8 @@ export class ContainerBoxNavbarComponent implements OnInit {
       this.currentBox = state.containerInfo.currentBox;
     }
   }
-  go2ContainerList(){
-    this.router.navigate(['/containers']);
-  }
+  // go2ContainerList(){
+  //   this.router.navigate(['/containers']);
+  // }
   ngOnInit() { }
 }

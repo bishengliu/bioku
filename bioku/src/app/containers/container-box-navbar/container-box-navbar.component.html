@@ -4,7 +4,7 @@
       <a class="item disabled">
         <span class="brown-text"><i class="marker icon"></i></span>
       </a>
-      <a class="item" (click)="go2ContainerList()"><i class="grid layout icon"></i></a>
+      <a class="item" [routerLink]="['/containers']"><i class="grid layout icon"></i></a>
       <a class="teal item" [routerLink]="['/containers', currentContaner.pk]" >
         <span class="teal-text">{{ currentContaner != null ? currentContaner.name +" (" + currentContaner.temperature + ' &deg;C' + ")" : "not selected"}}</span><i class="red-text icon caret right"></i>
       </a>
