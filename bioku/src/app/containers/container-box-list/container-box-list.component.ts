@@ -95,8 +95,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
           return this.containerService.getContainerBox(this.container.pk, params['box_position']);
         }
         else{
-          //get group boxes of the container
-        return this.containerService.containerGroupBoxes(this.id)
+          //get group favotite boxes of the container
+        return this.containerService.containerGroupFavoriteBoxes(this.id)
         }
       })
       .subscribe((data: any)=>{
@@ -122,18 +122,32 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }
+
   toggleBoxShow(){
     this.loading = true;
     this.show_all = !this.show_all;
     if(this.show_all){
       //show all
-      this.searchedBoxes = this.myBoxes;
+      //retrieve all the boxes from the server
+      this.loading = true;
+      this.containerService.containerGroupBoxes(this.id)
+      .subscribe((data:any)=>{
+        this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+        this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+        this.loading = false;
+      }, 
+      (err)=>{
+        this.alertService.error('failed to load all the boxes in the current container', true);
+        this.loading = false;
+      });
+      //end retrive all the boxes from the server
+      //this.searchedBoxes = this.myBoxes;
     }
     else{
       //show favourite
       this.searchedBoxes = this.myBoxes.filter((box, i)=>{ return box.rate != null; });
-    }
-    this.loading = false;
+      this.loading = false;
+    }  
   }
   ngOnDestroy() { 
     this.sub.unsubscribe(); 

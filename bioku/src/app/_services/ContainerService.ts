@@ -160,6 +160,14 @@ export class ContainerService{
             //.do(data=>console.log(data))
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
+    //GET THE GROUP FAVORITE BOXES IN A CONTAINER
+    containerGroupFavoriteBoxes(container_pk: number){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/favorite_boxes/"; 
+        return this.http.get(query_url, this.options)
+            .map((response: Response) =>response.json())
+            //.do(data=>console.log(data))
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
     //get all the occupied boxes in a container
     containerAllBoxes(container_pk: number){
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + "/all_boxes/"; 
