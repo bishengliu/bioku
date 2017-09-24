@@ -30,6 +30,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   myBoxes: Array<Box> = [];
   searchedBoxes: Array<Box> = [];
   show_all: boolean = false;
+  all_boxes_loaded: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private logAppStateService: LogAppStateService)
   { 
@@ -122,26 +123,30 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }
-
   toggleBoxShow(){
     this.loading = true;
     this.show_all = !this.show_all;
     if(this.show_all){
-      //show all
-      //retrieve all the boxes from the server
+      //show all      
       this.loading = true;
-      this.containerService.containerGroupBoxes(this.id)
-      .subscribe((data:any)=>{
-        this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
-        this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+      //retrieve all the boxes from the server if not loaded before
+      if(this.all_boxes_loaded){
+        this.searchedBoxes = this.myBoxes;
         this.loading = false;
-      }, 
-      (err)=>{
-        this.alertService.error('failed to load all the boxes in the current container', true);
-        this.loading = false;
-      });
-      //end retrive all the boxes from the server
-      //this.searchedBoxes = this.myBoxes;
+      }
+      else{
+        this.containerService.containerGroupBoxes(this.id)
+        .subscribe((data:any)=>{
+          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+          this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
+          this.loading = false;
+          this.all_boxes_loaded = true;
+        }, 
+        (err)=>{
+          this.alertService.error('failed to load all the boxes in the current container', true);
+          this.loading = false;
+        });
+      }
     }
     else{
       //show favourite
