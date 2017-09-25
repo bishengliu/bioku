@@ -7,6 +7,9 @@ export const AppSetting = {
     'BOX_VERTICAL': 8,
     'BOX_HORIZONTAL': 8,
     'BOX_EXTRA_LAYOYT': 8,
+    //image size
+    'CONTAINER_IMAGE_WIDTH': 640,
+    'CONTAINER_IMAGE_HEIGHT': 640,
     
     //show user defined box label?
     'SHOW_BOX_LABEL': true,

@@ -83,6 +83,12 @@ export class AddContainerComponent implements OnInit {
     }
     else{
       this.photo_isSupported =  true;
+      let _URL = window.URL;
+      let photo = new Image();
+      photo.src = _URL.createObjectURL(this.file);
+      photo.onload = function() {      
+        console.log("The image width is " + photo.naturalWidth + " and image height is " + photo.naturalHeight);
+      };      
     }
   }
 
