@@ -1,4 +1,14 @@
-<sui-message *ngIf="message" class={{alertClass}} [isDismissable]="false">
-  <p>{{message.text}}</p>
-</sui-message>
+<!-- <sui-message *ngIf="message" class={{alertClass}} [isDismissable]="false">
+  <div class="ui center aligned">
+    {{message.text}}
+  </div>
+</sui-message> -->
+<div class="ui icon floating message" *ngIf="message" [ngClass]="alertClass">
+    <i class="alert icon" *ngIf="message.type =='error'"></i>
+    <i class="announcement icon" *ngIf="message.type !='error'"></i>
+    <div class="content">
+        <div class="header">{{message.type.toUpperCase()}}!</div>
+      <p>{{message.text}}</p>
+    </div>  
+</div>
 <div class="clearfix"></div>

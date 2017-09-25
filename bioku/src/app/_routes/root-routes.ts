@@ -26,7 +26,7 @@ import { AdminGuard } from  '../_guards/AdminGuard';
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
 import { adminRoutes } from '../admin/_routes/admin-routes';
-import { containersRoutes } from '../containers/_routes/containers-routes';
+//import { containersRoutes } from '../containers/_routes/containers-routes';
 //app root routes
 export const routes: Routes = [
   {path: '', component: HomeComponent},
