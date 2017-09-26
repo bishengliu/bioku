@@ -81,7 +81,9 @@ import { SampleDetailComponent } from './containers/sample-detail/sample-detail.
 import { MoveSampleComponent } from './containers/move-sample/move-sample.component';
 import { StoreSampleComponent } from './containers/store-sample/store-sample.component';
 import { StoreSampleFormComponent } from './containers/store-sample-form/store-sample-form.component';
-
+import { SampleSearchComponent } from './containers/sample-search/sample-search.component';
+import { SampleSearchFormComponent } from './containers/sample-search-form/sample-search-form.component';
+import { SampleSearchResultComponent } from './containers/sample-search-result/sample-search-result.component';
 
 @NgModule({
   declarations: [
@@ -130,6 +132,9 @@ import { StoreSampleFormComponent } from './containers/store-sample-form/store-s
     MoveSampleComponent,
     StoreSampleComponent,
     StoreSampleFormComponent,
+    SampleSearchComponent,
+    SampleSearchFormComponent,
+    SampleSearchResultComponent,
   ],
   imports: [
     BrowserModule,

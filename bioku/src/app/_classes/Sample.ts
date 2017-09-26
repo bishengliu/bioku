@@ -127,4 +127,36 @@ export class Sample extends SampleGeneral {
 export class SampleFilter {
     key: string;
     value: string;
-} 
+}
+
+export class SampleSearch {
+    container: Array<number>;
+    type: string; //['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS']
+    name: string;
+    label: string; //user defined label
+    tag: string;
+    registration_code: string; // primary code
+    reference_code: string;
+    freezing_code: string;
+    freezing_date: Array<Date>;
+    occupied: string; //0==both; 1==occupied only; 2==taken-out only
+
+    //construct
+    feature: string;
+    backbone: string;
+    insert: string;
+    marker: string;
+
+    //oligo
+    oligo_name: string;
+    oligo_length: number;
+    oligo_GC: number;
+
+    //virus
+    lasmid: string;
+    titration_code: string;
+
+    //tissue
+    pathology_code: string;
+    tissue: string;
+}

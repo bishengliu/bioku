@@ -18,36 +18,7 @@ export const AppSetting = {
     'BOX_POSITION_LETTERS':['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     'SAMPLE_TYPE':['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS'], //DO NOT CHANGE THIS *****
     //sample search keywords
-    SAMPLE_KEYWORDS: [
-        //GENERAL
-        'Sample Type','Sample Name','Official Name','Sample Tag','Sample Code','Reference Code',
-        'Freezing Code','Occupied','Researcher','Attachment','Comments',
-        //CONSTRUCT
-        'Feature','Backbone','Insert','Marker',
-        //CELL
-        //'project','creator',
-        //OLIGO
-        'Oligo Name',
-        //VIRUS
-        'Plasmid','Titration Celltype','Titration Code',
-        //PATHOLOGY
-        'Pathology Code','Tissue'
-    ],
-    SAMPLE_PARSEDKEYWORDS: [
-        //GENERAL
-        'type','name','official_name','tag','registration_code','reference_code',
-        'freezing_code','occupied','researchers','attachments','description',
-        //CONSTRUCT
-        'feature','backbone','insert','marker',
-        //CELL
-        //'project','creator',
-        //OLIGO
-        'oligo_name',
-        //VIRUS
-        'plasmid','titration_cell_type','titration_code',
-        //PATHOLOGY
-        'pathology_code','tissues'
-    ],
+
     //////////////////////////////////API URLS////////////////////////////
     //API REST URL
     'URL': 'http://127.0.0.1:8000',
