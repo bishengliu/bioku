@@ -18,6 +18,7 @@ import { BoxDetailComponent } from '../containers/box-detail/box-detail.componen
 import { ContainerBoxAddComponent } from '../containers/container-box-add/container-box-add.component';
 import { ContainerBoxMoveComponent } from '../containers/container-box-move/container-box-move.component';
 import { MoveSampleComponent } from '../containers/move-sample/move-sample.component';
+import { SampleSearchComponent } from '../containers/sample-search/sample-search.component';
 import { StoreSampleComponent } from '../containers/store-sample/store-sample.component';
 //guards
 import { AuthGuard } from  '../_guards/AuthGuard';
@@ -34,18 +35,19 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},
-  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes},
-  {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
+  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes}, 
   {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/search', component: SampleSearchComponent, canActivate: [AuthGuard, ], pathMatch: 'full' },
   {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

@@ -150,7 +150,7 @@ import { SampleSearchResultComponent } from './containers/sample-search-result/s
     //sidebar
     SidebarModule.forRoot(),
     //register root routers
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { enableTracing: true }),
     //npm install --save angular2-useful-swiper
     SwiperModule,
     //dragula
