@@ -11,7 +11,7 @@
             <a *ngIf="displayMode==='editable'" class="" [routerLink]="['./edit', container.pk]">
               <i class="icon edit teal-text"></i>
             </a>
-            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="(!(container.boxes && container.boxes.length>0) && displayMode==='editable')">
+            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="(!container.has_box && displayMode==='editable')">
                 <i class="icon remove circle red-text"></i>
             </a>
             <br>

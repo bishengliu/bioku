@@ -1,3 +1,20 @@
-<p>
-  sample-search works!
-</p>
+<div class="ui grid row medium_padding">
+  <div class="ten wide column">
+    <h3 class="ui violet left aligned header"><i class="icon search"></i>SEARCH SAMPLES</h3>
+  </div>
+  <div class="six wide column"> 
+    <a class="ui violet button float-right" [routerLink]="['/containers/']"><i class="icon caret left"></i>CONTAINERS</a>
+  </div>
+</div>
+
+<div class="ui grid row small_padding">
+  <div class="sixteen wide column">
+    <app-sample-search-form></app-sample-search-form>
+  </div>
+</div>
+
+<div class="ui grid row small_padding">
+  <div class="sixteen wide column">
+    <app-sample-search-result></app-sample-search-result>
+  </div>
+</div>
