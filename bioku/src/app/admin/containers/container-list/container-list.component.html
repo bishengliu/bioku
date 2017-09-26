@@ -35,7 +35,7 @@
             <a class="" [routerLink]="['./edit', container.pk]">
               <i class="icon edit teal-text"></i>
             </a>
-            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!((container.groups && container.groups.length>0) || (container.boxes && container.boxes.length>0))">
+            <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!container.has_box">
                 <i class="icon remove circle red-text"></i>
             </a>
             <!-- end container group --> 
@@ -51,7 +51,7 @@
         </div>
         <!-- end container info -->
         <!-- container groups -->
-        <div class="extra" *ngIf="container.groups && container.groups.length > 0">
+        <!-- <div class="extra" *ngIf="container.groups && container.groups.length > 0">
           <h5 class="ui header meta">Groups</h5>
           <div class="ui six cards" >
             <div class="ui teal raised card" *ngFor="let group of container.groups; let g = index">
@@ -63,10 +63,10 @@
               </div>            
             </div>                  
           </div>
-        </div>        
+        </div>         -->
         <!-- container groups -->
         <!-- add container to group -->
-        <div class="extra">
+        <!-- <div class="extra">
           <h5 class="ui header meta">Add to Groups</h5>
           <div class="">            
             <select class="ui dropdown fluid selection" (change)="add2Group(container.pk, selectionCtl)" #selectionCtl>
@@ -74,7 +74,7 @@
               <option [ngClass]="{hidden: isGroup(container.groups, group) }" [value]="group.pk" *ngFor="let group of groups | async">{{group.group_name +'/'+ group.pi}}</option>
             </select>
           </div>
-        </div>
+        </div> -->
         <!-- end adding container to group -->      
       </div>
       <!-- end one card -->
@@ -85,22 +85,12 @@
     <table class="ui structured small teal single line compact padded table">
     <thead>
       <tr>
-        <th colspan="5" class="center aligned">Containers</th>       
-        <th colspan="4" class="center aligned left-bordered">Boxes</th>
+        <th class="center aligned">Containers</th>       
+        <!-- <th colspan="4" class="center aligned left-bordered">Boxes</th> -->
         <th colspan="4" class="center aligned left-bordered">Groups</th>
       </tr>
       <tr>
-        <th class="">Name</th>
-        <th class="">Temperature</th>
-        <th class="">#Towers</th>
-        <th class="">#Shelves</th>
-        <th class="">#Boxes</th>
-
-        <th class="left-bordered">Box</th>
-        <th class="">#Horizontal</th>
-        <th class="">#Vertical</th>
-        <th class="">#Researchers</th>
-
+        <th class="center aligned">Name</th>
         <th class="left-bordered">Group</th>
         <th class="">PI</th>
         <th class="">Email</th>
@@ -119,28 +109,19 @@
               <a class="" [routerLink]="['./edit', container.pk]">
               <i class="icon edit teal-text"></i>
               </a>
-              <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!((container.groups && container.groups.length>0) || (container.boxes && container.boxes.length>0))">
+              <a class="" [routerLink]="['./delete', container.pk]" *ngIf="!container.has_box">
                   <i class="icon remove circle red-text"></i>
               </a>
               <!-- end manage container -->
             <div class="sub header">{{container.room}}</div>
             <div class="sub header">{{container.description}}</div>
+            <div class="sub header">Temperature:{{container.temperature+'&deg;C'}}</div>
+            <div class="sub header">#Towers: {{container.tower}}</div>
+            <div class="sub header">#Shelves: {{container.shelf}}</div>
+            <div class="sub header">#Boxes: {{container.box}}</div>
             </div>
           </h4>         
         </td>
-        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.temperature+'&deg;C' }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.tower }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.shelf }}</td>
-        <td *ngIf="i===1" [attr.rowspan]="rowspan">{{ container.box }}</td>
-        <!-- end container info -->
-        <!-- boxes info -->
-        <td class="left-bordered">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_position : "" }}</td>
-        <td class="">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_horizontal : "" }}</td>
-        <td class="">{{ (container.boxes && container.boxes.length >= i) ? container.boxes[i-1].box_vertical : "" }}</td>
-        <td class="">
-          {{ (container.boxes && container.boxes.length >= i && container.boxes[i-1].researchers && container.boxes[i-1].researchers.length > 0) ? container.boxes[i-1].researchers.length : ""}}
-        </td>
-        <!--end boxes info -->
         <!-- groups info -->
         <td class="left-bordered">          
           <h4 class="ui image header" *ngIf="container.groups && container.groups.length >= i">
