@@ -19,9 +19,11 @@ import {IMyOptions} from 'mydatepicker';
   styleUrls: ['./sample-search-form.component.css']
 })
 export class SampleSearchFormComponent implements OnInit {
+  on_searching: boolean = false;
   container: Container = null;
   containers: Array<Container> = null;
   container_to_search: number = null;
+  default_container_to_search: number = -1;
   //all the containers
   container_name_pks: Array<ContainerNamePK> = new Array<ContainerNamePK>();
   //ALL SAMPLE TYPES
@@ -39,7 +41,7 @@ export class SampleSearchFormComponent implements OnInit {
       openSelectorOnInputClick: true
   };
   //SAPMPLE TYPE
-  sample_type: string = '-';
+  sample_type: string = null;
   form_filled: boolean = false;
   searchForm: FormGroup;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
@@ -47,7 +49,7 @@ export class SampleSearchFormComponent implements OnInit {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
-    this.sample_type = '-';
+    this.sample_type = null;
 
     //formGroup
     this.searchForm = fb.group({
@@ -84,6 +86,7 @@ export class SampleSearchFormComponent implements OnInit {
   }
   updateContainer(value:any){
     this.container_to_search = value.target.value;
+    console.log(this.container_to_search);
   }
   updateType(value:any){
     this.sample_type = value.target.value;
@@ -91,9 +94,11 @@ export class SampleSearchFormComponent implements OnInit {
   }
   updateSampleFromDate(value:any){
     this.freezing_date_from = value.formatted;
+    console.log(this.freezing_date_from);
   }
   updateSampleToDate(value:any){
     this.freezing_date_to = value.formatted;
+    console.log(this.freezing_date_to);
   }
 
   updateState(){
@@ -105,6 +110,7 @@ export class SampleSearchFormComponent implements OnInit {
       this.containers = state.containerInfo.containers;
     }
     this.container_name_pks = this.getContainerNamePks(this.containers);
+    console.log(this.container);
   }
 
   getContainerNamePks(containers: Array<Container>): Array<ContainerNamePK>{
@@ -120,8 +126,15 @@ export class SampleSearchFormComponent implements OnInit {
 
   ngOnInit() {
     if(this.container != null){
-      this.container_to_search = this.container.pk;
+      this.default_container_to_search = this.container.pk;
     }   
   }
   
+  onSearch(values: any){
+    //need to update search obj
+    this.on_searching = true;
+  }
+  searchAgain(){
+    this.on_searching = false;
+  }
 }

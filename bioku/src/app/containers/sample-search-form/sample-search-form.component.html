@@ -1,5 +1,5 @@
 
-<form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
+<form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)" *ngIf="!on_searching">
   <button *ngIf="searchForm.touched && searchForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon search"></i> SEARCH SAMPLES 
   </button>  
@@ -9,80 +9,85 @@
               <tbody>
                 <!-- general -->
                 <tr>
-                  <td class="requied">container</td>
                   <td colspan="2">
+                    <div class="teal-text"><em><strong>container</strong></em></div>
                     <div class="ui input wide-form">                        
-                      <select class="ui tiny tight_around dropdown" id="container" [formControl]="searchForm.controls['container']" (change)="updateContainer($event)">
-                          <option value="all"> -- ALL -- </option>
-                          <option *ngFor="let option of containers" value="{{option.pk}}">{{option.name}}</option>
+                      <select class="ui tiny tight_around dropdown" id="container" 
+                      [ngModel]="default_container_to_search"
+                      [formControl]="searchForm.controls['container']" (change)="updateContainer($event)">
+                        <option value="-1"> ALL CONTAINERS </option>
+                        <option
+                        [ngValue]="option.pk"
+                         *ngFor="let option of container_name_pks" value="{{option.pk}}">{{option.name}}</option>
                       </select>
-                    </div>                             
+                    </div>
+                  </td>
+                  <td colspan="2">
+                    <div class="teal-text"><em><strong>sample type</strong></em></div>
+                    <div class="ui input wide-form">                        
+                      <select class="ui tiny tight_around dropdown" id="type" 
+                      [ngModel]="sample_type"
+                      [formControl]="searchForm.controls['type']" (change)="updateType($event)">
+                        <option value=""> -- select -- </option>
+                        <option
+                        [ngValue]="option"
+                        *ngFor="let option of all_sample_types" value="{{option}}">{{option}}</option>
+                      </select>
+                    </div>
+                    <div *ngIf="searchForm.controls['type'].hasError('required') && searchForm.controls['type'].touched" 
+                        class="ui mini negative message">Sample type is required
+                    </div> 
                   </td>
                 </tr>
-                  <tr>
-                      <td class="requied">sample type</td>
-                      <td colspan="2">
-                        <div class="ui input wide-form">                        
-                          <select class="ui tiny tight_around dropdown" id="type" [formControl]="searchForm.controls['type']" (change)="updateType($event)">
-                              <option value="-"> -- select -- </option>
-                              <option *ngFor="let option of all_sample_types" value="{{option}}">{{option}}</option>
-                          </select>
-                        </div>
-                        <div *ngIf="searchForm.controls['type'].hasError('required') && searchForm.controls['type'].touched" 
-                        class="ui mini negative message">Sample type is required</div>                               
-                      </td>
-                  </tr>
-                  <tr>
-                    <td>sample name & tag</td>
-                    <td>
-                      <div class="ui input wide-form">
-                        <input class="" type="text" id="name" [formControl]="searchForm.controls['name']" placeholder=" sample name ...">                        
-                      </div> 
-                      <div *ngIf="searchForm.controls['name'].hasError('required') && searchForm.controls['name'].touched" 
-                      class="ui mini negative message">Sample name is required</div>                                
-                    </td>
-                    <td>
-                      <div class="ui icon input wide-form">                           
-                        <input class="" type="text" maxlength="5" id="tag" [formControl]="searchForm.controls['tag']" 
-                        placeholder="sample tag ..." >
-                      </div>                              
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>sample code</td>
-                    <td colspan="2">
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" maxlength="20" id="registration_code" [formControl]="searchForm.controls['registration_code']" 
-                          placeholder="sample primary code ...">
-                        </div>                                              
-                    </td>
-                  </tr>              
-                  
-                  <!-- Oligo OR gRNA OLIGO-->
-                  <tr *ngIf="sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO'">
-                      <td>oligo name</td>
-                      <td colspan="2">
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" id="oligo_name" [formControl]="searchForm.controls['oligo_name']" 
-                          placeholder="oligo name ..." >
-                        </div>                                
-                      </td>
-                  </tr>
-                  <tr *ngIf="sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO'">
-                      <td>oligo length</td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="number" id="oligo_length_from" [formControl]="searchForm.controls['oligo_length_from']" 
-                          placeholder="oligo min length ..." >
-                        </div>                               
-                      </td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="number" id="oligo_length_to" [formControl]="searchForm.controls['oligo_length_to']" 
-                          placeholder="oligo max length ..." >
-                        </div>                                
-                      </td>
-                  </tr>                
+                <tr>
+                  <td>
+                    <div class="teal-text"><em><strong>sample name</strong></em></div>
+                    <div class="ui input wide-form">
+                      <input class="" type="text" id="name" [formControl]="searchForm.controls['name']" placeholder=" sample name ...">                        
+                    </div> 
+                    <div *ngIf="searchForm.controls['name'].hasError('required') && searchForm.controls['name'].touched" 
+                            class="ui mini negative message">Sample name is required
+                    </div>
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>sample tag</strong></em></div>
+                    <div class="ui icon input wide-form">                           
+                      <input class="" type="text" maxlength="5" id="tag" [formControl]="searchForm.controls['tag']" 
+                              placeholder="sample tag ..." >
+                    </div> 
+                  </td>
+                  <td colspan="2">
+                    <div class="teal-text"><em><strong>sample code</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" maxlength="20" id="registration_code" [formControl]="searchForm.controls['registration_code']" 
+                              placeholder="sample primary code ...">
+                    </div> 
+                  </td>
+                </tr>
+                <!-- Oligo OR gRNA OLIGO-->
+                <tr *ngIf="sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO'">
+                  <td colspan="2">
+                    <div class="teal-text"><em><strong>oligo name</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="oligo_name" [formControl]="searchForm.controls['oligo_name']" 
+                              placeholder="oligo name ..." >
+                    </div>
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>oligo min length</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="number" id="oligo_length_from" [formControl]="searchForm.controls['oligo_length_from']" 
+                              placeholder="oligo min length ..." >
+                    </div> 
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>oligo max length</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="number" id="oligo_length_to" [formControl]="searchForm.controls['oligo_length_to']" 
+                              placeholder="oligo max length ..." >
+                    </div> 
+                  </td>
+                </tr>
               </tbody>
           </table>       
       </div>
@@ -91,109 +96,120 @@
               <tbody>
                 <!-- general -->
                 <tr>
-                  <td>sample label</td>
                   <td colspan="2">
+                    <div class="teal-text"><em><strong>sample label</strong></em></div>
                     <div class="ui icon input wide-form">                           
                       <input class="" type="text" maxlength="5" id="label" [formControl]="searchForm.controls['label']" 
-                      placeholder="sample label ..." >
-                    </div>                                              
-                  </td>
-                </tr>
-                <tr>
-                  <td>external code</td>
+                          placeholder="sample label ..." >
+                    </div>
                   <td colspan="2">
+                    <div class="teal-text"><em><strong>external code</strong></em></div>
                     <div class="ui icon input wide-form">
                       <input class="" type="text" id="reference_code" [formControl]="searchForm.controls['reference_code']" 
-                      placeholder="reference to external or another sample ...">
-                    </div>                                              
+                        placeholder="reference to external or another sample ...">
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td>freezing code</td>
                   <td colspan="2">
+                    <div class="teal-text"><em><strong>freezing code</strong></em></div>
                     <div class="ui icon input wide-form">
                       <input class="" type="text" id="freezing_code" [formControl]="searchForm.controls['freezing_code']" 
-                      placeholder="sample freezing code ...">
-                    </div>                                              
+                        placeholder="sample freezing code ...">
+                    </div> 
                   </td>
-                </tr> 
+                  <td colspan="2"></td>
+                </tr>
                 <!-- virus-->
                 <tr *ngIf="sample_type=='VIRUS'">
-                  <td>plasmid & titration</td>
                   <td>
+                    <div class="teal-text"><em><strong>plasmid</strong></em></div>
                     <div class="ui icon input wide-form">
                       <input class="" type="text" id="plasmid" [formControl]="searchForm.controls['plasmid']"
-                      placeholder="plasmid ..." >
-                    </div>                                
+                        placeholder="plasmid ..." >
+                    </div> 
                   </td>
                   <td>
+                    <div class="teal-text"><em><strong>titration</strong></em></div>
                     <div class="ui icon input wide-form">
                       <input class="" type="text" id="titration_code" [formControl]="searchForm.controls['titration_code']" 
-                      placeholder="titration code ..." >
-                    </div>                                
+                          placeholder="titration code ..." >
+                    </div>
                   </td>
+                  <td colspan="2"></td>
                 </tr>
                 <!-- construct only -->
                 <tr *ngIf="sample_type=='CONSTRUCT'">
-                  <td>feature & marker</td>
                   <td>
+                    <div class="teal-text"><em><strong>feature</strong></em></div>
                     <div class="ui icon input wide-form">
                       <input class="" type="text" id="feature" [formControl]="searchForm.controls['feature']" 
-                      placeholder="construct feature ..." >
-                    </div>                                              
+                        placeholder="construct feature ..." >
+                    </div> 
                   </td>
                   <td>
-                      <div class="ui icon input wide-form">
-                        <input class="" type="text" id="marker" [formControl]="searchForm.controls['marker']" 
+                    <div class="teal-text"><em><strong>marker</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="marker" [formControl]="searchForm.controls['marker']" 
                         placeholder="construct marker ..." >
-                      </div>                                              
-                    </td>
-                  </tr>
-                  <tr *ngIf="sample_type=='CONSTRUCT'">
-                      <td>backbone & insert</td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" id="backbone" [formControl]="searchForm.controls['backbone']" 
-                          placeholder="backbone ..." >
-                        </div>                                              
-                      </td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" id="insert" [formControl]="searchForm.controls['insert']" 
-                          placeholder="insert ..." >
-                        </div>                                              
-                      </td>
-                  </tr>
+                    </div> 
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>backbone</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="backbone" [formControl]="searchForm.controls['backbone']" 
+                        placeholder="backbone ..." >
+                    </div>
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>insert</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="insert" [formControl]="searchForm.controls['insert']" 
+                        placeholder="insert ..." >
+                    </div>
+                  </td>
+                </tr>
                   <!-- pathology only -->
-                  <tr *ngIf="sample_type=='TISSUE'">
-                      <td>tissue && pathology code</td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" id="tissue" [formControl]="searchForm.controls['tissue']" 
+                <tr *ngIf="sample_type=='TISSUE'">
+                  <td>
+                    <div class="teal-text"><em><strong>tissue</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="tissue" [formControl]="searchForm.controls['tissue']" 
                           placeholder="sample tissue ...">
-                        </div>                                              
-                      </td>
-                      <td>
-                        <div class="ui icon input wide-form">
-                          <input class="" type="text" id="pathology_code" [formControl]="searchForm.controls['pathology_code']" 
-                          placeholder="pathology code ...">
-                        </div>                                              
-                      </td>
-                  </tr>                  
+                    </div>  
+                  </td>
+                  <td>
+                    <div class="teal-text"><em><strong>pathology code</strong></em></div>
+                    <div class="ui icon input wide-form">
+                      <input class="" type="text" id="pathology_code" [formControl]="searchForm.controls['pathology_code']" 
+                            placeholder="pathology code ...">
+                    </div>
+                  </td>
+                  <td colspan="2"></td>
+                </tr>
               </tbody>
           </table>            
       </div>
   </div>
 </form>
 
-
 <!--FROM date and TO date-->
-<div class="ui grid">
-  <div class="eight wide column">
-      <div><span class="header">freezing date: </span></div>
-      <my-date-picker name="freezing_date_from" [options]="myDatePickerOptions" [(ngModel)]="freezing_date_from" 
+<div class="ui grid stackable" *ngIf="!on_searching">
+  <div class="four wide column">
+    <div class="teal-text"><em><strong>freezing date from: </strong></em></div>
+    <my-date-picker name="freezing_date_from" [options]="myDatePickerOptions" [(ngModel)]="freezing_date_from" 
       (ngModelChange)="updateSampleFromDate($event)"></my-date-picker>
-      <my-date-picker name="freezing_date_to" [options]="myDatePickerOptions" [(ngModel)]="freezing_date_to" 
+  </div>
+  <div class="four wide column">
+    <div class="teal-text"><em><strong>freezing date to: </strong></em></div>
+    <my-date-picker name="freezing_date_to" [options]="myDatePickerOptions" [(ngModel)]="freezing_date_to" 
       (ngModelChange)="updateSampleToDate($event)"></my-date-picker>
+  </div>
+  <div class="eight wide column"></div>
+</div>
+<!--search again-->
+<div class="ui grid stackable" *ngIf="on_searching">
+  <div class="sixteen wide column">
+    <a class="ui blue button float-right" (click)="searchAgain()"><i class="icon repeat"></i>SEARCH AGAIN</a>
   </div>
 </div>
