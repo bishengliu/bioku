@@ -138,7 +138,8 @@ export class SampleSearch {
     registration_code: string; // primary code
     reference_code: string;
     freezing_code: string;
-    freezing_date: Array<Date>;
+    freezing_date_from: Date;
+    freezing_date_to: Date;
     occupied: string; //0==both; 1==occupied only; 2==taken-out only
 
     //construct
@@ -149,11 +150,11 @@ export class SampleSearch {
 
     //oligo
     oligo_name: string;
-    oligo_length: number;
-    oligo_GC: number;
+    oligo_length_from: number;
+    oligo_length_to: number;
 
     //virus
-    lasmid: string;
+    plasmid: string;
     titration_code: string;
 
     //tissue

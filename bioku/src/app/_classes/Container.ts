@@ -17,3 +17,8 @@ export class Container{
     groups: Array<Group>;
     boxes: Array<Box>;
 }
+
+export class ContainerNamePK{
+    pk: number;
+    name: string;
+}
