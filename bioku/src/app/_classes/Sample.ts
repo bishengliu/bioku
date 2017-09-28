@@ -130,7 +130,7 @@ export class SampleFilter {
 }
 
 export class SampleSearch {
-    container: Array<number>;
+    container: number;
     type: string; //['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS']
     name: string;
     label: string; //user defined label

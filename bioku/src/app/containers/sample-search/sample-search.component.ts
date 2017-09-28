@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SampleSearch } from '../../_classes/Sample';
+import { SampleSearch, Sample } from '../../_classes/Sample';
+import {  ContainerService } from '../../_services/ContainerService';
+
 @Component({
   selector: 'app-sample-search',
   templateUrl: './sample-search.component.html',
@@ -7,13 +9,18 @@ import { SampleSearch } from '../../_classes/Sample';
 })
 export class SampleSearchComponent implements OnInit {
   searchObj: SampleSearch = null;
-  constructor() { }
+  SampleMatched: Array<Sample> = new Array<Sample>();
+  constructor(private containerService: ContainerService) { }
 
-  ngOnInit() {}
+ngOnInit() {}
 
-
-  captureSearchObj(obj: SampleSearch){
-    this.searchObj = obj;
+captureSearchObj(obj: SampleSearch){
+  this.searchObj = obj;
+  this.SampleMatched = null;
+  this.containerService.SearchSample(this.searchObj)
+      .subscribe(
+        ()=>{},
+        (err)=>{console.log(err);}
+      );    
   }
-
 }

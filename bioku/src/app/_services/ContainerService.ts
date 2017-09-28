@@ -6,6 +6,7 @@ import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
 import { MoveSample } from '../_classes/MoveSample';
+import { SampleSearch, Sample } from '../_classes/Sample';
 //redux
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -312,5 +313,13 @@ export class ContainerService{
         return this.http.post(create_container_url, formData, this.options_NoContentType) //do provide header accorrding to django
                 .map((response: Response) =>response.json())   
                 .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+    //search samples
+    SearchSample(obj: SampleSearch){
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + "search_samples/"; 
+        let body: string = JSON.stringify(obj);
+        return this.http.post(query_url, body, this.options)
+            .map((response: Response) =>response.json()) 
+            .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 }

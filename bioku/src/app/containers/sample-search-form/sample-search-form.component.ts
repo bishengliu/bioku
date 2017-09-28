@@ -28,8 +28,8 @@ export class SampleSearchFormComponent implements OnInit {
   container_name_pks: Array<ContainerNamePK> = new Array<ContainerNamePK>();
   //ALL SAMPLE TYPES
   all_sample_types: Array<String> = new Array<String>();
-  freezing_date_from: string = "";
-  freezing_date_to: string = "";
+  freezing_date_from: string = null;
+  freezing_date_to: string = null;
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
       // other options...
@@ -53,7 +53,7 @@ export class SampleSearchFormComponent implements OnInit {
     //formGroup
     this.searchForm = fb.group({
       //general
-      'container':[, ],
+      'container':[, Validators.required],
       'type':[, Validators.required],
       'name': [, ],
       'tag':[, ],
@@ -63,7 +63,7 @@ export class SampleSearchFormComponent implements OnInit {
       'freezing_code':[, ],
       'freezing_date_from':[, ],
       'freezing_date_to':[, ],
-      'occupied':[, ],
+      'occupied':[, Validators.required],
       //construct
       'feature': [, ],
       'backbone': [, ],
@@ -139,5 +139,5 @@ export class SampleSearchFormComponent implements OnInit {
     console.log(values);
     this.searchObj.emit(values);
   }
-  
+
 }
