@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
@@ -19,7 +19,7 @@ import {IMyOptions} from 'mydatepicker';
   styleUrls: ['./sample-search-form.component.css']
 })
 export class SampleSearchFormComponent implements OnInit {
-  on_searching: boolean = false;
+  @Output() searchObj : EventEmitter<SampleSearch> = new EventEmitter<SampleSearch> ();
   container: Container = null;
   containers: Array<Container> = null;
   container_to_search: number = null;
@@ -28,8 +28,8 @@ export class SampleSearchFormComponent implements OnInit {
   container_name_pks: Array<ContainerNamePK> = new Array<ContainerNamePK>();
   //ALL SAMPLE TYPES
   all_sample_types: Array<String> = new Array<String>();
-  freezing_date_from = {};
-  freezing_date_to = {};
+  freezing_date_from: string = "";
+  freezing_date_to: string = "";
   //mydatepicker
   private myDatePickerOptions: IMyOptions = {
       // other options...
@@ -41,15 +41,14 @@ export class SampleSearchFormComponent implements OnInit {
       openSelectorOnInputClick: true
   };
   //SAPMPLE TYPE
-  sample_type: string = null;
-  form_filled: boolean = false;
+  sample_type: string = "";
   searchForm: FormGroup;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
               private cValidators: CustomFormValidators, private fb: FormBuilder) { 
     appStore.subscribe(()=> this.updateState());
     this.updateState();
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
-    this.sample_type = null;
+    this.sample_type = "";
 
     //formGroup
     this.searchForm = fb.group({
@@ -64,6 +63,7 @@ export class SampleSearchFormComponent implements OnInit {
       'freezing_code':[, ],
       'freezing_date_from':[, ],
       'freezing_date_to':[, ],
+      'occupied':[, ],
       //construct
       'feature': [, ],
       'backbone': [, ],
@@ -84,6 +84,7 @@ export class SampleSearchFormComponent implements OnInit {
       'tissue': [, ]
       });
   }
+
   updateContainer(value:any){
     this.container_to_search = value.target.value;
     console.log(this.container_to_search);
@@ -96,6 +97,7 @@ export class SampleSearchFormComponent implements OnInit {
     this.freezing_date_from = value.formatted;
     console.log(this.freezing_date_from);
   }
+
   updateSampleToDate(value:any){
     this.freezing_date_to = value.formatted;
     console.log(this.freezing_date_to);
@@ -110,7 +112,7 @@ export class SampleSearchFormComponent implements OnInit {
       this.containers = state.containerInfo.containers;
     }
     this.container_name_pks = this.getContainerNamePks(this.containers);
-    console.log(this.container);
+    //console.log(this.container);
   }
 
   getContainerNamePks(containers: Array<Container>): Array<ContainerNamePK>{
@@ -130,11 +132,12 @@ export class SampleSearchFormComponent implements OnInit {
     }   
   }
   
-  onSearch(values: any){
+  onSearch(values: SampleSearch){
     //need to update search obj
-    this.on_searching = true;
+    values.freezing_date_from = this.freezing_date_from;
+    values.freezing_date_to = this.freezing_date_to;
+    console.log(values);
+    this.searchObj.emit(values);
   }
-  searchAgain(){
-    this.on_searching = false;
-  }
+  
 }

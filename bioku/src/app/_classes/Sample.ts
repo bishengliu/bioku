@@ -138,9 +138,9 @@ export class SampleSearch {
     registration_code: string; // primary code
     reference_code: string;
     freezing_code: string;
-    freezing_date_from: Date;
-    freezing_date_to: Date;
-    occupied: string; //0==both; 1==occupied only; 2==taken-out only
+    freezing_date_from: string;
+    freezing_date_to: string;
+    occupied: number; //2==both; 0==occupied only; 1==taken-out only
 
     //construct
     feature: string;
