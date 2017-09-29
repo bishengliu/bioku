@@ -10,6 +10,8 @@ import {  ContainerService } from '../../_services/ContainerService';
 export class SampleSearchComponent implements OnInit {
   searchObj: SampleSearch = null;
   SampleMatched: Array<Sample> = new Array<Sample>();
+  searching: boolean = false;
+  show_error: boolean = false;
   constructor(private containerService: ContainerService) { }
 
 ngOnInit() {}
@@ -17,12 +19,19 @@ ngOnInit() {}
 captureSearchObj(obj: SampleSearch){
   this.searchObj = obj;
   this.SampleMatched = null;
+  this.searching = true;
+  this.show_error = false;
   this.containerService.SearchSample(this.searchObj)
       .subscribe(
         (samples: Array<Sample>)=>{
           console.log(samples);
+          this.SampleMatched = [...samples];
+          this.searching = false;
         },
-        (err)=>{console.log(err);}
+        (err)=>{
+          console.log(err);this.searching = false;
+          this.show_error = true;
+        }
       );    
   }
 }

@@ -14,6 +14,7 @@
     <br/><br/><br/><br/>
     <p class="brown-text">loading containers ... </p>
 </div>
+
 <!--after loading-->
 <div class="ui grid small_padding" *ngIf="loading == false">
     <div *ngIf="containers.length > 0">
@@ -22,6 +23,7 @@
         </div>
     </div>   
 </div>
+
 <!--no record-->
 <div *ngIf="loading==false && (containers== null || containers.length == 0)" class="ui tertiary segment container center aligned">
     <p class="">no container found! You can click the button above to add a container. </p>

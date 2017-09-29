@@ -19,6 +19,8 @@ export class SampleGeneral {
     pk: number;
     box: string;
     box_id: number;
+    container_id: number;
+    container: string;
     color: string;
     date_in: Date;
     date_out: Date;    

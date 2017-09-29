@@ -13,8 +13,20 @@
   </div>
 </div>
 
-<div class="ui grid row small_padding">
+<div *ngIf="!searching && !show_error" class="ui grid row small_padding">
   <div class="sixteen wide column">
     <app-sample-search-result></app-sample-search-result>
   </div>
+</div>
+
+<!-- searching -->
+<div *ngIf="searching" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">searching samples ... </p>
+</div>
+
+<!-- error -->
+<div *ngIf="show_error" class="ui tertiary segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="">Something went wrong from the server side, please try again later!</p>
 </div>
