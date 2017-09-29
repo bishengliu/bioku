@@ -4,7 +4,7 @@
   </div>
   <div class="six wide column">
       <a class="ui violet button float-right" [routerLink]="['/containers/']"><i class="icon caret left"></i>CONTAINERS</a>
-      <a class="ui blue button float-right" (click)="showAgain()"><i class="icon repeat"></i>SEARCH AGAIN</a>
+      <a *ngIf="toogleSearch" class="ui blue button float-right" (click)="showAgain()"><i class="icon repeat"></i>SEARCH AGAIN</a>
   </div>
 </div>
 
@@ -12,13 +12,13 @@
   <div class="sixteen wide column">
     <app-sample-search-form 
     (searchObj)="captureSearchObj($event)" 
-    [toogleSearch]="toogleSearch">
+    [searchAgain]="searchAgain">
   </app-sample-search-form>
   </div>
 </div>
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
-  <div class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
+  <div *ngIf="samples.length > 0" class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
   <div class="sixteen wide column">
     <app-sample-search-result 
     [samples]="samples" 
@@ -36,5 +36,6 @@
 <!-- error -->
 <div *ngIf="show_error" class="ui tertiary segment center aligned">
   <br/><br/><br/><br/>
-  <p class="">Something went wrong from the server side, please try again later!</p>
+  <p><i class="ui massive icon warning sign brown-text"></i></p>
+  <p class="brown-text">Something went wrong from the server side, please try again later!</p>
 </div>

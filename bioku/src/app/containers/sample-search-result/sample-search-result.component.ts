@@ -30,8 +30,10 @@ export class SampleSearchResultComponent implements OnInit {
     //emit observable
     this.sampleSelected.emit(this.selectedSamples);
   }
+
   ngOnChanges(){
     this.selectedSamples = []; //clear selected samples
     this.sampleSelected.emit([]); //emit selected sample pk
   }
+
 }

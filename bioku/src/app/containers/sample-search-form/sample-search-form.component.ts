@@ -20,7 +20,7 @@ import {IMyOptions} from 'mydatepicker';
 })
 export class SampleSearchFormComponent implements OnInit {
   @Output() searchObj : EventEmitter<SampleSearch> = new EventEmitter<SampleSearch> ();
-  @Input() toogleSearch;
+  @Input() searchAgain;
   container: Container = null;
   containers: Array<Container> = null;
   container_to_search: number = null;
@@ -143,7 +143,7 @@ export class SampleSearchFormComponent implements OnInit {
   }
   
   ngOnChanges(change: SimpleChanges){
-    if(change["toogleSearch"] != undefined){
+    if(change["searchAgain"] != undefined){
       this.show_form = true;
     }
   }

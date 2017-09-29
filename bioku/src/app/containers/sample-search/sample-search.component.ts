@@ -14,6 +14,7 @@ export class SampleSearchComponent implements OnInit {
   show_error: boolean = false;
   //search again
   toogleSearch: boolean = false;
+  searchAgain: boolean = false;
   constructor(private containerService: ContainerService) { }
 
 ngOnInit() {}
@@ -26,13 +27,15 @@ captureSearchObj(obj: SampleSearch){
   this.containerService.SearchSample(this.searchObj)
       .subscribe(
         (samples: Array<Sample>)=>{
-          console.log(samples);
+          console.log(samples); // sample found ...
           this.samples = [...samples];
           this.searching = false;
+          this.toogleSearch = true;
         },
         (err)=>{
           console.log(err);this.searching = false;
           this.show_error = true;
+          this.toogleSearch = true;
         }
       );    
 }
@@ -42,6 +45,8 @@ captureSampleSelected(data: any){
 }
 showAgain(){
   this.samples= [];
-  this.toogleSearch = !this.toogleSearch;
+  this.searchAgain = !this.searchAgain;
+  this.show_error = false;
+  this.searching = false;
 }
 }
