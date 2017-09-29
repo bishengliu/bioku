@@ -15,7 +15,10 @@
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
   <div class="sixteen wide column">
-    <app-sample-search-result></app-sample-search-result>
+    <app-sample-search-result
+    [samples]="samples" 
+    (sampleSelected)="captureSampleSelected($event)">
+    </app-sample-search-result>
   </div>
 </div>
 

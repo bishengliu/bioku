@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Sample } from '../../_classes/Sample';
 
 @Component({
   selector: 'app-sample-search-result',
@@ -6,10 +8,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sample-search-result.component.css']
 })
 export class SampleSearchResultComponent implements OnInit {
-
+  @Input() samples: Array<Sample>;
+  selectedSamples: Array<number> =[] //sample pk
+  @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   constructor() { }
 
   ngOnInit() {
+    this.sampleSelected.emit([]);//emit empty sample selected
   }
 
+  toggleSelection(pk: number){
+    if(pk != null){
+      let index = this.selectedSamples.indexOf(pk);
+      if(index === -1){
+        this.selectedSamples.push(pk);
+      }
+      else{
+        this.selectedSamples.splice(index, 1);
+      }
+    }
+    //emit observable
+    this.sampleSelected.emit(this.selectedSamples);
+  }
+  ngOnChanges(){
+    this.selectedSamples = []; //clear selected samples
+    this.sampleSelected.emit(null); //emit selected sample pk
+  }
 }
