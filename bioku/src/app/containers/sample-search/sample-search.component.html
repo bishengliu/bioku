@@ -14,6 +14,7 @@
 </div>
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
+  <div class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
   <div class="sixteen wide column">
     <app-sample-search-result
     [samples]="samples" 

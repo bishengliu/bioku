@@ -23,6 +23,8 @@ export class SampleSearchFormComponent implements OnInit {
   container: Container = null;
   containers: Array<Container> = null;
   container_to_search: number = null;
+  show_form: boolean = true;
+  show_button: boolean = false;
   default_container_to_search: number = -1;
   //all the containers
   container_name_pks: Array<ContainerNamePK> = new Array<ContainerNamePK>();
@@ -49,7 +51,6 @@ export class SampleSearchFormComponent implements OnInit {
     this.updateState();
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     this.sample_type = "";
-
     //formGroup
     this.searchForm = fb.group({
       //general
@@ -125,7 +126,9 @@ export class SampleSearchFormComponent implements OnInit {
     });
     return containers;
   }
-
+  showAgain(){
+    this.show_form = true;
+  }
   ngOnInit() {
     if(this.container != null){
       this.default_container_to_search = this.container.pk;
@@ -136,8 +139,9 @@ export class SampleSearchFormComponent implements OnInit {
     //need to update search obj
     values.freezing_date_from = this.freezing_date_from;
     values.freezing_date_to = this.freezing_date_to;
-    console.log(values);
     this.searchObj.emit(values);
+    this.show_form = false;
+    this.show_button = true;
   }
 
 }
