@@ -19,7 +19,9 @@ captureSearchObj(obj: SampleSearch){
   this.SampleMatched = null;
   this.containerService.SearchSample(this.searchObj)
       .subscribe(
-        ()=>{},
+        (samples: Array<Sample>)=>{
+          console.log(samples);
+        },
         (err)=>{console.log(err);}
       );    
   }
