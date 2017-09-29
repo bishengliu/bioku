@@ -1,11 +1,10 @@
 <div class="ui segments">
   <div class="ui tertiary segment">
     <a><i class="icon filter"></i>FILTER SAMPLES</a>
-    <button class="ui blue button float-right" *ngIf="show_button" (click)="showAgain()"><i class="icon repeat"></i>SEARCH AGAIN</button>
   </div>
   <div class="ui black segment" *ngIf="show_form">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
-      <button *ngIf="searchForm.touched && searchForm.valid" type="submit" class="ui fluid primary button">
+      <button *ngIf="searchForm.touched" type="submit" class="ui fluid primary button">
               <i class="icon search"></i> SEARCH SAMPLES 
       </button>
       <div class="ui grid">

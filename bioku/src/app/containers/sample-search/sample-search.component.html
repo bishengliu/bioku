@@ -4,19 +4,23 @@
   </div>
   <div class="six wide column">
       <a class="ui violet button float-right" [routerLink]="['/containers/']"><i class="icon caret left"></i>CONTAINERS</a>
+      <a class="ui blue button float-right" (click)="showAgain()"><i class="icon repeat"></i>SEARCH AGAIN</a>
   </div>
 </div>
 
 <div class="ui grid row small_padding">
   <div class="sixteen wide column">
-    <app-sample-search-form (searchObj)="captureSearchObj($event)"></app-sample-search-form>
+    <app-sample-search-form 
+    (searchObj)="captureSearchObj($event)" 
+    [toogleSearch]="toogleSearch">
+  </app-sample-search-form>
   </div>
 </div>
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
   <div class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
   <div class="sixteen wide column">
-    <app-sample-search-result
+    <app-sample-search-result 
     [samples]="samples" 
     (sampleSelected)="captureSampleSelected($event)">
     </app-sample-search-result>

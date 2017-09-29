@@ -20,11 +20,12 @@ import {IMyOptions} from 'mydatepicker';
 })
 export class SampleSearchFormComponent implements OnInit {
   @Output() searchObj : EventEmitter<SampleSearch> = new EventEmitter<SampleSearch> ();
+  @Input() toogleSearch;
   container: Container = null;
   containers: Array<Container> = null;
   container_to_search: number = null;
-  show_form: boolean = true;
-  show_button: boolean = false;
+  show_form: boolean;
+  //show_button: boolean;
   default_container_to_search: number = -1;
   //all the containers
   container_name_pks: Array<ContainerNamePK> = new Array<ContainerNamePK>();
@@ -51,6 +52,9 @@ export class SampleSearchFormComponent implements OnInit {
     this.updateState();
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     this.sample_type = "";
+
+    this.show_form = true;
+    //this.show_button = false;
     //formGroup
     this.searchForm = fb.group({
       //general
@@ -88,20 +92,16 @@ export class SampleSearchFormComponent implements OnInit {
 
   updateContainer(value:any){
     this.container_to_search = value.target.value;
-    console.log(this.container_to_search);
   }
   updateType(value:any){
     this.sample_type = value.target.value;
-    console.log(this.sample_type);
   }
   updateSampleFromDate(value:any){
     this.freezing_date_from = value.formatted;
-    console.log(this.freezing_date_from);
   }
 
   updateSampleToDate(value:any){
     this.freezing_date_to = value.formatted;
-    console.log(this.freezing_date_to);
   }
 
   updateState(){
@@ -126,9 +126,7 @@ export class SampleSearchFormComponent implements OnInit {
     });
     return containers;
   }
-  showAgain(){
-    this.show_form = true;
-  }
+
   ngOnInit() {
     if(this.container != null){
       this.default_container_to_search = this.container.pk;
@@ -141,7 +139,13 @@ export class SampleSearchFormComponent implements OnInit {
     values.freezing_date_to = this.freezing_date_to;
     this.searchObj.emit(values);
     this.show_form = false;
-    this.show_button = true;
+    //this.show_button = true;
+  }
+  
+  ngOnChanges(change: SimpleChanges){
+    if(change["toogleSearch"] != undefined){
+      this.show_form = true;
+    }
   }
 
 }
