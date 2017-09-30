@@ -34,7 +34,7 @@
 </div>
 <!--after loading twelve-->
 <div class="ui small_padding stackable grid" *ngIf="loading==false">
-  <div class="eleven wide column">
+  <div class="sixteen wide column">
     <app-sample-table *ngIf="!box_view && searchedSamples.length > 0" 
       [samples]="searchedSamples" 
       (sampleSelected)="captureSampleSelected($event)">
@@ -44,17 +44,17 @@
       [searchedBoxSamples]="searchedBoxSamples"
       (sampleSelected)="captureSampleSelected($event)" 
       (cellSelected)="captureCellSelected($event)">
-    </app-box-layout>   
-  </div>
-  <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
-    class="five wide column ui sticky">
-      <app-box-detail-action-panel ng2-sticky style="float: right; margin-right: 20px;"
-      [selectedSamples]="selectedSamples.toString()" 
-      [selectedCells]="selectedCells.toString()">
-      </app-box-detail-action-panel>
+    </app-box-layout>
+    <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
+        class="sticky-box-top-left">
+        <app-box-detail-action-panel
+        [selectedSamples]="selectedSamples.toString()" 
+        [selectedCells]="selectedCells.toString()">
+        </app-box-detail-action-panel>
+    </div>
   </div>
 </div>
- 
+
 <!--no record FOR LIST VIEW-->
 <div *ngIf="loading==false && !box_view && (searchedSamples== null || searchedSamples.length == 0)" class="ui tertiary segment container center aligned">
     <p class="">no sample found! You can switch to box overview to add sample(s). </p>

@@ -351,3 +351,60 @@ div [class*="right floated"] {
 .teal_border_left{
   border-left: 10px solid white !important;
 }
+
+.sticky-search-top-left{
+  float: none; 
+  box-sizing: border-box; 
+  position: fixed; 
+  /* top: 220px; 
+  bottom: inherit;  */
+  top: inherit; 
+  bottom: 25px; 
+  width: 450px; 
+  left: auto; 
+  right: 10px;
+  opacity: 0.8;
+}
+
+.sticky-box-top-left{
+  float: none; 
+  box-sizing: border-box; 
+  position: fixed; 
+  /* top: 170px; 
+  bottom: inherit; */
+  top: inherit; 
+  bottom: 25px; 
+  width: 550px; 
+  left: auto; 
+  right: 10px;
+  /* background-color:rgba(255,0,0,0.5); */
+  opacity: 0.8;
+}
+
+.sticky-container-top-left{
+  float: none; 
+  box-sizing: border-box; 
+  position: fixed; 
+  /* top: 200px; 
+  bottom: inherit;  */
+  top: inherit; 
+  bottom: 25px; 
+  width: 450px; 
+  left: auto; 
+  right: 10px;
+  opacity: 0.8;
+}
+
+.opaque {
+  /* Theoretically for IE 8 & 9 (more valid) */
+  /* ...but not required as filter works too */
+  /* should come BEFORE filter  // IE8*/
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; 
+
+  /* This works in IE 8 & 9 too */
+  /* ... but also 5, 6, 7 // IE 5-7 */
+  filter: alpha(opacity=50); 
+  
+  /* Modern Browsers */
+  opacity: 0.5;
+}

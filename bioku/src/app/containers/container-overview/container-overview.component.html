@@ -34,19 +34,20 @@
 </div>
 <!-- overview and action panel -->
 <div class="ui grid small_padding stackable">
-    <div class="twelve wide column" >
+    <div class="sixteen wide column" >
         <app-container-box-overview 
         [container]="container" 
         [towers]="containerTowers"
         (boxesSelected)="captureBoxesSelected($event)" 
         (lastSelectedOccupiedSlot)="captureLastSelectedBox($event)">
       </app-container-box-overview>
-    </div>
-    <div class="four wide column ui sticky" *ngIf="selectedBoxes.length > 0">
-        <app-container-box-overview-action-panel ng2-sticky style="float: right; min-width: 320px; margin-right: 20px;"
-          [selectedBoxes]="selectedBoxes" 
-          [lastSelectedOccupiedBox]="lastSelectedOccupiedBox" 
-          [container]="container">
-        </app-container-box-overview-action-panel>
-    </div> 
+      <div class="sticky-container-top-left" *ngIf="selectedBoxes.length > 0">
+          <app-container-box-overview-action-panel 
+            [selectedBoxes]="selectedBoxes" 
+            [lastSelectedOccupiedBox]="lastSelectedOccupiedBox" 
+            [container]="container">
+          </app-container-box-overview-action-panel>
+      </div> 
+    </div>  
 </div>
+<!-- ng2-sticky style="float: right; min-width: 320px; margin-right: 20px;" -->

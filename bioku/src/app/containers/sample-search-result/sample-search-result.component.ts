@@ -9,6 +9,7 @@ import { Sample } from '../../_classes/Sample';
 })
 export class SampleSearchResultComponent implements OnInit {
   @Input() samples: Array<Sample>;
+  @Input() searched: boolean;
   selectedSamples: Array<number> =[] //sample pk
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   constructor() { }
