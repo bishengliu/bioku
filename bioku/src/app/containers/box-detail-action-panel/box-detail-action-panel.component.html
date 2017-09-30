@@ -1,67 +1,72 @@
 <div class="ui stacked raised segments">
-  <div class="ui center aligned tertiary inverted segment no_margin nopadding" [style.background-color]="box.color">
-    <p class="no_margin nopadding">ACTION PANEL</p>
-  </div>
 
-  <div class="ui segment" *ngIf="action_panel_msg">
-    <!--msg-->
-    <div class="ui icon message" >
-      <i class="warning sign icon red-text"></i>
-      <div class="content">
-        <p class="red-text">{{action_panel_msg}}</p>
-      </div>
-    </div>
-    <!--msg-->
-  </div>
-
-  <!--single selection-->
-  <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
-      class="ui violet segment" style="overflow-y:scroll;white-space:nowrap;">
-    <app-sample-detail [samplePK]="samplePKs[0]"></app-sample-detail>
- </div>
-
-<!--multiple selection-->
-<!--current occipied sample-->
- <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui violet segment">
-    <div class="ui labels">
-      <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
-    </div>
-    <div class="ui divider"></div>
-    <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
-      <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-      <button class="ui compact mini inverted violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
-      <!-- <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button> -->
+  <div class="ui grid tertiary center aligned inverted segment no_margin nopadding" [style.background-color]="box.color">
+    <div class="no_margin nopadding fourteen wide column">ACTION PANEL</div>
+    <div class="no_margin nopadding two wide column">
+      <a class="clickable ui right floated"><i class="icon chevron circle up"></i></a>
+      <!-- <a class="ui circular icon inverted red button"><i class="icon chevron circle down"></i></a> -->
     </div>
   </div>
-
-<!--multiple selection-->
-<!--previous occupied sample-->       
-  <div *ngIf="samplePKs.length > 1 && preoccupiedSamples.length >= 1" class="ui grey segment">
-    <div class="ui labels">
-      <div class="ui label" *ngFor="let sample of preoccupiedSamples">
-        <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
-        <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span>
+  <!--  -->
+  <div>
+    <div class="ui segment" *ngIf="action_panel_msg">
+      <!--msg-->
+      <div class="ui icon message" >
+        <i class="warning sign icon red-text"></i>
+        <div class="content">
+          <p class="red-text">{{action_panel_msg}}</p>
+        </div>
       </div>
+      <!--msg-->
     </div>
-    <div class="ui divider"></div>
-    <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
-  </div>  
+    <!--single selection-->
+    <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
+        class="ui violet segment" style="overflow-y:scroll;white-space:nowrap;">
+      <app-sample-detail [samplePK]="samplePKs[0]"></app-sample-detail>
+    </div>
 
-  <!--empty box cells: for box view only-->
-  <div *ngIf="emptySelectedCells.length > 0" class="ui blue segment">
-    <div class="ui labels">
-      <div class="ui label" *ngFor="let cell of emptySelectedCells">
-        <i class="circle thin icon violet-text"></i>
-        <span>{{cell}}</span>
+  <!--multiple selection-->
+  <!--current occipied sample-->
+    <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui violet segment">
+      <div class="ui labels">
+        <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
       </div>
-    </div>
-    <div >
       <div class="ui divider"></div>
-      <button class="ui fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
-    </div> 
-  </div> 
-</div>
+      <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
+        <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
+        <button class="ui compact mini inverted violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
+        <!-- <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button> -->
+      </div>
+    </div>
 
+  <!--multiple selection-->
+  <!--previous occupied sample-->       
+    <div *ngIf="samplePKs.length > 1 && preoccupiedSamples.length >= 1" class="ui grey segment">
+      <div class="ui labels">
+        <div class="ui label" *ngFor="let sample of preoccupiedSamples">
+          <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
+          <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+      <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
+    </div>  
+
+    <!--empty box cells: for box view only-->
+    <div *ngIf="emptySelectedCells.length > 0" class="ui blue segment">
+      <div class="ui labels">
+        <div class="ui label" *ngFor="let cell of emptySelectedCells">
+          <i class="circle thin icon violet-text"></i>
+          <span>{{cell}}</span>
+        </div>
+      </div>
+      <div >
+        <div class="ui divider"></div>
+        <button class="ui fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
+      </div> 
+    </div> 
+  </div>
+</div>
 <!--
 ag2 drag drop
 https://www.npmjs.com/package/angular-drag-drop

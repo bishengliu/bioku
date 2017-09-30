@@ -363,7 +363,8 @@ div [class*="right floated"] {
   width: 450px; 
   left: auto; 
   right: 10px;
-  opacity: 0.8;
+  opacity: 1.0;
+  z-index: 999;
 }
 
 .sticky-box-top-left{
@@ -378,7 +379,8 @@ div [class*="right floated"] {
   left: auto; 
   right: 10px;
   /* background-color:rgba(255,0,0,0.5); */
-  opacity: 0.8;
+  opacity: 1.0;
+  z-index: 999;
 }
 
 .sticky-container-top-left{
@@ -392,7 +394,8 @@ div [class*="right floated"] {
   width: 450px; 
   left: auto; 
   right: 10px;
-  opacity: 0.8;
+  opacity: 1.0;
+  z-index: 999;
 }
 
 .opaque {
@@ -406,5 +409,5 @@ div [class*="right floated"] {
   filter: alpha(opacity=50); 
   
   /* Modern Browsers */
-  opacity: 0.5;
+  opacity: 1.0;
 }
