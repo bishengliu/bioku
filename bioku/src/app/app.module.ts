@@ -35,7 +35,7 @@ import { LogerProvider } from './_providers/LogAppStateProvider';
 //angular2-useful-swiper
 import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
 //ng2-sticky: https://www.npmjs.com/package/ng2-sticky
-import { Ng2StickyModule } from 'ng2-sticky';
+//import { Ng2StickyModule } from 'ng2-sticky';
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -156,7 +156,7 @@ import { SampleSearchResultComponent } from './containers/sample-search-result/s
     //dragula
     DragulaModule,
     //ng2-sticky
-    Ng2StickyModule,
+    //Ng2StickyModule,
   ],
   providers: [
     //guards
