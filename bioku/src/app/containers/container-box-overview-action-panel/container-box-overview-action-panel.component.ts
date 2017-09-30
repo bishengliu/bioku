@@ -34,7 +34,8 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   selectedEmptySlots: Array<BoxAvailability> = new Array<BoxAvailability>();
   //selected occupied slots
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
-
+  //show panel content
+  show_panel_content: boolean = true;
   constructor(@Inject(AppStore) private appStore, private router: Router,
               private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService) {
     appStore.subscribe(()=> this.updateState());
@@ -157,5 +158,13 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
       this.alertService.error("Boxes not switched, please make sure you only selected 2 occuped boxes!", true);
     }
     console.log(this.selectedOccupiedSlots);
+  }
+  
+  hidePanelContent(){
+    this.show_panel_content = false;
+  }
+
+  showPanelContent(){
+    this.show_panel_content = true;
   }
 }

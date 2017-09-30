@@ -31,7 +31,7 @@ export class BoxDetailActionPanelComponent implements OnInit {
   occupiedSamples: Array<Sample> =[];//occupied samples
   preoccupiedSamples: Array<Sample> =[]; //previous occupied samples
   emptySelectedCells: Array<string> =[]; //selected cells that are empty
-
+  show_panel_content: boolean = true;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService,
               private containerService: ContainerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { 
     this.appUrl = this.appSetting.URL;
@@ -191,5 +191,13 @@ export class BoxDetailActionPanelComponent implements OnInit {
   //route force refrsh
   forceRefresh(){
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
+  }
+
+  hidePanelContent(){
+    this.show_panel_content = false;
+  }
+
+  showPanelContent(){
+    this.show_panel_content = true;
   }
 }

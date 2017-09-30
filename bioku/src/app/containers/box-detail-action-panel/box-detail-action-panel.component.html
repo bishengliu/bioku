@@ -1,14 +1,15 @@
 <div class="ui stacked raised segments">
 
-  <div class="ui grid tertiary center aligned inverted segment no_margin nopadding" [style.background-color]="box.color">
+  <div class="ui grid tertiary blue center aligned inverted segment no_margin nopadding">
+    <!-- [style.background-color]="box.color" -->
     <div class="no_margin nopadding fourteen wide column">ACTION PANEL</div>
     <div class="no_margin nopadding two wide column">
-      <a class="clickable ui right floated"><i class="icon chevron circle up"></i></a>
-      <!-- <a class="ui circular icon inverted red button"><i class="icon chevron circle down"></i></a> -->
+      <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down"></i></a>
+      <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="showPanelContent()"><i class="icon chevron circle up"></i></a>
     </div>
   </div>
-  <!--  -->
-  <div>
+  
+  <div *ngIf="show_panel_content">
     <div class="ui segment" *ngIf="action_panel_msg">
       <!--msg-->
       <div class="ui icon message" >
@@ -21,13 +22,13 @@
     </div>
     <!--single selection-->
     <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
-        class="ui violet segment" style="overflow-y:scroll;white-space:nowrap;">
+        class="ui segment" style="overflow-y:scroll;white-space:nowrap;">
       <app-sample-detail [samplePK]="samplePKs[0]"></app-sample-detail>
     </div>
 
   <!--multiple selection-->
   <!--current occipied sample-->
-    <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui violet segment">
+    <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui segment">
       <div class="ui labels">
         <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
       </div>
