@@ -35,7 +35,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
   //selected occupied slots
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
   //show panel content
-  show_panel_content: boolean = true;
+  show_panel_content: boolean = false;
   constructor(@Inject(AppStore) private appStore, private router: Router,
               private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService) {
     appStore.subscribe(()=> this.updateState());
@@ -166,5 +166,8 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit {
 
   showPanelContent(){
     this.show_panel_content = true;
+  }
+  togglePanelContent(){
+    this.show_panel_content = !this.show_panel_content;
   }
 }

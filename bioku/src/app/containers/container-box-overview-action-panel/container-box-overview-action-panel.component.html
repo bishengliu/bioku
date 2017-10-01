@@ -1,9 +1,14 @@
 <div class="ui stacked raised segments">
-  <div class="ui grid center aligned tertiary inverted blue segment no_margin nopadding">
-      <div class="no_margin nopadding fourteen wide column">ACTION PANEL</div>
+  <div class="ui grid inverted segment no_margin nopadding">
+      <div class="no_margin nopadding fourteen wide column white-text clickable" (click)="togglePanelContent()">
+        <span class="brown-text">{{selectedBoxes.length}}</span> 
+        <span *ngIf="selectedBoxes.length==1">box</span>
+        <span *ngIf="selectedBoxes.length > 1">boxes</span>
+        selected
+      </div>
       <div class="no_margin nopadding two wide column">
-        <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down"></i></a>
-        <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="showPanelContent()"><i class="icon chevron circle up"></i></a>
+        <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down white-text"></i></a>
+        <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="showPanelContent()"><i class="icon chevron circle up white-text"></i></a>
       </div>
   </div>
   <div *ngIf="show_panel_content">
@@ -49,7 +54,7 @@
       </div>
       <div >
         <div class="ui divider"></div>
-        <button class="ui mini black button" (click)="addBox()"><i class="icon plus"></i>BOXES</button>
+        <button class="ui fluid mini black button" (click)="addBox()"><i class="icon plus"></i>BOXES</button>
       </div>
     </div>
   </div>

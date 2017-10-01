@@ -32,8 +32,8 @@ export class BoxLayoutComponent implements OnInit {
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   @Output() cellSelected: EventEmitter<Array<string>> = new EventEmitter<Array<string>> ();
   appUrl: string;
-  container: Container;
-  box: Box;
+  @Input() container: Container;
+  @Input() box: Box;
   currentSampleCount: number = 0; //active samples in the box
   totalBoxCapacity: number;
   user: User;
@@ -66,6 +66,7 @@ export class BoxLayoutComponent implements OnInit {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
+
   //dragula events
   private onDrop(source_slot: string, target_slot: string) {
     let source_sample_positions = source_slot.split('-');
@@ -112,6 +113,7 @@ export class BoxLayoutComponent implements OnInit {
     this.sampleSelected.emit(this.selectedSamples);
     this.cellSelected.emit(this.selectedCells.sort());
   }
+
   updateState(){
     let state = this.appStore.getState();
     if (state.authInfo && state.authInfo.authUser){
@@ -122,9 +124,6 @@ export class BoxLayoutComponent implements OnInit {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      this.hArray = this.utilityService.genArray(this.box.box_horizontal);
-      this.vArray = this.genLetterArray(this.box.box_vertical);
-      this.colspanCount = this.box.box_horizontal + 1;
     }
   }
   genBorderStyle(color: string){
@@ -134,38 +133,46 @@ export class BoxLayoutComponent implements OnInit {
     }
     return cssValue;
   }
+
   //rate box
   updateRate(rate: number, box_position: string){
     this.rate = rate;
     this.containerService.updateBoxRate(this.container.pk, box_position, rate)
     .subscribe(()=>{},(err)=>console.log(err));  
   }
+
   clearRate(box_position: string){
     this.containerService.updateBoxRate(this.container.pk, box_position, 0)
     .subscribe(()=>this.rate =0,(err)=>console.log(err));
   }
+
   //update box color
   updateColor(color: string, box_position: string){
     this.color = color;
     this.containerService.updateBoxColor(this.container.pk, box_position, color)
     .subscribe(()=>{},(err)=>console.log(err));
   }
+
   //update description
   updateDescription(text: string, box_position: string){
     this.containerService.updateBoxDescription(this.container.pk, box_position, text)
     .subscribe(()=>{},(err)=>console.log(err));
   }
+
   //update box label
   updateLabel(text: string, box_position: string){
     this.containerService.updateBoxLabel(this.container.pk, box_position, text)
     .subscribe(()=>{},(err)=>console.log(err));
   }
+
   pickerSamples(h: number, v: string){
     return this.samples.filter((s:Sample)=> s.occupied==true && s.position.toLowerCase()===(v+h).toLowerCase())
   }
+
   forceRefresh(){
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });  
   }
+
   ngOnInit() {
     this.sampleSelected.emit([]);//emit empty sample selected
     this.cellSelected.emit([]);////emit selected cells
@@ -174,6 +181,9 @@ export class BoxLayoutComponent implements OnInit {
       this.color = this.box.color == null ? "#ffffff" : this.box.color;
       this.currentSampleCount = this.box.samples.filter((s:Sample)=>s.occupied == true).length;
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
+      this.hArray = this.utilityService.genArray(this.box.box_horizontal);
+      this.vArray = this.genLetterArray(this.box.box_vertical);
+      this.colspanCount = this.box.box_horizontal + 1;
     }
     //dragular
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {

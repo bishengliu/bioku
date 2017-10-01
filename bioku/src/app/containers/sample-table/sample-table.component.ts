@@ -23,8 +23,8 @@ export class SampleTableComponent implements OnInit {
   selectedSamples: Array<number> =[] //sample pk
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   appUrl: string;
-  container: Container;
-  box: Box;
+  @Input() container: Container;
+  @Input() box: Box;
   currentSampleCount: number = 0; //active samples in the box
   totalBoxCapacity: number;
   user: User;
@@ -72,6 +72,7 @@ export class SampleTableComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
     }
   }
+
   genBorderStyle(color: string){
     let cssValue: string = "1px solid rgba(34,36,38,.15)";
     if(color != null){

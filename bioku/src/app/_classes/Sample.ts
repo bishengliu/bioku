@@ -15,20 +15,35 @@ export class Attachment {
     description: string;
 }
 
-export class SampleGeneral {
+export class SamplePartial{
     pk: number;
     box: string;
+    box_position: string;
     box_id: number;
     container_id: number;
     container: string;
+    type: string;
+    name: string;
+    label: string;
+    tag: string;
+    position: string;
+    occupied: Boolean;
+}
+
+export class SampleGeneral extends SamplePartial {
+    // pk: number;
+    // box: string;
+    // box_id: number;
+    // container_id: number;
+    // container: string;
     color: string;
     date_in: Date;
     date_out: Date;    
-    type: string;
-    name: string;
+    // type: string;
+    // name: string;
     official_name: string;
-    label: string;
-    tag: string;
+    // label: string;
+    // tag: string;
     registration_code: string; // primary code
     reference_code: string;
     quantity: number;
@@ -37,8 +52,8 @@ export class SampleGeneral {
     freezing_date: Date;
     hposition: string;
     vposition: string;
-    position: string;
-    occupied: Boolean;
+    // position: string;
+    // occupied: Boolean;
     qrcode: string;
     code39: string;
     researchers: Array<User>;
@@ -163,3 +178,4 @@ export class SampleSearch {
     pathology_code: string;
     tissue: string;
 }
+

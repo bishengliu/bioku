@@ -4,7 +4,7 @@
   </div>
   <div class="ui black segment">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
-      <button *ngIf="searchForm.touched" type="submit" class="ui fluid primary button">
+      <button *ngIf="searchForm.touched" type="submit" class="ui mini fluid primary button">
               <i class="icon search"></i> SEARCH SAMPLES 
       </button>
       <div class="ui grid">

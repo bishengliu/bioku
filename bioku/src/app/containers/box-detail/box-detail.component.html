@@ -13,10 +13,11 @@
   </div>
   <div class="five wide column">
       <a class="ui violet inverted button"
+      *ngIf="container != null && box != null"
        [routerLink]="['/containers', container.pk, box.box_position, 'move_samples']">
         <i class="icon exchange"></i>SAMPLES BETWEEN BOXES
       </a>
-    </div>
+  </div>
   <div class="six wide column">
       <div class="ui slider checkbox float-right">
         <input type="checkbox" name="" id="table_view" (change)="toggleList()">
@@ -36,10 +37,14 @@
 <div class="ui small_padding stackable grid" *ngIf="loading==false">
   <div class="sixteen wide column">
     <app-sample-table *ngIf="!box_view && searchedSamples.length > 0" 
+      [box]="box"
+      [container]="container"
       [samples]="searchedSamples" 
       (sampleSelected)="captureSampleSelected($event)">
     </app-sample-table> 
-    <app-box-layout *ngIf="box_view" 
+    <app-box-layout *ngIf="box_view"
+      [box]="box"
+      [container]="container"
       [samples]="samples"
       [searchedBoxSamples]="searchedBoxSamples"
       (sampleSelected)="captureSampleSelected($event)" 
@@ -48,6 +53,8 @@
     <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
         class="sticky-box-top-left">
         <app-box-detail-action-panel
+        [box]="box"
+        [container]="container"
         [selectedSamples]="selectedSamples.toString()" 
         [selectedCells]="selectedCells.toString()">
         </app-box-detail-action-panel>

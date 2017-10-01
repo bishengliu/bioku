@@ -19,7 +19,8 @@ export class SampleSearchComponent implements OnInit {
   toogleSearch: boolean = false;
   searchAgain: boolean = false;
   //clicked and selected samples
-  selectedSamples: Array<number> = []; 
+  selectedSamplePks: Array<number> = [];
+  selectedSamples: Array<Sample> = new Array<Sample>();
   constructor(private containerService: ContainerService) { }
 
 ngOnInit() {}
@@ -32,7 +33,7 @@ captureSearchObj(obj: SampleSearch){
   this.containerService.SearchSample(this.searchObj)
       .subscribe(
         (samples: Array<Sample>)=>{
-          console.log(samples); // sample found ...
+          //console.log(samples); // sample found ...
           this.samples = [...samples];
           this.searching = false;
           this.toogleSearch = true;
@@ -49,7 +50,20 @@ captureSearchObj(obj: SampleSearch){
 }
 
 captureSampleSelected(pks: Array<number>){
-  this.selectedSamples = [...pks];
+  this.selectedSamplePks = [...pks];
+  this.selectedSamples = this.getSampleSelected(this.selectedSamplePks, this.samples);
+}
+//get selected samples
+getSampleSelected(pks: Array<number>, samples: Array<Sample>): Array<Sample>{
+  let SelectedSamples: Array<Sample> = new Array<Sample>();
+  if(samples.length > 0 && pks.length > 0){   
+    return samples.filter((s, i)=>{
+      return pks.indexOf(s.pk) != -1;
+    })
+  }
+  else{
+    return SelectedSamples;
+  }
 }
 
 showAgain(){

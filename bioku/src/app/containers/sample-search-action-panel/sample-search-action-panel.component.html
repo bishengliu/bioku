@@ -1,3 +1,62 @@
-<p>
-  sample-search-action-panel works!
-</p>
+<div class="ui stacked raised segments">
+  <div class="ui grid inverted segment no_margin nopadding">
+    <div class="no_margin nopadding fourteen wide column white-text clickable" (click)="togglePanelContent()">
+      <span class="brown-text">{{selectedSamplePks.length}}</span>
+      <span *ngIf="selectedSamplePks.length==1">sample</span>
+      <span *ngIf="selectedSamplePks.length > 1">samples</span> selected
+    </div>
+    <div class="no_margin nopadding two wide column">
+      <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down white-text"></i></a>
+      <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="showPanelContent()"><i class="icon chevron circle up white-text"></i></a>
+    </div>
+  </div>
+  <div *ngIf="show_panel_content" class="ui segment">
+    <!-- take out -->
+    <div class="ui small labels" *ngIf="occupiedSamples.length > 0"> 
+      <div class="ui label clickable"
+      [routerLink]="['/containers', sample.container_id, sample.box_position]"
+      *ngFor="let sample of occupiedSamples">
+          <div>
+            <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
+            <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
+            <br />
+            <em class="tiny-text">
+              <span class="grey-text">
+                <span>{{sample.box}}/{{sample.position}}</span>
+                <sup *ngIf="sample.label">{{sample.label}}</sup>      
+              </span>
+            </em>
+          </div>  
+      </div>
+    </div>
+    <button *ngIf="occupiedSamples.length > 0" class="ui fluid mini red button" (click)="takeMultipleSampleout()">
+      <i class="icon external share"></i>TAKE OUT
+    </button>
+    <!-- put back -->
+    <div class="ui divider" *ngIf="preoccupiedSamples.length > 0 && occupiedSamples.length > 0"></div>
+    <div class="ui small labels" *ngIf="preoccupiedSamples.length > 0">
+        <div class="ui label clickable"
+        [routerLink]="['/containers', sample.container_id, sample.box_position]"
+        *ngFor="let sample of preoccupiedSamples">
+            <div>
+              <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
+              <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
+              <br />
+              <em class="tiny-text">
+                <span class="grey-text">
+                  <span>{{sample.box}}/{{sample.position}}</span>
+                  <sup *ngIf="sample.label">{{sample.label}}</sup>      
+                </span>
+              </em>
+            </div>  
+        </div>
+    </div>
+    <button  *ngIf="preoccupiedSamples.length > 0" class="ui fluid mini inverted brown button" (click)="putMultipleSampleBack()">
+      <i class="icon reply"></i>PUT BACK
+    </button>
+  </div>
+</div>
+
+<!--
+  (click)="go2Box(sample.container_id, sample.box_position)"
+-->

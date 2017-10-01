@@ -42,6 +42,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
+
   updateState(){
     let state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.currentContainer){
@@ -49,10 +50,11 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition')).sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
-      this.searchedSamples = this.samples;
+      //this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition')).sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+      //this.searchedSamples = this.samples;
     }
   }
+  
   //toggle view setting
   toggleList(){
     this.box_view = !this.box_view;
@@ -60,6 +62,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedCells = [];
     this.selectedSamples = [];
   }
+
   //filter output
   updateSampleList(sampleFilter: SampleFilter){
     this.loading = true;
@@ -104,10 +107,12 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     };
     this.loading = false;
   }
+
   //capture emit from sample-table
   captureSampleSelected(pks: Array<number>){
     this.selectedSamples = pks;
   }
+
   captureCellSelected(cells: Array<string>){
     this.selectedCells = cells;
   }
@@ -131,20 +136,11 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         else{
           if(this.container != null){
             return Observable.of(this.container);
-          }else{
+          }else{           
             return this.containerService.containerDetail(this.ct_pk)
           }
         }
-      })
-      // .mergeMap((params) =>{
-      //   this.ct_pk = +params['ct_pk'];
-      //   this.box_pos = params['box_pos'];
-      //   if(this.container != null){
-      //     return Observable.of(this.container);
-      //   }else{
-      //     return this.containerService.containerDetail(this.ct_pk)
-      //   }
-      // })      
+      })     
       .mergeMap((container: any)=>{
         //set the container
         this.container = container;
@@ -156,10 +152,16 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe((box: Box)=>{
         this.box = box;
+        //get samples
+        this.samples = this.box.samples
+          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
+          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+        this.searchedSamples = this.samples;
         this.loading = false;
       },        
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }
+
   ngOnDestroy() { this.sub.unsubscribe(); }
 
 }

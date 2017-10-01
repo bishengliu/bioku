@@ -1,11 +1,21 @@
 <div class="ui stacked raised segments">
-
-  <div class="ui grid tertiary blue center aligned inverted segment no_margin nopadding">
+  <div class="ui grid inverted segment no_margin nopadding">
     <!-- [style.background-color]="box.color" -->
-    <div class="no_margin nopadding fourteen wide column">ACTION PANEL</div>
+    <div class="no_margin nopadding fourteen wide column white-text clickable" (click)="togglePanelContent()">
+      <!-- sample selected-->
+      <span *ngIf="samplePKs.length > 0" class="brown-text">{{samplePKs.length}}</span> 
+      <span *ngIf="samplePKs.length==1">sample</span>
+      <span *ngIf="samplePKs.length > 1">samples</span>
+      <!-- emptySelectedCells selected-->
+      <span *ngIf="samplePKs.length > 0 && emptySelectedCells.length > 0">, </span> 
+      <span *ngIf="emptySelectedCells.length > 0" class="brown-text">{{emptySelectedCells.length}}</span> 
+      <span *ngIf="emptySelectedCells.length==1">empty cell</span>
+      <span *ngIf="emptySelectedCells.length > 1">empty cells</span>
+      <span *ngIf="samplePKs.length > 0 || emptySelectedCells.length > 0">selected</span>
+    </div>
     <div class="no_margin nopadding two wide column">
-      <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down"></i></a>
-      <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="showPanelContent()"><i class="icon chevron circle up"></i></a>
+      <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="togglePanelContent()"><i class="icon chevron circle down white-text"></i></a>
+      <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="togglePanelContent()"><i class="icon chevron circle up white-text"></i></a>
     </div>
   </div>
   
@@ -23,7 +33,11 @@
     <!--single selection-->
     <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
         class="ui segment" style="overflow-y:scroll;white-space:nowrap;">
-      <app-sample-detail [samplePK]="samplePKs[0]"></app-sample-detail>
+      <app-sample-detail
+      [box]="box"
+      [container]="container"
+      [samplePK]="samplePKs[0]">
+    </app-sample-detail>
     </div>
 
   <!--multiple selection-->
@@ -63,7 +77,7 @@
       </div>
       <div >
         <div class="ui divider"></div>
-        <button class="ui fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
+        <button class="ui mini fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
       </div> 
     </div> 
   </div>

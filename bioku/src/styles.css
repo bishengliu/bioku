@@ -168,6 +168,9 @@ body{
 .fixed_avatar_height{
   height: 1.5rem !important;
 }
+.white-text{
+  color: white !important;
+}
 .grey-text{
   color: rgb(158, 158, 158) !important;
 }
@@ -185,6 +188,9 @@ body{
 }
 .violet-text{
   color:#6435C9;
+}
+.tiny-text{
+  font-size: 9px !important;
 }
 .right.menu{
   padding-top: 0 !important;
@@ -363,8 +369,11 @@ div [class*="right floated"] {
   width: 450px; 
   left: auto; 
   right: 10px;
-  opacity: 1.0;
+  opacity: 1;
   z-index: 999;
+  max-height: 550px;
+  /* overflow-y: scroll; */
+  overflow-y:auto;
 }
 
 .sticky-box-top-left{
@@ -381,6 +390,9 @@ div [class*="right floated"] {
   /* background-color:rgba(255,0,0,0.5); */
   opacity: 1.0;
   z-index: 999;
+  max-height: 850px;
+  /* overflow-y: scroll; */
+  overflow-y:auto;
 }
 
 .sticky-container-top-left{
@@ -396,6 +408,9 @@ div [class*="right floated"] {
   right: 10px;
   opacity: 1.0;
   z-index: 999;
+  max-height: 550px;
+  /* overflow-y: scroll; */
+  overflow-y:auto;
 }
 
 .opaque {

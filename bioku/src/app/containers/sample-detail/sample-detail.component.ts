@@ -32,8 +32,8 @@ export class SampleDetailComponent implements OnInit {
   all_sample_types: Array<String> = new Array<String>();
   user: User;
   appUrl: string;
-  container: Container = null;
-  box: Box = null;
+  @Input() container: Container = null;
+  @Input() box: Box = null;
   freezing_date = {}; //for only select one sample
   action_panel_msg: string= null;
   //Box position letters
