@@ -84,6 +84,7 @@ import { StoreSampleFormComponent } from './containers/store-sample-form/store-s
 import { SampleSearchComponent } from './containers/sample-search/sample-search.component';
 import { SampleSearchFormComponent } from './containers/sample-search-form/sample-search-form.component';
 import { SampleSearchResultComponent } from './containers/sample-search-result/sample-search-result.component';
+import { SampleSearchActionPanelComponent } from './containers/sample-search-action-panel/sample-search-action-panel.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { SampleSearchResultComponent } from './containers/sample-search-result/s
     SampleSearchComponent,
     SampleSearchFormComponent,
     SampleSearchResultComponent,
+    SampleSearchActionPanelComponent,
   ],
   imports: [
     BrowserModule,
