@@ -31,8 +31,8 @@ import { adminRoutes } from '../admin/_routes/admin-routes';
 //import { containersRoutes } from '../containers/_routes/containers-routes';
 //app root routes
 export const routes: Routes = [
-  {path: '', component: HomeComponent},
-  //{path: '', redirectTo: 'login', pathMatch: 'full'}, 
+  // {path: '', component: HomeComponent},
+  {path: '', redirectTo: 'login', pathMatch: 'full'}, 
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},

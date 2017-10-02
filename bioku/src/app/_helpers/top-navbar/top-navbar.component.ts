@@ -153,5 +153,8 @@ export class TopNavbarComponent implements OnInit {
       }
     }
   }
+  goHome(){
+    this.router.navigate(['/']);
+  }
   ngOnInit() {}
 }

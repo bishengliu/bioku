@@ -23,41 +23,36 @@
       <!--msg-->
     </div>
     <div class="ui segment" *ngIf="selectedOccupiedSlots.length > 0">
-      <div *ngIf="selectedOccupiedSlots.length == 1 && selected_single_occupied_box != null && lastSelectedOccupiedBox != null">
+      <div class="" *ngIf="selectedOccupiedSlots.length == 1 && selected_single_occupied_box != null && lastSelectedOccupiedBox != null">
         <!--show the box layout-->
         <div class="ui link card">
-          <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)"></app-container-box-cardview>
+          <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)">
+          </app-container-box-cardview>
         </div>
-        <div class="ui divider"></div>
+        <br />
       </div>
-      
       <!--more occuped-->
       <div *ngIf="selectedOccupiedSlots.length > 0"> 
-        <div class="ui labels">
+        <div class="ui labels" *ngIf="selectedOccupiedSlots.length > 1">
           <div class="ui teal label" *ngFor="let occupied of selectedOccupiedSlots">
-            <!-- <i class="circle icon"></i> -->
-            <span>{{ occupied.full_position }}</span></div>
+            <span>{{ occupied.full_position }}</span>
+          </div>
         </div>
-        <div class="ui divider"></div>
-        <div>
-          <!-- <button class="ui compact mini red button"><i class="icon external share"></i>TAKE OUT</button> -->
-          <button class="ui compact mini inverted red button" *ngIf="selectedOccupiedSlots.length == 2" (click)="switchBox()"><i class="icon refresh"></i>SWITCH</button>
-          <button class="ui compact mini inverted violet button" (click)="moveBox()"><i class="icon move"></i>MOVE</button>
+        <div class="two ui mini buttons">
+          <button class="ui violet button" *ngIf="selectedOccupiedSlots.length == 2" (click)="switchBox()"><i class="icon refresh"></i>SWITCH</button>
+          <button class="ui red button" (click)="moveBox()"><i class="icon move"></i>MOVE</button>
         </div>
       </div>
     </div>
     <div class="ui segment" *ngIf="selectedEmptySlots.length > 0">
       <div class="ui labels">
         <div class="ui label" *ngFor="let empty of selectedEmptySlots">
-          <!-- <i class="circle icon"></i> -->
-          <span>{{ empty.full_position }}</span></div>
+          <span>{{ empty.full_position }}</span>
+        </div>
       </div>
-      <div >
-        <div class="ui divider"></div>
+      <div>
         <button class="ui fluid mini black button" (click)="addBox()"><i class="icon plus"></i>BOXES</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- *ngIf="selectedBoxPositions.length > 0" -->

@@ -4,7 +4,7 @@
          <!--form header-->
           <h2 class="ui header teal image">
             <img>
-            <div class="content">Login to {{appName}}</div>
+            <div class="content">LOGIN TO {{appName}}</div>
           </h2>
           <!--form-->
           <form [formGroup]="loginForm" class="ui large form" (ngSubmit)="loginForm.valid && onLogin(loginForm.value)">
@@ -31,7 +31,7 @@
           </form>
           <!--sign up-->
           <div class="ui message mini">
-              New to {{appName}}? <a [routerLink]="['../register']">Sign Up</a>
+              <span class="grey-text">New to {{appName}}?</span>&nbsp;&nbsp;<a [routerLink]="['../register']"><i class="icon add user"></i>Sign Up</a>
           </div>
       </div>
    </div>

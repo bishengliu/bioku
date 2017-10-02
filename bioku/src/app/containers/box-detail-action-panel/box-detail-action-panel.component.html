@@ -48,8 +48,8 @@
       </div>
       <div class="ui divider"></div>
       <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
-        <button class="ui compact mini inverted red button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-        <button class="ui compact mini inverted violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
+        <button class="ui mini primary button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
+        <button class="ui mini violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
         <!-- <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button> -->
       </div>
     </div>
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="ui divider"></div>
-      <button class="ui compact mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
+      <button class="ui fluid mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
     </div>  
 
     <!--empty box cells: for box view only-->

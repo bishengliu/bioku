@@ -1,6 +1,6 @@
 export const AppSetting = {
     'VERSION': '0.0.1',
-    'NAME':'BioKu',
+    'NAME':'BIOKU',
 
     //APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,

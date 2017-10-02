@@ -122,6 +122,19 @@ body{
   padding-top: 1px !important;
   padding-bottom: 1px !important;
 }
+.tiny_vertical{  
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
+.topnav_vertical_padding{  
+  padding-top: 0px !important;
+  padding-bottom: 10px !important;
+}
+.narrow_secondary_menu{
+  border-width: 0px !important;
+  border-bottom: 0px !important;
+}
+
 .small_vertial_padding{
   padding-top: 10px !important;
   padding-bottom: 0px !important;
@@ -154,6 +167,13 @@ body{
   padding-bottom: 10px !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
+}
+.box_cardview{
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+  opacity: 0.8;
 }
 .fixed_width{
   width: 200px !important;
