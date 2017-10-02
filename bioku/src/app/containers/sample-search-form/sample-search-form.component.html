@@ -18,22 +18,22 @@
                   <div class="ui input wide-form">
                     <select class="ui tiny tight_around dropdown" id="container" [ngModel]="default_container_to_search" [formControl]="searchForm.controls['container']"
                       (change)="updateContainer($event)">
-                                  <option value="-1"> ALL CONTAINERS </option>
-                                  <option
-                                  [ngValue]="option.pk"
-                                   *ngFor="let option of container_name_pks" value="{{option.pk}}">{{option.name}}</option>
-                                </select>
+                      <option value="-1"> ALL CONTAINERS </option>
+                      <option [ngValue]="option.pk"
+                        *ngFor="let option of container_name_pks" value="{{option.pk}}">{{option.name}}
+                      </option>
+                    </select>
                   </div>
                 </td>
                 <td colspan="2">
                   <div class="teal-text"><em><strong>sample type</strong></em></div>
                   <div class="ui input wide-form">
                     <select class="ui tiny tight_around dropdown" id="type" [ngModel]="''" [formControl]="searchForm.controls['type']" (change)="updateType($event)">
-                                  <option value=""> -- select -- </option>
-                                  <option
-                                  [ngValue]="option"
-                                  *ngFor="let option of all_sample_types" value="{{option}}">{{option}}</option>
-                                </select>
+                      <option value=""> -- select -- </option>
+                      <option [ngValue]="option"
+                      *ngFor="let option of all_sample_types" value="{{option}}">{{option}}
+                      </option>
+                    </select>
                   </div>
                   <div *ngIf="searchForm.controls['type'].hasError('required') && searchForm.controls['type'].touched" class="ui mini negative message">Sample type is required
                   </div>

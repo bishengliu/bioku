@@ -23,6 +23,7 @@ import { StoreSampleComponent } from '../containers/store-sample/store-sample.co
 //guards
 import { AuthGuard } from  '../_guards/AuthGuard';
 import { AdminGuard } from  '../_guards/AdminGuard';
+import { PIGuard } from  '../_guards/PIGuard';
 //routing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
@@ -36,7 +37,7 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'user', component: AccountComponent, children: accountRoutes},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes}, 
-  {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, ] },
+  {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, PIGuard, ] },
   {path: 'containers/search', component: SampleSearchComponent, canActivate: [AuthGuard, ], pathMatch: 'full' },
   {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [AuthGuard, ] },
   {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [AuthGuard, ] },

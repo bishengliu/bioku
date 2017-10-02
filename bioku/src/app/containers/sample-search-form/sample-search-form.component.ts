@@ -128,9 +128,9 @@ export class SampleSearchFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.container != null){
-      this.default_container_to_search = this.container.pk;
-    }   
+    // if(this.container != null){
+    //   this.default_container_to_search = this.container.pk;
+    // }   
   }
   
   onSearch(values: SampleSearch){
