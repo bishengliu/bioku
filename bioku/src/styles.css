@@ -18,7 +18,7 @@
 }
 
 body{
-    font-family: Rubik, Lato!important;
+    font-family: Rubik, Lato !important;
     height: 100%;
     overflow-x: hidden;
     padding: 0!important;
@@ -38,7 +38,7 @@ body{
 }
 
 .bioku-header{
-  font-family: Pacifico, Rubik, Lato!important;
+  font-family: Pacifico, Rubik, Lato !important;
 }
 
 .huge-padding{
@@ -445,4 +445,8 @@ div [class*="right floated"] {
   
   /* Modern Browsers */
   opacity: 1.0;
+}
+
+.navbar-font{
+  font-family: Pacifico, Helvetica Neue, Helvetica,Arial,sans-serif;
 }
