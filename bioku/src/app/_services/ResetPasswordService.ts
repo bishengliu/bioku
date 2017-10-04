@@ -18,5 +18,16 @@ export class ResetPasswordService{
         .map((response: Response) =>response.json())          
         .catch((error:any) => Observable.throw(error || 'Server error'));
     }
-    
+    performResetPassword(uid: string, token: string, new_password1: string, new_password2: string){
+        const query_url: string  = this.appSetting.URL +  "/api/users" + this.appSetting.RESET_PASSWORD_CONFRIM + uid + "/" + token + "/";
+        let body: string = JSON.stringify({
+            'new_password1': new_password1,
+            'new_password2': new_password2
+        });
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(query_url, body, options)
+        .map((response: Response) =>response.json())          
+        .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
 }

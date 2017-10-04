@@ -28,7 +28,7 @@ export class ForgetPasswordComponent implements OnInit {
 
   ngOnInit() {}
   onForget(values: any){
-    let url = this.appSetting.URL + this.appSetting.RESET_PASSWORD;
+    let url = this.appSetting.APP_URL + this.appSetting.RESET_PASSWORD;
     let default_from_email = this.appSetting.APP_DEFAULT_EMAIL;
     let obj = {
       email : values.email,

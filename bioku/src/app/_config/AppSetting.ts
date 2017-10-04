@@ -23,9 +23,12 @@ export const AppSetting = {
     //////////////////////////////////API URLS////////////////////////////
     //API REST URL
     'URL': 'http://127.0.0.1:8000',
-    
-    //reset password 
+    //app url
+    'APP_URL': 'http://127.0.0.1:4200',
+    //server reset password 
     'RESET_PASSWORD': '/reset_password/',
+    //confrim reset password
+    'RESET_PASSWORD_CONFRIM': '/reset_password_confirm/',
     //post to get token
     'TOKEN_URL': '/api/users/token/',
     //get auth_user
