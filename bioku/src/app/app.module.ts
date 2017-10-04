@@ -85,6 +85,8 @@ import { SampleSearchComponent } from './containers/sample-search/sample-search.
 import { SampleSearchFormComponent } from './containers/sample-search-form/sample-search-form.component';
 import { SampleSearchResultComponent } from './containers/sample-search-result/sample-search-result.component';
 import { SampleSearchActionPanelComponent } from './containers/sample-search-action-panel/sample-search-action-panel.component';
+import { ForgetPasswordComponent } from './account/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +139,8 @@ import { SampleSearchActionPanelComponent } from './containers/sample-search-act
     SampleSearchFormComponent,
     SampleSearchResultComponent,
     SampleSearchActionPanelComponent,
+    ForgetPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
