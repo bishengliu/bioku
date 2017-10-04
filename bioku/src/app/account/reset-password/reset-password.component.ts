@@ -37,7 +37,7 @@ export class ResetPasswordComponent implements OnInit {
     },()=>{})
   }
   onSubmit(values: any): void {
-    this.resetPasswordService.performResetPassword(this.uid, this.token, values.new_password1, values.new_password2)
+    this.resetPasswordService.performResetPassword(this.uid, this.token, values.password1, values.password2)
     .subscribe(()=>{
       this.alertService.success('Your password has been reset, you can login with your new password' ,true);
       this.router.navigate(['/login']);
