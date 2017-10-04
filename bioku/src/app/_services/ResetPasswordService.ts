@@ -10,7 +10,7 @@ export class ResetPasswordService{
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any){}
     //request reset password
     resetPassword(obj:any){
-        const query_url: string  = this.appSetting.URL + this.appSetting.RESET_PASSWORD;
+        const query_url: string  = this.appSetting.URL +  "/api/users" + this.appSetting.RESET_PASSWORD;
         let body: string = JSON.stringify({obj});
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

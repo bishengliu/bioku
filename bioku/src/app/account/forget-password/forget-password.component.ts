@@ -22,23 +22,20 @@ export class ForgetPasswordComponent implements OnInit {
               private router: Router, private cValidators: CustomFormValidators, private resetPasswordService: ResetPasswordService) 
   { 
     this.forgetForm = fb.group({
-      'email': ['', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1)],
+      'email': ['', Validators.compose([Validators.required, Validators.email]), ], //this.cValidators.emailAsyncValidator(-1)
     });
   }
 
   ngOnInit() {}
   onForget(values: any){
-    let protocol = this.appSetting.APP_PROTOCOL;
-    let site_name = this.appSetting.APP_SITE_NAME;
-    let domain = this.appSetting.APP_DOMAIN;
+    let url = this.appSetting.URL + this.appSetting.RESET_PASSWORD;
     let default_from_email = this.appSetting.APP_DEFAULT_EMAIL;
     let obj = {
       email : values.email,
-      domain: domain,
-      site_name: site_name,
-      protocol: protocol,
+      url: url,
       default_from_email: default_from_email
     };
+    console.log(obj);
     this.resetPasswordService.resetPassword(obj)
     .subscribe(
       ()=>{
