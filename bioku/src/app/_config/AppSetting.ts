@@ -1,6 +1,11 @@
 export const AppSetting = {
     'VERSION': '0.0.1',
     'NAME':'BIOKU',
+    //app consts
+    'APP_PROTOCOL': 'http',
+    'APP_SITE_NAME': 'lumc',
+    'APP_DOMAIN': 'bioku.nl',
+    'APP_DEFAULT_EMAIL': 'b.liu@bioku.nl',
 
     //APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,
@@ -22,6 +27,10 @@ export const AppSetting = {
     //////////////////////////////////API URLS////////////////////////////
     //API REST URL
     'URL': 'http://127.0.0.1:8000',
+    
+
+    //reset password 
+    'RESET_PASSWORD': '/reset_password/',
     //post to get token
     'TOKEN_URL': '/api/users/token/',
     //get auth_user

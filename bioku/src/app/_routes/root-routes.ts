@@ -20,6 +20,8 @@ import { ContainerBoxMoveComponent } from '../containers/container-box-move/cont
 import { MoveSampleComponent } from '../containers/move-sample/move-sample.component';
 import { SampleSearchComponent } from '../containers/sample-search/sample-search.component';
 import { StoreSampleComponent } from '../containers/store-sample/store-sample.component';
+import { ForgetPasswordComponent } from '../account/forget-password/forget-password.component';
+import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
 //guards
 import { AuthGuard } from  '../_guards/AuthGuard';
 import { AdminGuard } from  '../_guards/AdminGuard';
@@ -35,6 +37,8 @@ export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'}, 
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'forget_password', component: ForgetPasswordComponent },
+  {path: 'reset_password/:uid/:token', component: ResetPasswordComponent },
   {path: 'user', component: AccountComponent, children: accountRoutes},
   {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes}, 
   {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, PIGuard, ] },

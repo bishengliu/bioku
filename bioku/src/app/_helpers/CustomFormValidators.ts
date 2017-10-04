@@ -146,7 +146,6 @@ export class CustomFormValidators{
                 if(!control.value || control.value.length === 0 || control.value ==""){
                     return Observable.throw(null);
                 }
-
                 return new Observable(observer=>{
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
                     let body: string = JSON.stringify({'query': 'email', 'value': control.value, 'user_pk': user_pk});
