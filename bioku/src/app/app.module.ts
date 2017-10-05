@@ -32,8 +32,9 @@ import { MyDatePickerModule } from 'mydatepicker';
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
+
 //angular2-useful-swiper
-import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
+//import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
 //ng2-sticky: https://www.npmjs.com/package/ng2-sticky
 //import { Ng2StickyModule } from 'ng2-sticky';
 //all components
@@ -158,7 +159,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     //register root routers
     RouterModule.forRoot(routes, { enableTracing: true }),
     //npm install --save angular2-useful-swiper
-    SwiperModule,
+    //SwiperModule,
     //dragula
     DragulaModule,
     //ng2-sticky
