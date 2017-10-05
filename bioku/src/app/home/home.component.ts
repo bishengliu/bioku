@@ -6,12 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  // config: Object = {
-  //           pagination: '.swiper-pagination',
-  //           paginationClickable: true,
-  //           nextButton: '.swiper-button-next',
-  //           prevButton: '.swiper-button-prev',
-  //           spaceBetween: 30};
   constructor() {}
   ngOnInit() {}
 }
