@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthState } from '../_redux/account/account_state';
-
+import { ContainerState } from '../_redux/container/container_state';
+import { AppPartialState, AppState } from '../_redux/root/state';
 @Injectable()
 export class RefreshService
 {
@@ -27,25 +28,47 @@ export class RefreshService
             console.log("failed to dump authInfo!");           
         }        
     }
-    
-    //clean localstorage
-    cleanState(): boolean 
-    {
-        let isRemoved: boolean = false;
-        try
-        {
-            if(localStorage.getItem("authInfo") !== null){
-                localStorage.removeItem("authInfo");
-                isRemoved = true;
+    //dump ContainerState
+    dumpContainerState(containerInfo: ContainerState): void{
+        try{
+            if(typeof(Storage) === "undefined"){
+                console.log("brower doesn't support HTML5 LocalStorage, cannot enable refresh service!");
+            }
+            else{
+                //dump the containerInfo
+                if(localStorage.getItem("containerInfo") !== null){
+                    localStorage.removeItem("containerInfo");                
+                }
+                localStorage.setItem('containerInfo', JSON.stringify(containerInfo));
+                console.log(localStorage.getItem("containerInfo"));
+                console.log("containerInfo dumped!");
             }
         }
         catch(error)
         {
-            isRemoved = false;
+            console.log("failed to dump containerInfo!");           
         }
-        return isRemoved;
     }
-
+    //clean localstorage
+    cleanState(): void 
+    {
+        try
+        {
+            //autoInfo
+            if(localStorage.getItem("authInfo") !== null){
+                localStorage.removeItem("authInfo");
+            }
+            //containerInfo
+            if(localStorage.getItem("containerInfo") !== null){
+                localStorage.removeItem("containerInfo");
+            }     
+        }
+        catch(error)
+        {
+            console.log("failed to clean localStorage!");  
+        }
+    }
+    //fetch authInfo
     fetchAuthState(): AuthState 
     {
         let authInfo: {
@@ -67,5 +90,46 @@ export class RefreshService
                 token: null }
         } 
         return authInfo;
+    }
+    //fetch containerInfo
+    fetchContainerState(): ContainerState{
+        let containerInfo: {
+            containers: null,
+            currentContainer: null,
+            currentBox: null };
+        try
+        {
+            if(localStorage.getItem("containerInfo") !== null){
+                let containerInfoString = localStorage.getItem("containerInfo");
+                containerInfo = JSON.parse(containerInfoString);   
+            }
+        }
+        catch(error)
+        {
+            containerInfo = {
+                containers: null,
+                currentContainer: null,
+                currentBox: null };
+        }
+        return containerInfo;
+    }
+    //fetch AppPartialState for both
+    fetchReduxState(): AppPartialState{
+        let reduxAppState: AppPartialState = {
+            //auth user
+            authInfo: {
+                authUser: null,
+                authGroup: null,
+                token: null
+            },
+            containerInfo: {
+                containers: null,
+                currentContainer: null,
+                currentBox: null
+            }
+        }
+        reduxAppState.authInfo = this.fetchAuthState();
+        reduxAppState.containerInfo = this.fetchContainerState();
+        return reduxAppState;
     }
 }
