@@ -22,3 +22,8 @@ export class User{
     roles: Array<string>;
     //groups: Array<GroupIdName>; //later will be different type
 }
+
+export class TokenObj{
+    token: string;
+    user: number
+}

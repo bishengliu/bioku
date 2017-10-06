@@ -2,7 +2,7 @@ import { Action, Reducer } from 'redux';
 import { AuthState } from './account_state';
 import { AppState } from '../root/state';
 import { initialAppState } from '../root/state';
-import { User } from '../../_classes/User';
+import { User, TokenObj } from '../../_classes/User';
 import { Group } from '../../_classes/Group';
 import { REDUX_CONSTANTS as C } from '../root/constants';
 import { SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction} from './account_actions';
@@ -24,7 +24,7 @@ function (state: AuthState = initialState, action: Action): AuthState {
             }   
         case C.SET_TOKEN:
             //set token
-            const token: string = (<SetAuthTokenAction>action).token;
+            const token: TokenObj = (<SetAuthTokenAction>action).token;
             return {
                 authUser: state.authUser,
                 authGroup: state.authGroup,

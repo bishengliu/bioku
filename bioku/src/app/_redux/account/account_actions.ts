@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import { REDUX_CONSTANTS as C } from '../root/constants';
 import { AppState, AppPartialState } from '../root/state';
-import { User } from '../../_classes/User';
+import { User, TokenObj } from '../../_classes/User';
 import { Group, GroupInfo } from '../../_classes/Group';
 import { LoginService } from '../../_services/LoginService';
 import { AlertService } from '../../_services/AlertService';
@@ -14,9 +14,7 @@ import { UpdateUserProfileService } from '../../_services/UpdateUserProfileServi
 import { UpdateGroupProfileService } from '../../_services/UpdateGroupProfileService';
 import { GroupService } from '../../_services/GroupService';
 
-
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
-
 
 //SET_AUTH_USER
 export interface SetAuthUserAction extends Action {
@@ -31,11 +29,11 @@ export const setAuthUserActionCreator: ActionCreator<SetAuthUserAction> =
 
 //SET_TOKEN
 export interface SetAuthTokenAction extends Action {
-    token: string;
+    token: TokenObj;
 }
 
 export const setAuthTokenActionCreator: ActionCreator<SetAuthTokenAction> = 
-(token: string) => ({
+(token: TokenObj) => ({
     type: C.SET_TOKEN,
     token: token
 });

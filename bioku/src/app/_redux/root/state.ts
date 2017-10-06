@@ -16,7 +16,6 @@ export interface AppState extends AppPartialState{
     appLogs: Array<AppLog>; //DON'T CHANGE THE NAME OF THIS, REQUIRED BY LogAppStateService
 }
 
-
 //define initial state
 export const initialAppState: AppState = {
     //auth user
