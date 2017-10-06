@@ -24,7 +24,7 @@ export interface SetAuthInfoAction extends Action {
     authInfo: AuthState;
 }
 
-export const SetAuthInfoActionCreator: ActionCreator<SetAuthInfoAction> = 
+export const setAuthInfoActionCreator: ActionCreator<SetAuthInfoAction> = 
 (authInfo: AuthState) => ({
     type: C.SET_AUTH_INFO,
     authInfo: authInfo
@@ -451,7 +451,7 @@ export const removeMemberAsync =
             //get state: apppartialstate
             let preState: AppPartialState = logAppStateService.getAppPartialState();
             //dispatch authGroup
-            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
+            let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) : setAuthGroupActionCreator((<Array<Group>>data.groups));
             dispatch(setAuthGroupAction);
 
             //get state: apppartialstate

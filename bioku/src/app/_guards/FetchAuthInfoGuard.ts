@@ -3,12 +3,24 @@ import { CanActivate, Router } from '@angular/router';
 import { RefreshService } from '../_services/RefreshService'
 import { AlertService } from '../_services/AlertService'
 import { AppStore } from '../_providers/ReduxProviders';
+import { AuthState } from '../_redux//account/account_state';
+import { SetAuthInfoAction, setAuthInfoActionCreator } from '../_redux//account/account_actions';
 
 @Injectable()
 export class FetchAuthInfoGuard implements CanActivate{
     constructor(@Inject(AppStore) private appStore, private refreshService: RefreshService){}
     canActivate(): boolean{
-        console.log('fetch local storage');
+        let state = this.appStore.getState();
+        if(state != null && state.authInfo != null){
+            if(state.authInfo.authUser == null || state.authInfo.token == null){
+                //fetch data from locastorage
+                let authInfo : AuthState = this.refreshService.fetchAuthState();
+                //redux reducers
+                let setAuthInfoAction: SetAuthInfoAction = setAuthInfoActionCreator(authInfo);
+                this.appStore.dispatch(setAuthInfoAction);
+            }        
+        }
+        console.log('fetch auth info from storage');
         return true;
     }
 }
