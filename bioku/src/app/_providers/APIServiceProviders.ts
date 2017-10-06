@@ -8,9 +8,11 @@ import { ResetPasswordService } from '../_services/ResetPasswordService';
 import { GroupService } from '../_services/GroupService';
 import { UserService } from '../_services/UserService';
 import { ContainerService } from '../_services/ContainerService';
+import { RefreshService } from '../_services/RefreshService';
 
 export var APIServiceProviders: Array<any> = [
         {provide: LoginService, useClass: LoginService},
+        {provide: RefreshService, useClass: RefreshService},
         {provide: LogoutService, useClass: LogoutService},
         {provide: RegisterService, useClass: RegisterService},
         {provide: ChangePasswordService, useClass: ChangePasswordService},
