@@ -1,10 +1,7 @@
 import { Injectable , Inject} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-
 import {AlertService} from '../_services/AlertService'
 import { AppStore } from '../_providers/ReduxProviders';
-
-
 
 @Injectable()
 export class PIGuard implements CanActivate{

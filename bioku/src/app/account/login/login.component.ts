@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.refreshService.cleanState();
+    //this.refreshService.cleanState();
   }
 
 }

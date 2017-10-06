@@ -5,7 +5,7 @@ import { initialAppState } from '../root/state';
 import { User, TokenObj } from '../../_classes/User';
 import { Group } from '../../_classes/Group';
 import { REDUX_CONSTANTS as C } from '../root/constants';
-import { SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction} from './account_actions';
+import { SetAuthUserAction, SetAuthTokenAction, SetAuthGroupAction, SetAuthInfoAction} from './account_actions';
 
 //initial auth status
 const initialState: AuthState = initialAppState.authInfo;
@@ -58,6 +58,14 @@ function (state: AuthState = initialState, action: Action): AuthState {
                 authUser: state.authUser,
                 authGroup: null,
                 token: state.token
+            }
+        case C.SET_AUTH_INFO:
+            //set the auti info completely
+            const authInfo: AuthState = (<SetAuthInfoAction>action).authInfo;
+            return {
+                authUser: authInfo.authUser,
+                authGroup: authInfo.authGroup,
+                token: authInfo.token
             }
         default:
             return state;

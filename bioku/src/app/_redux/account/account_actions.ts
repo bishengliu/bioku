@@ -16,6 +16,20 @@ import { GroupService } from '../../_services/GroupService';
 import { RefreshService } from '../../_services/RefreshService';
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
+import { AuthState } from '../account/account_state';
+//import { ContainerState } from '../container/container_state';
+
+//SET_AUTH_INFO
+export interface SetAuthInfoAction extends Action {
+    authInfo: AuthState;
+}
+
+export const SetAuthInfoActionCreator: ActionCreator<SetAuthInfoAction> = 
+(authInfo: AuthState) => ({
+    type: C.SET_AUTH_INFO,
+    authInfo: authInfo
+});
+
 //SET_AUTH_USER
 export interface SetAuthUserAction extends Action {
     authUser: User;
@@ -43,6 +57,7 @@ export const unsetAuthUserActionCreator: ActionCreator<Action> =
 () => ({
     type: C.UNSET_AUTH_USER
 });
+
 //UNSET_TOKEN
 export const unsetTokenActionCreator: ActionCreator<Action> = 
 () => ({
@@ -59,13 +74,12 @@ export const setAuthGroupActionCreator: ActionCreator<SetAuthGroupAction> =
     type: C.SET_GROUP_DETAILS,
     authGroup: groups
 });
+
 //UNSET_GROUP_DETAILS
 export const unSetAuthGroupActionCreator: ActionCreator<Action> = 
 () => ({
     type: C.UNSET_GROUP_DETAILS
 });
-
-
 
 //with thunk
 export const userAuthActionAsync = 
@@ -179,7 +193,6 @@ export const registerActionAsync =
             }
     )
 }
-
 
 //change password
 //with thunk
@@ -327,7 +340,6 @@ export const updateGroupProfileActionAsync =
         }
     )
 }
-
 
 //add assistant to one group
 export const addAssistantAsync =

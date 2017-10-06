@@ -5,7 +5,7 @@ import { initialAppState } from '../root/state';
 import { Box } from '../../_classes/Box';
 import { Container } from '../../_classes/Container';
 import { REDUX_CONSTANTS as C } from '../root/constants';
-import { SetMyContainersAction, SetCurrentContainerAction, SetCurrentBoxAction} from './container_actions';
+import { SetMyContainersAction, SetCurrentContainerAction, SetCurrentBoxAction, SetContainerInfoAction} from './container_actions';
 
 
 //initial auth status
@@ -54,6 +54,14 @@ export const containerReducer: Reducer<ContainerState> =
                 containers : state.containers,
                 currentContainer: state.currentContainer,
                 currentBox: null
+            }
+        case C.SET_CONTAINER_INFO:
+            //set the auti info completely
+            const containerState: ContainerState = (<SetContainerInfoAction>action).containerState;
+            return {
+                containers : containerState.containers,
+                currentContainer: containerState.currentContainer,
+                currentBox: containerState.currentBox
             }
         default:
             return state;

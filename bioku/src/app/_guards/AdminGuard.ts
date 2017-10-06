@@ -1,6 +1,5 @@
 import { Injectable , Inject} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-
 import { AlertService } from '../_services/AlertService'
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -13,7 +12,7 @@ export class AdminGuard implements CanActivate{
         if (state != null && state.authInfo != null && state.authInfo.authUser != null && state.authInfo.authUser.is_superuser){
             return true;
         }
-        else{
+        else{           
             //reditrect
             this.alertService.error("Please login as Admin!", true);
             this.router.navigate(['/denied']);

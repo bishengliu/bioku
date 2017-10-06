@@ -61,7 +61,7 @@ export class RefreshService
             //containerInfo
             if(localStorage.getItem("containerInfo") !== null){
                 localStorage.removeItem("containerInfo");
-            }     
+            }
         }
         catch(error)
         {

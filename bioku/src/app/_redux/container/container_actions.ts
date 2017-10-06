@@ -11,8 +11,22 @@ import { ContainerService } from '../../_services/ContainerService';
 
 import { Box } from '../../_classes/Box';
 import { Container } from '../../_classes/Container';
+
+//import { AuthState } from '../account/account_state';
+import { ContainerState } from '../container/container_state';
 //query my container list
 //with thunk
+
+//SET_AUTH_INFO
+export interface SetContainerInfoAction extends Action {
+    containerState: ContainerState;
+}
+
+export const SetContainerInfoActionCreator: ActionCreator<SetContainerInfoAction> = 
+(containerState: ContainerState) => ({
+    type: C.SET_CONTAINER_INFO,
+    containerState: containerState
+});
 
 //set MY containers
 export interface SetMyContainersAction extends Action {
@@ -30,8 +44,6 @@ export const unSetMyContainersActionCreator: ActionCreator<Action> =
     type: C.UNSET_MYCONTAINERS_LIST,
 });
 
-
-
 //set current container
 export interface SetCurrentContainerAction extends Action {
     currentContainer: Container;
@@ -41,7 +53,6 @@ export const setCurrentContainerActionCreator: ActionCreator<SetCurrentContainer
     type: C.SET_CURRENT_CONTAINER,
     currentContainer: container
 });
-
 
 //unset
 export const unSetCurrentContainerActionCreator: ActionCreator<Action> =

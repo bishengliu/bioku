@@ -26,6 +26,9 @@ import { ResetPasswordComponent } from '../account/reset-password/reset-password
 import { AuthGuard } from  '../_guards/AuthGuard';
 import { AdminGuard } from  '../_guards/AdminGuard';
 import { PIGuard } from  '../_guards/PIGuard';
+import { FetchAuthInfoGuard } from  '../_guards/FetchAuthInfoGuard';
+import { CleanLocalStorageGuard } from  '../_guards/CleanLocalStorageGuard';
+
 //routing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
@@ -35,24 +38,25 @@ import { adminRoutes } from '../admin/_routes/admin-routes';
 export const routes: Routes = [
   // {path: '', component: HomeComponent},
   {path: '', redirectTo: 'login', pathMatch: 'full'}, 
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'forget_password', component: ForgetPasswordComponent },
-  {path: 'reset_password/:uid/:token', component: ResetPasswordComponent },
+  {path: 'login', component: LoginComponent, canActivate: [CleanLocalStorageGuard, ]},
+  {path: 'register', component: RegisterComponent, canActivate: [CleanLocalStorageGuard, ]},
+  {path: 'forget_password', component: ForgetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
+  {path: 'reset_password/:uid/:token', component: ResetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'user', component: AccountComponent, children: accountRoutes},
-  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard, ], children: adminRoutes}, 
-  {path: 'containers/add', component: AddContainerComponent, canActivate: [AuthGuard, PIGuard, ] },
-  {path: 'containers/search', component: SampleSearchComponent, canActivate: [AuthGuard, ], pathMatch: 'full' },
-  {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [AuthGuard, ] },
-  {path: 'containers', component: MyContainerListComponent, canActivate: [AuthGuard, ] },
+
+  {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes}, 
+  {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard, ] },
+  {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ], pathMatch: 'full' },
+  {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers', component: MyContainerListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]
