@@ -13,7 +13,7 @@ import { ChangePasswordService } from '../../_services/ChangePasswordService';
 import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
 import { UpdateGroupProfileService } from '../../_services/UpdateGroupProfileService';
 import { GroupService } from '../../_services/GroupService';
-
+import { RefreshService } from '../../_services/RefreshService';
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 
 //SET_AUTH_USER
@@ -69,7 +69,7 @@ export const unSetAuthGroupActionCreator: ActionCreator<Action> =
 
 //with thunk
 export const userAuthActionAsync = 
-(loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService) => 
+(loginService: LoginService, username: string, password: string, alertService: AlertService, logAppStateService: LogAppStateService, refreshService: RefreshService) => 
 (dispatch: Dispatch<AppState>, getState) =>
 {
         //auth user
@@ -95,20 +95,25 @@ export const userAuthActionAsync =
                         dispatch(setAuthGroupAction);
                     };
 
+                    //dumpdata to the locastorage
+                    refreshService.dumpAuthState(getState().authInfo);
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'user login success!';
+                    
                     //logger the redux action
                     logAppStateService.log('USER LOGIN', preState, nextState, message);
                 }          
-                
-                
+ 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////
             },
             (error)=>{
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
+                //remove localstorage
+                refreshService.cleanState();
                 let message: string = 'user login failed: ' + (error || 'server error!') ;
                 logAppStateService.log('USER LOGIN', preState, nextState, message);
                 console.log(error);
@@ -125,7 +130,7 @@ export const userAuthActionAsync =
 //WITH THUNK
 //register action
 export const registerActionAsync =
-(formData:FormData, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(formData:FormData, registerService: RegisterService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService, refreshService: RefreshService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
     registerService.registerUser(formData).subscribe(
@@ -149,6 +154,9 @@ export const registerActionAsync =
                     let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
                     dispatch(setAuthGroupAction);
 
+                    //dumpdata to the locastorage
+                    refreshService.dumpAuthState(getState().authInfo);
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'new user registered!'
@@ -161,14 +169,13 @@ export const registerActionAsync =
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
+                //remove localstorage
+                refreshService.cleanState();
                 let message: string = 'user registration failed: ' + (error || 'server error!') ;
                 logAppStateService.log('USER REGISTRATION', preState, nextState, message);
                 console.log(error);
                 //error
                 alertService.error('Registration Failed!');
-            },
-            ()=>{
-                //success                
             }
     )
 }
@@ -177,7 +184,7 @@ export const registerActionAsync =
 //change password
 //with thunk
 export const userChangePasswordActionAsync = 
-(username: string, old_password: string, new_password: string, changePasswordService, alertService: AlertService, logAppStateService: LogAppStateService) => 
+(username: string, old_password: string, new_password: string, changePasswordService, alertService: AlertService, logAppStateService: LogAppStateService, refreshService: RefreshService) => 
 (dispatch: Dispatch<AppState>, getState) =>
 {
         //auth user
@@ -199,6 +206,9 @@ export const userChangePasswordActionAsync =
                     let unSetAuthGroupAction: Action = unSetAuthGroupActionCreator();
                     dispatch(unSetAuthGroupAction);
 
+                    //remove localstorage
+                    refreshService.cleanState();
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'user change password success!';
@@ -211,6 +221,10 @@ export const userChangePasswordActionAsync =
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
+
+                //dumpdata to the locastorage
+                refreshService.dumpAuthState(getState().authInfo);
+
                 let message: string = 'User change password failed: ' + (error || 'server error!') ;
                 logAppStateService.log('USER CHANGE PASSWORD', preState, nextState, message);
                 console.log(error);
@@ -222,7 +236,7 @@ export const userChangePasswordActionAsync =
 
 //update user profile thunk
 export const updateProfileActionAsync =
-(formData:FormData, pk: number, token: string, updateUserProfileService: UpdateUserProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(formData:FormData, pk: number, token: string, updateUserProfileService: UpdateUserProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService, refreshService: RefreshService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
     updateUserProfileService.update(formData, pk, token).subscribe(
@@ -246,6 +260,9 @@ export const updateProfileActionAsync =
                     let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
                     dispatch(setAuthGroupAction);
 
+                    //dumpdata to the locastorage
+                    refreshService.dumpAuthState(getState().authInfo);
+
                     //get state: apppartialstate
                     let nextState: AppPartialState = logAppStateService.getAppPartialState();
                     let message: string = 'user profile updated!'
@@ -258,21 +275,22 @@ export const updateProfileActionAsync =
                 //get state: apppartialstate
                 let preState: AppPartialState = logAppStateService.getAppPartialState();
                 let nextState: AppPartialState = preState;
+
+                //dumpdata to the locastorage
+                refreshService.dumpAuthState(getState().authInfo);
+
                 let message: string = 'update user profile failed: ' + (error || 'server error!') ;
                 logAppStateService.log('UPDATE USER PROFILE', preState, nextState, message);
                 console.log(error);
                 //error
                 alertService.error('Update User Profile Failed!');
-            },
-            ()=>{
-                //success                
             }
     )
 }
 
 //update group profile thunk
 export const updateGroupProfileActionAsync =
-(formData:FormData, pk: number, updateGroupProfileService: UpdateGroupProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService) =>
+(formData:FormData, pk: number, updateGroupProfileService: UpdateGroupProfileService, http: Http, logAppStateService: LogAppStateService, alertService: AlertService, refreshService: RefreshService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
     updateGroupProfileService.update(formData, pk).subscribe(
@@ -282,6 +300,9 @@ export const updateGroupProfileActionAsync =
             //dispatch authGroup
             let setAuthGroupAction: SetAuthGroupAction = data.groups == null? setAuthGroupActionCreator(null) :setAuthGroupActionCreator((<Array<Group>>data.groups));
             dispatch(setAuthGroupAction);
+
+            //dumpdata to the locastorage
+            refreshService.dumpAuthState(getState().authInfo);
 
             //get state: apppartialstate
             let nextState: AppPartialState = logAppStateService.getAppPartialState();
@@ -294,6 +315,10 @@ export const updateGroupProfileActionAsync =
             //get state: apppartialstate
             let preState: AppPartialState = logAppStateService.getAppPartialState();
             let nextState: AppPartialState = preState;
+            
+            //remove localstorage
+            refreshService.cleanState();
+
             let message: string = 'update group profile failed: ' + (error || 'server error!') ;
             logAppStateService.log('UPDATE GROUP PROFILE', preState, nextState, message);
             console.log(error);

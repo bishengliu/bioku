@@ -8,6 +8,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { LoginService } from '../../_services/LoginService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { ChangePasswordService } from '../../_services/ChangePasswordService';
+import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
@@ -26,7 +27,7 @@ export class ChangePasswordComponent implements OnInit {
 
   passwordForm: FormGroup;
   username: string;
-  constructor(fb: FormBuilder, private alertService: AlertService, 
+  constructor(fb: FormBuilder, private alertService: AlertService, private refreshService: RefreshService,
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private route: ActivatedRoute,
               private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private changePasswordService: ChangePasswordService)
   { 
@@ -44,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
 
   
   onSubmit(values: any): void{
-    this.appStore.dispatch(userChangePasswordActionAsync(this.username, values.old_password, values.password1, this.changePasswordService, this.alertService, this.logAppStateService));
+    this.appStore.dispatch(userChangePasswordActionAsync(this.username, values.old_password, values.password1, this.changePasswordService, this.alertService, this.logAppStateService, this.refreshService));
   }
   updateState(){ 
     let state= this.appStore.getState();

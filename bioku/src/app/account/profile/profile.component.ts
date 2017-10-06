@@ -8,6 +8,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UpdateUserProfileService } from '../../_services/UpdateUserProfileService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
+import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
 //mydatepicker
 import {IMyOptions} from 'mydatepicker';
@@ -53,7 +54,7 @@ export class ProfileComponent implements OnInit {
         editableDateField: false,
         openSelectorOnInputClick: true};
 
-  constructor(fb: FormBuilder, private alertService: AlertService, 
+  constructor(fb: FormBuilder, private alertService: AlertService, private refreshService: RefreshService,
               @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private updateUserProfileService: UpdateUserProfileService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) {
   //get the photo name for form
@@ -130,7 +131,7 @@ export class ProfileComponent implements OnInit {
       formData.append("file", this.file, this.file.name);
     }
     //put call
-    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.token, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService));
+    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.token, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService, this.refreshService));
     //naviagate to home
     this.router.navigate(['/']);    
   }

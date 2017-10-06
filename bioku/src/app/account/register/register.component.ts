@@ -8,6 +8,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { RegisterService } from '../../_services/RegisterService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
+import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
 //mydatepicker
 import {IMyOptions} from 'mydatepicker';
@@ -50,8 +51,8 @@ export class RegisterComponent implements OnInit {
         editableDateField: false,
         openSelectorOnInputClick: true};
 
-  constructor(fb: FormBuilder, private alertService: AlertService, 
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private registerService: RegisterService,
+  constructor(fb: FormBuilder, private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private registerService: RegisterService, private refreshService: RefreshService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http){ 
     //formGroup
     this.registerForm = fb.group({
@@ -71,24 +72,7 @@ export class RegisterComponent implements OnInit {
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
- /*
-  //my datepicker
-  setDate(): void {
-        // Set today date using the setValue function
-        let date = new Date();
-        this.registerForm.setValue({birth_date: {
-        date: {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate()}
-        }});
-  }
 
-  clearDate(): void {
-        // Clear the date using the setValue function
-        this.registerForm.setValue({birth_date: ''});
-  }
-  */
   //check upload photo
   validatePhotoUpload(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
@@ -132,14 +116,8 @@ export class RegisterComponent implements OnInit {
     if (this.file){
       formData.append("file", this.file, this.file.name);
     }
-    /*
-    for multiple file upload
-      for(var i = 0; i < files.length; i++){
-            formData.append(files[i].name, files[i], files[i].filename);
-        }
 
-    */
-    this.appStore.dispatch(registerActionAsync(formData, this.registerService, this.http, this.logAppStateService, this.alertService));
+    this.appStore.dispatch(registerActionAsync(formData, this.registerService, this.http, this.logAppStateService, this.alertService, this.refreshService));
 
   }
 

@@ -156,7 +156,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     //sidebar
     SidebarModule.forRoot(),
     //register root routers
-    RouterModule.forRoot(routes, { enableTracing: true }),
+    RouterModule.forRoot(routes, { enableTracing: false }),
     //npm install --save angular2-useful-swiper
     //SwiperModule,
     //dragula

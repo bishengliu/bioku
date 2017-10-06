@@ -1,8 +1,9 @@
 //this service clear authUser and token in the appStore of redux
 import { Injectable , Inject} from '@angular/core';
 import { AppStore } from '../_providers/ReduxProviders';
-import {LogAppStateService} from '../_services/LogAppStateService';
-import {APP_CONFIG} from '../_providers/AppSettingProvider';
+import { LogAppStateService } from '../_services/LogAppStateService';
+import { RefreshService } from '../_services/RefreshService';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
 import { AppState, AppPartialState } from '../_redux/root/state';
 
 //import redux action, actionCreator and reducer from login redux
@@ -10,7 +11,7 @@ import {unsetAuthUserActionCreator, unsetTokenActionCreator, unSetAuthGroupActio
 
 @Injectable()
 export class LogoutService{
-    constructor(@Inject(AppStore) private appStore, private logAppStateService: LogAppStateService){};
+    constructor(@Inject(AppStore) private appStore, private logAppStateService: LogAppStateService, private refreshService: RefreshService){};
 
     logOut(){
         //get pre state: apppartialstate
@@ -25,6 +26,8 @@ export class LogoutService{
         //remove the authGroup
         let unSetAuthGroupAction = unSetAuthGroupActionCreator();
         this.appStore.dispatch(unSetAuthGroupAction);
+        //clean localstore
+        this.refreshService.cleanState();
         //get next state: apppartialstate
         let nextState: AppPartialState = this.logAppStateService.getAppPartialState();
         let message: string = 'Logout auth user.'

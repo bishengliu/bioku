@@ -10,7 +10,7 @@ import { LogAppStateService } from '../../_services/LogAppStateService';
 import { UpdateGroupProfileService } from '../../_services/UpdateGroupProfileService';
 import { User } from '../../_classes/User';
 import { Group } from '../../_classes/Group';
-
+import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -54,7 +54,7 @@ export class GroupComponent implements OnInit, OnDestroy {
 
 
   constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute, private updateGroupProfileService : UpdateGroupProfileService,
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private refreshService: RefreshService,
               private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private http: Http) 
   { 
   //get the photo name for form
@@ -115,7 +115,7 @@ export class GroupComponent implements OnInit, OnDestroy {
       formData.append("file", this.file, this.file.name);
     }
     //put call
-    this.appStore.dispatch(updateGroupProfileActionAsync(formData, this.id, this.updateGroupProfileService, this.http, this.logAppStateService, this.alertService));
+    this.appStore.dispatch(updateGroupProfileActionAsync(formData, this.id, this.updateGroupProfileService, this.http, this.logAppStateService, this.alertService, this.refreshService));
     //naviagate to home
     this.router.navigate(['/']);    
   }
