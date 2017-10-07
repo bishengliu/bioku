@@ -84,13 +84,15 @@ export const unSetCurrentBoxActionCreator: ActionCreator<UnSetCurrentBoxAction> 
 });
 
 
-export const setCurrentContainerActionAsync = (container: Container) =>
+export const setCurrentContainerActionAsync = (container: Container, refreshService: RefreshService) =>
 (dispatch: Dispatch<AppState>, getState)=>{
     Observable.of(container)
     .subscribe(
         data=>{
             let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(data);
             dispatch(setCurrentContainerAction);
+            //dumpdata to the locastorage
+            refreshService.dumpContainerState(getState().containerInfo);
         }
     );
 }
@@ -134,7 +136,8 @@ export const setCurrentBoxActionAsync =
             let preState: AppPartialState = logAppStateService.getAppPartialState();
             //set current box
             let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(container, box);
-            dispatch(setCurrentBoxAction);           
+            dispatch(setCurrentBoxAction);  
+
             //get state: apppartialstate
             let nextState: AppPartialState = logAppStateService.getAppPartialState();
             let message: string = 'set current box!';

@@ -20,7 +20,6 @@ export class FetchAuthInfoGuard implements CanActivate{
                 this.appStore.dispatch(setAuthInfoAction);
             }        
         }
-        console.log('fetch auth info from local storage');
         return true;
     }
 }

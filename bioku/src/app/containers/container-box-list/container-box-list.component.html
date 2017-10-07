@@ -1,6 +1,6 @@
 <div class="ui grid row">
   <div class="eight wide column">
-    <app-container-boxes-filter (boxFilter)="updateBoxList($event)"></app-container-boxes-filter>
+    <app-container-boxes-filter [container]="container" (boxFilter)="updateBoxList($event)"></app-container-boxes-filter>
   </div>
   <div class="eight wide column">
     <app-container-box-navbar></app-container-box-navbar>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="six wide column"> 
-    <a class="ui violet button float-right" [routerLink]="['/containers/overview/', container.pk]"><i class="icon pie chart"></i>OVERVIEW</a>
+    <a class="ui violet button float-right" [routerLink]="['/containers/overview/', id]"><i class="icon pie chart"></i>OVERVIEW</a>
     <a class="ui orange inverted button float-right" [routerLink]="['/containers/search/']"><i class="icon search"></i>SAMPLES</a>
   </div>
 </div>

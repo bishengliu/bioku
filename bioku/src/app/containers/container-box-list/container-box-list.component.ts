@@ -9,10 +9,11 @@ import { Box, BoxFilter } from '../../_classes/Box';
 import {  ContainerService } from '../../_services/ContainerService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { UtilityService } from '../../_services/UtilityService';
+import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
-import { SetCurrentBoxAction, setCurrentBoxActionCreator, setCurrentBoxActionAsync } from '../../_redux/container/container_actions';
+import { SetCurrentBoxAction, setCurrentBoxActionCreator, setCurrentBoxActionAsync, SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 @Component({
   selector: 'app-container-box-list',
   templateUrl: './container-box-list.component.html',
@@ -31,14 +32,15 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   searchedBoxes: Array<Box> = [];
   show_all: boolean = false;
   all_boxes_loaded: boolean = false;
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private utilityService: UtilityService, private router: Router, private containerService: ContainerService, 
-              private alertService: AlertService, private logAppStateService: LogAppStateService)
+              private alertService: AlertService, private logAppStateService: LogAppStateService, private refreshService: RefreshService,)
   { 
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
-    this.updateState();
+    this.refreshService.dispatchContainerInfo();
   }
+
   updateState(){
     let state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.containers){
@@ -47,9 +49,9 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
-    if (state.containerInfo && state.containerInfo.currentBox){
-      this.currentBox = state.containerInfo.currentBox;
-    }
+    // if (state.containerInfo && state.containerInfo.currentBox){
+    //   this.currentBox = state.containerInfo.currentBox;
+    // }
   }
   updateBoxList(boxFilter:BoxFilter){
     this.loading = true;
@@ -74,12 +76,19 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   displaySelectedBox(box: Box): void {
     let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(this.container, box);
     this.appStore.dispatch(setCurrentBoxAction);
+    //this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
     this.router.navigate(['/containers', this.container.pk, box.box_position]);  
   }
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{
         this.id = +params['id'];
+        /////////////////
+        let container_filtered = this.containers.filter((c, i)=>{ return c.pk === this.id; });
+        if(container_filtered.length > 0){
+          this.container = container_filtered[0];
+        }
+        ////////////////////
         if(this.container != null){
           return Observable.of(this.container);
         }else{
@@ -102,6 +111,12 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
         }
       })
       .subscribe((data: any)=>{
+        //set current container
+        //let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(this.container);
+        //this.appStore.dispatch(setCurrentContainerAction);
+        //dump container info
+        //this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
+
         if(Array.isArray(data)){
           //if it array, then is the inital loading
           this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));

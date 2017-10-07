@@ -8,7 +8,7 @@ import { Group, GroupInfo } from '../../_classes/Group';
 import { Container } from '../../_classes/Container';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
-
+import { RefreshService } from '../../_services/RefreshService';
 //service
 import {GroupService} from '../../_services/GroupService';
 import { AlertService } from '../../_services/AlertService';
@@ -47,13 +47,14 @@ export class TopNavbarComponent implements OnInit {
   isAdmin: boolean = false;
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService, private groupService: GroupService,  
-              private router: Router, private cValidators: CustomFormValidators,
+              private router: Router, private cValidators: CustomFormValidators, private refreshService: RefreshService,
               private alertService: AlertService,private logAppStateService: LogAppStateService, ) {
     //app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
-    appStore.subscribe(()=> this.updateState());
-    this.updateState();
+    appStore.subscribe(()=> this.updateState()); 
+    this.refreshService.dispatchContainerInfo();
+ 
     //form controls for adding member or assistants
     this.assistEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
     this.memberEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
@@ -123,6 +124,7 @@ export class TopNavbarComponent implements OnInit {
     if(currentContainers.length > 0){
       let setCurrentContainerAction : SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainers[0]);
       this.appStore.dispatch(setCurrentContainerAction);
+      this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
       this._opened = false;
       this._container_opened = false;
       this.router.navigate(['/containers', container_pk]);
@@ -148,7 +150,7 @@ export class TopNavbarComponent implements OnInit {
         if(state.containerInfo && state.containerInfo.containers){
           this.containers = state.containerInfo.containers;
           this.currentContainer = state.containerInfo.currentContainer;
-          this.hasContainers = true;
+          this.hasContainers = this.containers.length > 0 ? true : false;
         }
       }
     }

@@ -31,8 +31,6 @@ export class StoreSampleComponent implements OnInit {
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
-    this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
-    this.cells = [...this.localStorageService.emptySelectedCells];
   }
   updateState(){
     let state = this.appStore.getState();
@@ -77,5 +75,12 @@ export class StoreSampleComponent implements OnInit {
       console.log(err);
       this.alertService.error('Something went wrong!', true)
     });
+    console.log('======================');
+    console.log(this.localStorageService);
+    if(this.localStorageService == null|| this.localStorageService.emptySelectedCells.length == 0){
+      this.router.navigate(['/containers', this.container.pk, this.box_pos ]);
+    }
+    this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
+    this.cells = [...this.localStorageService.emptySelectedCells];
   }
 }

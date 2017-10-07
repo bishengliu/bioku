@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { AuthState } from '../_redux/account/account_state';
 import { ContainerState } from '../_redux/container/container_state';
 import { AppPartialState, AppState } from '../_redux/root/state';
+import { AppStore } from '../_providers/ReduxProviders';
+import { SetContainerInfoAction, SetContainerInfoActionCreator } from '../_redux/container/container_actions';
 @Injectable()
 export class RefreshService
 {
-    constructor(){}
+    constructor(@Inject(AppStore) private appStore,){}
     //save redux authInfo into localstrage
     dumpAuthState(authInfo: AuthState): void
     {
@@ -87,7 +89,7 @@ export class RefreshService
     //fetch authInfo
     fetchAuthState(): AuthState 
     {
-        let authInfo: {
+        let authInfo = {
             authUser: null,
             authGroup: null,
             token: null }
@@ -104,13 +106,13 @@ export class RefreshService
                 authUser: null,
                 authGroup: null,
                 token: null }
-        } 
+        }
         return authInfo;
     }
 
     //fetch containerInfo
     fetchContainerState(): ContainerState{
-        let containerInfo: {
+        let containerInfo = {
             containers: null,
             currentContainer: null,
             currentBox: null };
@@ -149,5 +151,14 @@ export class RefreshService
         reduxAppState.authInfo = this.fetchAuthState();
         reduxAppState.containerInfo = this.fetchContainerState();
         return reduxAppState;
+    }
+
+    dispatchContainerInfo(){
+        //fetch container info
+        this.fetchContainerState();
+        let conatinerInfo : ContainerState = this.fetchContainerState();
+        //redux reducers
+        let setContainerInfoAction: SetContainerInfoAction = SetContainerInfoActionCreator(conatinerInfo);
+        this.appStore.dispatch(setContainerInfoAction);
     }
 }

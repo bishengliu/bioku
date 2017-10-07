@@ -14,6 +14,8 @@ import { ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  AlertService } from '../../_services/AlertService';
+import { RefreshService } from '../../_services/RefreshService';
+
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -41,12 +43,13 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   move_boxes: Array<MoveBox> = new Array<MoveBox>();
   //saving move box
   moving: boolean = false;
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
-              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService)
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private utilityService: UtilityService, private refreshService: RefreshService, private router: Router, private http: Http, 
+              private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService)
   { 
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
-    this.updateState();
+    this.refreshService.dispatchContainerInfo();
   }
 
   updateState(){

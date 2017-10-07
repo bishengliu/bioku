@@ -60,8 +60,8 @@ export const containerReducer: Reducer<ContainerState> =
             const containerState: ContainerState = (<SetContainerInfoAction>action).containerState;
             return {
                 containers : containerState.containers, //only update the containers
-                currentContainer: state.currentContainer,
-                currentBox: state.currentBox
+                currentContainer: containerState.currentContainer,
+                currentBox: containerState.currentBox
             }
         default:
             return state;

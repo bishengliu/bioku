@@ -15,8 +15,7 @@ import { AppState , AppPartialState} from '../../_redux/root/state';
   styleUrls: ['./container-boxes-filter.component.css']
 })
 export class ContainerBoxesFilterComponent implements OnInit {
-  currentContaner: Container= null;
-  currentBox: Box = null;
+  @Input() container : Container;
   filterObj: BoxFilter = {
     'tower': -1,
     'shelf': -1,
@@ -28,19 +27,7 @@ export class ContainerBoxesFilterComponent implements OnInit {
   @ViewChild('shelf') shelfInput:ElementRef;
   @ViewChild('box') boxInput:ElementRef;
 
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) 
-  {
-    //subscribe store state changes
-    appStore.subscribe(()=> this.updateState());
-    this.updateState();
-  }
-  updateState(){
-    let state = this.appStore.getState();
-    if (state.containerInfo && state.containerInfo.currentContainer){
-      this.currentContaner = state.containerInfo.currentContainer;
-      this.currentBox = state.containerInfo.currentBox;
-    }
-  }
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) {}
 
   ngOnInit() {
     //tower
@@ -50,8 +37,8 @@ export class ContainerBoxesFilterComponent implements OnInit {
                 let val: number = -1;
                 if(!isNaN(+num) && +num > 0){
                   val = +num;}
-                if(!isNaN(+num) && +num > this.currentContaner.tower){
-                  val = this.currentContaner.tower;}
+                if(!isNaN(+num) && +num > this.container.tower){
+                  val = this.container.tower;}
                 return val;
                })
               .debounceTime(250)
@@ -67,8 +54,8 @@ export class ContainerBoxesFilterComponent implements OnInit {
                 let val: number = -1;
                 if(!isNaN(+num) && +num > 0){
                   val = +num;}
-                if(!isNaN(+num) && +num > this.currentContaner.shelf){
-                  val = this.currentContaner.shelf;}
+                if(!isNaN(+num) && +num > this.container.shelf){
+                  val = this.container.shelf;}
                 return val;
                })
               .debounceTime(250)
@@ -83,8 +70,8 @@ export class ContainerBoxesFilterComponent implements OnInit {
                 let val: number = -1;
                 if(!isNaN(+num) && +num > 0){
                   val = +num;}
-                if(!isNaN(+num) && +num > this.currentContaner.box){
-                  val = this.currentContaner.box;}
+                if(!isNaN(+num) && +num > this.container.box){
+                  val = this.container.box;}
                 return val;
                })
               .debounceTime(250)

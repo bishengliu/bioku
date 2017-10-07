@@ -44,8 +44,9 @@ export class MyContainerListComponent implements OnInit {
   displayContainerBoxes(container_pk: number){
     let currentContainers = this.containers.filter((c)=>c.pk===container_pk);
     if(currentContainers.length > 0){
-      this.appStore.dispatch(setCurrentContainerActionAsync(currentContainers[0]));
-      this.router.navigate(['/containers', container_pk]); }
+      this.appStore.dispatch(setCurrentContainerActionAsync(currentContainers[0], this.refreshService));
+      this.router.navigate(['/containers', container_pk]); 
+    }
   }
 
   ngOnInit() {

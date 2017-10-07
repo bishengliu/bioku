@@ -9,6 +9,7 @@ import { Box, BoxFilter } from '../../_classes/Box';
 import { Sample, SampleFilter, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
+import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -35,12 +36,12 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   selectedCells: Array<string> = []; //for box view only
   searchedBoxSamples: Array<string> = []; //cell position
   box_view: boolean = true;
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private refreshService: RefreshService,
               private router: Router, private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService)
   { 
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
-    this.updateState();
+    this.refreshService.dispatchContainerInfo();
   }
 
   updateState(){
@@ -50,8 +51,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.box = state.containerInfo.currentBox;
-      //this.samples = this.box.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition')).sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
-      //this.searchedSamples = this.samples;
     }
   }
   

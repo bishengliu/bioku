@@ -28,7 +28,6 @@ import { AdminGuard } from  '../_guards/AdminGuard';
 import { PIGuard } from  '../_guards/PIGuard';
 import { FetchAuthInfoGuard } from  '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from  '../_guards/CleanLocalStorageGuard';
-import { FetchContainerStateGuard } from '../_guards/FetchContainerStateGuard';
 
 //routing
 import { Routes } from '@angular/router';
@@ -46,18 +45,18 @@ export const routes: Routes = [
   {path: 'user', component: AccountComponent, children: accountRoutes},
 
   {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes}, 
-  {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ], pathMatch: 'full' },
-  {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard,] },
-  {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
-  {path: 'containers', component: MyContainerListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, FetchContainerStateGuard, ] },
+  {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard,  ] },
+  {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ], pathMatch: 'full' },
+  {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers', component: MyContainerListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]
