@@ -4,7 +4,7 @@ import { RefreshService } from '../_services/RefreshService'
 import { AlertService } from '../_services/AlertService'
 import { AppStore } from '../_providers/ReduxProviders';
 import { AuthState } from '../_redux//account/account_state';
-import { SetAuthInfoAction, setAuthInfoActionCreator } from '../_redux//account/account_actions';
+import { SetAuthInfoAction, setAuthInfoActionCreator } from '../_redux/account/account_actions';
 
 @Injectable()
 export class FetchAuthInfoGuard implements CanActivate{
@@ -20,7 +20,7 @@ export class FetchAuthInfoGuard implements CanActivate{
                 this.appStore.dispatch(setAuthInfoAction);
             }        
         }
-        console.log('fetch auth info from storage');
+        console.log('fetch auth info from local storage');
         return true;
     }
 }

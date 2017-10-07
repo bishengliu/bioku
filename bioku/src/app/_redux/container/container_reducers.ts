@@ -59,9 +59,9 @@ export const containerReducer: Reducer<ContainerState> =
             //set the auti info completely
             const containerState: ContainerState = (<SetContainerInfoAction>action).containerState;
             return {
-                containers : containerState.containers,
-                currentContainer: containerState.currentContainer,
-                currentBox: containerState.currentBox
+                containers : containerState.containers, //only update the containers
+                currentContainer: state.currentContainer,
+                currentBox: state.currentBox
             }
         default:
             return state;

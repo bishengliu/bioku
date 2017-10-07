@@ -5,7 +5,7 @@ import { REDUX_CONSTANTS as C } from '../root/constants';
 import { AppState, AppPartialState } from '../root/state';
 import { AlertService } from '../../_services/AlertService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
-
+import { RefreshService } from '../../_services/RefreshService';
 import {LoggerAction, loggerActionCreator} from '../logger/logger_actions';
 import { ContainerService } from '../../_services/ContainerService';
 
@@ -96,7 +96,7 @@ export const setCurrentContainerActionAsync = (container: Container) =>
 }
 
 export const setMyContainersActionAsync = 
-(containerService: ContainerService, alertService: AlertService, logAppStateService: LogAppStateService) =>
+(containerService: ContainerService, alertService: AlertService, logAppStateService: LogAppStateService, refreshService: RefreshService) =>
 (dispatch: Dispatch<AppState>, getState) =>
 {
     containerService.myContainers()
@@ -108,7 +108,8 @@ export const setMyContainersActionAsync =
             //set my containers list
             let setMyContainersAction: SetMyContainersAction = setMyContainersActionCreator(data);
             dispatch(setMyContainersAction);
-            
+            //dumpdata to the locastorage
+            refreshService.dumpContainerState(getState().containerInfo);
             //get state: apppartialstate
             let nextState: AppPartialState = logAppStateService.getAppPartialState();
             let message: string = 'query my containers success!';
@@ -117,7 +118,8 @@ export const setMyContainersActionAsync =
         },
         (err)=>{
             console.log(err);
-            alertService.error('GET MY CONTAINERS FAILED!');
+            refreshService.cleanContainerState();
+            alertService.error('Failed to get containers from server, please try again later!');
         }
     );
 }

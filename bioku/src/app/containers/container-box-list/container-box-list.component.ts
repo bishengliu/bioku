@@ -31,8 +31,9 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   searchedBoxes: Array<Box> = [];
   show_all: boolean = false;
   all_boxes_loaded: boolean = false;
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
-              private router: Router, private containerService: ContainerService, private alertService: AlertService, private logAppStateService: LogAppStateService)
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+              private utilityService: UtilityService, private router: Router, private containerService: ContainerService, 
+              private alertService: AlertService, private logAppStateService: LogAppStateService)
   { 
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
@@ -40,14 +41,14 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   }
   updateState(){
     let state = this.appStore.getState();
+    if (state.containerInfo && state.containerInfo.containers){
+      this.containers = state.containerInfo.containers;
+    }
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
     if (state.containerInfo && state.containerInfo.currentBox){
       this.currentBox = state.containerInfo.currentBox;
-    }
-    if (state.containerInfo && state.containerInfo.containers){
-      this.containers = state.containerInfo.containers;
     }
   }
   updateBoxList(boxFilter:BoxFilter){

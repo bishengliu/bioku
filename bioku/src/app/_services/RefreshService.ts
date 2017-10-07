@@ -28,6 +28,7 @@ export class RefreshService
             console.log("failed to dump authInfo!");           
         }        
     }
+    
     //dump ContainerState
     dumpContainerState(containerInfo: ContainerState): void{
         try{
@@ -40,7 +41,7 @@ export class RefreshService
                     localStorage.removeItem("containerInfo");                
                 }
                 localStorage.setItem('containerInfo', JSON.stringify(containerInfo));
-                console.log(localStorage.getItem("containerInfo"));
+                //console.log(localStorage.getItem("containerInfo"));
                 console.log("containerInfo dumped!");
             }
         }
@@ -49,6 +50,7 @@ export class RefreshService
             console.log("failed to dump containerInfo!");           
         }
     }
+
     //clean localstorage
     cleanState(): void 
     {
@@ -68,6 +70,20 @@ export class RefreshService
             console.log("failed to clean localStorage!");  
         }
     }
+
+    //clean container state only
+    cleanContainerState(){
+        try{
+            //containerInfo
+            if(localStorage.getItem("containerInfo") !== null){
+                localStorage.removeItem("containerInfo");
+            }
+        }
+        catch(error){
+            console.log("failed to clean container info from local storage!");  
+        }
+    }
+
     //fetch authInfo
     fetchAuthState(): AuthState 
     {
@@ -91,6 +107,7 @@ export class RefreshService
         } 
         return authInfo;
     }
+
     //fetch containerInfo
     fetchContainerState(): ContainerState{
         let containerInfo: {
@@ -113,6 +130,7 @@ export class RefreshService
         }
         return containerInfo;
     }
+
     //fetch AppPartialState for both
     fetchReduxState(): AppPartialState{
         let reduxAppState: AppPartialState = {

@@ -7,6 +7,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { ContainerService } from '../../_services/ContainerService';
 import { Container } from '../../_classes/Container';
+import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -20,23 +21,26 @@ import { setMyContainersActionAsync, SetMyContainersAction, setMyContainersActio
 })
 export class MyContainerListComponent implements OnInit {
   loading: boolean = true;
+  load_failed: boolean = false;
   containers: Array<Container> = null;
-  constructor(private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
+  constructor(private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private refreshService: RefreshService,
               private router: Router, private logAppStateService: LogAppStateService, private containerService: ContainerService)
   {
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
     this.updateState();
   }
+
   updateState(){
     let state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.containers){
       this.containers = state.containerInfo.containers;
-      if(this.containers.length>0){
+      if(this.containers.length > 0){
         this.loading = false;
       }
     }
   }
+
   displayContainerBoxes(container_pk: number){
     let currentContainers = this.containers.filter((c)=>c.pk===container_pk);
     if(currentContainers.length > 0){
@@ -44,7 +48,7 @@ export class MyContainerListComponent implements OnInit {
       this.router.navigate(['/containers', container_pk]); }
   }
 
-  ngOnInit() { 
-    this.appStore.dispatch(setMyContainersActionAsync(this.containerService, this.alertService, this.logAppStateService));
+  ngOnInit() {
+    this.appStore.dispatch(setMyContainersActionAsync(this.containerService, this.alertService, this.logAppStateService, this.refreshService));
   }
 }
