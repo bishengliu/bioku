@@ -16,6 +16,7 @@ export class Container{
     description: string;
     groups: Array<Group>;
     boxes: Array<Box>;
+    first_box: Box;
     has_box: boolean;
 }
 
