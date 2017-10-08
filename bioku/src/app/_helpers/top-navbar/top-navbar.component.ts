@@ -53,8 +53,11 @@ export class TopNavbarComponent implements OnInit {
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState()); 
-    this.refreshService.dispatchContainerInfo();
- 
+    //fetch container data
+    this.updateState();
+    if(this.appStore.getState().containerInfo != null && this.appStore.getState().containerInfo.contaners == null){
+      this.refreshService.dispatchContainerInfo();
+    }
     //form controls for adding member or assistants
     this.assistEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
     this.memberEmailInput = new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
