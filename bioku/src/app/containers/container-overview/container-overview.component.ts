@@ -50,10 +50,10 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
    { 
      appStore.subscribe(()=> this.updateState());
      this.updateState();
+     console.log(this.container);
    }
    updateState(){
     let state= this.appStore.getState()
-
     //set auth user
     if(state.authInfo){
       this.user = state.authInfo.authUser;
@@ -72,18 +72,13 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
         return Observable.of(this.container);}
       else{
         return this.containerService.containerDetail(this.id);}
-    });
-
-    //container and boxes observable
-    let container$ = this.sub
-    .map((container: Container) => { this.container = container; return container;})
+    })
     .mergeMap((container: Container)=>{
+      this.container = container;
       //get all the boxes in the current container
       return this.containerService.containerAllBoxes(container.pk);
-    });
-
-    //all the boxes in the current container
-    container$.subscribe((boxes: Array<Box>)=>{
+    })
+    .subscribe((boxes: Array<Box>)=>{
       this.occupied_boxes = boxes; //all occupied boxes
       //get curent occupied positions
       this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
@@ -96,7 +91,6 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
       if(this.localStorageService.lastSelectedOccupiedBox != null ){
         this.lastSelectedOccupiedBox =this.localStorageService.lastSelectedOccupiedBox;
       }
-
       //clean up the saved data
       this.localStorageService.boxAvailabilities = [];
       this.localStorageService.lastSelectedOccupiedBox = null;
@@ -105,7 +99,6 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
     },
     (err)=>{console.log(err)});
   }
-
   //method to get curent occupied positions
   getContainerBoxOccupiedPositions(occupied_boxes: Array<Box>): Array<string>{
     let occupied_postions: Array<string> = [];

@@ -75,12 +75,12 @@ export class StoreSampleComponent implements OnInit {
       console.log(err);
       this.alertService.error('Something went wrong!', true)
     });
-    console.log('======================'); 
-    console.log(this.localStorageService);
-    if(this.localStorageService == null|| this.localStorageService.emptySelectedCells.length == 0){
+    if(this.localStorageService.emptySelectedCells == null){
       this.router.navigate(['/containers', this.container.pk, this.box_pos ]);
     }
-    this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
-    this.cells = [...this.localStorageService.emptySelectedCells];
+    else{
+      this.emptySelectedCells = [...this.localStorageService.emptySelectedCells];
+      this.cells = [...this.localStorageService.emptySelectedCells];
+    } 
   }
 }

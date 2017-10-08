@@ -63,7 +63,6 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     this.container = state.containerInfo.currentContainer;
     }
   }
-
   ngOnInit() {
     this.sub = this.route.params
     .mergeMap((params) =>{
@@ -78,14 +77,23 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       (container: Container)=> { this.container = container; }, 
       (err)=>{console.log(err)}
     );
-    this.boxes = this.localStorageService.selectedEmptySlots.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+    //get the passed boxes
+    //console.log(this.localStorageService);
+    if(this.localStorageService.selectedEmptySlots == null){
+      this.router.navigate(['/containers/overview/', this.container.pk ]);
+    }
+    else{
+      this.boxes = this.localStorageService.selectedEmptySlots.sort(this.utilityService.sortArrayBySingleProperty('full_position'));
+    }
     //generate add_boxes
-    this.boxes.forEach((ab, i)=>{
-      let add_box: AddBox = new AddBox();
-      add_box.box_full_position = ab.full_position;
-      add_box.is_excluded = false;
-      this.add_boxes.push(add_box);
-    });
+    if(this.boxes.length >0){
+      this.boxes.forEach((ab, i)=>{
+        let add_box: AddBox = new AddBox();
+        add_box.box_full_position = ab.full_position;
+        add_box.is_excluded = false;
+        this.add_boxes.push(add_box);
+      });
+    }
     //get the first box
     this.box_horizontal = (this.container.boxes != null && this.container.boxes.length > 0) 
                           ? this.container.boxes[0].box_horizontal : this.box_horizontal;
@@ -96,7 +104,8 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     this.hArray = this.utilityService.genArray(this.box_horizontal);
     this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
     //allow change box layout ?
-    if(this.container.boxes.length === 0){
+    //console.log(this.container);
+    if(this.container.has_box == false){
       this.allow_change_box_layout = true;
     }
   }

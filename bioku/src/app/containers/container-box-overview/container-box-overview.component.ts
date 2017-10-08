@@ -8,7 +8,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import {  ContainerService } from '../../_services/ContainerService';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import { LocalStorageService } from '../../_services/LocalStorageService';
-
+import { AppStore } from '../../_providers/ReduxProviders';
 @Component({
   selector: 'app-container-box-overview',
   templateUrl: './container-box-overview.component.html',
@@ -41,12 +41,20 @@ export class ContainerBoxOverviewComponent implements OnInit {
   //loading 
   loading: boolean = true;
 
-  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, 
+  constructor(private utilityService: UtilityService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
               private containerService: ContainerService, private localStorageService: LocalStorageService) 
   { 
     this.tower_per_table = appSetting.CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE;
+    appStore.subscribe(()=> this.updateState());
+    this.updateState();
   }
-
+  updateState(){
+    let state= this.appStore.getState()
+    //get current container
+    if (state.containerInfo && state.containerInfo.currentContainer){
+      this._container = state.containerInfo.currentContainer;
+    }
+  }
   ngOnInit() {
     if(this.localStorageService.boxAvailabilities != null && this.localStorageService.boxAvailabilities.length > 0){
       this.selectedBoxes = [...this.localStorageService.boxAvailabilities];
@@ -66,7 +74,9 @@ export class ContainerBoxOverviewComponent implements OnInit {
       //this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
     }
     if(change["container"] != undefined){
-      this._container = this.container;
+      console.log(this.container);
+      this._container = this.container == undefined ? this._container : this.container;
+      if(this._container != undefined){
       //get group boxes of the container
       this.containerService.containerGroupBoxes(this._container.pk)
       .subscribe((boxes: any)=>{
@@ -74,6 +84,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
         this.permited_box_positions = this.obtainPermittedBoxPositions(this.permited_boxes);
       },
       (error) => console.log(error));
+      }    
     }
   }
 

@@ -14,7 +14,6 @@ import { ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  AlertService } from '../../_services/AlertService';
-import { RefreshService } from '../../_services/RefreshService';
 
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
@@ -44,12 +43,13 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   //saving move box
   moving: boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private utilityService: UtilityService, private refreshService: RefreshService, private router: Router, private http: Http, 
+              private utilityService: UtilityService, private router: Router, private http: Http, 
               private containerService: ContainerService, private localStorageService: LocalStorageService, private alertService: AlertService)
   { 
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(()=> this.updateState());
-    this.refreshService.dispatchContainerInfo();
+    this.updateState();
+    //this.refreshService.dispatchContainerInfo();
   }
 
   updateState(){
@@ -95,7 +95,12 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
     );
 
     //get the passed boxes
-    this.boxes = this.localStorageService.selectedOccupiedSlots;
+    if(this.localStorageService.selectedOccupiedSlots == null){
+      this.router.navigate(['/containers/overview/', this.container.pk ]);
+    }
+    else{
+      this.boxes = this.localStorageService.selectedOccupiedSlots;
+    }
     //proce the moving object, default move to current container
     if(this.boxes.length >0){
       this.boxes.forEach((box, i)=>{
@@ -110,7 +115,6 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
         this.move_boxes.push(move_box);
       });
     }
-    //get the 
   }
 
   selectContainer(box_full_position: string, event: any){

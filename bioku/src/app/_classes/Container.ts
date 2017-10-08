@@ -16,6 +16,7 @@ export class Container{
     description: string;
     groups: Array<Group>;
     boxes: Array<Box>;
+    has_box: boolean;
 }
 
 export class ContainerNamePK{
