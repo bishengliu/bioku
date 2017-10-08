@@ -38,7 +38,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   { 
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
-    this.refreshService.dispatchContainerInfo();
+    this.updateState();
   }
 
   updateState(){
@@ -49,10 +49,11 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentContainer){
       this.container = state.containerInfo.currentContainer;
     }
-    // if (state.containerInfo && state.containerInfo.currentBox){
-    //   this.currentBox = state.containerInfo.currentBox;
-    // }
+    if (state.containerInfo && state.containerInfo.currentBox){
+      this.currentBox = state.containerInfo.currentBox;
+    }
   }
+
   updateBoxList(boxFilter:BoxFilter){
     this.loading = true;
     //restore the complete boxes
@@ -73,22 +74,20 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
   }
+
   displaySelectedBox(box: Box): void {
+    //dispatch the selected box
     let setCurrentBoxAction : SetCurrentBoxAction = setCurrentBoxActionCreator(this.container, box);
     this.appStore.dispatch(setCurrentBoxAction);
-    //this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
+    //dump the selected box
+    this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
     this.router.navigate(['/containers', this.container.pk, box.box_position]);  
   }
+
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap((params) =>{
         this.id = +params['id'];
-        /////////////////
-        let container_filtered = this.containers.filter((c, i)=>{ return c.pk === this.id; });
-        if(container_filtered.length > 0){
-          this.container = container_filtered[0];
-        }
-        ////////////////////
         if(this.container != null){
           return Observable.of(this.container);
         }else{
@@ -97,6 +96,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       })
       .mergeMap((container: any)=>{
         this.container = container;
+
         this.querySub = this.route.queryParams
         return this.querySub;
       })
@@ -111,12 +111,6 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
         }
       })
       .subscribe((data: any)=>{
-        //set current container
-        //let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(this.container);
-        //this.appStore.dispatch(setCurrentContainerAction);
-        //dump container info
-        //this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
-
         if(Array.isArray(data)){
           //if it array, then is the inital loading
           this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate','full_position'));
@@ -139,6 +133,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       },
       () => this.alertService.error('Something went wrong, fail to load boxes from the server!', true));
   }
+
   toggleBoxShow(){
     this.loading = true;
     this.show_all = !this.show_all;
@@ -170,6 +165,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       this.loading = false;
     }  
   }
+
   ngOnDestroy() { 
     this.sub.unsubscribe(); 
     if(this.querySub != undefined){

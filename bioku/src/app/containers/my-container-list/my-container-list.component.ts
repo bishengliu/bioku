@@ -44,12 +44,17 @@ export class MyContainerListComponent implements OnInit {
   displayContainerBoxes(container_pk: number){
     let currentContainers = this.containers.filter((c)=>c.pk===container_pk);
     if(currentContainers.length > 0){
+      //dispatch the selected container and dump data to local storage
       this.appStore.dispatch(setCurrentContainerActionAsync(currentContainers[0], this.refreshService));
       this.router.navigate(['/containers', container_pk]); 
+    }
+    else{
+      this.alertService.error("Container not found!", true);
     }
   }
 
   ngOnInit() {
+    //everything retrieve the container list from the server
     this.appStore.dispatch(setMyContainersActionAsync(this.containerService, this.alertService, this.logAppStateService, this.refreshService));
   }
 }

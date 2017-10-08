@@ -12,7 +12,6 @@ import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  LocalStorageService } from '../../_services/LocalStorageService';
-import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -69,14 +68,14 @@ export class MoveSampleComponent implements OnInit {
   }
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private localStorageService: LocalStorageService, 
               private utilityService: UtilityService,private containerService: ContainerService, private alertService: AlertService, private router: Router, 
-              private route: ActivatedRoute, private dragulaService: DragulaService, private refreshService: RefreshService,) 
+              private route: ActivatedRoute, private dragulaService: DragulaService, ) 
   { 
     this.appUrl = this.appSetting.URL;
     this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     //subscribe store state changes
     appStore.subscribe(()=> this.updateState());
-    this.refreshService.dispatchContainerInfo();
+    this.updateState();
   }
 
   updateState(){
