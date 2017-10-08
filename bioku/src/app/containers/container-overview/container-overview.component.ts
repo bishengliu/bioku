@@ -50,7 +50,7 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
    { 
      appStore.subscribe(()=> this.updateState());
      this.updateState();
-     console.log(this.container);
+     //console.log(this.container);
    }
    updateState(){
     let state= this.appStore.getState()

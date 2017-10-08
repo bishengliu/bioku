@@ -74,7 +74,7 @@ export class ContainerBoxOverviewComponent implements OnInit {
       //this.towers_splited = this.splitTowers(this._towers, this.tower_per_table);
     }
     if(change["container"] != undefined){
-      console.log(this.container);
+      //console.log(this.container);
       this._container = this.container == undefined ? this._container : this.container;
       if(this._container != undefined){
       //get group boxes of the container
