@@ -16,7 +16,7 @@ export class Container{
     description: string;
     groups: Array<Group>;
     boxes: Array<Box>;
-    first_box: Box;
+    first_box: Box; //get the first box in the container
     has_box: boolean;
 }
 

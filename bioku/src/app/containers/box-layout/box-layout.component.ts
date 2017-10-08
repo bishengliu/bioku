@@ -126,6 +126,7 @@ export class BoxLayoutComponent implements OnInit {
       this.box = state.containerInfo.currentBox;
     }
   }
+  
   genBorderStyle(color: string){
     let cssValue: string = "1px solid rgba(34,36,38,.15)";
     if(color != null){

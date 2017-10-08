@@ -16,7 +16,6 @@ export class LogoutService{
     logOut(){
         //get pre state: apppartialstate
         let preState: AppPartialState = this.logAppStateService.getAppPartialState();
-
         //remove the token
         let unsetTokenAction = unsetTokenActionCreator();
         this.appStore.dispatch(unsetTokenAction);

@@ -55,7 +55,7 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
    updateState(){
     let state= this.appStore.getState()
     //set auth user
-    if(state.authInfo){
+    if(state.authInfo.authUser != null && state.authInfo.token != null){
       this.user = state.authInfo.authUser;
       this.token = state.authInfo.token.token;
     }

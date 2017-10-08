@@ -55,9 +55,10 @@ export class ContainerBoxMoveComponent implements OnInit, OnDestroy {
   updateState(){
     let state= this.appStore.getState()
     //set auth user
-    if(state.authInfo){
-    this.user = state.authInfo.authUser;
-    this.token = state.authInfo.token.token;
+    //set auth user
+    if(state.authInfo.authUser != null && state.authInfo.token != null){
+      this.user = state.authInfo.authUser;
+      this.token = state.authInfo.token.token;
     }
     //get current container
     if (state.containerInfo && state.containerInfo.currentContainer){

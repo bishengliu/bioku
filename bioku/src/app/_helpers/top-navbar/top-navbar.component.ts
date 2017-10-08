@@ -55,7 +55,7 @@ export class TopNavbarComponent implements OnInit {
     appStore.subscribe(()=> this.updateState()); 
     //fetch container data
     this.updateState();
-    if(this.appStore.getState().containerInfo != null && this.appStore.getState().containerInfo.contaners == null){
+    if(this.appStore.getState().containerInfo != null && this.appStore.getState().containerInfo.contaners == null){      
       this.refreshService.dispatchContainerInfo();
     }
     //form controls for adding member or assistants

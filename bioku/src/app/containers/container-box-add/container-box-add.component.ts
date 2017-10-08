@@ -51,18 +51,20 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
     this.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; //a letter
   }
+
   updateState(){
     let state= this.appStore.getState();
     //set auth user
-    if(state.authInfo){
-    this.user = state.authInfo.authUser;
-    this.token = state.authInfo.token.token;
+    if(state.authInfo.authUser != null && state.authInfo.token != null){
+      this.user = state.authInfo.authUser;
+      this.token = state.authInfo.token.token;
     }
     //get current container
     if (state.containerInfo && state.containerInfo.currentContainer){
-    this.container = state.containerInfo.currentContainer;
+      this.container = state.containerInfo.currentContainer;
     }
   }
+
   ngOnInit() {
     this.sub = this.route.params
     .mergeMap((params) =>{
@@ -95,32 +97,36 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       });
     }
     //get the first box
-    this.box_horizontal = (this.container.boxes != null && this.container.boxes.length > 0) 
-                          ? this.container.boxes[0].box_horizontal : this.box_horizontal;
-    this.box_vertical = (this.container.boxes != null && this.container.boxes.length > 0) 
-                          ? this.appSetting.BOX_POSITION_LETTERS[this.container.boxes[0].box_vertical - 1]
+    this.box_horizontal = (this.container.first_box != null && this.container.has_box) 
+                          ? this.container.first_box.box_horizontal : this.box_horizontal;
+    this.box_vertical = (this.container.first_box != null && this.container.has_box) 
+                          ? this.appSetting.BOX_POSITION_LETTERS[this.container.first_box.box_vertical - 1]
                           : this.box_vertical;
     //update box layout
     this.hArray = this.utilityService.genArray(this.box_horizontal);
     this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
+    
     //allow change box layout ?
-    //console.log(this.container);
     if(this.container.has_box == false){
       this.allow_change_box_layout = true;
     }
   }
+
   //generate extra options for dropdow
   genVerticalOptions(){
     return [...this.vArray, ...this.appSetting.BOX_POSITION_LETTERS.slice(this.vArray.length, this.vArray.length + this.appSetting.BOX_EXTRA_LAYOYT)];
   }
+
   genHorizontalOptions(){
     return this.utilityService.genArray(this.hArray.length + this.appSetting.BOX_EXTRA_LAYOYT);
   }
+
   toggleBox(box_full_position: string, bindex: number): void{
     if(this.add_boxes[bindex].box_full_position === box_full_position){
       this.add_boxes[bindex].is_excluded = !this.add_boxes[bindex].is_excluded;
     }
   }
+
   updateLayout(event: any, type: string, ){
     //event is the value of changes
     if(type=='horizontal'){
@@ -133,6 +139,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
     }
   }
+
   save_add_box(){
     this.adding = true;
     //console.log(this.add_boxes);
@@ -181,10 +188,12 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
       });
     }
   }
+
   filterAddBoxes(add_boxes: Array<AddBox>){
     return add_boxes.filter((ab, i)=>{
       return ab.is_excluded != true;
     });
   }
+  
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

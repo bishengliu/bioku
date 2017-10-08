@@ -75,6 +75,7 @@ export class StoreSampleComponent implements OnInit {
       console.log(err);
       this.alertService.error('Something went wrong!', true)
     });
+    
     if(this.localStorageService.emptySelectedCells == null){
       this.router.navigate(['/containers', this.container.pk, this.box_pos ]);
     }

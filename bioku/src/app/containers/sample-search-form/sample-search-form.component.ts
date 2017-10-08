@@ -127,11 +127,7 @@ export class SampleSearchFormComponent implements OnInit {
     return containers;
   }
 
-  ngOnInit() {
-    // if(this.container != null){
-    //   this.default_container_to_search = this.container.pk;
-    // }   
-  }
+  ngOnInit() {}
   
   onSearch(values: SampleSearch){
     //need to update search obj
