@@ -110,14 +110,22 @@ export class AddContainerComponent implements OnInit {
     //post call
     this.containerService.create(formData)
     .subscribe(
-      data=> {this.alertService.success('New Container Added!', true)},
-      () => this.alertService.error('Something went wrong, the new container was not created!', true)
-    );
-    //naviagate to home
-    if(this.url==="/containers/add"){
-      this.router.navigate(['/containers']);}
-    else{
-      this.router.navigate(['/admin/containers']);}    
+      data=> {
+        this.alertService.success('New Container Added!', true);
+        //naviagate to home
+        if(this.url==="/containers/add"){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers']);}  
+      },
+      () => {
+        this.alertService.error('Something went wrong, the new container was not created!', true);
+        //naviagate to home
+        if(this.url==="/containers/add"){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers']);}  
+      });
   }
   ngOnInit() {
     this.url = this.router.url;

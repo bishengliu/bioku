@@ -84,7 +84,7 @@ export class EditContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-    onUpdate(values: any): void{
+  onUpdate(values: any): void{
     let obj = {
       name: values.name,            
       temperature: values.temperature,
@@ -103,14 +103,23 @@ export class EditContainerComponent implements OnInit, OnDestroy {
     //put call
     this.containerService.containerUpdate(formData, this.id)
     .subscribe(
-      data=> this.alertService.success('Container Profile Updated!', true),
-      () => this.alertService.error('Something went wrong, the container profile was not updated!', true)
-    );
-    //naviagate to home
-    if(this.url.startsWith("/containers/edit")){
-      this.router.navigate(['/containers']);}
-    else{
-      this.router.navigate(['/admin/containers/']);}   
+      data=> {
+        this.alertService.success('Container Profile Updated!', true);
+        //naviagate to home
+        if(this.url.startsWith("/containers/edit")){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers/']);}
+      },
+      () => {
+        this.alertService.error('Something went wrong, the container profile was not updated!', true);
+        //naviagate to home
+        if(this.url.startsWith("/containers/edit")){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers/']);}
+      }
+    );       
   }
 
   ngOnInit() 

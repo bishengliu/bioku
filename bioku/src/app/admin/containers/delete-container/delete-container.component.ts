@@ -38,15 +38,22 @@ export class DeleteContainerComponent implements OnInit, OnDestroy {
    //put call
     this.containerService.containerDelete(pk)
     .subscribe(
-      data=> this.alertService.success('Container deleted!', true),
-      () => this.alertService.error('Something went wrong, the container was not deleted!', true)
-    );
-    //naviagate to home
-    if(this.url.startsWith("/containers/delete")){
-      this.router.navigate(['/containers']);}
-    else{
-      this.router.navigate(['/admin/containers/']);}    
-    
+      data=> {
+        this.alertService.success('Container deleted!', true);
+        //naviagate to home
+        if(this.url.startsWith("/containers/delete")){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers/']);} 
+      },
+      () => {
+        this.alertService.error('Something went wrong, the container was not deleted!', true);
+        //naviagate to home
+        if(this.url.startsWith("/containers/delete")){
+          this.router.navigate(['/containers']);}
+        else{
+          this.router.navigate(['/admin/containers/']);} 
+      }); 
   }
   cancelDeletion():void{
     //naviagate to home

@@ -76,6 +76,7 @@ export class ContainerListComponent implements OnInit {
       }
     )
   }
+
   removefromGroup(container_pk: number, group_pk: number){
     this.containerService.removeGroupFromContainer(container_pk, group_pk)
     .subscribe(
@@ -90,6 +91,7 @@ export class ContainerListComponent implements OnInit {
       }
     )
   }
+
   isGroup(groups: Array<Group>, group: Group){
     let found: Boolean = false;
     if (groups == null){
@@ -98,17 +100,17 @@ export class ContainerListComponent implements OnInit {
     pks.indexOf(group.pk) !=-1 ? found=true : found=false;
     return found;
   }
+
   allowRemoveGroup(container_pk: number, group_pk: number){
     return this.containerService.allowRemoveGroup(container_pk, group_pk)
            .subscribe(
                   data=>(data.detail ? true: false), 
                   err=>false);
   }
+  
   ngOnInit() { 
     this.containers = this.containerService.getAllContainers();
-    this.containers.subscribe(
-      //c=> console.log(c)
-    )
+    this.containers.subscribe();
     this.groups = this.groupService.getAllGroups();
   }
 
