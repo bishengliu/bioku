@@ -24,8 +24,8 @@ export class LogAppStateService{
         return appPartialState;
     }
     log(action: string, preState: AppPartialState, nextState: AppPartialState, message: string): void{
-        let loggerAction: LoggerAction = loggerActionCreator(action, preState, nextState, message);
-        this.appStore.dispatch(loggerAction);
+        //let loggerAction: LoggerAction = loggerActionCreator(action, preState, nextState, message);
+        //this.appStore.dispatch(loggerAction);
     }
 
 }
