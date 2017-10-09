@@ -2,40 +2,49 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
+/////////////////3rd party modules/////////////////////
 //color picker
 //https://www.npmjs.com/package/ng2-color-picker
-import { ColorPickerModule } from 'ng2-color-picker';
+//import { ColorPickerModule } from 'ng2-color-picker';
 //symantic -ui
 //https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
-//sidebar: https://www.npmjs.com/package/ng-sidebar
-import { SidebarModule } from 'ng-sidebar';
-
 import {SuiModule} from 'ng2-semantic-ui';
+//sidebar
+//https://www.npmjs.com/package/ng-sidebar
+import { SidebarModule } from 'ng-sidebar';
+//mydatepicker
+//https://github.com/kekeh/mydatepicker
+import { MyDatePickerModule } from 'mydatepicker';
 //dragula
+//https://github.com/bevacqua/angularjs-dragula
 import { DragulaModule } from 'ng2-dragula';
+//angular2-useful-swiper
+//import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
+//ng2-sticky: https://www.npmjs.com/package/ng2-sticky
+//import { Ng2StickyModule } from 'ng2-sticky';
+/////////////////////end 3rd party modules //////////////
+
 //routing
 import { RouterModule} from '@angular/router';
 //app root routes
 import { routes } from './_routes/root-routes';
-//providers
+
+//custom providers
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 import { GuardProviders } from './_providers/GuardProviders';
 import { LocalStorageServiceProvider } from './_providers/LocalStorageServiceProvider';
-//UtilityServiceProvider
 import { UtilityServiceProvider } from './_providers/UtilityServiceProvider';
+
 //custom form validators
 import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
-//mydatepicker
-import { MyDatePickerModule } from 'mydatepicker';
+
 //redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
-//angular2-useful-swiper
-//import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
-//ng2-sticky: https://www.npmjs.com/package/ng2-sticky
-//import { Ng2StickyModule } from 'ng2-sticky';
+
 //all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -125,7 +134,6 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     SampleTableComponent,
     BoxDetailActionPanelComponent,
     BoxLayoutSimpleComponent,
-    // ContainerAddBoxComponent,
     ContainerOverviewComponent,
     ContainerBoxOverviewComponent,
     ContainerBoxOverviewActionPanelComponent,
@@ -147,12 +155,13 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    ////////////////3rd party modules///////////////
     //symantic -ui
     SuiModule,
     //mydatepicker
     MyDatePickerModule,
     //ColorPickerModule
-    ColorPickerModule,
+    //ColorPickerModule,
     //sidebar
     SidebarModule.forRoot(),
     //register root routers
@@ -163,6 +172,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     DragulaModule,
     //ng2-sticky
     //Ng2StickyModule,
+    ////////////////end 3rd party modules///////////////
   ],
   providers: [
     //guards
