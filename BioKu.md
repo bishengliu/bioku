@@ -5,12 +5,6 @@ angular js 2
 rxjs
 redux
 
-develope milestones:
-1) model design
-2) build required back-end REST API using Django/Python
-3) user registration
-4) manage container
-5) manage bio-materials
-6) search tool
-7) visualization using d3
-8) reminder/to-do
+-- build notes: change to made in node_modules ---
+1. remove the node_modules in ng2-color-picker module
+2. change index.d.ts to index.d.ts.backup in @types/popper.js

@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
   photo_isSupported: Boolean = true;
   
   //mydatepicker
-  private myDatePickerOptions: IMyOptions = {
+  myDatePickerOptions: IMyOptions = {
         // other options...
         dateFormat: 'dd/mm/yyyy',
         openSelectorTopOfInput: true,

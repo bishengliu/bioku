@@ -222,7 +222,7 @@
                   (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'has_glycerol_stock', true)">
                   <label for="glycerol_stock"><small>YES</small></label>
               </div>
-              <input class="" type="text" [(ngModel)]="sample.strain" placeholder="strain ..." [ngClass]="{'hidden': !sample.has_glycerol_stock == 1}"
+              <input class="" type="text" [(ngModel)]="sample.strain" placeholder="strain ..." [ngClass]="{'hidden': !sample.has_glycerol_stock}"
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'strain', false)">
           </div>
         </td>

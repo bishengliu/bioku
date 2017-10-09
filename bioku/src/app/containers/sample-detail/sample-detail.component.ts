@@ -41,7 +41,7 @@ export class SampleDetailComponent implements OnInit {
   //box hposition
   box_hposition: boolean = false;
   //mydatepicker
-  private myDatePickerOptions: IMyOptions = {
+  myDatePickerOptions: IMyOptions = {
         // other options...
         todayBtnTxt: 'Today',
         dateFormat: 'yyyy-mm-dd',

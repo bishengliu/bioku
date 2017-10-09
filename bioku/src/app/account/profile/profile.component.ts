@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
   user: User = null;
   token: string = null;
   //mydatepicker
-  private myDatePickerOptions: IMyOptions = {
+  myDatePickerOptions: IMyOptions = {
         // other options...
         todayBtnTxt: 'Today',
         dateFormat: 'dd/mm/yyyy',
