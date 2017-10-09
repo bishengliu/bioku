@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Sample } from '../../_classes/Sample';
-
+import { AppSetting} from '../../_config/AppSetting';
+import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 @Component({
   selector: 'app-sample-search-result',
   templateUrl: './sample-search-result.component.html',
@@ -12,7 +13,10 @@ export class SampleSearchResultComponent implements OnInit {
   @Input() searched: boolean;
   selectedSamples: Array<number> =[] //sample pk
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
-  constructor() { }
+  appUrl: string;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, ) { 
+    this.appUrl = this.appSetting.URL;
+  }
 
   ngOnInit() {
     this.sampleSelected.emit([]);//emit empty sample selected

@@ -122,7 +122,7 @@
                 <td class="collapsing">
                     <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
                         <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
-                            <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
+                            <a target="_blank" href="{{appUrl + attachment.attachment}}">{{ attachment.label != null ? attachment.label : null }}</a>
                         </p>
                     </div>
                 </td>
