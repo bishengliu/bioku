@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
@@ -13,6 +13,7 @@ import { RefreshService } from '../../_services/RefreshService';
 //redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
+//import { setCurrentContainerActionAsync } from '../../_redux/container/container_actions';
 import { SetCurrentBoxAction, setCurrentBoxActionCreator, setCurrentBoxActionAsync, SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
 @Component({
   selector: 'app-container-box-list',
@@ -96,7 +97,6 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       })
       .mergeMap((container: any)=>{
         this.container = container;
-
         this.querySub = this.route.queryParams
         return this.querySub;
       })
@@ -165,7 +165,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       this.loading = false;
     }  
   }
-
+  
   ngOnDestroy() { 
     this.sub.unsubscribe(); 
     if(this.querySub != undefined){

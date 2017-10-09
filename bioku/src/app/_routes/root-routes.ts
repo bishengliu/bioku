@@ -43,7 +43,6 @@ export const routes: Routes = [
   {path: 'forget_password', component: ForgetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'reset_password/:uid/:token', component: ResetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'user', component: AccountComponent, children: accountRoutes},
-
   {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes}, 
   {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard,  ] },
   {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ], pathMatch: 'full' },

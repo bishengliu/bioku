@@ -88,7 +88,7 @@ export const setCurrentContainerActionAsync = (container: Container, refreshServ
 (dispatch: Dispatch<AppState>, getState)=>{
     Observable.of(container)
     .subscribe(
-        data=>{
+        (data: Container)=>{
             let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(data);
             dispatch(setCurrentContainerAction);
             //dumpdata to the locastorage

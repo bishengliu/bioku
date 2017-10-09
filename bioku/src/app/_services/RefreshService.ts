@@ -30,14 +30,14 @@ export class RefreshService
                 }
                 localStorage.setItem(this.authInfo, JSON.stringify(authInfo));
                 //console.log(localStorage.getItem("authInfo"));
-                console.log(this.authInfo + " dumped!");
+                //console.log(this.authInfo + " dumped!");
                 //MARK TIMESTAMP
                 if(localStorage.getItem(this.appAuthAimeStamp) != null){
                     localStorage.removeItem(this.appAuthAimeStamp);   
                 }
                 else{
                     localStorage.setItem(this.appAuthAimeStamp, JSON.stringify(new Date().getTime())); //milliseconds
-                    console.log(this.appAuthAimeStamp +" dumped!");
+                    //console.log(this.appAuthAimeStamp +" dumped!");
                     //console.log(localStorage.getItem(this.appAuthAimeStamp));
                 }
             }
@@ -61,7 +61,7 @@ export class RefreshService
                 }
                 localStorage.setItem(this.containerInfo, JSON.stringify(containerInfo));
                 //console.log(localStorage.getItem("containerInfo"));
-                console.log(this.containerInfo + " dumped!");
+                //console.log(this.containerInfo + " dumped!");
             }
         }
         catch(error)

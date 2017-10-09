@@ -45,7 +45,10 @@ export class MyContainerListComponent implements OnInit {
     let currentContainers = this.containers.filter((c)=>c.pk===container_pk);
     if(currentContainers.length > 0){
       //dispatch the selected container and dump data to local storage
-      this.appStore.dispatch(setCurrentContainerActionAsync(currentContainers[0], this.refreshService));
+      let setCurrentContainerAction: SetCurrentContainerAction = setCurrentContainerActionCreator(currentContainers[0]);
+      this.appStore.dispatch(setCurrentContainerAction);
+      this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
+      //this.appStore.dispatch(setCurrentContainerActionAsync(currentContainers[0], this.refreshService));
       this.router.navigate(['/containers', container_pk]); 
     }
     else{
