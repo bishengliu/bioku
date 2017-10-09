@@ -1,8 +1,18 @@
 export const AppSetting = {
-    'VERSION': '0.0.1',
-    'NAME':'BIOKU',
+
+    //CHECK THESE BEFORE PRODUCTION BUILD
+    //API REST URL
+    'URL': 'http://127.0.0.1:8000',
+    //app url
+    'APP_URL': 'http://127.0.0.1:4200',
+    //FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'b.liu@bioku.nl',
 
+    //APP VERSION
+    'VERSION': '0.0.1',
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////DO NOT CHANGE BE IF NOT SURE ////////////////////////
+    'NAME':'BIOKU',
     //APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,
     'BOX_VERTICAL': 8,
@@ -11,7 +21,8 @@ export const AppSetting = {
     //image size
     'CONTAINER_IMAGE_WIDTH': 640,
     'CONTAINER_IMAGE_HEIGHT': 640,
-    
+    //TOKEN EXPIRATION
+    'TOKEN_EXPIRATION_HOUR': 6,
     //show user defined box label?
     'SHOW_BOX_LABEL': true,
     //'APP_COLORS': ['#EF9A9A','#F48FB1','#CE93D8','#B39DDB','#9FA8DA','#90CAF9','#81D4FA','#80DEEA','#80CBC4','#A5D6A7','#C5E1A5','#E6EE9C','#FFF59D','#FFE082','#FFCC80','#FFAB91','#BCAAA4','#EEEEEE','#000000','#FFFFFF'],
@@ -21,10 +32,6 @@ export const AppSetting = {
     //sample search keywords
 
     //////////////////////////////////API URLS////////////////////////////
-    //API REST URL
-    'URL': 'http://127.0.0.1:8000',
-    //app url
-    'APP_URL': 'http://127.0.0.1:4200',
     //server reset password 
     'RESET_PASSWORD': '/reset_password/',
     //confrim reset password

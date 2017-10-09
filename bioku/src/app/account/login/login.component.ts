@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   updateState(){
     let state= this.appStore.getState()
-    if(state.authInfo){
+    if(state.authInfo && state.authInfo.authUser != null){
       this.user = state.authInfo.authUser;
       this.isLogin = state.authInfo.token ? true: false;
     }

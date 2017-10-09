@@ -4,25 +4,42 @@ import { ContainerState } from '../_redux/container/container_state';
 import { AppPartialState, AppState } from '../_redux/root/state';
 import { AppStore } from '../_providers/ReduxProviders';
 import { SetContainerInfoAction, SetContainerInfoActionCreator } from '../_redux/container/container_actions';
+import { AppSetting } from '../_config/AppSetting';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
+import { Router } from '@angular/router';
+import { AlertService } from '../_services/AlertService'
 @Injectable()
 export class RefreshService
 {
-    constructor(@Inject(AppStore) private appStore,){}
+    private appAuthAimeStamp = this.appSetting.NAME + "-AUTH-TIMESTAMP";
+    private authInfo ="authInfo";
+    private containerInfo ="containerInfo";
+    constructor(@Inject(AppStore) private appStore, @Inject(APP_CONFIG) private appSetting: any, private router: Router, private alertService: AlertService){}
     //save redux authInfo into localstrage
     dumpAuthState(authInfo: AuthState): void
     {
         try{
+            //DUMP AUTHINFO
             if(typeof(Storage) === "undefined"){
                 console.log("brower doesn't support HTML5 LocalStorage, cannot enable refresh service!");
             }
             else{
                 //dump the authInfo
-                if(localStorage.getItem("authInfo") !== null){
-                    localStorage.removeItem("authInfo");                
+                if(localStorage.getItem(this.authInfo) !== null){
+                    localStorage.removeItem(this.authInfo);                
                 }
-                localStorage.setItem('authInfo', JSON.stringify(authInfo));
+                localStorage.setItem(this.authInfo, JSON.stringify(authInfo));
                 //console.log(localStorage.getItem("authInfo"));
-                console.log("authInfo dumped!");
+                console.log(this.authInfo + " dumped!");
+                //MARK TIMESTAMP
+                if(localStorage.getItem(this.appAuthAimeStamp) != null){
+                    localStorage.removeItem(this.appAuthAimeStamp);   
+                }
+                else{
+                    localStorage.setItem(this.appAuthAimeStamp, JSON.stringify(new Date().getTime())); //milliseconds
+                    console.log(this.appAuthAimeStamp +" dumped!");
+                    //console.log(localStorage.getItem(this.appAuthAimeStamp));
+                }
             }
         }
         catch(error)
@@ -39,12 +56,12 @@ export class RefreshService
             }
             else{
                 //dump the containerInfo
-                if(localStorage.getItem("containerInfo") !== null){
-                    localStorage.removeItem("containerInfo");                
+                if(localStorage.getItem(this.containerInfo) !== null){
+                    localStorage.removeItem(this.containerInfo);                
                 }
-                localStorage.setItem('containerInfo', JSON.stringify(containerInfo));
+                localStorage.setItem(this.containerInfo, JSON.stringify(containerInfo));
                 //console.log(localStorage.getItem("containerInfo"));
-                console.log("containerInfo dumped!");
+                console.log(this.containerInfo + " dumped!");
             }
         }
         catch(error)
@@ -58,13 +75,17 @@ export class RefreshService
     {
         try
         {
+            //auth timestamp
+            if(localStorage.getItem(this.appAuthAimeStamp) !== null){
+                localStorage.removeItem(this.appAuthAimeStamp);
+            }
             //autoInfo
-            if(localStorage.getItem("authInfo") !== null){
-                localStorage.removeItem("authInfo");
+            if(localStorage.getItem(this.authInfo) !== null){
+                localStorage.removeItem(this.authInfo);
             }
             //containerInfo
-            if(localStorage.getItem("containerInfo") !== null){
-                localStorage.removeItem("containerInfo");
+            if(localStorage.getItem(this.containerInfo) !== null){
+                localStorage.removeItem(this.containerInfo);
             }
         }
         catch(error)
@@ -77,8 +98,8 @@ export class RefreshService
     cleanContainerState(){
         try{
             //containerInfo
-            if(localStorage.getItem("containerInfo") !== null){
-                localStorage.removeItem("containerInfo");
+            if(localStorage.getItem(this.containerInfo) !== null){
+                localStorage.removeItem(this.containerInfo);
             }
         }
         catch(error){
@@ -95,9 +116,33 @@ export class RefreshService
             token: null }
         try
         {
-            if(localStorage.getItem("authInfo") !== null){
-                let authInfoString = localStorage.getItem("authInfo");
-                authInfo = JSON.parse(authInfoString);   
+            if(localStorage.getItem(this.authInfo) !== null && localStorage.getItem(this.appAuthAimeStamp) !== null){
+                //check time lapse
+                let old_timestamp =  localStorage.getItem(this.appAuthAimeStamp);
+                let current_timestamp = new Date().getTime();
+                if(!isNaN(+old_timestamp)){
+                    let diff_ts = current_timestamp - +old_timestamp;
+                    let diff_seconds = Math.floor(diff_ts / 1000);
+                    let time_lapse_by_hour = diff_seconds / 3600;
+                    //check time lapse for token auth
+                    if(time_lapse_by_hour > this.appSetting.TOKEN_EXPIRATION_HOUR){
+                        //login
+                        this.alertService.error("Please login again!", true);
+                        this.cleanState();
+                        this.router.navigate(['/login']);
+                    }
+                    else{
+                        //get authInfo
+                        let authInfoString = localStorage.getItem(this.authInfo);
+                        authInfo = JSON.parse(authInfoString); 
+                    }
+                }            
+            }
+            else{
+                //login
+                this.alertService.error("Please login first!", true);
+                this.cleanState();
+                this.router.navigate(['/login']);
             }
         }
         catch(error)
@@ -118,8 +163,8 @@ export class RefreshService
             currentBox: null };
         try
         {
-            if(localStorage.getItem("containerInfo") !== null){
-                let containerInfoString = localStorage.getItem("containerInfo");
+            if(localStorage.getItem(this.containerInfo) !== null){
+                let containerInfoString = localStorage.getItem(this.containerInfo);
                 containerInfo = JSON.parse(containerInfoString);   
             }
         }

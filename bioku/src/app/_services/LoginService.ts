@@ -2,8 +2,8 @@
 import { Injectable , Inject} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { AppSetting} from '../_config/AppSetting';
-import {APP_CONFIG} from '../_providers/AppSettingProvider';
+import { AppSetting } from '../_config/AppSetting';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
 
 @Injectable()
 export class LoginService{
