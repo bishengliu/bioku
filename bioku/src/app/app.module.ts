@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 /////////////////3rd party modules/////////////////////
 //color picker
 //https://www.npmjs.com/package/ng2-color-picker
-//import { ColorPickerModule } from 'ng2-color-picker';
+import { ColorPickerModule } from 'ng2-color-picker';
 //symantic -ui
 //https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
 import {SuiModule} from 'ng2-semantic-ui';
@@ -161,7 +161,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     //mydatepicker
     MyDatePickerModule,
     //ColorPickerModule
-    //ColorPickerModule,
+    ColorPickerModule,
     //sidebar
     SidebarModule.forRoot(),
     //register root routers
