@@ -393,7 +393,7 @@ div [class*="right floated"] {
   z-index: 999;
   max-height: 550px;
   /* overflow-y: scroll; */
-  overflow-y:auto;
+  /* overflow-y:auto; */
 }
 
 .sticky-box-top-left{
@@ -412,7 +412,7 @@ div [class*="right floated"] {
   z-index: 999;
   max-height: 850px;
   /* overflow-y: scroll; */
-  overflow-y:auto;
+  /* overflow-y:auto; */
 }
 
 .sticky-container-top-left{
@@ -430,7 +430,7 @@ div [class*="right floated"] {
   z-index: 999;
   max-height: 550px;
   /* overflow-y: scroll; */
-  overflow-y:auto;
+  /* overflow-y:auto; */
 }
 
 .opaque {
