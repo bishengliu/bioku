@@ -91,6 +91,7 @@ body{
 .date_picker{
   margin-left: -20px !important;
   margin-right: -10px !important;
+  width: 120% !important;
 }
 
 .mydp input{
