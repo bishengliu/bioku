@@ -4,7 +4,7 @@ import { AdminGuard } from '../_guards/AdminGuard';
 import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
 
-export var GuardProviders: Array<any> = [
+export const GuardProviders: Array<any> = [
         {provide: FetchAuthInfoGuard, useClass: FetchAuthInfoGuard},
         {provide: CleanLocalStorageGuard, useClass: CleanLocalStorageGuard},
         {provide: AuthGuard, useClass: AuthGuard},

@@ -10,7 +10,7 @@ export class PageNotFoundComponent implements OnInit {
 
   constructor(private router: Router) { }
   ngOnInit() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.router.navigate(['/']);
     }, 2000);
   }

@@ -6,5 +6,5 @@ import { containerReducer } from '../container/container_reducers';
 //
 import {loggerReducer} from '../logger/logger_reducers';
 
-
-export const rootReducer: Reducer<AppState> = combineReducers<AppState>({ authInfo: authReducer, containerInfo: containerReducer,  appLogs: loggerReducer})
+export const rootReducer: Reducer<AppState> = combineReducers<AppState>(
+    { authInfo: authReducer, containerInfo: containerReducer,  appLogs: loggerReducer});

@@ -5,9 +5,10 @@ import { AlertService } from '../_services/AlertService'
 import { AppStore } from '../_providers/ReduxProviders';
 
 @Injectable()
-export class CleanLocalStorageGuard implements CanActivate{
-    constructor(@Inject(AppStore) private appStore, private router: Router, private alertService: AlertService, private refreshService: RefreshService){}
-    canActivate(): boolean{
+export class CleanLocalStorageGuard implements CanActivate {
+    constructor(@Inject(AppStore) private appStore, private router: Router, private alertService: AlertService,
+                private refreshService: RefreshService) {}
+    canActivate(): boolean {
         this.refreshService.cleanState();
         return true;
     }

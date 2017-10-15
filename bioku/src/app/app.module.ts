@@ -155,29 +155,29 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    ////////////////3rd party modules///////////////
-    //symantic -ui
+    //////////////// 3rd party modules///////////////
+    // symantic -ui
     SuiModule,
-    //mydatepicker
+    // mydatepicker
     MyDatePickerModule,
-    //ColorPickerModule
+    // ColorPickerModule
     ColorPickerModule,
-    //sidebar
+    // sidebar
     SidebarModule.forRoot(),
-    //register root routers
+    // register root routers
     RouterModule.forRoot(routes, { enableTracing: false }),
-    //npm install --save angular2-useful-swiper
-    //SwiperModule,
-    //dragula
+    // npm install --save angular2-useful-swiper
+    // SwiperModule,
+    // dragula
     DragulaModule,
-    //ng2-sticky
-    //Ng2StickyModule,
-    ////////////////end 3rd party modules///////////////
+    // ng2-sticky
+    // Ng2StickyModule,
+    //////////////// end 3rd party modules///////////////
   ],
   providers: [
-    //guards
+    // guards
     GuardProviders,
-    AlertServiceProvider, 
+    AlertServiceProvider,
     AppSettingProvider,
     StoreProviders,
     APIServiceProviders,

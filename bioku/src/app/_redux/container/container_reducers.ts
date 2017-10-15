@@ -8,15 +8,15 @@ import { REDUX_CONSTANTS as C } from '../root/constants';
 import { SetMyContainersAction, SetCurrentContainerAction, SetCurrentBoxAction, SetContainerInfoAction} from './container_actions';
 
 
-//initial auth status
+// initial auth status
 const initialState: ContainerState = initialAppState.containerInfo;
 
-//define reducers
+// define reducers
 export const containerReducer: Reducer<ContainerState> =
-(state: ContainerState = initialState, action: Action): ContainerState=>{
-    switch(action.type){
+(state: ContainerState = initialState, action: Action): ContainerState => {
+    switch (action.type) {
         case C.SET_MYCONTAINERS_LIST:
-            const containers : Array<Container> = (<SetMyContainersAction>action).containers
+            const containers: Array<Container> = (<SetMyContainersAction>action).containers
             return {
                 containers : containers,
                 currentContainer: null,
@@ -29,7 +29,7 @@ export const containerReducer: Reducer<ContainerState> =
                 currentBox: null
             }
         case C.SET_CURRENT_CONTAINER:
-            const container : Container = (<SetCurrentContainerAction>action).currentContainer;
+            const container: Container = (<SetCurrentContainerAction>action).currentContainer;
             return {
                 containers : state.containers,
                 currentContainer: container,
@@ -40,10 +40,10 @@ export const containerReducer: Reducer<ContainerState> =
                 containers : state.containers,
                 currentContainer: null,
                 currentBox: null
-            };        
+            };
         case C.SET_CURRENT_BOX:
-            const currentContainer : Container = (<SetCurrentBoxAction>action).currentContainer;
-            const currentBox : Box = (<SetCurrentBoxAction>action).currentBox;
+            const currentContainer: Container = (<SetCurrentBoxAction>action).currentContainer;
+            const currentBox: Box = (<SetCurrentBoxAction>action).currentBox;
             return {
                 containers : state.containers,
                 currentContainer: currentContainer,
@@ -56,10 +56,10 @@ export const containerReducer: Reducer<ContainerState> =
                 currentBox: null
             }
         case C.SET_CONTAINER_INFO:
-            //set the auti info completely
+            // set the auti info completely
             const containerState: ContainerState = (<SetContainerInfoAction>action).containerState;
             return {
-                containers : containerState.containers, //only update the containers
+                containers : containerState.containers, // only update the containers
                 currentContainer: containerState.currentContainer,
                 currentBox: containerState.currentBox
             }

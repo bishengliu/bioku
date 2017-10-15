@@ -22,28 +22,28 @@ import { SampleSearchComponent } from '../containers/sample-search/sample-search
 import { StoreSampleComponent } from '../containers/store-sample/store-sample.component';
 import { ForgetPasswordComponent } from '../account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
-//guards
-import { AuthGuard } from  '../_guards/AuthGuard';
-import { AdminGuard } from  '../_guards/AdminGuard';
-import { PIGuard } from  '../_guards/PIGuard';
-import { FetchAuthInfoGuard } from  '../_guards/FetchAuthInfoGuard';
-import { CleanLocalStorageGuard } from  '../_guards/CleanLocalStorageGuard';
+// guards
+import { AuthGuard } from '../_guards/AuthGuard';
+import { AdminGuard } from '../_guards/AdminGuard';
+import { PIGuard } from '../_guards/PIGuard';
+import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
+import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
 
-//routing
+// outing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
 import { adminRoutes } from '../admin/_routes/admin-routes';
-//import { containersRoutes } from '../containers/_routes/containers-routes';
-//app root routes
+// import { containersRoutes } from '../containers/_routes/containers-routes';
+// app root routes
 export const routes: Routes = [
   // {path: '', component: HomeComponent},
-  {path: '', redirectTo: 'login', pathMatch: 'full'}, 
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'register', component: RegisterComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'forget_password', component: ForgetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'reset_password/:uid/:token', component: ResetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'user', component: AccountComponent, children: accountRoutes},
-  {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes}, 
+  {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes},
   {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard,  ] },
   {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ], pathMatch: 'full' },
   {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },

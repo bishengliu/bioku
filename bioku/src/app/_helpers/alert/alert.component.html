@@ -1,8 +1,3 @@
-<!-- <sui-message *ngIf="message" class={{alertClass}} [isDismissable]="false">
-  <div class="ui center aligned">
-    {{message.text}}
-  </div>
-</sui-message> -->
 <div class="ui icon floating message" *ngIf="message" [ngClass]="alertClass">
     <i class="warning sign icon" *ngIf="message.type =='error'"></i>
     <i class="announcement icon" *ngIf="message.type !='error'"></i>

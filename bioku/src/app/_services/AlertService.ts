@@ -7,47 +7,45 @@ import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 
 @Injectable()
-export class AlertService{
+export class AlertService {
     private subject$ = new BehaviorSubject<Alert>(null);
     private keepPostNavigation: Boolean = false;
     dismissMessage: Boolean = true;
-    constructor(private router: Router){
-        
+    constructor(private router: Router) {
         // clear alert message on route change
         router.events.subscribe(event => {
-            if(event instanceof NavigationStart){
-                if (this.keepPostNavigation == false){
+            if (event instanceof NavigationStart) {
+                if (this.keepPostNavigation === false) {
                     // only keep for a single location change
-                    //clear alert
+                    // clear alert
                     this.subject$.next(null);
                 }
-            } 
+            }
         });
     }
 
-    success(message: string, keepPostNavigation=false){
-        this.keepPostNavigation = keepPostNavigation;      
-        this.subject$.next(<Alert>({type:'success', text: message}));
-
-        //dismiss message
-        if(this.dismissMessage){
-            //clear message
-            setTimeout(()=>{
+    success(message: string, keepPostNavigation = false) {
+        this.keepPostNavigation = keepPostNavigation;
+        this.subject$.next(<Alert>({type: 'success', text: message}));
+        // dismiss message
+        if (this.dismissMessage) {
+            // clear message
+            setTimeout(() => {
                 this.clearMessage();
             }, 10000);
-        }        
+        }
     }
 
-    error(message: string, keepPostNavigation=false){
+    error(message: string, keepPostNavigation= false) {
         this.keepPostNavigation = keepPostNavigation;
-        this.subject$.next(<Alert>({type:'error', text: message})); 
-        //dismiss message
-        if(this.dismissMessage){
-            //clear message
-            setTimeout(()=>{
+        this.subject$.next(<Alert>({type: 'error', text: message}));
+        // dismiss message
+        if (this.dismissMessage) {
+            // clear message
+            setTimeout(() => {
                 this.clearMessage();
             }, 10000);
-        }         
+        }
     }
 
     getMessage(): Observable<Alert> {
@@ -55,7 +53,7 @@ export class AlertService{
         .asObservable();
     }
 
-    clearMessage(): void{
+    clearMessage(): void {
         this.subject$.next(null);
     }
 }

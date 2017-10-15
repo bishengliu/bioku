@@ -1,6 +1,5 @@
 import { CustomFormValidators } from '../_helpers/CustomFormValidators'
 
-export var CustomFormValidatorsProvider: Array<any> = [
+export const CustomFormValidatorsProvider: Array<any> = [
         {provide: CustomFormValidators, useClass: CustomFormValidators},
-        
     ];

@@ -4,21 +4,21 @@ import {AuthState} from '../account/account_state';
 import { ContainerState } from '../container/container_state';
 import {AppLog} from '../../_classes/Logger';
 
-export interface AppPartialState{
-    //auth user 
+export interface AppPartialState {
+    // auth user
     authInfo: AuthState;
-    //containers
+    // containers
     containerInfo: ContainerState;
 }
 
-export interface AppState extends AppPartialState{
-    //logs
-    appLogs: Array<AppLog>; //DON'T CHANGE THE NAME OF THIS, REQUIRED BY LogAppStateService
+export interface AppState extends AppPartialState {
+    // logs
+    appLogs: Array<AppLog>; // DON'T CHANGE THE NAME OF THIS, REQUIRED BY LogAppStateService
 }
 
-//define initial state
+// define initial state
 export const initialAppState: AppState = {
-    //auth user
+    // auth user
     authInfo: {
         authUser: null,
         authGroup: null,
@@ -29,6 +29,6 @@ export const initialAppState: AppState = {
         currentContainer: null,
         currentBox: null
     },
-    //logs
+    // logs
     appLogs: <AppLog[]>[]
 }

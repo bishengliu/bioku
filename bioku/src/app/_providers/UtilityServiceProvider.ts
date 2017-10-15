@@ -1,5 +1,5 @@
 import { UtilityService } from '../_services/UtilityService';
 
-export var UtilityServiceProvider: Array<any> = [
+export const UtilityServiceProvider: Array<any> = [
     {provide: UtilityService, useClass: UtilityService},
-]
+];

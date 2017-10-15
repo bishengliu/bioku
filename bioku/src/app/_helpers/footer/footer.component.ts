@@ -11,13 +11,10 @@ export class FooterComponent implements OnInit {
 
   appName: string;
   appVersion: string;
-  constructor(@Inject(APP_CONFIG) private appSetting: any) { 
-    //app name
+  constructor(@Inject(APP_CONFIG) private appSetting: any) {
+    // app name
     this.appName = this.appSetting.NAME;
     this.appVersion = this.appSetting.VERSION;
   }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

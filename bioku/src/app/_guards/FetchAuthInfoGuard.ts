@@ -7,18 +7,18 @@ import { AuthState } from '../_redux//account/account_state';
 import { SetAuthInfoAction, setAuthInfoActionCreator } from '../_redux/account/account_actions';
 
 @Injectable()
-export class FetchAuthInfoGuard implements CanActivate{
-    constructor(@Inject(AppStore) private appStore, private refreshService: RefreshService){}
-    canActivate(): boolean{
-        let state = this.appStore.getState();
-        if(state != null && state.authInfo != null){
-            if(state.authInfo.authUser == null || state.authInfo.token == null){
-                //fetch data from locastorage
-                let authInfo : AuthState = this.refreshService.fetchAuthState();
-                //redux reducers
-                let setAuthInfoAction: SetAuthInfoAction = setAuthInfoActionCreator(authInfo);
+export class FetchAuthInfoGuard implements CanActivate {
+    constructor(@Inject(AppStore) private appStore, private refreshService: RefreshService) {}
+    canActivate(): boolean {
+        const state = this.appStore.getState();
+        if (state != null && state.authInfo != null) {
+            if (state.authInfo.authUser == null || state.authInfo.token == null) {
+                // fetch data from locastorage
+                const authInfo: AuthState = this.refreshService.fetchAuthState();
+                // redux reducers
+                const setAuthInfoAction: SetAuthInfoAction = setAuthInfoActionCreator(authInfo);
                 this.appStore.dispatch(setAuthInfoAction);
-            }        
+            }
         }
         return true;
     }

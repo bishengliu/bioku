@@ -8,25 +8,23 @@ import {Alert} from '../../_classes/Alert';
 })
 export class AlertComponent implements OnInit {
   message: Alert;
-  alertClass: Array<string> =[];
-  constructor(private alertService: AlertService) {   
-  }
+  alertClass: Array<string> = [];
+  constructor(private alertService: AlertService) {}
 
   ngOnInit() {
-    //get the message from observable
-    this.alertService.getMessage().subscribe( (msg: Alert) => { 
+    // get the message from observable
+    this.alertService.getMessage().subscribe( (msg: Alert) => {
       this.message = msg;
-      //define the sui model message class
-      if (this.message && this.message.type=='error'){
-        this.alertClass =[];
-        //warning red center aligned
+      // define the sui model message class
+      if (this.message && this.message.type === 'error') {
+        this.alertClass = [];
+        // warning red center aligned
         this.alertClass.push('negative');
-      }
-      else{
-        this.alertClass =[];
-        //success teal center aligned
+      } else {
+        this.alertClass = [];
+        // uccess teal center aligned
         this.alertClass.push('positive');
       }
-    }); 
+    });
   }
 }
