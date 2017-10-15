@@ -10,7 +10,7 @@
         <a class="item topnav_vertical_padding" [routerLink]="['/containers/add/']" *ngIf="!hasContainers">
             <i class="large icon blue add circle"></i>
         </a>       
-        <div class="right item"><em class="white-text">A user-friendly container system for biomaterials</em></div>
+        <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
         <a (click)="_toggleSidebar()" class="right item topnav_vertical_padding">
             <span *ngIf="!user.profile.photo" class="ui blue label">
                 <i class="user icon"></i>
@@ -24,7 +24,7 @@
         <div class="left blue item">
             <em class="clickable navbar-font grey-text" (click)="goHome()">{{ appName.toUpperCase() }}</em>           
         </div>
-        <div class="right item"><em class="white-text">A user-friendly container system for biomaterials</em></div>
+        <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
         <div class="right item tiny_vertical">
             <div class="ui tiny buttons">
                 <a [routerLink]="['/login']" class="ui primary button">

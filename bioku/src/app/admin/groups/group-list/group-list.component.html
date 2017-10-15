@@ -1,23 +1,22 @@
 <div class="ui grid small_padding stackable">
   <div class="four wide column">
-    <h3 class="ui teal left aligned header"><i class="icon users"></i>RESEARCH GROUPS</h3>
+    <h3 class="ui blue left aligned header"><i class="icon users"></i>GROUPS</h3>
   </div>
   <div class="ten wide column">
     <div class="ui slider checkbox">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
       <label for="table_view">
-        <span *ngIf="tableView" class="teal-text">CARD OVERVIEW</span>
-        <span *ngIf="!tableView" class="teal-text">LIST OVERVIEW</span>
+        <span *ngIf="tableView" class="blue-text">CARD OVERVIEW</span>
+        <span *ngIf="!tableView" class="blue-text">LIST OVERVIEW</span>
       </label>
     </div>
   </div>
   <!-- new group -->
   <div class="two wide column">
-    <a class="ui teal button float-right" [routerLink]="['./add']"><i class="icon add circle"></i>GROUP</a>
+    <a class="ui blue button float-right" [routerLink]="['./add']"><i class="icon add circle"></i>GROUP</a>
   </div>
   <!-- end new group -->
 </div>
-
 <div class="ui grid small_padding">
   <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">
@@ -78,7 +77,7 @@
   <!-- end card view -->
   <!-- table view -->
   <div class="sixteen wide column" *ngIf="tableView">
-    <table class="ui structured small teal single line compact padded table">
+    <table class="ui structured small blue single line compact padded table">
     <thead>
       <tr>
         <th colspan="4" class="center aligned">Groups</th>

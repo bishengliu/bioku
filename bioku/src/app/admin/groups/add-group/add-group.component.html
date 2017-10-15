@@ -2,10 +2,10 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
-            <img>
-            <div class="content"><span class="teal-text">CREATE GROUP</span></div>
-          </h2>
+          <h3 class="ui header blue image">
+              <i class="icon plus square outline"></i>
+            <div class="content">NEW GROUP</div>
+          </h3>
           <!--form  -->
           <form [formGroup]="groupForm" class="ui large form" (ngSubmit)="groupForm.valid && onCreate(groupForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
@@ -72,9 +72,8 @@
                 </div>
                 <div *ngIf="groupForm.controls['telephone'].hasError('telephoneInvalid') && groupForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
               </div>
-              <button type="submit" class="ui fluid teal button">
-                <i class="icon add circle"></i>
-                CREATE
+              <button type="submit" class="ui fluid blue button">
+                <i class="icon add circle"></i>CREATE
               </button>              
             </div>
           </form>                  
