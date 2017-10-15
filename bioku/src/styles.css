@@ -56,7 +56,15 @@ body{
   -webkit-user-select: none; /* Chrome, Safari, and Opera */
   -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
-
+ .text-center{
+  text-align: center;
+ }
+ .text-left{
+  text-align: left;
+ }
+ .text-right{
+  text-align: right;
+ }
 .clickable{
   cursor: pointer !important;
 }
@@ -454,5 +462,11 @@ div [class*="right floated"] {
 }
 
 .navbar-font{
-  font-family: Pacifico, Helvetica Neue, Helvetica,Arial,sans-serif;
+  font-family: Pacifico, Helvetica Neue, Helvetica, Arial,sans-serif;
+}
+.ui .header,
+.ui .button,
+.ui .item,
+div, p, span, a{
+  font-family: Rubik, Lato, Helvetica, Arial,sans-serif;
 }

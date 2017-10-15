@@ -2,10 +2,10 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
-            <img>
-            <div class="content"><span class="violet-text">CREATE CONTAINER</span></div>
-          </h2>
+          <h3 class="ui header blue image">
+            <i class="icon plus square outline"></i>
+            <div class="content">NEW CONTAINER</div>
+          </h3>
           <!--form  -->
           <form [formGroup]="containerForm" class="ui large form" (ngSubmit)="containerForm.valid && onCreate(containerForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
@@ -81,7 +81,7 @@
                 </div>
               </div>
 
-              <button type="submit" class="ui fluid violet button">
+              <button type="submit" class="ui fluid blue button">
                 <i class="icon add circle"></i>
                 CREATE
               </button>              

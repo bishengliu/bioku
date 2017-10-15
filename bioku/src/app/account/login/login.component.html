@@ -2,7 +2,7 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
+          <h2 class="ui header blue image">
             <img>
             <div class="content">LOGIN TO {{appName}}</div>
           </h2>
@@ -23,9 +23,9 @@
                 </div>  
                 <div *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched" class="ui mini negative message"><p>Password is required</p></div>
               </div>
-              <button type="submit" class="ui fluid teal button">
+              <button type="submit" class="ui fluid primary button">
                 <i class="icon sign in"></i>
-                Login
+                Log in
               </button>
             </div>
           </form>

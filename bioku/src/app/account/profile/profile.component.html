@@ -2,10 +2,10 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
-            <img>
-            <div class="content">UPDATE USER PROFILE</div>
-          </h2>
+          <h3 class="ui header blue image">
+            <i class="icon user"></i>
+            <div class="content">MY PROFILE</div>
+          </h3>
           <!--form  -->
           <form [formGroup]="profileForm" class="ui large form" (ngSubmit)="profileForm.valid && onUpdate(profileForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
@@ -18,7 +18,6 @@
                 <div *ngIf="profileForm.controls['email'].hasError('email') && profileForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
                 <div *ngIf="profileForm.controls['email'].hasError('emailAsyncInvalid') && profileForm.controls['email'].touched" class="ui mini negative message">Email already taken</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['first_name'].invalid && profileForm.controls['first_name'].touched">
                 <div class="ui left icon input">
                   <i class="keyboard icon"></i>
@@ -35,7 +34,6 @@
                 <div *ngIf="profileForm.controls['last_name'].hasError('required') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
                 <div *ngIf="profileForm.controls['last_name'].hasError('humanNameInvalid') && profileForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['photo'].invalid && profileForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
                   <i class="image icon"></i>
@@ -45,14 +43,12 @@
                 <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                 <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
-
               <div class="field">
                 <div class="ui left icon input">
                   <i class="birthday icon" id="birth_date"></i>
                   <my-date-picker class="date_picker" name="birth_date" [options]="myDatePickerOptions" formControlName="birth_date" placeholder="Birth Date"></my-date-picker>
                 </div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['telephone'].invalid && profileForm.controls['telephone'].touched">
                 <div class="ui left icon input">
                   <i class="call icon"></i>
@@ -60,7 +56,7 @@
                 </div>
                 <div *ngIf="profileForm.controls['telephone'].hasError('telephoneInvalid') && profileForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
               </div>
-              <button type="submit" class="ui fluid teal button">
+              <button type="submit" class="ui fluid blue button">
                 <i class="icon edit"></i>
                 UPDATE
               </button>              

@@ -2,17 +2,18 @@
     <!-- after login [ngClass]="{nopadding: isLogin}" -->
     <div class="ui right icon secondary inverted pointing menu small narrow_secondary_menu borderless" *ngIf="isLogin">
         <a (click)="_toggleContainerSidebar()" class="item topnav_vertical_padding" *ngIf="hasContainers">
-            <i class="large grid layout teal icon"></i>                
+            <i class="large grid layout blue icon"></i>                
         </a>
         <a class="item topnav_vertical_padding" [routerLink]="['/containers/search/']" *ngIf="hasContainers">
-            <i class="large icon teal search"></i>
+            <i class="large icon blue search"></i>
         </a>
         <a class="item topnav_vertical_padding" [routerLink]="['/containers/add/']" *ngIf="!hasContainers">
-            <i class="large icon teal add circle"></i>
+            <i class="large icon blue add circle"></i>
         </a>       
         <div class="right item"><em class="white-text">A user-friendly container system for biomaterials</em></div>
         <a (click)="_toggleSidebar()" class="right item topnav_vertical_padding">
-            <span *ngIf="!user.profile.photo" class="ui brown label"><i class="user icon"></i>
+            <span *ngIf="!user.profile.photo" class="ui blue label">
+                <i class="user icon"></i>
                 {{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}
             </span>
             <img *ngIf="user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
@@ -20,16 +21,16 @@
     </div>
     <!-- before login -->
     <div *ngIf="!isLogin" class="ui right icon secondary inverted pointing menu small borderless">
-        <div class="left item">
-            <em class="clickable navbar-font grey-text" (click)="goHome()">{{ appName.toUpperCase()}}</em>           
+        <div class="left blue item">
+            <em class="clickable navbar-font grey-text" (click)="goHome()">{{ appName.toUpperCase() }}</em>           
         </div>
         <div class="right item"><em class="white-text">A user-friendly container system for biomaterials</em></div>
         <div class="right item tiny_vertical">
             <div class="ui tiny buttons">
-                <a [routerLink]="['/login']" class="ui teal button">
+                <a [routerLink]="['/login']" class="ui primary button">
                     <i class="sign in icon"></i> Log In
                 </a>
-                <a [routerLink]="['/register']" class="ui inverted basic button">
+                <a [routerLink]="['/register']" class="ui inverted primary basic button">
                     <i class="add user icon"></i> Sign Up
                 </a>
             </div>            
@@ -56,7 +57,7 @@
                     <span class="header">
                         {{user.first_name +" "+ user.last_name}} 
                         <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="_toggleSidebar()">
-                            <i class="icon red edit"></i>
+                            <i class="icon blue edit"></i>
                         </a>
                         </span>
                     <div class="meta">

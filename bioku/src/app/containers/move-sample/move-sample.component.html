@@ -5,10 +5,10 @@
 </div>
 <div class="ui grid row small_padding">
     <div class="ten wide column">
-      <h3 class="ui violet left aligned header"><i class="icon move"></i>SAMPLE(S) BETWEEN 2 BOXES</h3>
+      <h3 class="ui violet left aligned header"><i class="icon retweet"></i>DRAG TO MOVE SAMPLE(S) BETWEEN 2 BOXES</h3>
     </div>
     <div class="six wide column">
-      <a class="ui teal button float-right" 
+      <a class="ui blue button float-right" 
         [ngClass]="{'disabled': moving == true }" 
         [routerLink]="['/containers/', container.pk, firstBox.box_position]">
         <i class="icon caret left"></i>BACK
@@ -27,10 +27,10 @@
       <thead>
           <tr>
             <th class="center aligned eight wide ui header" colspan="2" [style.border-top]="genBorderStyle(firstColor)">
-              FIRST BOX <span *ngIf="show_user_defined_label && firstBox.label"> :{{firstBox.label}}</span>
+              FIRST BOX <span *ngIf="show_user_defined_label && firstBox.label"> : {{firstBox.label}}</span>
             </th>
             <th class="center aligned eight wide ui header teal_border_left" colspan="2" [style.border-top]="genBorderStyle(secondColor)">
-              SECOND BOX <span *ngIf="show_user_defined_label && secondBox.label"> :{{secondBox.label}}</span>
+              SECOND BOX <span *ngIf="show_user_defined_label && secondBox.label"> : {{secondBox.label}}</span>
             </th>
           </tr>
           <tr class="">

@@ -2,14 +2,12 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
-            <img>
-            <div class="content">UPDATE GROUP PROFILE</div>
-          </h2>
+          <h3 class="ui header blue image">
+            <div class="content">GROUP PROFILE</div>
+          </h3>
           <!--form  -->
           <form [formGroup]="profileForm" class="ui large form" (ngSubmit)="profileForm.valid && onUpdate(profileForm.value)" enctype="multipart/form-data">
             <div class="ui stacked segment">
-
               <div class="field" [class.error]="profileForm.controls['group_name'].invalid && profileForm.controls['group_name'].touched">
                 <div class="ui left icon input">
                   <i class="users icon"></i>
@@ -19,7 +17,6 @@
                 <div *ngIf="profileForm.controls['group_name'].hasError('humanNameInvalid') && profileForm.controls['group_name'].touched" class="ui mini negative message">Group name is invalid</div>
                 <div *ngIf="profileForm.controls['group_name'].hasError('groupnameAsyncInvalid') && profileForm.controls['group_name'].touched" class="ui mini negative message">Group name already taken</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['department'].invalid && profileForm.controls['department'].touched">
                 <div class="ui left icon input">
                   <i class="building icon"></i>
@@ -27,7 +24,6 @@
                 </div>
                 <div *ngIf="profileForm.controls['department'].hasError('humanNameInvalid') && profileForm.controls['department'].touched" class="ui mini negative message">Department name is invalid</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['pi_fullname'].invalid && profileForm.controls['pi_fullname'].touched">
                 <div class="ui left icon input">
                   <i class="user icon"></i>
@@ -44,7 +40,6 @@
                 <div *ngIf="profileForm.controls['pi'].hasError('required') && profileForm.controls['pi'].touched" class="ui mini negative message">PI initials is required</div>
                 <div *ngIf="profileForm.controls['pi'].hasError('humanNameInvalid') && profileForm.controls['pi'].touched" class="ui mini negative message">PI initials is invalid</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['email'].invalid && profileForm.controls['email'].touched">
                 <div class="ui left icon input">
                   <i class="mail icon"></i>
@@ -53,8 +48,7 @@
                 <div *ngIf="profileForm.controls['email'].hasError('required') && profileForm.controls['email'].touched" class="ui mini negative message">Email is required</div>
                 <div *ngIf="profileForm.controls['email'].hasError('email') && profileForm.controls['email'].touched" class="ui mini negative message">Email is invalid</div>
                 <div *ngIf="profileForm.controls['email'].hasError('emailAsyncInvalid') && profileForm.controls['email'].touched" class="ui mini negative message">Email already taken</div>
-              </div>
-            
+              </div>            
               <div class="field" [class.error]="profileForm.controls['photo'].invalid && profileForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
                   <i class="image icon"></i>
@@ -64,7 +58,6 @@
                 <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                 <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
-
               <div class="field" [class.error]="profileForm.controls['telephone'].invalid && profileForm.controls['telephone'].touched">
                 <div class="ui left icon input">
                   <i class="call icon"></i>
@@ -72,9 +65,8 @@
                 </div>
                 <div *ngIf="profileForm.controls['telephone'].hasError('telephoneInvalid') && profileForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
               </div>
-              <button type="submit" class="ui fluid teal button">
-                <i class="icon edit"></i>
-                UPDATE
+              <button type="submit" class="ui fluid blue button">
+                <i class="icon edit"></i>UPDATE
               </button>              
             </div>
           </form>                  

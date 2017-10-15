@@ -2,10 +2,10 @@
    <div class="column eight wide">     
        <div class="center floated column">
          <!--form header-->
-          <h2 class="ui header teal image">
-            <img>
+          <h3 class="ui header blue image">
+            <i class="icon add user"></i>
             <div class="content">JOIN {{appName}}</div>
-          </h2>
+          </h3>
           <!--form-->
           <form [formGroup]="registerForm" class="ui large form" (ngSubmit)="registerForm.valid && onRegister(registerForm.value)" enctype="multipart/form-data">
             <!--
@@ -69,8 +69,6 @@
                 <div *ngIf="registerForm.controls['last_name'].hasError('required') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is required</div>
                 <div *ngIf="registerForm.controls['last_name'].hasError('humanNameInvalid') && registerForm.controls['last_name'].touched" class="ui mini negative message">Last Name is invalid</div>
               </div>
-
-
               <div class="field" [class.error]="registerForm.controls['photo'].invalid && registerForm.controls['photo'].touched">
                 <div class="ui left icon input right action">
                   <i class="image icon"></i>
@@ -80,15 +78,12 @@
                 <div *ngIf="photo_is2Large" class="ui mini negative message">Maximum upload size is 10MB!</div>
                 <div *ngIf="!photo_isSupported" class="ui mini negative message">Only allow for ".bmp", ".jpg", ".gif" and ".png"!</div>
               </div>
-
-
               <div class="field">
                 <div class="ui left icon input">
                   <i class="birthday icon" id="birth_date"></i>
                   <my-date-picker class="date_picker" name="birth_date" [options]="myDatePickerOptions" formControlName="birth_date" placeholder="Birth Date"></my-date-picker>
                 </div>
               </div>
-
               <div class="field" [class.error]="registerForm.controls['telephone'].invalid && registerForm.controls['telephone'].touched">
                 <div class="ui left icon input">
                   <i class="call icon"></i>
@@ -96,11 +91,10 @@
                 </div>
                 <div *ngIf="registerForm.controls['telephone'].hasError('telephoneInvalid') && registerForm.controls['telephone'].touched" class="ui mini negative message">Telephone number has at least 4 digits</div>
               </div>
-              <button type="submit" class="ui fluid teal button">
+              <button type="submit" class="ui fluid blue button">
                 <i class="icon add user"></i>
                 Sign Up
-              </button>
-              
+              </button>              
             </div>
           </form>
                   
