@@ -88,6 +88,11 @@ body{
   }
 }
 */
+.date_picker{
+  margin-left: -20px !important;
+  margin-right: -10px !important;
+}
+
 .mydp input{
   width: 100% !important;
   padding-left: 35px !important;
