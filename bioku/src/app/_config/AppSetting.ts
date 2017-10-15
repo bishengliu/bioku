@@ -2,15 +2,15 @@ export const AppSetting = {
 
     // CHECK THESE BEFORE PRODUCTION BUILD
     // API REST URL
-    // 'URL': 'http://127.0.0.1:8000',
-    'URL': 'http://127.0.0.1/biodataware',
+     'URL': 'http://127.0.0.1:8000',
+    // 'URL': 'http://127.0.0.1/biodataware',
     // APP URL FOR URL LINK TO THE FRONT-END
     'APP_URL': 'http://127.0.0.1:4200',
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'b.liu@bioku.nl',
 
     // APP VERSION
-    'VERSION': '0.0.1',
+    'VERSION': '0.0.1-alpha-2',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
     'NAME': 'BIOKU',
