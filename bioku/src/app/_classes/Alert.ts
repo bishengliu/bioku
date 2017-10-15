@@ -1,5 +1,5 @@
-//alert message
-export class Alert{
+// alert message
+export class Alert {
     type: string;
     text: string;
 }

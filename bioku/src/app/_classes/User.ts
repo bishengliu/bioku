@@ -1,17 +1,17 @@
-//user model of the application
-//define user group
-interface GroupIdName{
+// user model of the application
+// define user group
+interface GroupIdName {
     group_id: number;
     group: string;
 }
-//user profile
-interface Profile{
+// user profile
+interface Profile {
     birth_date: string;
     photo: string;
     photo_tag: string;
     telephone: number;
 }
-export class User{
+export class User {
     pk: number;
     username: string;
     is_superuser: boolean;
@@ -20,10 +20,10 @@ export class User{
     last_name: string;
     profile: Profile;
     roles: Array<string>;
-    //groups: Array<GroupIdName>; //later will be different type
+    // groups: Array<GroupIdName>; //later will be different type
 }
 
-export class TokenObj{
+export class TokenObj {
     token: string;
     user: number
 }

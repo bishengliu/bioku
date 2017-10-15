@@ -1,7 +1,7 @@
 import { Group } from './Group';
 import { Box } from './Box';
 
-export class Container{
+export class Container {
     pk: number;
     name: string;
     room: string;
@@ -16,11 +16,11 @@ export class Container{
     description: string;
     groups: Array<Group>;
     boxes: Array<Box>;
-    first_box: Box; //get the first box in the container
+    first_box: Box; // get the first box in the container
     has_box: boolean;
 }
 
-export class ContainerNamePK{
+export class ContainerNamePK {
     pk: number;
     name: string;
 }

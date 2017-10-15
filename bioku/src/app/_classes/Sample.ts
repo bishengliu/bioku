@@ -15,7 +15,7 @@ export class Attachment {
     description: string;
 }
 
-export class SamplePartial{
+export class SamplePartial {
     pk: number;
     box: string;
     box_position: string;
@@ -38,7 +38,7 @@ export class SampleGeneral extends SamplePartial {
     // container: string;
     color: string;
     date_in: Date;
-    date_out: Date;    
+    date_out: Date;
     // type: string;
     // name: string;
     official_name: string;
@@ -98,14 +98,14 @@ export class SampleVirus extends SampleGeneral {
     titration_code: string;
 }
 
-export class SampleTissue extends SampleGeneral{
+export class SampleTissue extends SampleGeneral {
     pathology_code: string;
-    //tissues: Array<Tissue>;
+    // tissues: Array<Tissue>;
     tissue: string;
 }
 
 export class Sample extends SampleGeneral {
-    //construct
+    // construct
     clone_number: string;
     against_260_280: number;
     feature: string;
@@ -116,29 +116,29 @@ export class Sample extends SampleGeneral {
     marker: string;
     has_glycerol_stock: boolean;
     strain: string;
-    //cell line
+    // cell line
     amount: string;
     passage_number: string;
     cell_amount: string;
     project: string;
     creator: string;
-    //oligo
+    // oligo
     oligo_name: string;
     s_or_as: boolean;
     oligo_sequence: string;
     oligo_length: number;
     oligo_GC: number;
     target_sequence: string;
-    //virus
+    // virus
     plasmid: string;
     titration_titer: string;
     titration_unit: string;
     titration_cell_type: string;
     titration_code: string;
-    //tissue
+    // tissue
     pathology_code: string;
     tissue: string;
-    //tissues: Array<Tissue>;
+    // tissues: Array<Tissue>;
 }
 
 export class SampleFilter {
@@ -148,33 +148,33 @@ export class SampleFilter {
 
 export class SampleSearch {
     container: number;
-    type: string; //['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS']
+    type: string; // ['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS']
     name: string;
-    label: string; //user defined label
+    label: string; // user defined label
     tag: string;
     registration_code: string; // primary code
     reference_code: string;
     freezing_code: string;
     freezing_date_from: string;
     freezing_date_to: string;
-    occupied: number; //2==both; 0==occupied only; 1==taken-out only
+    occupied: number; // 2==both; 0==occupied only; 1==taken-out only
 
-    //construct
+    // construct
     feature: string;
     backbone: string;
     insert: string;
     marker: string;
 
-    //oligo
+    // oligo
     oligo_name: string;
     oligo_length_from: number;
     oligo_length_to: number;
 
-    //virus
+    // virus
     plasmid: string;
     titration_code: string;
 
-    //tissue
+    // tissue
     pathology_code: string;
     tissue: string;
 }

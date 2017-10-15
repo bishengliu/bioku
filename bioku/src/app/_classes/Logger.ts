@@ -1,6 +1,6 @@
 import {AppPartialState} from '../_redux/root/state';
 
-export class AppLog{
+export class AppLog {
     action: string;
     timestamp: Date;
     preState: AppPartialState;

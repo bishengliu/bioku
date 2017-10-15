@@ -1,7 +1,7 @@
 import { User } from './User';
 import { Sample } from './Sample';
 
-export class Box{
+export class Box {
     pk: number;
     label: string;
     box_position: string;

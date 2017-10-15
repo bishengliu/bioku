@@ -1,6 +1,6 @@
-//class for checking the availibility of a container
+// class for checking the availibility of a container
 
-export class BoxAvailability{
+export class BoxAvailability {
     position: number;
     available: boolean;
     full_position: string;

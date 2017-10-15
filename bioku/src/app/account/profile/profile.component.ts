@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   // get the photo name for form
   const state = this.appStore.getState();
   this.user = state.authInfo.authUser;
-  this.token = state.authInfo.token.token;
+  this.token = state.authInfo.token != null ? state.authInfo.token.token : this.token;
   const photo_path = this.user.profile.photo;
   this.photo_name = this.user.profile.photo ? photo_path.split('/').pop() : '';
   // parse date for form intial birth date
@@ -126,7 +126,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       formData.append('file', this.file, this.file.name);
     }
     // put call
-    this.appStore.dispatch(updateProfileActionAsync(formData, +this.user.pk, this.token, this.updateUserProfileService, this.http, this.logAppStateService, this.alertService, this.refreshService));
+    this.appStore.dispatch(
+      updateProfileActionAsync(
+        formData, +this.user.pk, this.token, this.updateUserProfileService, this.http,
+        this.logAppStateService, this.alertService, this.refreshService));
     // naviagate to home
     this.router.navigate(['/']);
   }
@@ -134,7 +137,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   updateState() {
     const state = this.appStore.getState();
     this.user = state.authInfo.authUser;
-    this.token = state.authInfo.token.token;
+    this.token = state.authInfo.token != null ? state.authInfo.token.token : this.token;
     // console.log(state);
   }
 
