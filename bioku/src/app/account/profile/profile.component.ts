@@ -10,13 +10,15 @@ import { UpdateUserProfileService } from '../../_services/UpdateUserProfileServi
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
+import { Group } from '../../_classes/Group';
 // mydatepicker
 import {IMyOptions} from 'mydatepicker';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import { updateProfileActionAsync } from '../../_redux/account/account_actions';
+import { updateProfileActionAsync, SetAuthTokenAction, setAuthTokenActionCreator,
+  SetAuthUserAction, setAuthUserActionCreator, SetAuthGroupAction, setAuthGroupActionCreator} from '../../_redux/account/account_actions';
 // access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
@@ -132,7 +134,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         formData, +this.user.pk, this.token, this.updateUserProfileService, this.http,
         this.logAppStateService, this.alertService, this.refreshService));
     // naviagate to home
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 
   updateState() {
