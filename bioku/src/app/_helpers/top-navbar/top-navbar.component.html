@@ -53,8 +53,8 @@
                 <div class="content">                                        
                     <span class="header">
                         {{user.first_name +" "+ user.last_name}} 
-                        <a [routerLink]="['/user']" class="circular ui icon button mini" (click)="_toggleSidebar()">
-                            <i class="icon blue edit"></i>
+                        <a [routerLink]="['/user']" class="mini ui icon button inverted basic" (click)="_toggleSidebar()">
+                            <i class="icon red edit"></i>
                         </a>
                         </span>
                     <div class="meta">
@@ -70,12 +70,12 @@
                     </div>         
                 </div>
                 <div *ngIf="isAdmin" class="mini ui buttons attached bottom">
-                    <a class="ui button active" [routerLink]="['/user/password']" (click)="_toggleSidebar()"><i class="lock icon"></i>Password</a>
+                    <a class="ui button active" [routerLink]="['/user/password']" (click)="_toggleSidebar()"><i class="key icon"></i>Password</a>
                     <div class="or"></div>
                     <a [routerLink]="['/admin']" class="ui red button" (click)="_toggleSidebar()"><i class="dashboard icon"></i> Admin</a>
                 </div>
                 <a *ngIf="!isAdmin" class="ui bottom attached button small_button" [routerLink]="['/user/password']" (click)="_toggleSidebar()">
-                    <i class="lock icon"></i>Change Password
+                    <i class="key icon"></i>Change Password
                 </a>
             </div>
             <!--groups and list all the researchers in the group when hoeving the image-->
