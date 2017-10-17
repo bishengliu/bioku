@@ -102,11 +102,15 @@ export class EditGroupComponent implements OnInit, OnDestroy, AfterViewInit {
     // put call
     this.groupService.groupUpdate(formData, this.id)
     .subscribe(
-      data => this.alertService.success('Group Profile Updated!', true),
-      () => this.alertService.error('Something went wrong, the group profile was not updated!', true)
+      data => {
+        this.alertService.success('Group Profile Updated!', true);
+        // naviagate to home
+        this.router.navigate(['/admin/']); },
+      () => {
+        this.alertService.error('Something went wrong, the group profile was not updated!', true);
+        // naviagate to home
+        this.router.navigate(['/admin/']); }
     );
-    // naviagate to home
-    this.router.navigate(['/admin/']);
   }
   ngOnInit() {
     this.sub = this.route.params

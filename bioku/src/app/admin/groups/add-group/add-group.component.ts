@@ -104,11 +104,15 @@ export class AddGroupComponent implements OnInit {
     // post call
     this.groupService.create(formData)
     .subscribe(
-      data => this.alertService.success('New Group Added!', true),
-      () => this.alertService.error('Something went wrong, the new group was not created!', true)
+      data => {
+        this.alertService.success('New Group Added!', true);
+        // naviagate to home
+        this.router.navigate(['/admin']); },
+      () => {
+        this.alertService.error('Something went wrong, the new group was not created!', true);
+        // naviagate to home
+        this.router.navigate(['/admin']); }
     );
-    // naviagate to home
-    this.router.navigate(['/admin']);
   }
 
   ngOnInit() { }

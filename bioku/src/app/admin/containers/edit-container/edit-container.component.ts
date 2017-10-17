@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, AfterViewInit} from '@angular/core';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -11,13 +11,13 @@ import { User } from '../../../_classes/User';
 import { Container } from '../../../_classes/Container';
 import {  ContainerService } from '../../../_services/ContainerService';
 
-//redux
+// redux
 import { AppStore } from '../../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../../_redux/root/state';
-//access dom
+// access dom
 import {ElementRef, ViewChild} from '@angular/core';
 
-//custom from validator
+// custom from validator
 import { CustomFormValidators } from '../../../_helpers/CustomFormValidators';
 
 @Component({
@@ -25,68 +25,67 @@ import { CustomFormValidators } from '../../../_helpers/CustomFormValidators';
   templateUrl: './edit-container.component.html',
   styleUrls: ['./edit-container.component.css']
 })
-export class EditContainerComponent implements OnInit, OnDestroy {
-  //access dom
-  @ViewChild('photoName') photoInput:ElementRef;
-  //route param
+export class EditContainerComponent implements OnInit, OnDestroy, AfterViewInit {
+  // access dom
+  @ViewChild('photoName') photoInput: ElementRef;
+  // route param
   id: number;
-  private sub: any; //subscribe to params observable
+  private sub: any; // subscribe to params observable
 
   containerForm: FormGroup;
 
-  //for photo upload
+  // for photo upload
   file: File;
-  photo_name: string = '';
+  photo_name: String = '';
   photo_is2Large: Boolean = false;
   photo_isSupported: Boolean = true;
 
-  //auth user
+  // auth user
   user: User = null;
   token: string = null;
   container: Container = null;
-  //get current route url
-  url: string ="";
-  constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private containerService: ContainerService)
-  {
-    //get the photo name for form
-    let state= this.appStore.getState();
+  // get current route url
+  url: String = '';
+  constructor(private fb: FormBuilder, private alertService: AlertService, private route: ActivatedRoute,
+              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+              private router: Router, private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators,
+              private containerService: ContainerService) {
+    // get the photo name for form
+    const state = this.appStore.getState();
     this.user = state.authInfo.authUser;
     this.token = state.authInfo.token.token;
    }
 
    ngAfterViewInit() {
-    //update photo name to the template
+    // update photo name to the template
     this.photoInput.nativeElement.value = this.photo_name;
   }
-  //check upload photo
+  // check upload photo
   validatePhotoUpload(event: EventTarget) {
-    let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
-    let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
-    let files: FileList = target.files;
+    const eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    const files: FileList = target.files;
     this.file = files[0];
-    //console.log(this.file);
+    // console.log(this.file);
     this.photo_name = this.file.name;
-    //check file size
-    let size = this.file.size / 1024 / 1024
-    if (parseInt(size.toFixed(2)) > 10) {
+    // check file size
+    const size = this.file.size / 1024 / 1024
+    if (parseInt(size.toFixed(2), 10) > 10) {
         this.photo_is2Large = true;
-    }
-    else{
+    } else {
       this.photo_is2Large = false;
     }
-    //check image format
-    if (this.file.type !== "image/png" && this.file.type  !== "image/jpeg" && this.file.type  !== "image/bmp" && this.file.type  !== "image/gif") {
-        this.photo_isSupported =  false;
-    }
-    else{
-      this.photo_isSupported =  true;
-    }
+    // check image format
+    if (this.file.type !== 'image/png' && this.file.type  !== 'image/jpeg' &&
+    this.file.type  !== 'image/bmp' && this.file.type  !== 'image/gif') {
+      this.photo_isSupported =  false;
+    } else {
+      this.photo_isSupported =  true; }
   }
 
-  onUpdate(values: any): void{
-    let obj = {
-      name: values.name,            
+  onUpdate(values: any): void {
+    const obj = {
+      name: values.name,
       temperature: values.temperature,
       room: values.room,
       tower: values.tower,
@@ -94,39 +93,38 @@ export class EditContainerComponent implements OnInit, OnDestroy {
       box : values.box,
       description : values.description
     };
-    //console.log(obj);
-    let formData: FormData = new FormData();
-    formData.append("obj", JSON.stringify(obj));
-    if (this.file){
-      formData.append("file", this.file, this.file.name);
+    // console.log(obj);
+    const formData: FormData = new FormData();
+    formData.append('obj', JSON.stringify(obj));
+    if (this.file) {
+      formData.append('file', this.file, this.file.name);
     }
-    //put call
+    // put call
     this.containerService.containerUpdate(formData, this.id)
     .subscribe(
-      data=> {
+      data => {
         this.alertService.success('Container Profile Updated!', true);
-        //naviagate to home
-        if(this.url.startsWith("/containers/edit")){
-          this.router.navigate(['/containers']);}
-        else{
-          this.router.navigate(['/admin/containers/']);}
+        // naviagate to home
+        if (this.url.startsWith('/containers/edit')) {
+          this.router.navigate(['/containers']); } else {
+          this.router.navigate(['/admin/containers/']); }
       },
       () => {
         this.alertService.error('Something went wrong, the container profile was not updated!', true);
-        //naviagate to home
-        if(this.url.startsWith("/containers/edit")){
-          this.router.navigate(['/containers']);}
-        else{
-          this.router.navigate(['/admin/containers/']);}
+        // naviagate to home
+        if (this.url.startsWith('/containers/edit')) {
+          this.router.navigate(['/containers']);
+        } else {
+          this.router.navigate(['/admin/containers/']); }
       }
-    );       
+    );
   }
 
-  ngOnInit() 
-  {
-    //init formGroup
+  ngOnInit() {
+    // init formGroup
     this.containerForm = this.fb.group({
-      'name': [, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]), this.cValidators.containernameAsyncValidator(-1)],          
+      'name': [, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]),
+                  this.cValidators.containernameAsyncValidator(-1)],
       'temperature': [, Validators.required],
       'room': [, ],
       'photo': ['', ],
@@ -137,20 +135,21 @@ export class EditContainerComponent implements OnInit, OnDestroy {
     });
 
     this.sub = this.route.params
-    .mergeMap((params) =>{
+    .mergeMap((params) => {
       this.id = +params['id'];
       return this.containerService.containerDetail(this.id);
     })
     .subscribe(
-         data =>{
+         data => {
            this.container = data;
-           //photo
-           if(this.container.photo != null){
-              let photo_path = this.container.photo;
-              this.photo_name = photo_path ? photo_path.split('/').pop(): '';}
-            //update the formGroup
+           // photo
+           if (this.container.photo != null) {
+              const photo_path = this.container.photo;
+              this.photo_name = photo_path ? photo_path.split('/').pop() : ''; }
+              // update the formGroup
               this.containerForm = this.fb.group({
-                'name': [this.container.name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]), this.cValidators.containernameAsyncValidator(this.container.pk)],          
+                'name': [this.container.name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()]),
+                this.cValidators.containernameAsyncValidator(this.container.pk)],
                 'temperature': [this.container.temperature, Validators.required],
                 'room': [this.container.room, ],
                 'photo': ['', ],
@@ -158,11 +157,11 @@ export class EditContainerComponent implements OnInit, OnDestroy {
                 'shelf': [+this.container.shelf, Validators.compose([Validators.required, this.cValidators.digitValidator()])],
                 'box': [+this.container.box, Validators.compose([Validators.required, this.cValidators.digitValidator()])],
                 'description': [this.container.description, ]
-            }); 
+            });
           },
           () => this.alertService.error('Something went wrong, data were not loaded from the server!', true)
        );
-    //get current url
+    // get current url
     this.url = this.router.url;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
