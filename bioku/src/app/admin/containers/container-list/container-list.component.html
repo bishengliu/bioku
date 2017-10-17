@@ -1,9 +1,9 @@
 <div class="ui grid small_padding stackable">
   <div class="four wide column">
-    <h3 class="ui violet left aligned header"><i class="icon grid outline"></i>CONTAINERS</h3>
+    <h3 class="ui violet left aligned header"><i class="icon grid layout"></i>CONTAINERS</h3>
   </div>
   <div class="ten wide column">
-    <div class="ui slider checkbox">
+    <div class="ui slider checkbox" *ngIf="container_count > 0">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
       <label for="table_view">
         <span *ngIf="tableView" class="violet-text">CARD OVERVIEW</span>
@@ -17,7 +17,7 @@
   </div>
   <!-- end new container -->
 </div>
-<div class="ui grid small_padding">
+<div class="ui grid small_padding" *ngIf="container_count > 0">
   <!-- card view -->
   <div class="ui cards" *ngIf="!tableView">
     <!-- one card -->
@@ -144,4 +144,27 @@
   </table>
   </div>
 <!-- end table view -->
+</div>
+
+<!--loading info-->
+<div *ngIf="loading" class="ui loading segment center aligned">
+    <br/><br/>
+    <p class="brown-text">loading containers ... </p>
+    <br/><br/>
+</div>
+
+<!--no record-->
+<div *ngIf="!loading && !load_failed && (container_count === 0)" class="ui tertiary segment center aligned">
+    <br/><br/>
+    <p><i class="ui massive icon announcement teal-text"></i></p>
+    <p class="teal-text">no container found!</p>
+    <br/><br/>
+</div>
+
+<!--failed  -->
+<div *ngIf="!loading && load_failed" class="ui tertiary segment center aligned">
+    <br/><br/><br/>
+    <p><i class="ui massive warning sign icon brown"></i></p>
+    <h3 class="ui brown header">failed to load containers from the server!</h3>
+    <br/><br/><br/>
 </div>

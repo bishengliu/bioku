@@ -1,18 +1,18 @@
 <div class="ui grid small_padding stackable">
   <div class="four wide column">
-    <h3 class="ui orange left aligned header"><i class="icon user"></i>USERS</h3>
+    <h3 class="ui black left aligned header"><i class="icon user"></i>USERS</h3>
   </div>
   <div class="ten wide column">
-    <div class="ui slider checkbox">
+    <div class="ui slider checkbox" *ngIf="user_count > 0">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
       <label for="table_view">
-        <span *ngIf="tableView" class="orange-text">CARD OVERVIEW</span>
-        <span *ngIf="!tableView" class="orange-text">LIST OVERVIEW</span>
+        <span *ngIf="tableView" class="">CARD OVERVIEW</span>
+        <span *ngIf="!tableView" class="s">LIST OVERVIEW</span>
       </label>
     </div>
   </div>
 </div>
-<div class="ui grid small_padding">
+<div class="ui grid small_padding" *ngIf="user_count > 0">
   <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">
       <!-- one card -->
@@ -25,8 +25,8 @@
         <!-- user info -->
         <div class="content">                                
           <div class="meta">
-            <span class=""><i class="sign in icon"></i> {{ user.username }}</span><br>
             <span class=""><i class="user icon"></i> {{ user.first_name + " " + user.last_name }}</span><br>
+            <span class="blue-text"><i class="sign in icon"></i> {{ user.username }}</span><br>
             <span class=""><i class="mail icon"></i> {{ user.email }}</span><br>
             <span *ngIf="user.profile && user.profile.telephone" class=""><i class="call icon"></i> {{ user.profile.telephone }}</span>
           </div>
@@ -44,7 +44,7 @@
 
   <!-- table view -->
 <div class="sixteen wide column" *ngIf="tableView">
-  <table class="ui small orange single line compact padded table">
+  <table class="ui small black single line compact padded table">
     <thead>
       <tr>
         <th class="">Account</th>
@@ -74,4 +74,27 @@
   </table>
 </div>
   <!-- table view -->
+</div>
+
+<!--loading info-->
+<div *ngIf="loading" class="ui loading segment center aligned">
+    <br/><br/>
+    <p class="brown-text">loading users ... </p>
+    <br/><br/>
+</div>
+
+<!--no record-->
+<div *ngIf="!loading && !load_failed && (user_count === 0)" class="ui tertiary segment center aligned">
+    <br/><br/>
+    <p><i class="ui massive icon announcement teal-text"></i></p>
+    <p class="teal-text">no user found!</p>
+    <br/><br/>
+</div>
+
+<!--failed  -->
+<div *ngIf="!loading && load_failed" class="ui tertiary segment center aligned">
+    <br/><br/><br/>
+    <p><i class="ui massive warning sign icon brown"></i></p>
+    <h3 class="ui brown header">failed to load users from the server!</h3>
+    <br/><br/><br/>
 </div>

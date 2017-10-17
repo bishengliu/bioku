@@ -3,7 +3,7 @@
     <h3 class="ui blue left aligned header"><i class="icon users"></i>GROUPS</h3>
   </div>
   <div class="ten wide column">
-    <div class="ui slider checkbox">
+    <div class="ui slider checkbox" *ngIf="group_count > 0">
       <input type="checkbox" name="" id="table_view" (change)="toggleList()">
       <label for="table_view">
         <span *ngIf="tableView" class="blue-text">CARD OVERVIEW</span>
@@ -17,7 +17,7 @@
   </div>
   <!-- end new group -->
 </div>
-<div class="ui grid small_padding">
+<div class="ui grid small_padding" *ngIf="group_count > 0">
   <!-- card view -->
     <div class="ui cards" *ngIf="!tableView">
       <!-- one card -->
@@ -166,4 +166,27 @@
   </table>
   </div>
 <!-- end table view -->
+</div>
+
+<!--loading info-->
+<div *ngIf="loading" class="ui loading segment center aligned">
+    <br/><br/>
+    <p class="brown-text">loading groups ... </p>
+    <br/><br/>
+</div>
+
+<!--no record-->
+<div *ngIf="!loading && !load_failed && (group_count === 0)" class="ui tertiary segment center aligned">
+    <br/><br/>
+    <p><i class="ui massive icon announcement teal-text"></i></p>
+    <p class="teal-text">no group found!</p>
+    <br/><br/>
+</div>
+
+<!--failed  -->
+<div *ngIf="!loading && load_failed" class="ui tertiary segment center aligned">
+    <br/><br/><br/>
+    <p><i class="ui massive warning sign icon brown"></i></p>
+    <h3 class="ui brown header">failed to load groups from the server!</h3>
+    <br/><br/><br/>
 </div>

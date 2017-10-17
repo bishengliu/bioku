@@ -212,7 +212,7 @@ body{
   color: #00B5AD;
 }
 .blue-text{
-  color: blue;
+  color: #2185d0;
 }
 .red-text{
   color: #d01919;
@@ -222,6 +222,9 @@ body{
 }
 .orange-text{
   color: #F2711C;
+}
+.black-text{
+  color: #1b1c1d;
 }
 .violet-text{
   color:#6435C9;
