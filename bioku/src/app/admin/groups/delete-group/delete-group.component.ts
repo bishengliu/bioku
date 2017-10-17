@@ -38,11 +38,11 @@ export class DeleteGroupComponent implements OnInit, OnDestroy {
       data => {
         this.alertService.success('Group deleted!', true);
         // naviagate to home
-        this.router.navigate(['/admin/']); },
+        this.router.navigate(['/admin/groups']); },
       () => {
         this.alertService.error('Something went wrong, the group was not deleted!', true);
         // naviagate to home
-        this.router.navigate(['/admin/']); }
+        this.router.navigate(['/admin/groups']); }
     );
   }
   ngOnInit() {

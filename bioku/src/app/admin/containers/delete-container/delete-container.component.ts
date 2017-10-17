@@ -60,7 +60,7 @@ export class DeleteContainerComponent implements OnInit, OnDestroy {
     if (this.url.startsWith('/containers/delete')) {
       this.router.navigate(['/containers']);
     } else {
-      this.router.navigate(['/admin/containers/']);}
+      this.router.navigate(['/admin/containers/']); }
   }
 
   ngOnInit() {
