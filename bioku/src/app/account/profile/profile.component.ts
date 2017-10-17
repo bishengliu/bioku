@@ -60,14 +60,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   const state = this.appStore.getState();
   this.user = state.authInfo.authUser;
   this.token = state.authInfo.token != null ? state.authInfo.token.token : this.token;
-  const photo_path = this.user.profile.photo;
-  this.photo_name = this.user.profile.photo ? photo_path.split('/').pop() : '';
+  const photo_path = this.user.profile && this.user.profile.photo ? this.user.profile.photo : '';
+  this.photo_name = this.user.profile && this.user.profile.photo ? photo_path.split('/').pop() : '';
   // parse date for form intial birth date
   let init_date = {};
-  if (this.user.profile.birth_date) {
+  if (this.user.profile && this.user.profile.birth_date) {
     const dArray = this.user.profile.birth_date.split('-');
     init_date = {date: {year: +dArray[0], month: +dArray[1], day: +dArray[2]}};
   }
+  const telephone: Number = this.user.profile ? this.user.profile.telephone : null;
   // formGroup
     this.profileForm = fb.group({
       'email': [this.user.email,
@@ -76,7 +77,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       'last_name': [this.user.last_name, Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'birth_date': [init_date, ],
       'photo': ['', ],
-      'telephone': [this.user.profile.telephone, this.cValidators.telephoneValidator()]
+      'telephone': [ telephone, this.cValidators.telephoneValidator()]
     });
     // app name
     this.appName = appSetting.NAME;
