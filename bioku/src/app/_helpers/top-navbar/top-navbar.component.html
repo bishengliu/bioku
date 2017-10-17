@@ -12,10 +12,7 @@
         </a>       
         <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
         <a (click)="_toggleSidebar()" class="right item topnav_vertical_padding">
-            <span *ngIf="!user.profile || !user.profile.photo" class="ui blue label">
-                <i class="user icon"></i>
-                {{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}
-            </span>
+            <i class="user large circle outline icon blue" *ngIf="!user.profile || !user.profile.photo"></i>
             <img *ngIf="user.profile && user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
