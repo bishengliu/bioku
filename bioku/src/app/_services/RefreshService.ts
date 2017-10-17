@@ -9,8 +9,7 @@ import { APP_CONFIG } from '../_providers/AppSettingProvider';
 import { Router } from '@angular/router';
 import { AlertService } from '../_services/AlertService'
 @Injectable()
-export class RefreshService
-{
+export class RefreshService {
     private appAuthAimeStamp = this.appSetting.NAME + '-AUTH-TIMESTAMP';
     private authInfo = 'authInfo';
     private containerInfo = 'containerInfo';

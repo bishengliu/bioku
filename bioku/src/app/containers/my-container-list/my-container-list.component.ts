@@ -69,7 +69,7 @@ export class MyContainerListComponent implements OnInit {
       this.loading = false;
       this.load_failed = true;
       this.refreshService.cleanContainerState();
-      this.alertService.error( 'failed to load containers from the server, please try again later!', true);
+      this.alertService.error('failed to load containers from the server, please try again later!', true);
     });
 
     // this.appStore.dispatch(setMyContainersActionAsync(this.containerService,

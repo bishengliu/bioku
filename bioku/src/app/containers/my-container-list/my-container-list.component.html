@@ -24,13 +24,14 @@
 </div>
 
 <!--no record-->
-<div *ngIf="!loading && (containers== null || containers.length == 0)" class="ui tertiary segment container center aligned">
+<div *ngIf="!loading && !load_failed && (containers== null || containers.length == 0)" class="ui tertiary segment container center aligned">
     <p class="">no container found! You can click the button above to add a container. </p>
 </div>
 
-
 <!--failed  -->
-<div *ngIf="load_failed" class="ui tertiary segment container center aligned">
-    <p><i class="ui massive warning sign icon red-text"></i></p>
-    <h3 class="ui red header">failed to load containers from the server!</h3>
+<div *ngIf="load_failed" class="ui tertiary segment center aligned">
+    <br/><br/><br/>
+    <p><i class="ui massive warning sign icon brown"></i></p>
+    <h3 class="ui brown header">You don't the permissions to load containers from the server!</h3>
+    <br/><br/><br/>
 </div>

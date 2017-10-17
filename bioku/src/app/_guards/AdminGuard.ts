@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
             return true;
         } else {
             // reditrect
-            this.alertService.error('Please login as Admin!', true);
+            this.alertService.error('Please login as the admin user!', true);
             this.router.navigate(['/denied']);
         }
         return false;

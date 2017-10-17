@@ -14,7 +14,7 @@ export class PIGuard implements CanActivate {
             return true;
         } else {
             // reditrect
-            this.alertService.error('Please login as PI!', true);
+            this.alertService.error('You are not the PI user!', true);
             this.router.navigate(['/denied']);
         }
         return false;

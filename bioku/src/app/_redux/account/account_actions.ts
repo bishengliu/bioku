@@ -154,7 +154,7 @@ export const registerActionAsync =
                     const preState: AppPartialState = logAppStateService.getAppPartialState();
                     // dispatch set auth token action
                     // dispatch set token
-                    const setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token.token);
+                    const setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
                     dispatch(setAuthTokenAction);
 
                     // dispatch set authUser
