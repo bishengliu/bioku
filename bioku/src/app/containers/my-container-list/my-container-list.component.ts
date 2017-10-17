@@ -66,6 +66,7 @@ export class MyContainerListComponent implements OnInit {
       // dumpdata to the locastorage
       this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
     }, () => {
+      this.loading = false;
       this.load_failed = true;
       this.refreshService.cleanContainerState();
       this.alertService.error( 'failed to load containers from the server, please try again later!', true);

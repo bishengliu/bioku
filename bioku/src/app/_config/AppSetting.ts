@@ -2,7 +2,8 @@ export const AppSetting = {
 
     // CHECK THESE BEFORE PRODUCTION BUILD
     // API REST URL
-     'URL': 'http://127.0.0.1:8000',
+    'URL': 'http://127.0.0.1:8000',
+    // 'URL': 'http://192.168.0.110:8000',
     // 'URL': 'http://127.0.0.1/biodataware',
     // APP URL FOR URL LINK TO THE FRONT-END
     'APP_URL': 'http://127.0.0.1:4200',

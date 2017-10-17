@@ -12,11 +12,11 @@
         </a>       
         <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
         <a (click)="_toggleSidebar()" class="right item topnav_vertical_padding">
-            <span *ngIf="!user.profile.photo" class="ui blue label">
+            <span *ngIf="!user.profile || !user.profile.photo" class="ui blue label">
                 <i class="user icon"></i>
                 {{user.first_name.slice(0,1).toUpperCase()+user.last_name.slice(0,1).toUpperCase()}}
             </span>
-            <img *ngIf="user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
+            <img *ngIf="user.profile && user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
         </a>
     </div>
     <!-- before login -->
@@ -50,7 +50,7 @@
             <a class="item" (click)="Logout()"><i class="sign out icon"></i>Sign Out</a>                      
             <div class="ui red raised card">
                 <!--*ngIf="isLogin" -->
-                <div *ngIf="user.profile.photo" class="image">                
+                <div *ngIf="user.profile && user.profile.photo" class="image">                
                     <img src="{{appUrl+user.profile.photo}}" class="ui medium rounded image">
                 </div>
                 <div class="content">                                        
@@ -64,8 +64,8 @@
                         <span class=""><i class="user icon"></i> {{user.username}}</span>
                         <span class=""><i class="mail icon"></i> {{user.email}}</span>
                         <br>
-                        <span *ngIf="user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>                   
-                        <span *ngIf="user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
+                        <span *ngIf="user.profile && user.profile.telephone" class=""><i class="call icon"></i> {{user.profile.telephone}}</span>                   
+                        <span *ngIf="user.profile && user.profile.birth_date" class=""><i class="birthday icon"></i> {{user.profile.birth_date}}</span>
                     </div>  
                     <div class="meta" *ngIf="user.roles.length > 0">
                         <i class="flag icon"></i> 
@@ -82,7 +82,7 @@
                 </a>
             </div>
             <!--groups and list all the researchers in the group when hoeving the image-->
-            <div> <!--*ngIf="isLogin" -->
+            <div *ngIf="groups && groups.length > 0"> <!--*ngIf="isLogin" -->
                 <div class="ui blue raised card" *ngFor="let group of groups">
                     <!--group info-->
                     <div class="mini ui icon buttons attached">
@@ -133,7 +133,7 @@
                         <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
                         <div class="ui mini labels">
                             <span class="ui label" *ngFor="let assit of group.assistants">
-                                <img *ngIf="assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
+                                <img *ngIf="assit.user.profile && assit.user.profile.photo" src="{{appUrl+assit.user.profile.photo}}" class="ui mini circular image">
                                 <span>{{assit.user.first_name}}</span>
                                 <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeAssistant(group, assit)"></i>
                             </span>                        
@@ -169,7 +169,7 @@
                         <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
                         <div class="ui mini labels">
                             <span class="ui label" *ngFor="let r of group.members">
-                                <img *ngIf="r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
+                                <img *ngIf="r.user.profile && r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                                 <span>{{r.user.first_name}}</span>
                                 <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
                             </span>                        

@@ -31,7 +31,7 @@ export class TopNavbarComponent implements OnInit {
   appUrl: string;
   isLogin= false;
   user: User = null;
-  groups: Array<Group> = null;
+  groups: Array<Group> = new Array<Group>();
   assistEmailInput: FormControl = new FormControl();
   memberEmailInput: FormControl = new FormControl();
   private _opened = false;
