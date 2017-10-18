@@ -29,7 +29,7 @@ export class LoginService {
             // merge obserable to further request user info
             .mergeMap( (token_obj: any) => {
                 // token_obj = {'token': '', 'user': 1}
-                if (!token_obj && !token_obj.token){
+                if (!token_obj && !token_obj.token) {
                     return Observable.throw('Fail to login!');
                 }
                 // further to get user details

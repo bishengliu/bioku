@@ -61,10 +61,10 @@ export class ContainerService {
     }
 
     create(formData: FormData) {
-        if (!this.state.authInfo.authUser.is_superuser) {
-            this.alertService.error('Please login as Admin!', true);
-            return Observable.throw('Please login as Admin');
-        }
+        // if (!this.state.authInfo.authUser.is_superuser) {
+        //     this.alertService.error('Please login as Admin!', true);
+        //     return Observable.throw('Please login as Admin');
+        // }
         const create_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.post(create_container_url, formData, this.options_NoContentType) // do provide header accorrding to django
                 // .map((response: Response) =>response.json())
@@ -81,10 +81,10 @@ export class ContainerService {
     }
 
     containerUpdate(formData: FormData, pk: number) {
-        if (!this.state.authInfo.authUser.is_superuser) {
-            this.alertService.error('Please login as Admin!', true);
-            return Observable.throw('Please login as Admin');
-        }
+        // if (!this.state.authInfo.authUser.is_superuser) {
+        //     this.alertService.error('Please login as Admin!', true);
+        //     return Observable.throw('Please login as Admin');
+        // }
         const update_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + pk + '/';
         return this.http.put(update_container_url, formData, this.options_NoContentType) // do provide header accorrding to django
                 .map((response: Response) => response.json())
@@ -92,10 +92,10 @@ export class ContainerService {
     }
 
     containerDelete(pk: number) {
-        if (!this.state.authInfo.authUser.is_superuser) {
-            this.alertService.error('Please login as Admin!', true);
-            return Observable.throw('Please login as Admin');
-        }
+        // if (!this.state.authInfo.authUser.is_superuser) {
+        //     this.alertService.error('Please login as Admin!', true);
+        //     return Observable.throw('Please login as Admin');
+        // }
         const delete_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + pk + '/';
         return this.http.delete(delete_container_url, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())

@@ -9,11 +9,12 @@ import { LoginService } from '../../_services/LoginService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
-//redux
+// redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
-import { SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator, setAuthTokenActionCreator, userAuthActionAsync } from '../../_redux/account/account_actions';
+import { SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator,
+        setAuthTokenActionCreator, userAuthActionAsync } from '../../_redux/account/account_actions';
 
 @Component({
   selector: 'app-login',
@@ -24,41 +25,43 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   appName: string;
-  isLogin: boolean = false;
+  isLogin: Boolean = false;
   user: User = null;
 
-  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService, private refreshService: RefreshService,
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService) { 
+  constructor(fb: FormBuilder, private alertService: AlertService, private loginService: LoginService,
+              private refreshService: RefreshService,  @Inject(APP_CONFIG) private appSetting: any,
+              @Inject(AppStore) private appStore, private router: Router, private logAppStateService: LogAppStateService) { 
     this.loginForm = fb.group({
       'username': ['', Validators.required],
       'password': ['', Validators.required]
     });
-    //app name
+    // app name
     this.appName = appSetting.NAME;
-    //subscribe store state changes
-    appStore.subscribe(()=> this.updateState());
+    // subscribe store state changes
+    appStore.subscribe(() => this.updateState());
     this.updateState();
   }
 
-  onLogin(values: any): void{
-    //console.log(this.loginForm);
-    //console.log(values);
-    //use redux-chunk call async action
-    this.appStore.dispatch(userAuthActionAsync(this.loginService, values.username, values.password, this.alertService, this.logAppStateService, this.refreshService));
+  onLogin(values: any): void {
+    // console.log(this.loginForm);
+    // console.log(values);
+    // use redux-chunk call async action
+    this.appStore.dispatch(userAuthActionAsync(
+      this.loginService, values.username, values.password, this.alertService, this.logAppStateService, this.refreshService));
   }
 
-  updateState(){
-    let state= this.appStore.getState()
-    if(state.authInfo && state.authInfo.authUser != null){
+  updateState() {
+    const state = this.appStore.getState()
+    if (state.authInfo && state.authInfo.authUser != null) {
       this.user = state.authInfo.authUser;
-      this.isLogin = state.authInfo.token ? true: false;
+      this.isLogin = state.authInfo.token ? true : false;
     }
-    if(this.isLogin){
-      this.router.navigate(['/containers']); 
+    if (this.isLogin) {
+      this.router.navigate(['/containers']);
     }
   }
   ngOnInit() {
-    //this.refreshService.cleanState();
+    // this.refreshService.cleanState();
   }
 
 }

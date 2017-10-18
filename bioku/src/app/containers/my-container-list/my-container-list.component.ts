@@ -21,8 +21,8 @@ import { setMyContainersActionAsync, SetMyContainersAction, setMyContainersActio
   styleUrls: ['./my-container-list.component.css']
 })
 export class MyContainerListComponent implements OnInit {
-  loading: boolean = true;
-  load_failed: boolean = false;
+  loading: Boolean = true;
+  load_failed: Boolean = false;
   containers: Array<Container> = [];
   constructor(private alertService: AlertService, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private refreshService: RefreshService, private router: Router, private logAppStateService: LogAppStateService,
