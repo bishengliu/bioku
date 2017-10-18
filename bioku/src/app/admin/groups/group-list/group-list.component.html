@@ -35,7 +35,8 @@
             <a class="" [routerLink]="['./edit', group.pk]">
               <i class="icon edit teal-text"></i>
             </a>
-            <a class="" [routerLink]="['./delete', group.pk]" *ngIf="!((group.assistants && group.assistants.length>0) || (group.members && group.members.length>0))">
+            <a class="" [routerLink]="['./delete', group.pk]" 
+                *ngIf="!((group.assistants && group.assistants.length > 0) || (group.members && group.members.length > 1))">
                 <i class="icon remove circle red-text"></i>
             </a>
             <!-- end manage group --> 
