@@ -90,20 +90,18 @@ export const userAuthActionAsync =
         loginService.authUser(username, password)
         .subscribe(
             (data) => {
-                if (data.token.token) {
+                console.log(data);
+                if (data.token && data.token.token) {
                     // get state: apppartialstate
                     const preState: AppPartialState = logAppStateService.getAppPartialState();
-
                     // dispatch set auth token action
                     const setAuthTokenAction: SetAuthTokenAction = setAuthTokenActionCreator(data.token);
                     dispatch(setAuthTokenAction);
 
                     if (getState().authInfo && getState().authInfo.token && 'user' in data && data.user) {
-
                         // dispatch action
                         const setAuthUserAction: SetAuthUserAction = setAuthUserActionCreator((<User>data.user));
                         dispatch(setAuthUserAction);
-
                         // dispatch authGroup
                         const setAuthGroupAction: SetAuthGroupAction = data.groups == null ?
                             setAuthGroupActionCreator(null) : setAuthGroupActionCreator((<Array<Group>>data.groups));
@@ -112,7 +110,6 @@ export const userAuthActionAsync =
 
                     // dumpdata to the locastorage
                     refreshService.dumpAuthState(getState().authInfo);
-
                     // get state: apppartialstate
                     const nextState: AppPartialState = logAppStateService.getAppPartialState();
                     const message = 'user login success!';

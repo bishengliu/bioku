@@ -9,12 +9,14 @@ import { LoginService } from '../../_services/LoginService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
+import { Group } from '../../_classes/Group';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 import { REDUX_CONSTANTS as C } from '../../_redux/root/constants';
 import { SetAuthUserAction, SetAuthTokenAction, setAuthUserActionCreator,
-        setAuthTokenActionCreator, userAuthActionAsync } from '../../_redux/account/account_actions';
+        setAuthTokenActionCreator, userAuthActionAsync,
+        SetAuthGroupAction, setAuthGroupActionCreator } from '../../_redux/account/account_actions';
 
 @Component({
   selector: 'app-login',
@@ -43,11 +45,9 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(values: any): void {
-    // console.log(this.loginForm);
-    // console.log(values);
     // use redux-chunk call async action
-    this.appStore.dispatch(userAuthActionAsync(
-      this.loginService, values.username, values.password, this.alertService, this.logAppStateService, this.refreshService));
+     this.appStore.dispatch(userAuthActionAsync(
+       this.loginService, values.username, values.password, this.alertService, this.logAppStateService, this.refreshService));
   }
 
   updateState() {
@@ -55,13 +55,17 @@ export class LoginComponent implements OnInit {
     if (state.authInfo && state.authInfo.authUser != null) {
       this.user = state.authInfo.authUser;
       this.isLogin = state.authInfo.token ? true : false;
+    } else {
+      this.user = null;
+      this.isLogin = false;
     }
     if (this.isLogin) {
       this.router.navigate(['/containers']);
     }
   }
   ngOnInit() {
-    // this.refreshService.cleanState();
+    // remove localstorage
+    this.refreshService.cleanState();
   }
 
 }

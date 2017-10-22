@@ -21,7 +21,9 @@ export class ContainerService {
     private options_NoContentType: RequestOptions;
 
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-                private router: Router, private alertService: AlertService) {
+                private router: Router, private alertService: AlertService) { }
+
+    updateState() {
         this.state = this.appStore.getState();
         if (!this.state || !this.state.authInfo || !this.state.authInfo.authUser || !this.state.authInfo.token) {
             this.alertService.error('Please first login!', true);
@@ -37,6 +39,7 @@ export class ContainerService {
     ////////////////////////////////////////////////////////////////// ADMIN///////////////////////////////////////////////////////
     // get container count
     getContainerCount() {
+        this.updateState();
         if (!this.state.authInfo.authUser.is_superuser) {
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
@@ -49,6 +52,7 @@ export class ContainerService {
     }
 
     getAllContainers() {
+        this.updateState();
         if (!this.state.authInfo.authUser.is_superuser) {
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
@@ -61,6 +65,7 @@ export class ContainerService {
     }
 
     create(formData: FormData) {
+        this.updateState();
         // if (!this.state.authInfo.authUser.is_superuser) {
         //     this.alertService.error('Please login as Admin!', true);
         //     return Observable.throw('Please login as Admin');
@@ -73,6 +78,7 @@ export class ContainerService {
 
     // get group detail
     containerDetail(pk: number) {
+        this.updateState();
         const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + pk + '/';
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -81,6 +87,7 @@ export class ContainerService {
     }
 
     containerUpdate(formData: FormData, pk: number) {
+        this.updateState();
         // if (!this.state.authInfo.authUser.is_superuser) {
         //     this.alertService.error('Please login as Admin!', true);
         //     return Observable.throw('Please login as Admin');
@@ -92,6 +99,7 @@ export class ContainerService {
     }
 
     containerDelete(pk: number) {
+        this.updateState();
         // if (!this.state.authInfo.authUser.is_superuser) {
         //     this.alertService.error('Please login as Admin!', true);
         //     return Observable.throw('Please login as Admin');
@@ -104,6 +112,7 @@ export class ContainerService {
 
     // add container to a group
     addContainer2Group(container_pk: number, group_pk: number) {
+        this.updateState();
         if (!this.state.authInfo.authUser.is_superuser) {
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
@@ -122,6 +131,7 @@ export class ContainerService {
     }
     // remove a group from the container
     removeGroupFromContainer(container_pk: number, group_pk: number) {
+        this.updateState();
         if (!this.state.authInfo.authUser.is_superuser) {
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
@@ -132,6 +142,7 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     allowRemoveGroup(container_pk: number, group_pk: number) {
+        this.updateState();
         if (!this.state.authInfo.authUser.is_superuser) {
             this.alertService.error('Please login as Admin!', true);
             return Observable.throw('Please login as Admin');
@@ -145,6 +156,7 @@ export class ContainerService {
 
     //////////////////////////////////////////////// PI OR assistants or researchers/////////////////////////////////////
     myContainers() {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -154,6 +166,7 @@ export class ContainerService {
 
     // GET THE GROUP BOXES IN A CONTAINER
     containerGroupBoxes(container_pk: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/boxes/';
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -162,6 +175,7 @@ export class ContainerService {
     }
     // GET THE GROUP FAVORITE BOXES IN A CONTAINER
     containerGroupFavoriteBoxes(container_pk: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/favorite_boxes/';
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -170,6 +184,7 @@ export class ContainerService {
     }
     // get all the occupied boxes in a container
     containerAllBoxes(container_pk: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/all_boxes/';
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -178,6 +193,7 @@ export class ContainerService {
     }
     // get one box
     getContainerBox(container_pk: number, box_position: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/' + box_position + '/';
         return this.http.get(query_url, this.options)
             .map((response: Response) => response.json())
@@ -186,6 +202,7 @@ export class ContainerService {
     }
     // put the box color
     updateBoxRate(container_pk: number, box_position: string, rate: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/' + box_position + '/rate/';
         const body: string = JSON.stringify({'rate': rate });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
@@ -194,6 +211,7 @@ export class ContainerService {
     }
     // put box rate
     updateBoxColor(container_pk: number, box_position: string, color: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/' + box_position + '/color/';
         const body: string = JSON.stringify({'color': color });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
@@ -202,6 +220,7 @@ export class ContainerService {
     }
     // put box description
     updateBoxDescription(container_pk: number, box_position: string, description: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL +
                                   this.appSetting.ALL_CONTAINERS + container_pk + '/' + box_position + '/description/';
         const body: string = JSON.stringify({'description': description });
@@ -211,6 +230,7 @@ export class ContainerService {
     }
     // put box label
     updateBoxLabel(container_pk: number, box_position: string, label: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/' + box_position + '/label/';
         const body: string = JSON.stringify({'label': label });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
@@ -219,6 +239,7 @@ export class ContainerService {
     }
     // move one box
     moveContainerBoxes(original_container: number, box_full_position: string, target_container: number, target_box_full_position: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'move_box/';
         const body: string = JSON.stringify({
             'original_container': original_container,
@@ -231,6 +252,7 @@ export class ContainerService {
     }
     // add one box
     addContainerBox(container_pk: number, box_full_position: string, box_horizontal: number, box_vertical: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + container_pk + '/add_box/';
         const body: string = JSON.stringify({
             'container_pk': container_pk,
@@ -243,6 +265,7 @@ export class ContainerService {
     }
     ////////////////////////////////// samples//////////////////////////////////////////
     updateSampleDetail(container_pk: number, box_position: string, sample_position: string, data_attr: string, value: any) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + sample_position + '/update/';
         const body: string = JSON.stringify({'key': data_attr, 'value': value });
@@ -253,7 +276,8 @@ export class ContainerService {
     // update sample position
     updateSamplePosition(container_pk: number, box_position: string, sample_position: string,
                          new_vposition: string, new_hposition: number) {
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+        this.updateState();
+                            const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                          container_pk + '/' + box_position + '/' + sample_position + '/update_position/';
         const body: string = JSON.stringify({'new_vposition': new_vposition, 'new_hposition': new_hposition });
         return this.http.put(query_url, body, this.options)
@@ -262,6 +286,7 @@ export class ContainerService {
     }
     // switch sample positions
     switchSamplePosition(container_pk: number, box_position: string, first_sample_position: string, second_sample_position: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/switch_positions/';
         const body: string = JSON.stringify({
@@ -274,6 +299,7 @@ export class ContainerService {
     }
     // switch sample positon between 2 boxes
     switchSample2Boxes(moveSample: MoveSample) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'switch_samples/';
         const body: string = JSON.stringify(moveSample);
         return this.http.put(query_url, body, this.options)
@@ -281,6 +307,7 @@ export class ContainerService {
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     takeSampleOut(container_pk: number, box_position: string, sample_position: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + sample_position + '/take/';
         const body: string = JSON.stringify({ });
@@ -289,6 +316,7 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     putSampleBack(container_pk: number, box_position: string, sample_position: string) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                 container_pk + '/' + box_position + '/' + sample_position + '/back/';
         const body: string = JSON.stringify({ });
@@ -299,6 +327,7 @@ export class ContainerService {
 
     // delete an attachment
     deleteAttachment(sample_pk: number, attachment_pk: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'samples/' + sample_pk + '/' + attachment_pk + '/';
         const body: string = JSON.stringify({ });
         return this.http.put(query_url, body, this.options)
@@ -307,6 +336,7 @@ export class ContainerService {
     }
     // upload sample attachment
     uploadSampleAttachment(formData: FormData, sample_pk: number) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'samples/' + sample_pk + '/upload_attachment/';
         return this.http.post(query_url, formData, this.options_NoContentType) // do provide header accorrding to django
         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -314,6 +344,7 @@ export class ContainerService {
 
     // save add samples
     addSamples(formData: FormData, container_pk: number, box_position: string) {
+        this.updateState();
         const create_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                               container_pk + '/' + box_position + '/';
         return this.http.post(create_container_url, formData, this.options_NoContentType) // do provide header accorrding to django
@@ -322,6 +353,7 @@ export class ContainerService {
     }
     // search samples
     SearchSample(obj: SampleSearch) {
+        this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'search_samples/';
         const body: string = JSON.stringify(obj);
         return this.http.post(query_url, body, this.options)
