@@ -90,7 +90,6 @@ export const userAuthActionAsync =
         loginService.authUser(username, password)
         .subscribe(
             (data) => {
-                console.log(data);
                 if (data.token && data.token.token) {
                     // get state: apppartialstate
                     const preState: AppPartialState = logAppStateService.getAppPartialState();

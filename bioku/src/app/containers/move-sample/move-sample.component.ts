@@ -12,10 +12,10 @@ import { ContainerService } from '../../_services/ContainerService';
 import {  AlertService } from '../../_services/AlertService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  LocalStorageService } from '../../_services/LocalStorageService';
-//redux
+// redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
-//dragula
+// dragula
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 @Component({
   selector: 'app-move-sample',
@@ -74,7 +74,7 @@ export class MoveSampleComponent implements OnInit {
     this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     //subscribe store state changes
-    appStore.subscribe(()=> this.updateState());
+    appStore.subscribe(() => this.updateState());
     this.updateState();
   }
 
