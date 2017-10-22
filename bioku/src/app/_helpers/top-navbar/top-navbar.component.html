@@ -138,11 +138,13 @@
                     </div>
                     <!--members-->
                     <div class="extra content" *ngIf="group.members">
-                        <div *ngIf="group.email===user.email">
+                        <div *ngIf="isPIorAssist(group)">
                             <div class="field" [class.error]="memberEmailInput.invalid && memberEmailInput.touched" >
-                                <div class="ui blue right labeled left icon mini input right floated" *ngIf="group.email===user.email">
+                                <div class="ui blue right labeled left icon mini input right floated">
                                     <i class="mail icon"></i>
-                                    <input type="email" placeholder="user's email" [formControl]="memberEmailInput" #memberInput (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')">
+                                    <input type="email" placeholder="user's email" 
+                                        [formControl]="memberEmailInput" #memberInput 
+                                        (mouseout)="hideValidation('member')" (mouseenter)="showValidation('member')">
                                     <a class="mini ui blue tag label" 
                                         (click)="memberEmailInput.touched && !memberEmailInput.hasError('required') && !memberEmailInput.hasError('email') && memberEmailInput.hasError('emailAsyncInvalid') && addMember(group, memberInput.value)" 
                                         (mouseout)="hideValidation('member')" 
@@ -161,13 +163,13 @@
                             <div class="fluid clearfix" ></div>
                             <br>
                         </div>                        
-                        <span *ngIf="group.email !== user.email" class="ui orange tag mini label right floated">members</span>
-                        <div *ngIf="group.email===user.email" class="fluid clearfix" ></div>
+                        <span *ngIf="!isPIorAssist(group)" class="ui orange tag mini label right floated">members</span>
+                        <div *ngIf="isPIorAssist(group)" class="fluid clearfix" ></div>
                         <div class="ui mini labels">
                             <span class="ui label" *ngFor="let r of group.members">
                                 <img *ngIf="r.user.profile && r.user.profile.photo" src="{{appUrl+r.user.profile.photo}}" class="ui mini circular image">
                                 <span>{{r.user.first_name}}</span>
-                                <i *ngIf="group.email===user.email" class="ui red delete icon" (click)="removeMember(group, r)"></i>
+                                <i *ngIf="memberRemoveAllowed(group, member)" class="ui red delete icon" (click)="removeMember(group, r)"></i>
                             </span>                        
                         </div>  
                     </div>

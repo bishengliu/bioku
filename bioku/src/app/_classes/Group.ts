@@ -12,8 +12,18 @@ export class GroupInfo {
     telephone: number;
 }
 
+export class Assistant {
+    user_id: number;
+    user: User;
+}
+
+export class Member {
+    user_id: number;
+    user: User;
+}
+
 export class Group extends GroupInfo {
     // group: GroupInfo;
-    members: Array<User>;
-    assistants: Array<User>;
+    members: Array<Member>;
+    assistants: Array<Assistant>;
 }

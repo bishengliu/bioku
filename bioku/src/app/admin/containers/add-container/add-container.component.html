@@ -20,8 +20,6 @@
               </div>
 
               <div class="field" [class.error]="containerForm.controls['temperature'].invalid && containerForm.controls['temperature'].touched">
-
-
                 <div class="ui left icon labeled input">
                   <i class="theme icon"></i>
                   <input type="text" id="temperature" [formControl]="containerForm.controls['temperature']" placeholder="temperature">
@@ -31,8 +29,9 @@
               </div>
 
               <div class="field" [class.error]="containerForm.controls['tower'].invalid && containerForm.controls['tower'].touched">
-                <div class="ui left icon input">
+                <div class="ui left icon labeled input">
                   <i class="caret right icon"></i>
+                  <label for="tower" class="ui basic label">tower#</label>
                   <input type="text" id="tower" [formControl]="containerForm.controls['tower']" placeholder="total number of towers">
                 </div>
                 <div *ngIf="containerForm.controls['tower'].hasError('required') && containerForm.controls['tower'].touched" class="ui mini negative message">Number of total towers is required</div>
@@ -40,8 +39,8 @@
               </div>
 
               <div class="field" [class.error]="containerForm.controls['shelf'].invalid && containerForm.controls['shelf'].touched">
-                <div class="ui left icon input">
-                  <i class="caret right icon"></i>
+                <div class="ui left icon labeled input">
+                    <label for="tower" class="ui basic label">shelf#</label>
                   <input type="text" id="shelf" [formControl]="containerForm.controls['shelf']" placeholder="total number of shelves per tower">
                 </div>
                 <div *ngIf="containerForm.controls['shelf'].hasError('required') && containerForm.controls['shelf'].touched" class="ui mini negative message">Number of total shelves is required</div>
@@ -49,8 +48,8 @@
               </div>
 
               <div class="field" [class.error]="containerForm.controls['box'].invalid && containerForm.controls['box'].touched">
-                <div class="ui left icon input">
-                  <i class="caret right icon"></i>
+                <div class="ui left icon labeled input">
+                    <label for="tower" class="ui basic label">box#</label>
                   <input type="text" id="box" [formControl]="containerForm.controls['box']" placeholder="total number of boxes per shelf">
                 </div>
                 <div *ngIf="containerForm.controls['box'].hasError('required') && containerForm.controls['box'].touched" class="ui mini negative message">Number of total boxes is required</div>

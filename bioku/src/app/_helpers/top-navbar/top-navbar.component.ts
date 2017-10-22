@@ -4,7 +4,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { User } from '../../_classes/User';
-import { Group, GroupInfo } from '../../_classes/Group';
+import { Group, GroupInfo, Assistant, Member } from '../../_classes/Group';
 import { Container } from '../../_classes/Container';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -48,7 +48,8 @@ export class TopNavbarComponent implements OnInit {
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private logoutService: LogoutService,
               private groupService: GroupService, private router: Router, private cValidators: CustomFormValidators,
-              private refreshService: RefreshService, private alertService: AlertService,private logAppStateService: LogAppStateService, ) {
+              private refreshService: RefreshService, private alertService: AlertService,
+              private logAppStateService: LogAppStateService, ) {
     // app name
     this.appName = this.appSetting.NAME;
     this.appUrl = this.appSetting.URL;
@@ -162,6 +163,40 @@ export class TopNavbarComponent implements OnInit {
       }
     }
   }
+
+  // check user isPIor Assist
+  isPIorAssist(group: Group) {
+    let isPIorAssist: Boolean = false;
+    // check pi
+    if (this.user && this.user.roles) {
+      this.user.roles.forEach( (r, i) => {
+        if (r.toLowerCase() === 'pi') {
+          isPIorAssist = true;
+        }
+      })
+    }
+    // check assist
+    if (group.assistants) {
+      group.assistants.forEach( assist => {
+        if (assist.user.pk === this.user.pk) {
+          isPIorAssist = true; }
+      })
+    }
+    return isPIorAssist;
+  }
+
+  memberRemoveAllowed(group: Group, member: Member) {
+    if (member !== undefined && group !== undefined && this.user != null) {
+      const isPIorAssist = this.isPIorAssist(group);
+      if (isPIorAssist && (member.user.email === group.email || member.user.email === this.user.email)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false; }
+  }
+
   goHome() {
     this.router.navigate(['/']);
   }
