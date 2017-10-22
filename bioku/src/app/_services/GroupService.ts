@@ -72,9 +72,9 @@ export class GroupService {
         this.updateState();
         const auth_groups = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         const find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-        if (this.state.authInfo.authUser.roles.indexOf('PI') === -1) {
-            return Observable.throw('Please login as a PI user!');
-        }
+        // if (this.state.authInfo.authUser.roles.indexOf('PI') === -1) {
+        //     return Observable.throw('Please login as a PI user!');
+        // }
         // url(r'^(?P<pk>[0-9]+)/researchers/$', OneGroupResearcherList.as_view(), name='one-group-researcher-list'),
         const add_member_url: string = this.appSetting.URL + this.appSetting.SINGLE_GROUP_API + group_pk + '/researchers/';
         const body: string = JSON.stringify({'query': 'email', 'value': email});
@@ -131,9 +131,9 @@ export class GroupService {
         this.updateState();
         const auth_groups = this.appSetting.URL + this.appSetting.AUTH_GROUPS;
         const find_user = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
-        if (this.state.authInfo.authUser.roles.indexOf('PI') === -1) {
-            return Observable.throw('Please login as a PI user!');
-        }
+        // if (this.state.authInfo.authUser.roles.indexOf('PI') === -1) {
+        //     return Observable.throw('Please login as a PI user!');
+        // }
         // url(r'^(?P<g_id>[0-9]+)/researchers/(?P<u_id>[0-9]+)/$', OneGroupResearcherDetail.as_view(), name='one-group-researcher-detail'),
         const remove_member_url: string = this.appSetting.URL + this.appSetting.SINGLE_GROUP_API +
                                           group_pk + '/researchers/' + user_pk + '/';
