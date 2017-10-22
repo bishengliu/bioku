@@ -1,13 +1,13 @@
 <div class="ui grid row">
   <div class="eight wide column">
-    <app-container-boxes-filter [container]="container" (boxFilter)="updateBoxList($event)"></app-container-boxes-filter>
+    <app-container-boxes-filter *ngIf="!load_failed" [container]="container" (boxFilter)="updateBoxList($event)"></app-container-boxes-filter>
   </div>
   <div class="eight wide column">
     <app-container-box-navbar></app-container-box-navbar>
   </div>
 </div>
 
-<div class="ui grid row small_padding">
+<div class="ui grid row small_padding" *ngIf="!load_failed">
   <div class="five wide column">
     <h3 class="ui violet left aligned header"><i class="icon table"></i>MY BOXES</h3>
   </div>
@@ -26,12 +26,12 @@
   </div>
 </div>
 <!--loading info-->
-<div *ngIf="loading==true" class="ui loading segment center aligned">
+<div *ngIf="loading" class="ui loading segment center aligned">
     <br/><br/><br/><br/>
     <p class="brown-text">loading container boxes ... </p>
 </div>
 <!--after loading-->
-<div class="ui grid row small_padding stackable" *ngIf="loading==false">
+<div class="ui grid row small_padding stackable" *ngIf="!loading && !load_failed">
   <div *ngIf="searchedBoxes.length > 0">
       <div class="ui link cards">
           <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
@@ -39,9 +39,19 @@
   </div>
 </div>
 <!--no record-->
-<div *ngIf="loading==false && myBoxes.length > 0 && (searchedBoxes == null || searchedBoxes.length == 0)" class="ui segments segment container center aligned">
+<div *ngIf="!loading && !load_failed && myBoxes.length > 0 && (searchedBoxes == null || searchedBoxes.length == 0)" 
+  class="ui segments segment container center aligned">
     <p class="">no favourite box found, you can show click the "SHOW ALL" slider to show all my boxes!</p>
 </div>
-<div *ngIf="loading==false && (myBoxes == null || myBoxes.length == 0)" class="ui tertiary segment container center aligned">
+<div *ngIf="!loading && !load_failed && (myBoxes == null || myBoxes.length == 0)" 
+  class="ui tertiary segment container center aligned">
   <p class="">no box found!</p>
+</div>
+
+<!--failed  -->
+<div *ngIf="!load && load_failed" class="ui tertiary segment center aligned">
+  <br/><br/><br/>
+  <p><i class="ui massive warning sign icon brown"></i></p>
+  <h3 class="ui brown header">Something went wrong, fail to load boxes from the server!</h3>
+  <br/><br/><br/>
 </div>
