@@ -79,7 +79,6 @@ export class ContainerOverviewComponent implements OnInit, OnDestroy {
     })
     .subscribe((boxes: Array<Box>) => {
       this.occupied_boxes = boxes; // all occupied boxes
-      console.log (this.occupied_boxes);
       // get curent occupied positions
       this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
       // generate current free positions
