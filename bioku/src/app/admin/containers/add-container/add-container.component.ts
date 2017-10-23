@@ -10,7 +10,7 @@ import { LogAppStateService } from '../../../_services/LogAppStateService';
 import { User } from '../../../_classes/User';
 import {  ContainerService } from '../../../_services/ContainerService';
 
-//r edux
+// redux
 import { AppStore } from '../../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../../_redux/root/state';
 
