@@ -80,6 +80,7 @@ export class TopNavbarComponent implements OnInit {
     this._container_opened = false;
     this.router.navigate(['/']);
   }
+
   // edit my group profile
   editGroup(groupInfo: GroupInfo) {
     this._opened = false;
@@ -88,24 +89,29 @@ export class TopNavbarComponent implements OnInit {
     // navigate to group
     this.router.navigate(['/user/group', groupInfo.pk]);
   }
+
   // add assistant to a group
   addAssistant(groupInfo: GroupInfo, email: any) {
     this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));
   }
+
   // add researcher to a group
   addMember(groupInfo: GroupInfo, email: any) {
     this.appStore.dispatch(addMemberAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));
   }
+
   // remove assistant to a group
   removeAssistant(groupInfo: GroupInfo, assistant) {
     this.appStore.dispatch(
       removeAssistantAsync(groupInfo.pk, assistant.user_id, this.groupService, this.alertService, this.logAppStateService));
   }
+
   // remove researcher to a group
   removeMember(groupInfo: GroupInfo, member) {
     this.appStore.dispatch(
       removeMemberAsync(groupInfo.pk, member.user_id, this.groupService, this.alertService, this.logAppStateService));
   }
+
   hideValidation(type: string) {
     if (type === 'assistant') {
       setTimeout(() => {
@@ -118,6 +124,7 @@ export class TopNavbarComponent implements OnInit {
       }, 2000);
     }
   }
+
   showValidation(type: string) {
     if (type === 'assistant') {
       this.showAssistantMsg = true;
@@ -126,6 +133,7 @@ export class TopNavbarComponent implements OnInit {
       this.showMemberMsg = true;
     }
   }
+
   // select a container
   displayContainerBoxes(container_pk: number) {
     const currentContainers = this.containers.filter((c) => c.pk === container_pk);
@@ -138,11 +146,13 @@ export class TopNavbarComponent implements OnInit {
       this.router.navigate(['/containers', container_pk]);
     }
   }
+
   go2ContainerList() {
     this._opened = false;
     this._container_opened = false;
     this.router.navigate(['/containers']);
   }
+
   // update redux state
   updateState() {
     const state = this.appStore.getState()
@@ -164,37 +174,42 @@ export class TopNavbarComponent implements OnInit {
     }
   }
 
+  isPIofGroup(group: Group): Boolean {
+    let isPI: Boolean = false;
+    if (this.user && this.user.email === group.email) {
+      isPI = true;
+    }
+    return isPI;
+  }
+
+  isAssistofGroup(group: Group): Boolean {
+    let isAssist: Boolean = false;
+    if (group !== undefined && group.assistants !== undefined && group.assistants ) {
+      group.assistants.forEach( assist => {
+        if (assist.user.pk === this.user.pk) {
+          isAssist = true; }
+      })
+    }
+    return isAssist;
+  }
+
   // check user isPIor Assist
   isPIorAssist(group: Group) {
     let isPIorAssist: Boolean = false;
-    // check pi
-    if (this.user && this.user.roles) {
-      this.user.roles.forEach( (r, i) => {
-        if (r.toLowerCase() === 'pi') {
-          isPIorAssist = true;
-        }
-      })
-    }
-    // check assist
-    if (group.assistants) {
-      group.assistants.forEach( assist => {
-        if (assist.user.pk === this.user.pk) {
-          isPIorAssist = true; }
-      })
-    }
+    isPIorAssist = this.isPIofGroup(group) || this.isAssistofGroup(group) ? true : false;
     return isPIorAssist;
   }
 
   memberRemoveAllowed(group: Group, member: Member) {
     if (member !== undefined && group !== undefined && this.user != null) {
       const isPIorAssist = this.isPIorAssist(group);
-      if (isPIorAssist && (member.user.email === group.email || member.user.email === this.user.email)) {
-        return true;
-      } else {
-        return false;
+      if (isPIorAssist) {
+        if ( member.user.email !== group.email && member.user.email !== this.user.email) {
+          return true;
+        }
       }
-    } else {
-      return false; }
+    }
+    return false;
   }
 
   goHome() {

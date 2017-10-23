@@ -387,7 +387,7 @@ export const addMemberAsync =
             const message = 'group member added!'
             // logger the redux action
             logAppStateService.log('ADD GROUP MEMBER BY PI', preState, nextState, message);
-            alertService.success('Add Group Member Succeeded!', true);
+            alertService.success('Group Member Added!', true);
         },
         (error) => {
             // get state: apppartialstate
@@ -397,7 +397,7 @@ export const addMemberAsync =
             logAppStateService.log('ADD GROUP MEMEBER BY PI', preState, nextState, message);
             console.log(error);
             // error
-            alertService.error('Add Group Memeber Failed!');
+            alertService.error('Failed to Add Group Memeber!');
         })
 }
 
