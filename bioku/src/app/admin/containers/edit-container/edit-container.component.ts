@@ -93,7 +93,6 @@ export class EditContainerComponent implements OnInit, OnDestroy, AfterViewInit 
       box : values.box,
       description : values.description
     };
-    // console.log(obj);
     const formData: FormData = new FormData();
     formData.append('obj', JSON.stringify(obj));
     if (this.file) {
@@ -109,7 +108,8 @@ export class EditContainerComponent implements OnInit, OnDestroy, AfterViewInit 
           this.router.navigate(['/containers']); } else {
           this.router.navigate(['/admin/containers/']); }
       },
-      () => {
+      (err) => {
+        console.log(err);
         this.alertService.error('Something went wrong, the container profile was not updated!', true);
         // naviagate to home
         if (this.url.startsWith('/containers/edit')) {
