@@ -14,10 +14,10 @@
   <div *ngIf="show_panel_content">
     <div class="ui segment" *ngIf="action_panel_msg">
       <!--msg-->
-      <div class="ui icon message" >
-        <i class="warning sign icon red-text"></i>
+      <div class="ui icon brown message" >
+        <i class="warning sign icon brown"></i>
         <div class="content">
-          <p class="red-text">{{action_panel_msg}}</p>
+          <p class="">{{action_panel_msg}}</p>
         </div>
       </div>
       <!--msg-->
@@ -26,7 +26,10 @@
       <div class="" *ngIf="selectedOccupiedSlots.length == 1 && selected_single_occupied_box != null && lastSelectedOccupiedBox != null">
         <!--show the box layout-->
         <div class="ui link card">
-          <app-container-box-cardview [box]="selected_single_occupied_box" class="ui black raised card" (click)="displaySelectedBox(selected_single_occupied_box)">
+          <app-container-box-cardview 
+          [box]="selected_single_occupied_box" 
+          class="ui black raised card"
+          (click)="displaySelectedBox(selected_single_occupied_box)">
           </app-container-box-cardview>
         </div>
         <br />

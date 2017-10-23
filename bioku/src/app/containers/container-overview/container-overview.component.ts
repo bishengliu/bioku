@@ -11,146 +11,146 @@ import { Box } from '../../_classes/Box';
 import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/ContainerTower';
 import {  ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
-//redux
+// redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { SetCurrentContainerAction, setCurrentContainerActionCreator } from '../../_redux/container/container_actions';
-//ng2-sticky
-//import { Ng2StickyModule } from 'ng2-sticky';
+// ng2-sticky
+// import { Ng2StickyModule } from 'ng2-sticky';
 @Component({
   selector: 'app-container-overview',
   templateUrl: './container-overview.component.html',
   styleUrls: ['./container-overview.component.css']
 })
 export class ContainerOverviewComponent implements OnInit, OnDestroy {
-  //auth user
+  // auth user
   user: User = null;
   token: string = null;
 
-  //route param
+  // route param
   id: number;
-  private sub: any; //subscribe to params observable
+  private sub: any; // subscribe to params observable
 
-  //CURRENT CONTAINER
+  // CURRENT CONTAINER
   container: Container;
-  //current boxes
+  // current boxes
   occupied_boxes: Array<Box> = [];
-  //occupied box positions
+  // occupied box positions
   occupied_postions: Array<string> = [];
-  //available positions
+  // available positions
   containerTowers: Array<ContainerTower> = [];
 
-  //selected boxes
+  // selected boxes
   selectedBoxes: Array<BoxAvailability> = new Array<BoxAvailability>();
-  //last selected occupied box
+  // last selected occupied box
   lastSelectedOccupiedBox: string = null;
 
-  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router, private http: Http, private containerService: ContainerService, private localStorageService: LocalStorageService)
-   { 
-     appStore.subscribe(()=> this.updateState());
+  constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+              private router: Router, private http: Http, private containerService: ContainerService,
+              private localStorageService: LocalStorageService) {
+     appStore.subscribe(() => this.updateState());
      this.updateState();
-     //console.log(this.container);
+     // console.log(this.container);
    }
-   updateState(){
-    let state= this.appStore.getState()
-    //set auth user
-    if(state.authInfo.authUser != null && state.authInfo.token != null){
+   updateState() {
+    const state = this.appStore.getState()
+    // set auth user
+    if (state.authInfo.authUser != null && state.authInfo.token != null) {
       this.user = state.authInfo.authUser;
       this.token = state.authInfo.token.token;
     }
-    //get current container
-    if (state.containerInfo && state.containerInfo.currentContainer){
+    // get current container
+    if (state.containerInfo && state.containerInfo.currentContainer) {
       this.container = state.containerInfo.currentContainer;
     }
   }
   ngOnInit() {
     this.sub = this.route.params
-    .mergeMap((params) =>{
+    .mergeMap((params) => {
       this.id = +params['id'];
-      if( this.container != null && this.container.pk === this.id){
-        return Observable.of(this.container);}
-      else{
-        return this.containerService.containerDetail(this.id);}
+      if ( this.container != null && this.container.pk === this.id) {
+        return Observable.of(this.container); } else {
+        return this.containerService.containerDetail(this.id); }
     })
-    .mergeMap((container: Container)=>{
+    .mergeMap((container: Container) => {
       this.container = container;
-      //get all the boxes in the current container
+      // get all the boxes in the current container
       return this.containerService.containerAllBoxes(container.pk);
     })
-    .subscribe((boxes: Array<Box>)=>{
-      this.occupied_boxes = boxes; //all occupied boxes
-      //get curent occupied positions
+    .subscribe((boxes: Array<Box>) => {
+      this.occupied_boxes = boxes; // all occupied boxes
+      console.log (this.occupied_boxes);
+      // get curent occupied positions
       this.occupied_postions = this.getContainerBoxOccupiedPositions(this.occupied_boxes);
-      //generate current free positions
+      // generate current free positions
       this.containerTowers = this.getContainerBoxAvailablity(this.container, this.occupied_postions);
-      //console.log(this.containerTowers);
-      if(this.localStorageService.boxAvailabilities != null && this.localStorageService.boxAvailabilities.length > 0){
+      // console.log(this.containerTowers);
+      if (this.localStorageService.boxAvailabilities != null && this.localStorageService.boxAvailabilities.length > 0) {
         this.selectedBoxes = [...this.localStorageService.boxAvailabilities];
       }
-      if(this.localStorageService.lastSelectedOccupiedBox != null ){
-        this.lastSelectedOccupiedBox =this.localStorageService.lastSelectedOccupiedBox;
+      if (this.localStorageService.lastSelectedOccupiedBox != null ) {
+        this.lastSelectedOccupiedBox = this.localStorageService.lastSelectedOccupiedBox;
       }
-      //clean up the saved data
+      // clean up the saved data
       this.localStorageService.boxAvailabilities = [];
       this.localStorageService.lastSelectedOccupiedBox = null;
       this.localStorageService.selectedEmptySlots = [];
       this.localStorageService.selectedOccupiedSlots = [];
     },
-    (err)=>{console.log(err)});
+    (err) => { console.log(err)} );
   }
-  //method to get curent occupied positions
-  getContainerBoxOccupiedPositions(occupied_boxes: Array<Box>): Array<string>{
-    let occupied_postions: Array<string> = [];
+  // method to get curent occupied positions
+  getContainerBoxOccupiedPositions(occupied_boxes: Array<Box>): Array<string> {
+    const occupied_postions: Array<string> = [];
     occupied_boxes.forEach(box => {
-      if(occupied_postions.indexOf(box.box_position) === -1){
-        occupied_postions.push(box.box_position);} 
+      if (occupied_postions.indexOf(box.box_position) === -1) {
+        occupied_postions.push(box.box_position); }
     });
     return occupied_postions;
   }
-  //method generate current free positions
+  // method generate current free positions
   getContainerBoxAvailablity(container: Container, occupied_postions: Array<string>): Array<ContainerTower> {
-    let containerTowers: Array<ContainerTower> = [];
-    //loop the container towers
-    for(let t=0; t< container.tower; t++){
-      let containerTower = new ContainerTower();
+    const containerTowers: Array<ContainerTower> = [];
+    // loop the container towers
+    for (let t = 0; t < container.tower; t++) {
+      const containerTower = new ContainerTower();
       containerTower.tower = (t + 1);
-      //get the shelves
-      let containershelves: Array<Containershelf> = [];
-      //loop shelves
-      for(let s=0; s < container.shelf; s++){
-        let containershelf = new Containershelf();
+      // get the shelves
+      const containershelves: Array<Containershelf> = [];
+      // loop shelves
+      for (let s = 0; s < container.shelf; s++) {
+        const containershelf = new Containershelf();
         containershelf.shelf = (s + 1);
-        //box availablity
-        let boxAvailabilities : Array<BoxAvailability> = [];
-        //loop box
-        for(let b=0; b< container.box; b++){
-          let boxAvailability = new BoxAvailability();
-          boxAvailability.position = (b+1);         
-          //current position
-          let current_box_pos: string = (t+1)+'-'+(s+1)+'-'+(b+1);
+        // box availablity
+        const boxAvailabilities: Array<BoxAvailability> = [];
+        // loop box
+        for (let b = 0; b < container.box; b++) {
+          const boxAvailability = new BoxAvailability();
+          boxAvailability.position = (b + 1);
+          // current position
+          const current_box_pos: string = (t + 1) + '-' + (s + 1) + '-' + (b + 1);
           boxAvailability.full_position = current_box_pos;
-          occupied_postions.indexOf(current_box_pos) === -1? boxAvailability.available = true: boxAvailability.available = false;
+          occupied_postions.indexOf(current_box_pos) === -1 ? boxAvailability.available = true : boxAvailability.available = false;
           boxAvailabilities.push(boxAvailability);
         }
         containershelf.boxAvailabilities = boxAvailabilities;
-        containershelves.push(containershelf);        
+        containershelves.push(containershelf);
       }
       containerTower.shelves = containershelves;
       containerTowers.push(containerTower);
     }
     return containerTowers;
   }
-  //capture child event emited
-  captureBoxesSelected(boxes: Array<BoxAvailability>){
+  // capture child event emited
+  captureBoxesSelected(boxes: Array<BoxAvailability>) {
     this.selectedBoxes = boxes;
   }
-  //capture last selected occupied box
-  captureLastSelectedBox(position: string){
+  // capture last selected occupied box
+  captureLastSelectedBox(position: string) {
     this.lastSelectedOccupiedBox = position;
   }
 
-  ngOnDestroy() { 
+  ngOnDestroy() {
     this.sub.unsubscribe();
    }
 }
