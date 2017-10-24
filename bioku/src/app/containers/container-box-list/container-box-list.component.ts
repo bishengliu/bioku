@@ -109,7 +109,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
           return this.containerService.getContainerBox(this.container.pk, params['box_position']);
         } else {
           // get group favotite boxes of the container
-        return this.containerService.containerGroupFavoriteBoxes(this.id); }
+          return this.containerService.containerGroupFavoriteBoxes(this.id); }
       })
       .subscribe((data: any) => {
         if (Array.isArray(data)) {
