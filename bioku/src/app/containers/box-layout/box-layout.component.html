@@ -51,14 +51,14 @@
             <div class="ui grid">
                 <div class="ten wide column">
                     <span class="header">BOX DESCRIPTION: </span>
-                    <div class="ui fluid icon input">
+                    <div class="ui fluid icon input" [ngClass]="{'disabled': box.researchers && user.pk !== box.researchers[0].pk }">
                       <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
                       <i class="refresh icon"></i>
                     </div>
                 </div>
                 <div class="six wide column">
                     <span class="header">BOX LABEL: </span>
-                    <div class="ui fluid icon input">
+                    <div class="ui fluid icon input" [ngClass]="{'disabled': box.researchers && user.pk !== box.researchers[0].pk }">
                       <input class="" type="text" [(ngModel)]="box.label" placeholder="user defined box label ..." (ngModelChange)="updateLabel($event, box.box_position)">
                       <i class="refresh icon"></i>
                     </div>
@@ -66,18 +66,22 @@
             </div>                     
           </th>
         </tr>      
-        <tr>        
+        <tr [ngClass]="{'hidden': box.researchers && user.pk !== box.researchers[0].pk }">        
           <th [attr.colspan]="colspanCount">                      
             <div class="ui right floated">
               <h5 class="header">Box Rating</h5>
               <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
-              <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating>
+              <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"  ></sui-rating>
             </div>
             <div [style.color]="color">
               <span class="header">Box ({{box.box_position}}) Color: </span>
             </div>
             <div>
-                <color-picker [(ngModel)]="color" (ngModelChange)="updateColor($event, box.box_position)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
+                <color-picker [(ngModel)]="color" 
+                (ngModelChange)="updateColor($event, box.box_position)" 
+                [availableColors]="availableColors" 
+                [pickerConfig]="pickerOptions">
+                </color-picker>
             </div>
           </th>
         </tr>

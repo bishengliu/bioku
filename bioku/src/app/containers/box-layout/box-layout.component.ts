@@ -185,7 +185,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     this.cellSelected.emit([]); // emit selected cells
     if (this.box != null) {
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
-      this.color = this.box.color == null ? '#ffffff' : this.box.color;
+      this.color = this.box.color == null ? '#000000' : this.box.color;
       this.currentSampleCount = this.box.samples.filter((s: Sample) => s.occupied === true).length;
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
       this.hArray = this.utilityService.genArray(this.box.box_horizontal);
