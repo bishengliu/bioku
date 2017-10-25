@@ -32,7 +32,7 @@ export class DeleteGroupComponent implements OnInit, OnDestroy {
   }
   deleteGroup(pk: number): void {
    // put call
-   console.log(pk);
+   // console.log(pk);
     this.groupService.groupDelete(pk)
     .subscribe(
       data => {

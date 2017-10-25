@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Box } from '../../_classes/Box';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
-//redux
+// redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 
@@ -16,18 +16,17 @@ import { AppState , AppPartialState} from '../../_redux/root/state';
 export class ContainerBoxNavbarComponent implements OnInit {
   currentContaner: Container= null;
   currentBox: Box = null;
-  show_user_defined_label: boolean = false;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, 
-              private router: Router) 
-  {
+  show_user_defined_label: Boolean = false;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+              private router: Router) {
     this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
-    //subscribe store state changes
-    appStore.subscribe(()=> this.updateState());
+    // subscribe store state changes
+    appStore.subscribe(() => this.updateState());
     this.updateState();
   }
-  updateState(){
-    let state = this.appStore.getState();
-    if (state.containerInfo && state.containerInfo.currentContainer){
+  updateState() {
+    const state = this.appStore.getState();
+    if (state.containerInfo && state.containerInfo.currentContainer) {
       this.currentContaner = state.containerInfo.currentContainer;
       this.currentBox = state.containerInfo.currentBox;
     }

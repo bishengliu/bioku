@@ -122,7 +122,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
             last_name : values.last_name,
             birth_date : values.birth_date.date.year + '-' + values.birth_date.date.month + '-' + values.birth_date.date.day,
             telephone : values.telephone };
-    console.log(obj);
+    // console.log(obj);
     const formData: FormData = new FormData();
     formData.append('obj', JSON.stringify(obj));
     if (this.file) {

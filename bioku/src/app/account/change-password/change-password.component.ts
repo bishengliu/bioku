@@ -10,12 +10,12 @@ import { LogAppStateService } from '../../_services/LogAppStateService';
 import { ChangePasswordService } from '../../_services/ChangePasswordService';
 import { RefreshService } from '../../_services/RefreshService';
 import { User } from '../../_classes/User';
-//redux
+// redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
 import { userChangePasswordActionAsync } from '../../_redux/account/account_actions';
 
-//custom from validator
+// custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 
 @Component({
@@ -28,28 +28,29 @@ export class ChangePasswordComponent implements OnInit {
   passwordForm: FormGroup;
   username: string;
   constructor(fb: FormBuilder, private alertService: AlertService, private refreshService: RefreshService,
-              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router, private route: ActivatedRoute,
-              private logAppStateService: LogAppStateService, private cValidators: CustomFormValidators, private changePasswordService: ChangePasswordService)
-  { 
-    //subscribe store state changes
-    appStore.subscribe(()=> this.updateState());
+              @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+              private router: Router, private route: ActivatedRoute, private logAppStateService: LogAppStateService,
+              private cValidators: CustomFormValidators, private changePasswordService: ChangePasswordService) {
+    // subscribe store state changes
+    appStore.subscribe(() => this.updateState());
     this.updateState();
 
-    //formGroup
+    // formGroup
     this.passwordForm = fb.group({
       'old_password': ['', Validators.required, this.cValidators.currentPasswordAsyncValidator(this.appStore)],
       'password1': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],
       'password2': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])]
-    });   
+    });
   }
 
-  
-  onSubmit(values: any): void{
-    this.appStore.dispatch(userChangePasswordActionAsync(this.username, values.old_password, values.password1, this.changePasswordService, this.alertService, this.logAppStateService, this.refreshService));
+  onSubmit(values: any): void {
+    this.appStore.dispatch(userChangePasswordActionAsync(this.username, values.old_password,
+      values.password1, this.changePasswordService, this.alertService, this.logAppStateService, this.refreshService));
   }
-  updateState(){ 
-    let state= this.appStore.getState();
-    if(state.authInfo === null || state.authInfo.token === null){
+
+  updateState() {
+    const state = this.appStore.getState();
+    if (state.authInfo === null || state.authInfo.token === null) {
       this.router.navigate(['/login']);
     }
   }

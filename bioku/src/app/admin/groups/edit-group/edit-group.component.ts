@@ -93,7 +93,7 @@ export class EditGroupComponent implements OnInit, OnDestroy, AfterViewInit {
             department: values.department,
             telephone : values.telephone
           };
-    console.log(obj);
+    // console.log(obj);
     const formData: FormData = new FormData();
     formData.append('obj', JSON.stringify(obj));
     if (this.file) {
