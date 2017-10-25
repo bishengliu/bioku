@@ -38,7 +38,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   currentSampleCount: number = 0; // active samples in the box
   totalBoxCapacity: number;
   user: User;
-  isPI: Boolean = false;
+  isPIorAssist: Boolean = false;
   // tslint:disable-next-line:no-inferrable-types
   rate: number = 0;
   // tslint:disable-next-line:no-inferrable-types
@@ -122,15 +122,28 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
 
   updateState() {
     const state = this.appStore.getState();
+    // check pi
     if (state.authInfo && state.authInfo.authUser) {
       this.user = state.authInfo.authUser;
-      if (this.user.roles && this.user.roles.length > 0) {
-        this.user.roles.forEach( r => {
+      if (this.user && this.user.roles) {
+        this.user.roles.forEach( (r, i) => {
           if (r.toLowerCase() === 'pi') {
-            this.isPI = true;
+            this.isPIorAssist = true;
           }
         })
       }
+    }
+    // check authGroup
+    if (state.authInfo && state.authInfo.authGroup) {
+        const authGroups = state.authInfo.authGroup;
+        authGroups.forEach( group => {
+          if (group.assistants) {
+            group.assistants.forEach( assist => {
+              if (assist.user_id === this.user.pk) {
+                this.isPIorAssist = true; }
+            })
+          }
+        })
     }
     if (state.containerInfo && state.containerInfo.currentContainer) {
       this.container = state.containerInfo.currentContainer;

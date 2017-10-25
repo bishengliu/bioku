@@ -7,7 +7,7 @@ export class Container {
     room: string;
     photo: string;
     photo_tag: string;
-    temperature:number;
+    temperature: number;
     code39: string;
     qrcode: string;
     tower: number;
@@ -18,6 +18,7 @@ export class Container {
     boxes: Array<Box>;
     first_box: Box; // get the first box in the container
     has_box: boolean;
+    sample_count: number;
 }
 
 export class ContainerNamePK {

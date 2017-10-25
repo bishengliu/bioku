@@ -17,6 +17,9 @@ export class ContainerDetailComponent implements OnInit {
   appUrl: string;
   isPIorAssist: Boolean = false;
   user: User = null;
+  totalCapacity: number;
+  actualOccupation: number;
+  percentageOccupation: number;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore) {
     this.appUrl = this.appSetting.URL;
     appStore.subscribe(() => this.updateState());
@@ -48,6 +51,16 @@ export class ContainerDetailComponent implements OnInit {
         })
     }
   }
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.container != null) {
+      if (this.container.has_box && this.container.first_box) {
+        const total_boxes = this.container.tower * this.container.shelf * this.container.box;
+        const max_sample_per_box = this.container.first_box.box_vertical * this.container.first_box.box_horizontal;
+        this.totalCapacity = total_boxes * max_sample_per_box;
+        this.actualOccupation = this.container.sample_count;
+        this.percentageOccupation = Math.ceil((this.actualOccupation / this.totalCapacity) * 100)
+      }
+    }
+  }
 
 }

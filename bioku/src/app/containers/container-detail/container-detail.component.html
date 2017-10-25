@@ -24,7 +24,9 @@
             <span><i class="caret right icon"></i> {{'#Shelf per tower: '+ container.shelf}}</span><br>
             <span><i class="caret right icon"></i> {{'#Box per shelf: '+ container.box}}</span><br>
             <span><i class="caret right icon"></i> {{'Description: '+ container.description}}</span><br>           
-          </div>          
+          </div>                 
         </div>
 <!-- end container info -->
+<!-- container occupation -->
+<sui-progress class="bottom attached blue active" [value]="percentageOccupation" [maximum]="100" [autoSuccess]="false" [precision]="0"></sui-progress>
 <!-- end one card -->
