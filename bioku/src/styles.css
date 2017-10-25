@@ -113,7 +113,7 @@ body{
 }
 
 .ng-sidebar{
-  overflow: scroll !important;
+  overflow-y: hidden !important;
   overflow-x: hidden !important;
 }
 ::-webkit-scrollbar {
@@ -360,7 +360,7 @@ div [class*="right floated"] {
 }
 
 .fix_label_width{
-  width:95px !important; 
+  width:100px !important; 
 }
 .green_bordered{
   border: 1px solid teal !important;

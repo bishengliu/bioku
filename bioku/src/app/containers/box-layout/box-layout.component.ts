@@ -38,6 +38,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   currentSampleCount: number = 0; // active samples in the box
   totalBoxCapacity: number;
   user: User;
+  isPI: Boolean = false;
   // tslint:disable-next-line:no-inferrable-types
   rate: number = 0;
   // tslint:disable-next-line:no-inferrable-types
@@ -123,6 +124,13 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     const state = this.appStore.getState();
     if (state.authInfo && state.authInfo.authUser) {
       this.user = state.authInfo.authUser;
+      if (this.user.roles && this.user.roles.length > 0) {
+        this.user.roles.forEach( r => {
+          if (r.toLowerCase() === 'pi') {
+            this.isPI = true;
+          }
+        })
+      }
     }
     if (state.containerInfo && state.containerInfo.currentContainer) {
       this.container = state.containerInfo.currentContainer;
