@@ -1,20 +1,20 @@
 export const AppSetting = {
 
-    // CHECK THESE BEFORE PRODUCTION BUILD
-    // API REST URL
+    ////////////////////////////////////////// CHECK THESE BEFORE PRODUCTION BUILD/////////////////
+    // API BACKEND REST URL
     'URL': 'http://127.0.0.1:8000',
     // 'URL': 'http://192.168.0.110:8000',
     // 'URL': 'http://127.0.0.1/biodataware',
     // APP URL FOR URL LINK TO THE FRONT-END
     'APP_URL': 'http://127.0.0.1:4200',
     // FOR SENDINFG RESET PASSWORD
-    'APP_DEFAULT_EMAIL': 'b.liu@bioku.nl',
+    'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
 
     // APP VERSION
-    'VERSION': '0.0.1-alpha2',
+    'VERSION': '0.0.1-alpha3',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
-    'NAME': 'BIOKU',
+    'NAME': 'BIOKU', // ALSO USED FOR PASSWORD RESET EMAIL MESSAGE
     // APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,
     'BOX_VERTICAL': 8,
@@ -34,7 +34,7 @@ export const AppSetting = {
     'SAMPLE_TYPE': ['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS'], // DO NOT CHANGE THIS *****
     // sample search keywords
 
-    ////////////////////////////////// API URLS////////////////////////////
+    ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
     // confrim reset password

@@ -29,8 +29,10 @@ export class ForgetPasswordComponent implements OnInit {
   onForget(values: any) {
     const url = this.appSetting.APP_URL + this.appSetting.RESET_PASSWORD;
     const default_from_email = this.appSetting.APP_DEFAULT_EMAIL;
+    const site_name = this.appSetting.NAME;
     const obj = {
-      email : values.email,
+      site_name: site_name,
+      email: values.email,
       url: url,
       default_from_email: default_from_email };
     // console.log(obj);
