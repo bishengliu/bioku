@@ -20,6 +20,7 @@ export class RefreshService {
         try {
             // DUMP AUTHINFO
             if (typeof(Storage) === 'undefined') {
+                // tslint:disable-next-line:quotemark
                 console.log("brower doesn't support HTML5 LocalStorage, cannot enable refresh service!");
             } else {
                 // dump the authInfo
