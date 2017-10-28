@@ -83,6 +83,7 @@ import { BoxDetailActionPanelComponent } from './containers/box-detail-action-pa
 import { BoxLayoutSimpleComponent } from './containers/box-layout-simple/box-layout-simple.component';
 import { ContainerOverviewComponent } from './containers/container-overview/container-overview.component';
 import { ContainerBoxOverviewComponent } from './containers/container-box-overview/container-box-overview.component';
+// tslint:disable-next-line:max-line-length
 import { ContainerBoxOverviewActionPanelComponent } from './containers/container-box-overview-action-panel/container-box-overview-action-panel.component';
 import { ContainerBoxAddComponent } from './containers/container-box-add/container-box-add.component';
 import { ContainerBoxMoveComponent } from './containers/container-box-move/container-box-move.component';
@@ -172,6 +173,10 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     DragulaModule,
     // ng2-sticky
     // Ng2StickyModule,
+
+    // xlsx
+    // https://www.npmjs.com/package/xlsx
+    // https://github.com/SheetJS/js-xlsx/tree/825830d1cd18374cf38576f274c8535c1f099ac9/demos/angular2
     //////////////// end 3rd party modules///////////////
   ],
   providers: [
