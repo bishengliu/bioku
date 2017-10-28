@@ -32,7 +32,9 @@ export class XlsxUploadComponent implements OnInit {
   exportXlsx(): void {
     this.xlsxHelperService.exportXlsx(this.data, this.worksheet_name, this.fileName);
   }
-
+  onFileDrop(evt: any) {
+    console.log(evt);
+  }
   // DROP
    handleDrop(evt: any) {
     this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
