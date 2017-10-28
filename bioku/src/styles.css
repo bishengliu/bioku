@@ -36,7 +36,12 @@ body{
     font-size: 80%;
   }
 }
-
+.logo_image{
+  top: 5px;
+}
+.app_name_position_fix{
+  padding-top: 10px !important;
+}
 .bioku-header{
   font-family: Pacifico, Rubik, Lato !important;
 }
