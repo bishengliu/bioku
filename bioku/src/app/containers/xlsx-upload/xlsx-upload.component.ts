@@ -12,7 +12,7 @@ export class XlsxUploadComponent implements OnInit {
   data: Array<Array<any>> = [ [1, 2], [3, 4] ];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
   fileName: String = 'SheetJS.xlsx';
-
+  rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
   constructor() { }
 
   ngOnInit() {
@@ -25,18 +25,19 @@ export class XlsxUploadComponent implements OnInit {
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
     /* read workbook */
-    const bstr: string = e.target.result;
-    const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-
+    let bstr = e.target.result;
+    if (!this.rABS) { bstr = new Uint8Array(bstr) };
+    const workbook = XLSX.read(bstr, {type: this.rABS ? 'binary' : 'array'});
     /* grab first sheet */
-    const wsname: string = wb.SheetNames[0];
-    const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+    const wsname: string = workbook.SheetNames[0];
+    const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
 
     /* save data */
     this.data = <Array<Array<any>>>(XLSX.utils.sheet_to_json(ws, {header: 1}));
     console.log(this.data);
     };
-    reader.readAsBinaryString(target.files[0]);
+    // reader.readAsBinaryString(target.files[0]);
+    if (this.rABS) {reader.readAsBinaryString(target.files[0]); } else {reader.readAsArrayBuffer(target.files[0])};
 }
   export(): void {
     /* generate worksheet */
@@ -49,11 +50,54 @@ export class XlsxUploadComponent implements OnInit {
     saveAs(new Blob([this.s2ab(wbout)]), 'SheetJS.xlsx');
   }
 
+  // DROP
+   handleDrop(evt: any) {
+    evt.stopPropagation(); evt.preventDefault();
+    const files = evt.dataTransfer.files, f = files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      let bstr = e.target.result;
+      if (!this.rABS) { bstr = new Uint8Array(bstr) };
+      const workbook = XLSX.read(bstr, {type: this.rABS ? 'binary' : 'array'});
+
+      /* grab first sheet */
+    const wsname: string = workbook.SheetNames[0];
+    const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
+
+    /* save data */
+    this.data = <Array<Array<any>>>(XLSX.utils.sheet_to_json(ws, {header: 1}));
+    console.log(this.data);
+
+    };
+    if (this.rABS) {reader.readAsBinaryString(f); } else {reader.readAsArrayBuffer(f)};
+  }
+
   s2ab(s: string): ArrayBuffer {
     const buf: ArrayBuffer = new ArrayBuffer(s.length);
     const view: Uint8Array = new Uint8Array(buf);
     // tslint:disable-next-line:no-bitwise
     for (let i = 0; i !== s.length; ++i) { view[i] = s.charCodeAt(i) & 0xFF };
     return buf;
+  }
+
+  // get vale of a cell
+  getCellValue(workbook: XLSX.WorkSheet, worksheet_name: string,  address_of_cell = 'A1'): any {
+    /* Get worksheet */
+    const worksheet = workbook.Sheets[worksheet_name];
+    /* Find desired cell */
+    const desired_cell = worksheet[address_of_cell];
+    /* Get the value */
+    const desired_value = (desired_cell ? desired_cell.v : undefined);
+    return desired_value;
+  }
+
+  // append new sheet to a workbook
+  newWorkSheet(workbook: XLSX.WorkSheet, worksheet_name, worksheet_data: Array<Array<any>>): void {
+    /* make worksheet */
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheet_data);
+    /* Add the sheet name to the list */
+    workbook.SheetNames.push(worksheet_name);
+    /* Load the worksheet object */
+    workbook.Sheets[worksheet_name] = worksheet;
   }
 }
