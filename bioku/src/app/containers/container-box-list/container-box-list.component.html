@@ -23,7 +23,7 @@
   <div class="six wide column"> 
     <a class="ui blue button float-right" [routerLink]="['/containers/overview/', id]"><i class="icon pie chart"></i>OVERVIEW</a>
     <a *ngIf="container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/search/']"><i class="icon search"></i>SAMPLES</a>
-    <a *ngIf="!container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/search/']"><i class="icon colud upload"></i>IMPORT</a>
+    <a *ngIf="!container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/upload/']"><i class="icon colud upload"></i>IMPORT</a>
   </div>
 </div>
 <!--loading info-->

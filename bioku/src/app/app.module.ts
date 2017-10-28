@@ -3,49 +3,47 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-/////////////////3rd party modules/////////////////////
-//color picker
-//https://www.npmjs.com/package/ng2-color-picker
+///////////////// 3rd party modules /////////////////////
+// color picker
+// https://www.npmjs.com/package/ng2-color-picker
 import { ColorPickerModule } from 'ng2-color-picker';
-//symantic -ui
-//https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
+// symantic -ui
+// https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
 import {SuiModule} from 'ng2-semantic-ui';
-//sidebar
-//https://www.npmjs.com/package/ng-sidebar
+// sidebar
+// https://www.npmjs.com/package/ng-sidebar
 import { SidebarModule } from 'ng-sidebar';
-//mydatepicker
-//https://github.com/kekeh/mydatepicker
+// mydatepicker
+// https://github.com/kekeh/mydatepicker
 import { MyDatePickerModule } from 'mydatepicker';
-//dragula
-//https://github.com/bevacqua/angularjs-dragula
+// dragula
+// https://github.com/bevacqua/angularjs-dragula
 import { DragulaModule } from 'ng2-dragula';
-//angular2-useful-swiper
-//import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
-//ng2-sticky: https://www.npmjs.com/package/ng2-sticky
-//import { Ng2StickyModule } from 'ng2-sticky';
-/////////////////////end 3rd party modules //////////////
-
-//routing
+// angular2-useful-swiper
+// import { SwiperModule } from 'angular2-useful-swiper'; //npm install --save angular2-useful-swiper
+// ng2-sticky: https://www.npmjs.com/package/ng2-sticky
+// import { Ng2StickyModule } from 'ng2-sticky';
+// sheetJS
+// import { SheetJSComponent } from './sheetjs.component';
+///////////////////// end 3rd party modules //////////////
+// routing
 import { RouterModule} from '@angular/router';
-//app root routes
+// app root routes
 import { routes } from './_routes/root-routes';
-
-//custom providers
+// custom providers
 import {AlertServiceProvider} from './_providers/AlertServiceProvider';
 import {AppSettingProvider} from './_providers/AppSettingProvider';
 import {APIServiceProviders} from './_providers/APIServiceProviders';
 import { GuardProviders } from './_providers/GuardProviders';
 import { LocalStorageServiceProvider } from './_providers/LocalStorageServiceProvider';
 import { UtilityServiceProvider } from './_providers/UtilityServiceProvider';
-
-//custom form validators
+// custom form validators
 import {CustomFormValidatorsProvider} from './_providers/CustomFormValidatorsProvider';
-
-//redux
+// redux
 import { StoreProviders } from './_providers/ReduxProviders';
 import { LogerProvider } from './_providers/LogAppStateProvider';
 
-//all components
+// all components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
@@ -97,6 +95,7 @@ import { SampleSearchResultComponent } from './containers/sample-search-result/s
 import { SampleSearchActionPanelComponent } from './containers/sample-search-action-panel/sample-search-action-panel.component';
 import { ForgetPasswordComponent } from './account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
+import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +149,7 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
     SampleSearchActionPanelComponent,
     ForgetPasswordComponent,
     ResetPasswordComponent,
+    XlsxUploadComponent,
   ],
   imports: [
     BrowserModule,
