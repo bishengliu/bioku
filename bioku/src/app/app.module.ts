@@ -96,6 +96,7 @@ import { SampleSearchActionPanelComponent } from './containers/sample-search-act
 import { ForgetPasswordComponent } from './account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './account/reset-password/reset-password.component';
 import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.component';
+import { FileDropDirective } from './_directives/file-drop/file-drop.directive';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.compon
     ForgetPasswordComponent,
     ResetPasswordComponent,
     XlsxUploadComponent,
+    FileDropDirective,
   ],
   imports: [
     BrowserModule,

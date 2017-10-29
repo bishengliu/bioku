@@ -1,11 +1,12 @@
 <input type="file" (change)="onFileChange($event)" multiple="false" />
 <div class="ui divider"></div>
-<div class="" (change)="onFileDrop($event)">
+
+<div class="dropzone" appFileDrop 
+(validFiles)="handleValidFileDrop($event)"
+[allowedExtensions]="allowedFileExtension"
+[allowedMultipleFiles]="allowedMultipleFiles" >
   <div class="text-wrapper">
     <div class="centered">Drop your file here!</div>
-    <div class="centered">Drop your file here!</div>
-    <div class="centered">https://scotch.io/@minrock/how-to-create-a-drag-and-drop-file-directive-in-angular2-with-angular-cli-part-2</div>
-    
   </div>
 </div>
 <div class="ui divider"></div>
