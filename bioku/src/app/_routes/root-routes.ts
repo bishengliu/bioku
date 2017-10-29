@@ -1,6 +1,5 @@
 // root routes
 // all sub routes must bw registered here before use
-
 import { HomeComponent } from '../home/home.component';
 import { AdminComponent } from '../admin/admin.component';
 import { AccountComponent } from '../account/account.component';
@@ -22,6 +21,7 @@ import { SampleSearchComponent } from '../containers/sample-search/sample-search
 import { StoreSampleComponent } from '../containers/store-sample/store-sample.component';
 import { ForgetPasswordComponent } from '../account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
+import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
 // upload
 import { XlsxUploadComponent } from '../containers/xlsx-upload/xlsx-upload.component';
 // guards
@@ -31,7 +31,7 @@ import { PIGuard } from '../_guards/PIGuard';
 import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
 
-// outing
+// routing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
 import { adminRoutes } from '../admin/_routes/admin-routes';
@@ -46,7 +46,7 @@ export const routes: Routes = [
   {path: 'reset_password/:uid/:token', component: ResetPasswordComponent, canActivate: [CleanLocalStorageGuard, ]},
   {path: 'user', component: AccountComponent, children: accountRoutes},
   {path: 'admin', component: AdminComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, AdminGuard, ], children: adminRoutes},
-  { path: 'containers/upload', component: XlsxUploadComponent, },
+  // { path: 'containers/upload', component: XlsxUploadComponent, },
   {path: 'containers/add', component: AddContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard,  ] },
   {path: 'containers/search', component: SampleSearchComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ], pathMatch: 'full' },
   {path: 'containers/overview/:id', component: ContainerOverviewComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
@@ -55,6 +55,7 @@ export const routes: Routes = [
   {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:id/upload', component: ContainerSampleUploadComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard, ] },
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },

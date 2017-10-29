@@ -1,14 +1,15 @@
-import { Directive, EventEmitter, Input, Output, HostListener, HostBinding } from '@angular/core';
+import { Directive, EventEmitter, Input, Output, HostListener, HostBinding, Injectable } from '@angular/core';
 import {  AlertService } from '../../_services/AlertService';
+
 @Directive({
   selector: '[appFileDrop]'
 })
 export class FileDropDirective {
   @Output() private validFiles: EventEmitter<Array<File>> = new EventEmitter();
-  // @Output() private invalidFiles: EventEmitter<Array<File>> = new EventEmitter();
   @Input()  private allowedExtensions: Array<string> =  ['xlsx']; // default excel file extension
   @Input()  private allowedMultipleFiles: Boolean =  true ;
   @HostBinding('style.background') private background = '#eee';
+
   constructor(private alertService: AlertService) { }
 
   @HostListener('dragover', ['$event']) public onDragOver(evt) {
@@ -31,12 +32,10 @@ export class FileDropDirective {
     if (!this.allowedMultipleFiles && files && files.length > 1) {
       this.alertService.error('Only one file is allowed!', true);
       this.validFiles.emit([]);
-      // this.invalidFiles.emit([]);
     } else {
       // check file extensions
       const valid_files: Array<File> = [];
       const invalid_files: Array<string> = [];
-      // const invalid_files: Array<File> = [];
       if (files.length > 0) {
         for ( let i = 0; i < files.length; i++) {
           if (files[i].name.indexOf('.') === -1) {
