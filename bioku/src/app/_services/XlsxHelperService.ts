@@ -62,16 +62,11 @@ export class XlsxHelperService {
         return buf;
     }
 
-    parseDrop(evt: any, rABS: Boolean, fileName: string): Observable<Array<Array<any>>> {
+    // only parse the first file
+    parseDrop(evt: Array<File>, rABS: Boolean, fileName: string): Observable<Array<Array<any>>> {
         const subject$ = new Subject<Array<Array<any>>>();
         try {
-            evt.stopPropagation(); evt.preventDefault();
-            const target: DataTransfer = <DataTransfer>(evt.target);
-            if (target.files.length !== 1) {
-                this.alertService.error('Cannot upload multiple files!', false);
-                subject$.error('Cannot upload multiple files!');
-            };
-            const files = evt.dataTransfer.files, f = files[0];
+            const files = evt, file = files[0];
             const reader = new FileReader();
             let data: Array<Array<any>> = [];
             reader.onload = (e: any) => {
@@ -86,7 +81,7 @@ export class XlsxHelperService {
                 subject$.next(data);
                 subject$.complete();
             };
-            if (rABS) { reader.readAsBinaryString(f); } else { reader.readAsArrayBuffer(f) };
+            if (rABS) { reader.readAsBinaryString(file); } else { reader.readAsArrayBuffer(file) };
         } catch (error) {
             subject$.error('Something went wrong!');
         }

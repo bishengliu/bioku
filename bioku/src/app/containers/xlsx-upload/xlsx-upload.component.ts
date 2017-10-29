@@ -15,7 +15,7 @@ export class XlsxUploadComponent implements OnInit {
   data: Array<Array<any>> = [];
   workbook_opts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
   fileName = 'SheetJS.xlsx';
-  worksheet_name = '';
+  worksheet_name = 'sheet';
   allowedFileExtension: Array<string> = ['xlsx'];
   allowedMultipleFiles: Boolean = false;
   rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
@@ -37,19 +37,14 @@ export class XlsxUploadComponent implements OnInit {
     this.xlsxHelperService.exportXlsx(this.data, this.worksheet_name, this.fileName);
   }
 
-  onFileDrop(evt: any) {
-    console.log(evt);
-  }
-
-  // DROP
-  handleValidFileDrop(evt: any) {
-     console.log(evt);
-    // this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
-    // .subscribe(
-    //   (data: Array<Array<any>>) => {
-    //     this.data = data; console.log(this.data); },
-    //   (err: string) => {
-    //     console.log(err);
-    //   });
+  // DROP oly one excel xlsx file
+  handleValidFileDrop(evt: Array<File>) {
+    this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
+    .subscribe(
+      (data: Array<Array<any>>) => {
+        this.data = data; console.log(this.data); },
+      (err: string) => {
+        console.log(err);
+      });
   }
 }
