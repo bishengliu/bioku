@@ -17,12 +17,12 @@
         </a>
     </div>
     <!-- before login navbar-font -->
-    <div *ngIf="!isLogin" class="ui right icon secondary inverted pointing menu small narrow_secondary_menu borderless">
-        <div class="left blue item topnav_vertical_padding clickable" (click)="goHome()">
+    <div *ngIf="!isLogin" class="ui icon secondary inverted pointing menu small narrow_secondary_menu borderless">
+        <div class="left item topnav_vertical_padding clickable" (click)="goHome()">
             <img class="ui avatar image logo_image" src="assets/logo/bk.png">
-            <em class="clickable grey-text app_name_position_fix">{{ appName.toUpperCase() }}</em>           
+            <em class="grey-text app_name_position_fix">{{ appName.toUpperCase() }}</em>           
         </div>
-        <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
+        <!-- <div class="centered item"><span class="white-text">A user-friendly container system for biomaterials</span></div> -->
         <div class="right item tiny_vertical">
             <div class="ui tiny buttons tiny_vertical">
                 <a [routerLink]="['/login']" class="ui primary button">

@@ -186,6 +186,16 @@ body{
   padding-left: 10px !important;
   padding-right: 10px !important;
 }
+.huge_around{
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  margin-top: 50px !important;
+  margin-bottom: 50px !important;
+}
+.huge_bottom{
+  padding-bottom: 50px !important;
+  margin-bottom: 50px !important;
+}
 .box_cardview{
   padding-top: 3px !important;
   padding-bottom: 3px !important;
@@ -480,3 +490,13 @@ div [class*="right floated"] {
 div, p, span, a{
   font-family: Rubik, Lato, Helvetica, Arial,sans-serif;
 }
+
+div [class*="left floated"] {
+  float: left;
+  margin-left: 0.25em;
+}
+
+div [class*="right floated"] {
+  float: right;
+   margin-right: 0.25em;
+} 
