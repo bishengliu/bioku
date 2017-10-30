@@ -187,9 +187,9 @@ body{
   padding-right: 10px !important;
 }
 .huge_around{
-  padding-top: 50px !important;
+  padding-top: 25px !important;
   padding-bottom: 50px !important;
-  margin-top: 50px !important;
+  margin-top: 25px !important;
   margin-bottom: 50px !important;
 }
 .huge_bottom{
@@ -499,4 +499,7 @@ div [class*="left floated"] {
 div [class*="right floated"] {
   float: right;
    margin-right: 0.25em;
-} 
+}
+.hidden {
+  display: none !important;
+}
