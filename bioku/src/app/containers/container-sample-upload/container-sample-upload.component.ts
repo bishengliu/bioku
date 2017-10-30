@@ -27,6 +27,8 @@ export class ContainerSampleUploadComponent implements OnInit {
   container: Container;
   user: User;
   allowUpload: Boolean = false;
+  load_failed: Boolean = false;
+  loading: Boolean = true;
   constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
     private localStorageService: LocalStorageService, private containerService: ContainerService,
     private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
@@ -49,6 +51,8 @@ export class ContainerSampleUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
+    this.load_failed = false;
     this.sub = this.route.params
     .mergeMap((params) => {
       this.id = +params['id'];
@@ -60,8 +64,12 @@ export class ContainerSampleUploadComponent implements OnInit {
     })
     .subscribe((container: any) => {
       this.container = container;
+      this.loading = false;
+      this.load_failed = false;
       },
       (err) => {
+        this.loading = false;
+        this.load_failed = true;
         this.alertService.error('Something went wrong, fail to load current container from the server!', true);
       });
   }

@@ -98,6 +98,8 @@ import { ResetPasswordComponent } from './account/reset-password/reset-password.
 import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.component';
 import { FileDropDirective } from './_directives/file-drop/file-drop.directive'; // driective
 import { ContainerSampleUploadComponent } from './containers/container-sample-upload/container-sample-upload.component';
+import { ContainerSampleUploadHelperComponent } from './containers/container-sample-upload-helper/container-sample-upload-helper.component';
+import { ContainerSampleUploaderComponent } from './containers/container-sample-uploader/container-sample-uploader.component';
 
 @NgModule({
   declarations: [
@@ -154,6 +156,8 @@ import { ContainerSampleUploadComponent } from './containers/container-sample-up
     XlsxUploadComponent,
     FileDropDirective,
     ContainerSampleUploadComponent,
+    ContainerSampleUploadHelperComponent,
+    ContainerSampleUploaderComponent,
   ],
   imports: [
     BrowserModule,

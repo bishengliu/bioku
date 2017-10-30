@@ -1,0 +1,200 @@
+<div class="ui mini three steps">
+  <a class="active step">
+    <i class="icon table"></i>
+    <div class="content">
+      <div class="title">box positions</div>
+      <div class="description">define boxes in the container</div>
+    </div>
+  </a>
+  <a class="disabled step">
+    <i class="icon list layout"></i>
+    <div class="content">
+      <div class="title">sample position</div>
+      <div class="description">define samples in the box</div>
+    </div>
+  </a>
+  <a class="disabled step">
+    <i class="file excel outline icon"></i>
+    <div class="content">
+      <div class="title">upload excel file</div>
+      <div class="description">define sample attributes to upload</div>
+    </div>
+  </a>
+</div>
+<!-- step 1 & 2-->
+<br />
+<br />
+<br />
+<br />
+<!-- step 1 only-->
+<div class="ui container blue segment center aligned">
+  <div class="ui grey-text horizontal divider header">How is the box position defined in your excel file?</div>
+  <div class="ui form">
+    <div class="grouped fields">
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_position_normal" type="radio" name="box_position_type" checked="checked" value="box_position_normal">
+          <label for="box_position_normal">my boxes are defined as "tower", "shelf" and "box"</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_position_abnormal" type="radio" name="box_position_type" value="box_position_abnormal">
+          <label for="box_position_abnormal">my boxes are not defined as "tower", "shelf" and "box"</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div class="ui form">
+    <div class="grouped fields">
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_one_column" type="radio" name="define_box_position" checked="checked" value="box_one_column">
+          <label for="box_one_column">"tower", "shelf" and "box" in one data column</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_three_column" type="radio" name="define_box_position" value="box_three_column">
+          <label for="box_three_column">"tower", "shelf" and "box" in 3 data columns</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_zero_column" type="radio" name="define_box_position" value="box_zero_column">
+          <label for="box_zero_column">box position is integrated in sample positions in my excel</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="box_zero_column" type="radio" name="define_box_position" value="box_zero_column">
+          <label for="box_zero_column">box position is separated sample positions in my excel</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<br />
+<div class="ui container brown segment center aligned">
+  <div class="ui grey-text horizontal divider header">How does the box position look like in your excel file?</div>
+  <div class="ui form">
+    <div class="five fields">
+      <div class="field">
+        <label>prefix to trim</label>
+        <input type="text" placeholder="type the prefix to trim">
+      </div>
+      <div class="field">
+        <label>tower</label>
+        <select class="ui dropdown">
+          <option value="1" selected>digits</option>
+          <option value="0">letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>shelf</label>
+        <select class="ui dropdown">
+          <option value="1" selected>digits</option>
+          <option value="0">letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>box</label>
+        <select class="ui dropdown">
+          <option value="1" selected>digits</option>
+          <option value="0">letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>joined with</label>
+        <select class="ui dropdown">
+          <option value="-" selected>-</option>
+          <option value="/">/</option>
+          <option value="~">~</option>
+          <option value=".">.</option>
+          <option value=";">;</option>
+          <option value="">Nothing</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="blue-text">your box position looks like this: 1-1-1</div>
+</div>
+<!-- end step 1 only-->
+
+<!-- step 2 only-->
+<div class="ui container blue segment center aligned">
+  <div class="ui grey-text horizontal divider header">How is the sample position defined in your excel file?</div>
+  <div class="ui form">
+    <div class="grouped fields">
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="sample_one_column" type="radio" name="define_sample_position" checked="checked" value="sample_one_column">
+          <label for="sample_one_column">"Column" and "Row" in one data column</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="sample_two_column" type="radio" name="define_sample_position" value="sample_two_column">
+          <label for="sample_two_column">"Column" and "Row" in 2 data columns</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          <input id="sample_increasing_number" type="radio" name="define_sample_position" value="sample_increasing_number">
+          <label for="sample_increasing_number">Sample positions are defined as the increaing numbers in my excel</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<br />
+<div class="ui container brown segment center aligned">
+  <div class="ui grey-text horizontal divider header">How does the sample position look like in your excel file?</div>
+  <div class="ui form">
+    <div class="five fields">
+      <div class="field">
+        <label>box position</label>
+        <input type="text" placeholder="">
+      </div>
+      <div class="field">
+        <label>prefix to trim</label>
+        <input type="text" placeholder="type the prefix to trim">
+      </div>
+      <div class="field">
+        <label>sample column</label>
+        <select class="ui dropdown">
+          <option value="1" selected>digits</option>
+          <option value="0">letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>sample row</label>
+        <select class="ui dropdown">
+          <option value="1" selected>digits</option>
+          <option value="0">letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>joined with</label>
+        <select class="ui dropdown">
+          <option value="-" selected>-</option>
+          <option value="/">/</option>
+          <option value="~">~</option>
+          <option value=".">.</option>
+          <option value=";">;</option>
+          <option value="">Nothing</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="blue-text">your sample position looks like this: </div>
+</div>
+<!-- end step 2 only-->
+<!-- end step 1 & 2-->
+<!-- step 3 upload -->
+
+<!-- step 3 upload -->

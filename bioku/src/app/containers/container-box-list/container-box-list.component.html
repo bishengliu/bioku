@@ -23,7 +23,7 @@
   <div class="six wide column"> 
     <a class="ui blue button float-right" [routerLink]="['/containers/overview/', id]"><i class="icon pie chart"></i>OVERVIEW</a>
     <a *ngIf="container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/search/']"><i class="icon search"></i>SAMPLES</a>
-    <a *ngIf="!container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/upload/']"><i class="icon colud upload"></i>IMPORT</a>
+    <a *ngIf="!container.has_box" class="ui blue inverted button float-right" [routerLink]="['/containers/', id, 'upload']"><i class="icon colud upload"></i>IMPORT</a>
   </div>
 </div>
 <!--loading info-->
@@ -41,7 +41,7 @@
 </div>
 <!--no record-->
 <div *ngIf="!loading && !load_failed && myBoxes.length > 0 && (searchedBoxes == null || searchedBoxes.length == 0)" 
-  class="ui segments segment container center aligned">
+  class="ui segment container center aligned">
     <p class="">no favourite box found, you can click the "SHOW ALL" slider to show all boxes in the current container!</p>
 </div>
 <div *ngIf="!loading && !load_failed && (myBoxes == null || myBoxes.length == 0)" 

@@ -1,3 +1,44 @@
-<p>
-  container-sample-upload works!
-</p>
+<div class="ui grid row">
+  <div class="eight wide column"></div>
+  <div class="eight wide column">
+    <app-container-box-navbar></app-container-box-navbar>
+  </div>
+</div>
+
+<div class="ui grid row small_padding">
+  <div class="five wide column">
+    <h3 class="ui blue left aligned header"><i class="icon cloud upload"></i>UPLOAD SAMPLES</h3>
+  </div>
+  <div class="five wide column">
+  </div>
+  <div class="six wide column"> 
+    <a class="ui button float-right" [routerLink]="['/containers', id]"><i class="icon caret left"></i>CANCEL</a>
+  </div>
+</div>
+
+<div class="ui grid row small_padding" *ngIf="!load_failed && !loading">
+  <div class="ui floating info icon message">
+      <i class="announcement icon"></i>
+      <div class="content">
+          <div class="header">
+            Have you heard about our mailing list?
+          </div>
+          <p>Get the best news in your e-mail every day.</p>
+        </div>
+  </div>
+  <app-container-sample-upload-helper class="sixteen wide column" *ngIf="allowUpload"></app-container-sample-upload-helper>
+</div>
+
+<!--loading info-->
+<div *ngIf="loading" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">loading current container ... </p>
+</div>
+
+<!--failed  -->
+<div *ngIf="!load && load_failed" class="ui tertiary segment center aligned">
+  <br/><br/><br/>
+  <p><i class="ui massive warning sign icon brown"></i></p>
+  <h3 class="ui brown header">Something went wrong, fail to load current container from the server!</h3>
+  <br/><br/><br/>
+</div>
