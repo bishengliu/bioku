@@ -18,6 +18,15 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   shelf = 1;
   box = 1;
   // end step 1
+  // step 2
+  sampleLabelDefinition = 0; // row-column in on data column; 1: in 2 columns; 2: increasing numbers
+  // samplePrefix = '';
+  boxLabel = 0;
+  boxJoin = '';
+  sampleRow = 0;
+  sampleColumn = 1;
+  sampleJoin = '';
+  // sampleAppendix = '';
   constructor() { }
 
   ngOnInit() {
@@ -32,32 +41,60 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   toggleBoxSampleSeparated() {
     this.box_sample_separated = !this.box_sample_separated;
   }
-  updatePrefix(evt: any) {
-    this.prefix = evt;
-    console.log(this.prefix);
-  }
+  // updatePrefix(evt: any) {
+  //   this.prefix = evt;
+  // }
   updateTower(evt: any) {
     this.tower = evt;
-    console.log(this.tower);
   }
   updateShelf(evt: any) {
     this.shelf = evt;
-    console.log(this.shelf);
   }
   updateBox(evt: any) {
-    console.log(evt);
     this.box = evt;
   }
   updateJoin(evt: any) {
     this.join = evt;
-    console.log(this.join);
   }
   updateAppendix(evt: any) {
     this.appendix = evt;
-    console.log(this.appendix);
   }
   saveFirstStep() {
     this.activeStep = this.activeStep + 1;
   }
   // end step 1
+
+  // step 2
+  updateSampleLabelDefinition (evt: any) {
+    this.sampleLabelDefinition = evt;
+  }
+  // updateSamplePrefix(evt: any) {
+  //   this.samplePrefix = evt;
+  // }
+  updateBoxLabel(evt: any) {
+    this.boxLabel = evt;
+  }
+  updateBoxJoin(evt: any) {
+    this.boxJoin = evt;
+  }
+  updateSampleRow(evt: any) {
+    this.sampleRow = evt;
+  }
+  updateSampleColumn(evt: any) {
+    this.sampleColumn = evt;
+  }
+  updateSampleJoin(evt: any) {
+    this.sampleJoin = evt;
+  }
+  // updateSampleAppendix(evt: any) {
+  //   this.sampleAppendix = evt;
+  // }
+
+  backFirstStep() {
+    this.activeStep = this.activeStep - 1;
+  }
+  saveSecondStep() {
+    this.activeStep = this.activeStep + 1;
+  }
+  // end step 2
 }

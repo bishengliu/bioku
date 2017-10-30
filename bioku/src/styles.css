@@ -503,3 +503,6 @@ div [class*="right floated"] {
 .hidden {
   display: none !important;
 }
+.wide_content{
+  width: 100% !important;
+}
