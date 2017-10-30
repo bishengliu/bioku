@@ -24,7 +24,7 @@
 <!-- step 1-->
 <div class="ui grid row" [ngClass]="{'hidden': activeStep !== 1 }">
   <div class="sixteen wide column">
-    <div class="huge_around">
+    <div class="medium_around">
       <div class="ui icon mini top attached blue inverted message">
         <i class="icon table"></i>
         <div class="content">
@@ -38,7 +38,7 @@
         <div class="ui header red">
           <i class="icon caret right"></i>HOW IS THE BOX LABELD?</div>
       </div>
-      <div class="ui two attached huge steps huge_bottom">
+      <div class="ui two attached huge steps medium_bottom">
         <div class="step">
           <div class="ui top left attached brown label">STEP 1</div>
           <div class="content">
@@ -77,7 +77,7 @@
         <div class="ui header red">
           <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
       </div>
-      <div class="ui attached segment huge_bottom" [ngClass]="{'disabled': !box_defined_as_normal}">
+      <div class="ui attached segment medium_bottom" [ngClass]="{'disabled': !box_defined_as_normal}">
         <div class="ui top left attached brown label">STEP 3</div>
         <div class="ui form">
           <div class="four fields">
@@ -127,16 +127,15 @@
             </div>
           </div>
         </div>
-        <div class="grey-text text-center">your box position looks like this:
-          <span>
-            <span class="grey-text">
-              <s>{{prefix}}</s>
-            </span>
-            <strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong>
-            <span class="grey-text">
-              <s>{{appendix}}</s>
-            </span>
+      </div>
+      <div class="ui mini red tertiary segment attached">
+        <div class="grey-text text-center">your box position/label looks like this:
+          <span *ngIf="box_defined_as_normal">
+            <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
           </span>
+          <span *ngIf="!box_defined_as_normal">your box position/label doesn't follow the pattern of "tower-shelf-box"</span>
+          <span *ngIf="!box_defined_as_normal && box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+          <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample lable</span>
         </div>
       </div>
       <div class="ui two mini buttons bottom attached">
@@ -151,11 +150,10 @@
 </div>
 <!-- end step 1-->
 
-
 <!-- step 2 -->
 <div class="ui grid row" [ngClass]="{'hidden': activeStep !== 2 }">
   <div class="sixteen wide column">
-    <div class="huge_around">
+    <div class="medium_around">
       <div class="ui icon mini top attached blue inverted message">
         <i class="icon grid layout"></i>
         <div class="content">
@@ -170,7 +168,7 @@
           <i class="icon caret right"></i>HOW IS THE SAMPLE LABELD?</div>
       </div>
       <!-- box_defined_as_normal == true-->
-      <div class="ui fluid vertical attached huge steps huge_bottom">
+      <div class="ui fluid vertical attached huge steps medium_bottom">
         <div class="step">
           <div class="ui top left attached brown label">STEP 1</div>
           <div class="content wide_content">
@@ -226,16 +224,14 @@
                 </div>
                 <div class="field">
                   <label for="sample_row">sample row</label>
-                  <select id="sample_row" class="ui dropdown" [(ngModel)]="sampleRow" (ngModelChange)="updateSampleRow($event)" 
-                  [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <select id="sample_row" class="ui dropdown" [(ngModel)]="sampleRow" (ngModelChange)="updateSampleRow($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
                     <option value="1">digits</option>
                     <option value="0">letter</option>
                   </select>
                 </div>
                 <div class="field">
                   <label for="sample_join">sample label joined with</label>
-                  <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" 
-                  [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
                     <option value="-">-</option>
                     <option value="/">/</option>
                     <option value="~">~</option>
@@ -246,45 +242,109 @@
                 </div>
                 <div class="field">
                   <label for="sample_column">sample column</label>
-                  <select id="sample_column" class="ui dropdown" [(ngModel)]="sampleColumn" (ngModelChange)="updateSampleColumn($event)" 
-                  [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <select id="sample_column" class="ui dropdown" [(ngModel)]="sampleColumn" (ngModelChange)="updateSampleColumn($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
                     <option value="1">digits</option>
                     <option value="0">letter</option>
                   </select>
                 </div>
               </div>
             </div>
-            <h5 class="grey-text text-center">your sample label looks like this:
-              <span>
-                <span class="violet-text" 
-                *ngIf="!box_defined_as_normal && !box_sample_separated"><strong>{{boxLabel === 1 ? 1: "A"}}{{boxJoin}}</strong></span><strong class="red-text" 
-                *ngIf="sampleLabelDefinition !== 2">{{sampleRow === 1 ? 1: "A"}}{{sampleJoin}}{{sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" 
-                *ngIf="sampleLabelDefinition === 2">1</strong>
-              </span>
-            </h5>
           </div>
         </div>
         <div class="step">
-            <div class="ui top left attached brown label">STEP 3</div>
-            <div class="content wide_content">
-
+          <div class="ui top left attached brown label">STEP 3</div>
+          <div class="content">
+            <div class="ui mini positive message">
+              <!-- <i class="announcement icon"></i> -->
+              <div class="content">
+                <div class="header">Define Box Layout</div>
+                <p>Please be aware of this: all the boxes in the same contaier will have the same layout!</p>
+              </div>
             </div>
+            <div class="ui teal raised card">
+              <div class="content">
+                <h3 class="">box layout (
+                  <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
+                <div class="description">
+                  <div class="ui form tiny small_vertial_padding">
+                    <div class="ui inline fields">
+                      <div class="field">
+                        <label>horizontal: </label>
+                        <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
+                          #horizontalCtl>
+                          <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
+                        </select>
+                      </div>
+                      <div class="field">
+                        <label>vertical: </label>
+                        <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
+                          #verticalCtl>
+                          <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="">
+                <table class="ui small unstackable celled single line fixed table">
+                  <thead>
+                    <tr>
+                      <th class="nopadding"></th>
+                      <th *ngFor="let h of hArray" class="left aligned nopadding">
+                        <small class="">{{h}}</small>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let v of vArray">
+                      <th class="center aligned nopadding">
+                        <small class="">{{v}}</small>
+                      </th>
+                      <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
+                        <div class="fix_size_div">
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui mini red tertiary segment attached">
+        <div class="grey-text text-center">
+          <p>your box position/label looks like this: 
+            <span *ngIf="box_defined_as_normal">
+              <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
+            </span>
+            <span *ngIf="!box_defined_as_normal && box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+            <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample lable</span>
+          </p>
+          <p>
+            your sample label looks like this:
+            <span>
+              <span class="violet-text" *ngIf="!box_defined_as_normal && !box_sample_separated"><strong>{{boxLabel === 1 ? 1: "A"}}{{boxJoin}}</strong></span><strong class="red-text" *ngIf="sampleLabelDefinition !== 2">{{sampleRow === 1 ? 1: "A"}}{{sampleJoin}}{{sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" *ngIf="sampleLabelDefinition === 2">1</strong>
+            </span>;
+          </p>
+          <p>your box layout looks like this: (<span class="red-text"><strong>{{box_horizontal}}X{{vArray.length}}</strong></span>);</p>
         </div>
       </div>
       <div class="ui two mini buttons bottom attached">
-          <button class="ui button" (click)="backFirstStep()">
-            <i class="icon caret left"></i> PREVIOUS </button>
-          <button class="ui blue button" (click)="saveSecondStep()"> NEXT
-            <i class="icon caret right"></i>
-          </button>
-        </div>
+        <button class="ui button" (click)="backFirstStep()">
+          <i class="icon caret left"></i> PREVIOUS </button>
+        <button class="ui blue button" (click)="saveSecondStep()"> NEXT
+          <i class="icon caret right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 <!-- end step 2-->
 
 <!-- step 3 upload -->
-<div class="step_3">
+<div class="ui grid row" [ngClass]="{'hidden': activeStep !== 3 }">
 
 </div>
 <!-- step 3 upload -->

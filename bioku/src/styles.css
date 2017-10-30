@@ -192,9 +192,19 @@ body{
   margin-top: 25px !important;
   margin-bottom: 50px !important;
 }
+.medium_around{
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
+}
 .huge_bottom{
   padding-bottom: 50px !important;
   margin-bottom: 50px !important;
+}
+.medium_bottom{
+  padding-bottom: 15px !important;
+  margin-bottom: 15px !important;
 }
 .box_cardview{
   padding-top: 3px !important;

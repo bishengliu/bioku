@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject, ViewChild } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
+import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppSetting} from '../../_config/AppSetting';
@@ -13,7 +13,7 @@ import { ContainerTower, Containershelf, BoxAvailability } from '../../_classes/
 import {  ContainerService } from '../../_services/ContainerService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
 import { UtilityService } from '../../_services/UtilityService';
-import {  AlertService } from '../../_services/AlertService';
+import { AlertService } from '../../_services/AlertService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
