@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-
 
 @Component({
   selector: 'app-container-sample-upload-helper',
@@ -32,13 +33,25 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   sampleColumn = 1;
   sampleJoin = '';
   // sampleAppendix = '';
-
-
   box_horizontal: number;
   hArray: Array<number> = new Array<number>();
   box_vertical: string;
   vArray: Array<string> = new Array<string>();
-  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, ) {
+  // end step 2
+  // step 3
+  uploaded: Boolean = false;
+  data: Array<Array<any>> = [];
+  workbook_opts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
+  fileName = 'SheetJS.xlsx';
+  worksheet_name = 'sheet';
+  allowedFileExtension: Array<string> = ['xlsx'];
+  allowedMultipleFiles: Boolean = false;
+  rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
+  data_to_display = 100;
+  parsing_file: Boolean = false;
+  // end step 3
+  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
+              private xlsxHelperService: XlsxHelperService, ) {
     // SET THE DEFAULT BOX LAYOUT
     this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
     this.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; // a letter
@@ -137,4 +150,30 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
     }
   }
   // end step 2
+  // step 3
+  // DROP oly one excel xlsx file
+  handleValidFileDrop(evt: Array<File>) {
+    this.parsing_file = true;
+    this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
+    .subscribe(
+      (data: Array<Array<any>>) => {
+        this.data = data; console.log(this.data);
+        this.uploaded = true;
+        this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
+        this.parsing_file = false;
+      },
+      (err: string) => {
+        console.log(err);
+        this.uploaded = false;
+        this.parsing_file = false;
+      });
+  }
+
+  backSecondStep() {
+    this.activeStep = this.activeStep - 1;
+    this.data = [];
+    this.uploaded = false;
+    this.data_to_display = 100;
+  }
+  // end step 3
 }

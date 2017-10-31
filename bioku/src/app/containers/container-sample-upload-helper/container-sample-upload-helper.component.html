@@ -23,128 +23,126 @@
 </div>
 <!-- step 1-->
 <div class="ui grid row" [ngClass]="{'hidden': activeStep !== 1 }">
-  <div class="sixteen wide column">
-    <div class="medium_around">
-      <div class="ui icon mini top attached blue inverted message">
-        <i class="icon table"></i>
+  <div class="sixteen wide column medium_around">
+    <div class="ui icon mini top attached blue inverted message">
+      <i class="icon table"></i>
+      <div class="content">
+        <div class="header">BOX LABEL: HELP THE APPLICAIOTN TO RECOGNIZE YOUR BOXES</div>
+        <p>Please help the application to find the boxes in your excel file, so that the application knows where to
+          put the boxes in the container. The box label following the pattern of "tower-shelf-box" is prefered.</p>
+        <p>If you have extra "letters" or "digits" in the box labels, you can trim them below.</p>
+      </div>
+    </div>
+    <div class="ui raised mini attached segment left aligned">
+      <div class="ui header red">
+        <i class="icon caret right"></i>HOW IS THE BOX LABELD?</div>
+    </div>
+    <div class="ui two attached huge steps">
+      <div class="step">
+        <div class="ui top left attached brown label">STEP 1</div>
         <div class="content">
-          <div class="header">BOX LABEL: HELP THE APPLICAIOTN TO RECOGNIZE YOUR BOXES</div>
-          <p>Please help the application to find the boxes in your excel file, so that the applicaiton knows where to
-            put the boxes in the container. The box label following the pattern of "tower-shelf-box" is prefered.</p>
-          <p>If you have extra "letters" or "digits" in the box labels, you can trim them below.</p>
-        </div>
-      </div>
-      <div class="ui raised mini attached segment left aligned">
-        <div class="ui header red">
-          <i class="icon caret right"></i>HOW IS THE BOX LABELD?</div>
-      </div>
-      <div class="ui two attached huge steps medium_bottom">
-        <div class="step">
-          <div class="ui top left attached brown label">STEP 1</div>
-          <div class="content">
-            <div class="ui slider checkbox">
-              <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
-              <label for="box_position_definition">
-                <span *ngIf="box_defined_as_normal" class="violet-text">box labeled with "tower", "shelf" and "box"</span>
-                <span *ngIf="!box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="ui top left attached brown label">STEP 2</div>
-          <div class="content">
-            <!-- for box_defined_as_normal == true -->
-            <div class="ui slider checkbox" *ngIf="box_defined_as_normal">
-              <input type="checkbox" name="" id="box_tsb_one_column" (change)="toggleBoxTSBColumn()" checked="checked">
-              <label for="box_tsb_one_column">
-                <span *ngIf="box_tsb_one_column" class="violet-text">"tower", "shelf" and "box" in one data column</span>
-                <span *ngIf="!box_tsb_one_column" class="red-text">"tower", "shelf" and "box" in 3 data columns</span>
-              </label>
-            </div>
-            <!-- for box_defined_as_normal == false-->
-            <div class="ui slider checkbox" *ngIf="!box_defined_as_normal">
-              <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked">
-              <label for="box_sample_separated">
-                <span *ngIf="box_sample_separated" class="violet-text">box label is separated from sample label</span>
-                <span *ngIf="!box_sample_separated" class="red-text">box label is integrated into sample label</span>
-              </label>
-            </div>
+          <div class="ui slider checkbox">
+            <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
+            <label for="box_position_definition">
+              <span *ngIf="box_defined_as_normal" class="violet-text">box labeled with "tower", "shelf" and "box"</span>
+              <span *ngIf="!box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
+            </label>
           </div>
         </div>
       </div>
-      <div class="ui raised mini attached segment left aligned" [ngClass]="{'disabled': !box_defined_as_normal}">
-        <div class="ui header red">
-          <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
+      <div class="step">
+        <div class="ui top left attached brown label">STEP 2</div>
+        <div class="content">
+          <!-- for box_defined_as_normal == true -->
+          <div class="ui slider checkbox" *ngIf="box_defined_as_normal">
+            <input type="checkbox" name="" id="box_tsb_one_column" (change)="toggleBoxTSBColumn()" checked="checked">
+            <label for="box_tsb_one_column">
+              <span *ngIf="box_tsb_one_column" class="violet-text">"tower", "shelf" and "box" in one data column</span>
+              <span *ngIf="!box_tsb_one_column" class="red-text">"tower", "shelf" and "box" in 3 data columns</span>
+            </label>
+          </div>
+          <!-- for box_defined_as_normal == false-->
+          <div class="ui slider checkbox" *ngIf="!box_defined_as_normal">
+            <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked">
+            <label for="box_sample_separated">
+              <span *ngIf="box_sample_separated" class="violet-text">box label is separated from sample label</span>
+              <span *ngIf="!box_sample_separated" class="red-text">box label is integrated into sample label</span>
+            </label>
+          </div>
+        </div>
       </div>
-      <div class="ui attached segment medium_bottom" [ngClass]="{'disabled': !box_defined_as_normal}">
-        <div class="ui top left attached brown label">STEP 3</div>
-        <div class="ui form">
-          <div class="four fields">
-            <div class="field" *ngIf="box_tsb_one_column">
-              <label for="prefix">prefix to trim</label>
-              <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
-                <input id="prefix" type="text" placeholder="what to trim" [(ngModel)]="prefix" (ngModelChange)="updatePrefix($event)">
-              </div>
+    </div>
+    <div class="ui raised mini attached segment left aligned" [ngClass]="{'disabled': !box_defined_as_normal}">
+      <div class="ui header red">
+        <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
+    </div>
+    <div class="ui attached segment" [ngClass]="{'disabled': !box_defined_as_normal}">
+      <div class="ui top left attached brown label">STEP 3</div>
+      <div class="ui form">
+        <div class="four fields">
+          <div class="field" *ngIf="box_tsb_one_column">
+            <label for="prefix">prefix to trim</label>
+            <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
+              <input id="prefix" type="text" placeholder="what to trim" [(ngModel)]="prefix" (ngModelChange)="updatePrefix($event)">
             </div>
-            <div class="field">
-              <label for="tower">tower</label>
-              <select id="tower" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="tower" (ngModelChange)="updateTower($event)">
-                <option value="1">digits</option>
-                <option value="0">letter</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="shelf">shelf</label>
-              <select id="shelf" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="shelf" (ngModelChange)="updateShelf($event)">
-                <option value="1" selected>digits</option>
-                <option value="0">letter</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="box">box</label>
-              <select id="box" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="box" (ngModelChange)="updateBox($event)">
-                <option value="1" selected>digits</option>
-                <option value="0">letter</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="join">joined with</label>
-              <select id="join" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="join" (ngModelChange)="updateJoin($event)">
-                <option value="-" selected>-</option>
-                <option value="/">/</option>
-                <option value="~">~</option>
-                <option value=".">.</option>
-                <option value=";">;</option>
-                <option value="">nothing</option>
-              </select>
-            </div>
-            <div class="field" *ngIf="box_tsb_one_column">
-              <label for="appendix">appendix to trim</label>
-              <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
-                <input id="appendix" type="text" placeholder="what to trim" [(ngModel)]="appendix" (ngModelChange)="updateAppendix($event)">>
-              </div>
+          </div>
+          <div class="field">
+            <label for="tower">tower</label>
+            <select id="tower" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="tower" (ngModelChange)="updateTower($event)">
+              <option value="1">digits</option>
+              <option value="0">letter</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="shelf">shelf</label>
+            <select id="shelf" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="shelf" (ngModelChange)="updateShelf($event)">
+              <option value="1" selected>digits</option>
+              <option value="0">letter</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="box">box</label>
+            <select id="box" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="box" (ngModelChange)="updateBox($event)">
+              <option value="1" selected>digits</option>
+              <option value="0">letter</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="join">joined with</label>
+            <select id="join" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="join" (ngModelChange)="updateJoin($event)">
+              <option value="-" selected>-</option>
+              <option value="/">/</option>
+              <option value="~">~</option>
+              <option value=".">.</option>
+              <option value=";">;</option>
+              <option value="">nothing</option>
+            </select>
+          </div>
+          <div class="field" *ngIf="box_tsb_one_column">
+            <label for="appendix">appendix to trim</label>
+            <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
+              <input id="appendix" type="text" placeholder="what to trim" [(ngModel)]="appendix" (ngModelChange)="updateAppendix($event)">>
             </div>
           </div>
         </div>
       </div>
-      <div class="ui mini red tertiary segment attached">
-        <div class="grey-text text-center">your box label looks like this:
-          <span *ngIf="box_defined_as_normal">
-            <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
-          </span>
-          <span *ngIf="!box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
-          <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-          <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
-        </div>
+    </div>
+    <div class="ui mini red tertiary segment attached">
+      <div class="grey-text text-center">your box label looks like this:
+        <span *ngIf="box_defined_as_normal">
+          <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
+        </span>
+        <span *ngIf="!box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
+        <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+        <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
       </div>
-      <div class="ui two mini buttons bottom attached">
-        <!-- <button class="ui disabled button">
-          <i class="icon caret left"></i> PREVIOUS </button> -->
-        <button class="ui blue button" (click)="saveFirstStep()"> NEXT
-          <i class="icon caret right"></i>
-        </button>
-      </div>
+    </div>
+    <div class="ui two mini buttons bottom attached">
+      <!-- <button class="ui disabled button">
+        <i class="icon caret left"></i> PREVIOUS </button> -->
+      <button class="ui blue button" (click)="saveFirstStep()"> NEXT
+        <i class="icon caret right"></i>
+      </button>
     </div>
   </div>
 </div>
@@ -153,190 +151,188 @@
 <!-- step 2 -->
 <div class="ui grid row" [ngClass]="{'hidden': activeStep !== 2 }">
   <div class="sixteen wide column">
-    <div class="medium_around">
-      <div class="ui icon mini top attached blue inverted message">
-        <i class="icon grid layout"></i>
+    <div class="ui icon mini top attached blue inverted message">
+      <i class="icon grid layout"></i>
+      <div class="content">
+        <div class="header">SAMPLE LABEL & BOX LAYOUT: HELP THE APPLICAIOTN TO RECOGNIZE THE SAMPLE IN YOUR BOXES</div>
+        <p>Please help the application to find the samples for each boxes, so that the application knows where to put
+          the samples in the box. The sample label following the pattern of "row-column" of the box is prefered.</p>
+      </div>
+    </div>
+    <div class="ui raised mini attached segment left aligned">
+      <div class="ui header red">
+        <i class="icon caret right"></i>HOW IS THE SAMPLE LABELD?</div>
+    </div>
+    <!-- box_defined_as_normal == true-->
+    <div class="ui fluid vertical attached huge steps">
+      <div class="step">
+        <div class="ui top left attached brown label">STEP 1</div>
+        <div class="content wide_content">
+          <div class="ui form">
+            <div class="grouped fields">
+              <div class="field">
+                <div class="ui slider checkbox">
+                  <input id="sample_one_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 0 ? 'checked': null"
+                    (change)="updateSampleLabelDefinition(0)">
+                  <label for="sample_one_column">Sample labeled with "row" and "column" in one data column</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui slider checkbox">
+                  <input id="sample_two_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
+                    (change)="updateSampleLabelDefinition(1)">
+                  <label for="sample_two_column">Sample labeled with "row" and "column" in 2 data columns</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui slider checkbox">
+                  <input id="sample_increasing_number" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition ===2 ? 'checked': null"
+                    (change)="updateSampleLabelDefinition(2)">
+                  <label for="sample_increasing_number">Sample labeled with the increaing numbers in one data column</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="ui top left attached brown label">STEP 2</div>
+        <div class="content wide_content">
+          <div class="ui form">
+            <div class="five fields">
+              <div class="field" [ngClass]="{'hidden': box_defined_as_normal != false || box_sample_separated != false }">
+                <label for="box_label">box label</label>
+                <select id="box_label" class="ui dropdown" [(ngModel)]="boxLabel" (ngModelChange)="updateBoxLabel($event)">
+                  <option value="1">digits</option>
+                  <option value="0">letter</option>
+                </select>
+              </div>
+              <div class="field" [ngClass]="{'hidden': box_defined_as_normal != false || box_sample_separated != false }">
+                <label for="sample_join">box and sample labels joined with</label>
+                <select id="sample_join" class="ui dropdown" [(ngModel)]="boxJoin" (ngModelChange)="updateBoxJoin($event)">
+                  <option value="-">-</option>
+                  <option value="/">/</option>
+                  <option value="~">~</option>
+                  <option value=".">.</option>
+                  <option value=";">;</option>
+                  <option value="">nothing</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="sample_row">sample row</label>
+                <select id="sample_row" class="ui dropdown" [(ngModel)]="sampleRow" (ngModelChange)="updateSampleRow($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <option value="1">digits</option>
+                  <option value="0">letter</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="sample_join">sample label joined with</label>
+                <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <option value="-">-</option>
+                  <option value="/">/</option>
+                  <option value="~">~</option>
+                  <option value=".">.</option>
+                  <option value=";">;</option>
+                  <option value="">nothing</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="sample_column">sample column</label>
+                <select id="sample_column" class="ui dropdown" [(ngModel)]="sampleColumn" (ngModelChange)="updateSampleColumn($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                  <option value="1">digits</option>
+                  <option value="0">letter</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="ui top left attached brown label">STEP 3</div>
         <div class="content">
-          <div class="header">SAMPLE LABEL & BOX LAYOUT: HELP THE APPLICAIOTN TO RECOGNIZE THE SAMPLE IN YOUR BOXES</div>
-          <p>Please help the application to find the samples for each boxes, so that the applicaiton knows where to put
-            the samples in the box. The sample label following the pattern of "row-column" of the box is prefered.</p>
-        </div>
-      </div>
-      <div class="ui raised mini attached segment left aligned">
-        <div class="ui header red">
-          <i class="icon caret right"></i>HOW IS THE SAMPLE LABELD?</div>
-      </div>
-      <!-- box_defined_as_normal == true-->
-      <div class="ui fluid vertical attached huge steps medium_bottom">
-        <div class="step">
-          <div class="ui top left attached brown label">STEP 1</div>
-          <div class="content wide_content">
-            <div class="ui form">
-              <div class="grouped fields">
-                <div class="field">
-                  <div class="ui slider checkbox">
-                    <input id="sample_one_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 0 ? 'checked': null"
-                      (change)="updateSampleLabelDefinition(0)">
-                    <label for="sample_one_column">Sample labeled with "row" and "column" in one data column</label>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="ui slider checkbox">
-                    <input id="sample_two_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
-                      (change)="updateSampleLabelDefinition(1)">
-                    <label for="sample_two_column">Sample labeled with "row" and "column" in 2 data columns</label>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="ui slider checkbox">
-                    <input id="sample_increasing_number" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition ===2 ? 'checked': null"
-                      (change)="updateSampleLabelDefinition(2)">
-                    <label for="sample_increasing_number">Sample labeled with the increaing numbers in one data column</label>
-                  </div>
-                </div>
-              </div>
+          <div class="ui mini positive message">
+            <!-- <i class="announcement icon"></i> -->
+            <div class="content">
+              <div class="header">Define Box Layout</div>
+              <p>Please be aware of this: all the boxes in the same contaier will have the same layout!</p>
             </div>
           </div>
-        </div>
-        <div class="step">
-          <div class="ui top left attached brown label">STEP 2</div>
-          <div class="content wide_content">
-            <div class="ui form">
-              <div class="five fields">
-                <div class="field" [ngClass]="{'hidden': box_defined_as_normal != false || box_sample_separated != false }">
-                  <label for="box_label">box label</label>
-                  <select id="box_label" class="ui dropdown" [(ngModel)]="boxLabel" (ngModelChange)="updateBoxLabel($event)">
-                    <option value="1">digits</option>
-                    <option value="0">letter</option>
-                  </select>
-                </div>
-                <div class="field" [ngClass]="{'hidden': box_defined_as_normal != false || box_sample_separated != false }">
-                  <label for="sample_join">box and sample labels joined with</label>
-                  <select id="sample_join" class="ui dropdown" [(ngModel)]="boxJoin" (ngModelChange)="updateBoxJoin($event)">
-                    <option value="-">-</option>
-                    <option value="/">/</option>
-                    <option value="~">~</option>
-                    <option value=".">.</option>
-                    <option value=";">;</option>
-                    <option value="">nothing</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="sample_row">sample row</label>
-                  <select id="sample_row" class="ui dropdown" [(ngModel)]="sampleRow" (ngModelChange)="updateSampleRow($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
-                    <option value="1">digits</option>
-                    <option value="0">letter</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="sample_join">sample label joined with</label>
-                  <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
-                    <option value="-">-</option>
-                    <option value="/">/</option>
-                    <option value="~">~</option>
-                    <option value=".">.</option>
-                    <option value=";">;</option>
-                    <option value="">nothing</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="sample_column">sample column</label>
-                  <select id="sample_column" class="ui dropdown" [(ngModel)]="sampleColumn" (ngModelChange)="updateSampleColumn($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
-                    <option value="1">digits</option>
-                    <option value="0">letter</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="ui top left attached brown label">STEP 3</div>
-          <div class="content">
-            <div class="ui mini positive message">
-              <!-- <i class="announcement icon"></i> -->
-              <div class="content">
-                <div class="header">Define Box Layout</div>
-                <p>Please be aware of this: all the boxes in the same contaier will have the same layout!</p>
-              </div>
-            </div>
-            <div class="ui teal raised card">
-              <div class="content">
-                <h3 class="">box layout (
-                  <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
-                <div class="description">
-                  <div class="ui form tiny small_vertial_padding">
-                    <div class="ui inline fields">
-                      <div class="field">
-                        <label>horizontal: </label>
-                        <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
-                          #horizontalCtl>
-                          <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
-                        </select>
-                      </div>
-                      <div class="field">
-                        <label>vertical: </label>
-                        <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
-                          #verticalCtl>
-                          <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
-                        </select>
-                      </div>
+          <div class="ui teal raised card">
+            <div class="content">
+              <h3 class="">box layout (
+                <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
+              <div class="description">
+                <div class="ui form tiny small_vertial_padding">
+                  <div class="ui inline fields">
+                    <div class="field">
+                      <label>horizontal: </label>
+                      <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
+                        #horizontalCtl>
+                        <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label>vertical: </label>
+                      <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
+                        #verticalCtl>
+                        <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="">
-                <table class="ui small unstackable celled single line fixed table">
-                  <thead>
-                    <tr>
-                      <th class="nopadding"></th>
-                      <th *ngFor="let h of hArray" class="left aligned nopadding">
-                        <small class="">{{h}}</small>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let v of vArray">
-                      <th class="center aligned nopadding">
-                        <small class="">{{v}}</small>
-                      </th>
-                      <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
-                        <div class="fix_size_div">
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            </div>
+            <div class="">
+              <table class="ui small unstackable celled single line fixed table">
+                <thead>
+                  <tr>
+                    <th class="nopadding"></th>
+                    <th *ngFor="let h of hArray" class="left aligned nopadding">
+                      <small class="">{{h}}</small>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let v of vArray">
+                    <th class="center aligned nopadding">
+                      <small class="">{{v}}</small>
+                    </th>
+                    <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
+                      <div class="fix_size_div">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      <div class="ui mini red tertiary segment attached">
-        <div class="grey-text text-center">
-          <p>your box label looks like this: 
-            <span *ngIf="box_defined_as_normal">
-              <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
-            </span>
-            <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-            <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
-          </p>
-          <p>
-            your sample label looks like this:
-            <span>
-              <span class="violet-text" *ngIf="!box_defined_as_normal && !box_sample_separated"><strong>{{boxLabel === 1 ? 1: "A"}}{{boxJoin}}</strong></span><strong class="red-text" *ngIf="sampleLabelDefinition !== 2">{{sampleRow === 1 ? 1: "A"}}{{sampleJoin}}{{sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" *ngIf="sampleLabelDefinition === 2">1</strong>
-            </span>;
-          </p>
-          <p>your box layout looks like this: (<span class="red-text"><strong>{{box_horizontal}}X{{vArray.length}}</strong></span>);</p>
-        </div>
+    </div>
+    <div class="ui mini red tertiary segment attached">
+      <div class="grey-text text-center">
+        <p>your box label looks like this: 
+          <span *ngIf="box_defined_as_normal">
+            <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
+          </span>
+          <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+          <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
+        </p>
+        <p>
+          your sample label looks like this:
+          <span>
+            <span class="violet-text" *ngIf="!box_defined_as_normal && !box_sample_separated"><strong>{{boxLabel === 1 ? 1: "A"}}{{boxJoin}}</strong></span><strong class="red-text" *ngIf="sampleLabelDefinition !== 2">{{sampleRow === 1 ? 1: "A"}}{{sampleJoin}}{{sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" *ngIf="sampleLabelDefinition === 2">1</strong>
+          </span>;
+        </p>
+        <p>your box layout looks like this: (<span class="red-text"><strong>{{box_horizontal}}X{{vArray.length}}</strong></span>);</p>
       </div>
-      <div class="ui two mini buttons bottom attached">
-        <button class="ui button" (click)="backFirstStep()">
-          <i class="icon caret left"></i> PREVIOUS </button>
-        <button class="ui blue button" (click)="saveSecondStep()"> NEXT
-          <i class="icon caret right"></i>
-        </button>
-      </div>
+    </div>
+    <div class="ui two mini buttons bottom attached">
+      <button class="ui button" (click)="backFirstStep()">
+        <i class="icon caret left"></i> PREVIOUS </button>
+      <button class="ui blue button" (click)="saveSecondStep()"> NEXT
+        <i class="icon caret right"></i>
+      </button>
     </div>
   </div>
 </div>
@@ -344,6 +340,48 @@
 
 <!-- step 3 upload -->
 <div class="ui grid row" [ngClass]="{'hidden': activeStep !== 3 }">
-
+  <div class="sixteen wide column">
+    <!-- info -->
+    <div class="ui icon mini top attached blue inverted message">
+        <i class="icon file excel outline"></i>
+        <div class="content">
+          <div class="header">UPLOAD SAMPLE FILE</div>
+          <p>Please upload the excel file (.xlsx) and you will next need to speficy the column headers, so that the application knows how to save your samples</p>
+        </div>
+      </div>
+      <!-- end info -->
+      <!-- drop file -->
+      <div *ngIf="!uploaded" class="dropzone" appFileDrop 
+      (validFiles)="handleValidFileDrop($event)"
+      [allowedExtensions]="allowedFileExtension"
+      [allowedMultipleFiles]="allowedMultipleFiles" >
+        <div class="text-wrapper">
+          <div class="text-center brown-text">DROP YOUR FILE HERE!</div>
+        </div>
+      </div>
+      <!-- end drop file -->
+      <!-- buttons-->
+      <div class="ui two mini buttons bottom attached">
+        <button class="ui button" (click)="backSecondStep()">
+          <i class="icon caret left"></i> PREVIOUS </button>
+        <button *ngIf="uploaded" class="ui blue button" (click)="testSampleUpload()"> VALIDATE
+          <i class="icon caret right"></i>
+        </button>
+      </div>
+      <!-- end buttons-->
+      <!-- sample parsed-->
+      <div *ngIf="uploaded">
+          <table class="ui small very compact unstackable striped teal table">
+            <tbody>
+              <tr *ngFor="let row of data | slice:0: data_to_display">
+                <td *ngFor="let val of row">
+                  {{val}}
+                </td>
+              </tr>
+            </tbody>
+          </table>            
+      </div>
+      <!-- end sample parses-->
+  </div>
 </div>
 <!-- step 3 upload -->
