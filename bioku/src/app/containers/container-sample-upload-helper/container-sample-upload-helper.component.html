@@ -2,14 +2,14 @@
   <a class="step" [ngClass]="{'active': activeStep === 1, 'disabled': activeStep !== 1, 'completed': activeStep > 1 }">
     <i class="icon table"></i>
     <div class="content">
-      <div class="title">box position</div>
+      <div class="title">box label</div>
       <div class="description">define boxes in the container</div>
     </div>
   </a>
   <a class="step" [ngClass]="{'active': activeStep === 2, 'disabled': activeStep !== 2, 'completed': activeStep > 2 }">
     <i class="icon grid layout"></i>
     <div class="content">
-      <div class="title">sample position</div>
+      <div class="title">sample label</div>
       <div class="description">define samples in the box</div>
     </div>
   </a>
@@ -28,10 +28,10 @@
       <div class="ui icon mini top attached blue inverted message">
         <i class="icon table"></i>
         <div class="content">
-          <div class="header">BOX POSITION: HELP THE APPLICAIOTN TO FIND YOUR BOXES</div>
-          <p>Please help the application to find the boxes in your excel file, so that the applicaiton understands where to
+          <div class="header">BOX LABEL: HELP THE APPLICAIOTN TO RECOGNIZE YOUR BOXES</div>
+          <p>Please help the application to find the boxes in your excel file, so that the applicaiton knows where to
             put the boxes in the container. The box label following the pattern of "tower-shelf-box" is prefered.</p>
-          <p>If you have extra "letters" or "digits" in your sample labels, you can trim them below.</p>
+          <p>If you have extra "letters" or "digits" in the box labels, you can trim them below.</p>
         </div>
       </div>
       <div class="ui raised mini attached segment left aligned">
@@ -45,8 +45,8 @@
             <div class="ui slider checkbox">
               <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
               <label for="box_position_definition">
-                <span *ngIf="box_defined_as_normal" class="violet-text">box position labeled with "tower", "shelf" and "box"</span>
-                <span *ngIf="!box_defined_as_normal" class="red-text">box position NOT labeled with "tower", "shelf" and "box"</span>
+                <span *ngIf="box_defined_as_normal" class="violet-text">box labeled with "tower", "shelf" and "box"</span>
+                <span *ngIf="!box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
               </label>
             </div>
           </div>
@@ -66,8 +66,8 @@
             <div class="ui slider checkbox" *ngIf="!box_defined_as_normal">
               <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked">
               <label for="box_sample_separated">
-                <span *ngIf="box_sample_separated" class="violet-text">box position is separated from sample position</span>
-                <span *ngIf="!box_sample_separated" class="red-text">box position is integrated into sample position</span>
+                <span *ngIf="box_sample_separated" class="violet-text">box label is separated from sample label</span>
+                <span *ngIf="!box_sample_separated" class="red-text">box label is integrated into sample label</span>
               </label>
             </div>
           </div>
@@ -129,13 +129,13 @@
         </div>
       </div>
       <div class="ui mini red tertiary segment attached">
-        <div class="grey-text text-center">your box position/label looks like this:
+        <div class="grey-text text-center">your box label looks like this:
           <span *ngIf="box_defined_as_normal">
             <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
           </span>
-          <span *ngIf="!box_defined_as_normal">your box position/label doesn't follow the pattern of "tower-shelf-box"</span>
-          <span *ngIf="!box_defined_as_normal && box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-          <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample lable</span>
+          <span *ngIf="!box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
+          <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+          <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
         </div>
       </div>
       <div class="ui two mini buttons bottom attached">
@@ -157,8 +157,8 @@
       <div class="ui icon mini top attached blue inverted message">
         <i class="icon grid layout"></i>
         <div class="content">
-          <div class="header">SAMPLE POSITION & BOX LAYOUT: HELP THE APPLICAIOTN TO PUT THE SAMPLE IN YOUR BOXES</div>
-          <p>Please help the application to find the samples for each boxes, so that the applicaiton understands where to put
+          <div class="header">SAMPLE LABEL & BOX LAYOUT: HELP THE APPLICAIOTN TO RECOGNIZE THE SAMPLE IN YOUR BOXES</div>
+          <p>Please help the application to find the samples for each boxes, so that the applicaiton knows where to put
             the samples in the box. The sample label following the pattern of "row-column" of the box is prefered.</p>
         </div>
       </div>
@@ -314,12 +314,12 @@
       </div>
       <div class="ui mini red tertiary segment attached">
         <div class="grey-text text-center">
-          <p>your box position/label looks like this: 
+          <p>your box label looks like this: 
             <span *ngIf="box_defined_as_normal">
               <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
             </span>
-            <span *ngIf="!box_defined_as_normal && box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-            <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box position/label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample lable</span>
+            <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+            <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
           </p>
           <p>
             your sample label looks like this:
