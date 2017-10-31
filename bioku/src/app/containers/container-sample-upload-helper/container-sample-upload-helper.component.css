@@ -10,4 +10,11 @@
     display: table-cell;
     vertical-align: middle;
   }
-  
+.parse_file_zone{
+  min-height: 400px;
+  min-width: 400px;
+  display: table;
+  width: 100%;
+  background-color: #eee;
+  border: dotted 1px #aaa;
+}

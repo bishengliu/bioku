@@ -22,7 +22,7 @@
   </a>
 </div>
 <!-- step 1-->
-<div class="ui grid row" [ngClass]="{'hidden': activeStep !== 1 }">
+<div class="ui grid row medium_bottom" [ngClass]="{'hidden': activeStep !== 1 }">
   <div class="sixteen wide column medium_around">
     <div class="ui icon mini top attached blue inverted message">
       <i class="icon table"></i>
@@ -149,7 +149,7 @@
 <!-- end step 1-->
 
 <!-- step 2 -->
-<div class="ui grid row" [ngClass]="{'hidden': activeStep !== 2 }">
+<div class="ui grid row medium_bottom" [ngClass]="{'hidden': activeStep !== 2 }">
   <div class="sixteen wide column">
     <div class="ui icon mini top attached blue inverted message">
       <i class="icon grid layout"></i>
@@ -250,60 +250,66 @@
       <div class="step">
         <div class="ui top left attached brown label">STEP 3</div>
         <div class="content">
-          <div class="ui mini positive message">
-            <!-- <i class="announcement icon"></i> -->
-            <div class="content">
-              <div class="header">Define Box Layout</div>
-              <p>Please be aware of this: all the boxes in the same contaier will have the same layout!</p>
-            </div>
-          </div>
-          <div class="ui teal raised card">
-            <div class="content">
-              <h3 class="">box layout (
-                <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
-              <div class="description">
-                <div class="ui form tiny small_vertial_padding">
-                  <div class="ui inline fields">
-                    <div class="field">
-                      <label>horizontal: </label>
-                      <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
-                        #horizontalCtl>
-                        <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
-                      </select>
-                    </div>
-                    <div class="field">
-                      <label>vertical: </label>
-                      <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
-                        #verticalCtl>
-                        <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
-                      </select>
-                    </div>
-                  </div>
+          <div class="ui grid row">
+            <div class="eight wide column">
+              <div class="ui mini positive message">
+                <!-- <i class="announcement icon"></i> -->
+                <div class="content">
+                  <div class="header">Define Box Layout</div>
+                  <p>Please be aware of this: all the boxes in the same contaier will have the same layout!</p>
                 </div>
               </div>
             </div>
-            <div class="">
-              <table class="ui small unstackable celled single line fixed table">
-                <thead>
-                  <tr>
-                    <th class="nopadding"></th>
-                    <th *ngFor="let h of hArray" class="left aligned nopadding">
-                      <small class="">{{h}}</small>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let v of vArray">
-                    <th class="center aligned nopadding">
-                      <small class="">{{v}}</small>
-                    </th>
-                    <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
-                      <div class="fix_size_div">
+            <div class="eight wide column">
+              <div class="ui teal raised card">
+                <div class="content small_vertial_padding">
+                  <h3 class="tight_around">box layout (
+                    <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
+                  <div class="description">
+                    <div class="ui form tiny small_vertial_padding">
+                      <div class="ui inline fields small_vertial_padding">
+                        <div class="field">
+                          <label>horizontal: </label>
+                          <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
+                            #horizontalCtl>
+                            <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
+                          </select>
+                        </div>
+                        <div class="field">
+                          <label>vertical: </label>
+                          <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
+                            #verticalCtl>
+                            <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
+                          </select>
+                        </div>
                       </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="">
+                  <table class="ui small unstackable celled single line fixed table">
+                    <thead>
+                      <tr>
+                        <th class="nopadding"></th>
+                        <th *ngFor="let h of hArray" class="left aligned nopadding">
+                          <small class="">{{h}}</small>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let v of vArray">
+                        <th class="center aligned nopadding">
+                          <small class="">{{v}}</small>
+                        </th>
+                        <td class="center aligned sample-cell tight_around" *ngFor="let h of hArray">
+                          <div class="fix_size_div">
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -339,7 +345,7 @@
 <!-- end step 2-->
 
 <!-- step 3 upload -->
-<div class="ui grid row" [ngClass]="{'hidden': activeStep !== 3 }">
+<div class="ui grid row medium_bottom" [ngClass]="{'hidden': activeStep !== 3 }">
   <div class="sixteen wide column">
     <!-- info -->
     <div class="ui icon mini top attached blue inverted message">
@@ -351,17 +357,25 @@
       </div>
       <!-- end info -->
       <!-- drop file -->
-      <div *ngIf="!uploaded" class="dropzone" appFileDrop 
-      (validFiles)="handleValidFileDrop($event)"
-      [allowedExtensions]="allowedFileExtension"
-      [allowedMultipleFiles]="allowedMultipleFiles" >
-        <div class="text-wrapper">
-          <div class="text-center brown-text">DROP YOUR FILE HERE!</div>
-        </div>
+      <div class="ui mini segment attached" *ngIf="!uploaded">
+          <div *ngIf="!uploaded && !parsing_file" class="dropzone" appFileDrop 
+          (validFiles)="handleValidFileDrop($event)"
+          [allowedExtensions]="allowedFileExtension"
+          [allowedMultipleFiles]="allowedMultipleFiles" >
+            <div class="text-wrapper">
+              <div class="text-center brown-text">DROP YOUR FILE HERE!</div>
+            </div>
+          </div>
+          <!-- parsing file info -->
+          <div *ngIf="parsing_file" class="ui loading segment center aligned parse_file_zone">
+              <div class="text-wrapper">
+                  <div class="text-center brown-text">parsing file ... </div>
+                </div>
+          </div>
+          <!-- end drop file -->
       </div>
-      <!-- end drop file -->
       <!-- buttons-->
-      <div class="ui two mini buttons bottom attached">
+      <div class="ui two mini buttons attached">
         <button class="ui button" (click)="backSecondStep()">
           <i class="icon caret left"></i> PREVIOUS </button>
         <button *ngIf="uploaded" class="ui blue button" (click)="testSampleUpload()"> VALIDATE
@@ -370,8 +384,15 @@
       </div>
       <!-- end buttons-->
       <!-- sample parsed-->
-      <div *ngIf="uploaded">
+      <div *ngIf="uploaded && data.length > 0" class="ui mini segment attached">
           <table class="ui small very compact unstackable striped teal table">
+            <thead>
+                <tr>
+                  <th *ngFor="let val of data[0]">
+                    {{val}}
+                  </th>
+                </tr>
+            </thead>
             <tbody>
               <tr *ngFor="let row of data | slice:0: data_to_display">
                 <td *ngFor="let val of row">

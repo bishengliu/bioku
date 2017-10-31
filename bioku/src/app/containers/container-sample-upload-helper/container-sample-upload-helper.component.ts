@@ -157,10 +157,11 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
     this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
     .subscribe(
       (data: Array<Array<any>>) => {
-        this.data = data; console.log(this.data);
+        this.data = this.trimData(data);
         this.uploaded = true;
         this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
         this.parsing_file = false;
+        console.log(this.data);
       },
       (err: string) => {
         console.log(err);
@@ -168,7 +169,11 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
         this.parsing_file = false;
       });
   }
-
+  trimData (data: Array<Array<any>>): Array<Array<any>> {
+    return data.filter((d: Array<any>) => {
+      return d.length > 0;
+    })
+  }
   backSecondStep() {
     this.activeStep = this.activeStep - 1;
     this.data = [];
