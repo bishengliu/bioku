@@ -49,6 +49,10 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
   data_to_display = 100;
   parsing_file: Boolean = false;
+  sample_type = 'GENERAL';
+  max_column_count = 10;
+  column_count = 10;
+  excel_file_has_header: Boolean = true;
   // end step 3
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, ) {
@@ -179,6 +183,16 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
     this.data = [];
     this.uploaded = false;
     this.data_to_display = 100;
+  }
+  updateSampleType(sample_type: string): void {
+    this.sample_type = sample_type === '' ? this.sample_type : sample_type;
+    ////////////need to get column count and data attrs ////////////
+  }
+  toggleExcelFilerHeader() {
+    this.excel_file_has_header = !this.excel_file_has_header;
+  }
+  updateColumnCount (evt: any) {
+    this.column_count = evt;
   }
   // end step 3
 }

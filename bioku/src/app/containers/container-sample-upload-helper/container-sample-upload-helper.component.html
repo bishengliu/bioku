@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="ui raised mini attached segment left aligned">
-      <div class="ui header red">
+      <div class="ui header blue">
         <i class="icon caret right"></i>HOW IS THE BOX LABELD?</div>
     </div>
     <div class="ui two attached huge steps">
@@ -44,7 +44,7 @@
           <div class="ui slider checkbox">
             <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
             <label for="box_position_definition">
-              <span *ngIf="box_defined_as_normal" class="violet-text">box labeled with "tower", "shelf" and "box"</span>
+              <span *ngIf="box_defined_as_normal" class="">box labeled with "tower", "shelf" and "box"</span>
               <span *ngIf="!box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
             </label>
           </div>
@@ -57,7 +57,7 @@
           <div class="ui slider checkbox" *ngIf="box_defined_as_normal">
             <input type="checkbox" name="" id="box_tsb_one_column" (change)="toggleBoxTSBColumn()" checked="checked">
             <label for="box_tsb_one_column">
-              <span *ngIf="box_tsb_one_column" class="violet-text">"tower", "shelf" and "box" in one data column</span>
+              <span *ngIf="box_tsb_one_column" class="">"tower", "shelf" and "box" in one data column</span>
               <span *ngIf="!box_tsb_one_column" class="red-text">"tower", "shelf" and "box" in 3 data columns</span>
             </label>
           </div>
@@ -65,7 +65,7 @@
           <div class="ui slider checkbox" *ngIf="!box_defined_as_normal">
             <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked">
             <label for="box_sample_separated">
-              <span *ngIf="box_sample_separated" class="violet-text">box label is separated from sample label</span>
+              <span *ngIf="box_sample_separated" class="">box label is separated from sample label</span>
               <span *ngIf="!box_sample_separated" class="red-text">box label is integrated into sample label</span>
             </label>
           </div>
@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="ui raised mini attached segment left aligned" [ngClass]="{'disabled': !box_defined_as_normal}">
-      <div class="ui header red">
+      <div class="ui header blue">
         <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
     </div>
     <div class="ui attached segment" [ngClass]="{'disabled': !box_defined_as_normal}">
@@ -160,7 +160,7 @@
       </div>
     </div>
     <div class="ui raised mini attached segment left aligned">
-      <div class="ui header red">
+      <div class="ui header blue">
         <i class="icon caret right"></i>HOW IS THE SAMPLE LABELD?</div>
     </div>
     <!-- box_defined_as_normal == true-->
@@ -352,10 +352,94 @@
         <i class="icon file excel outline"></i>
         <div class="content">
           <div class="header">UPLOAD SAMPLE FILE</div>
-          <p>Please upload the excel file (.xlsx) and you will next need to speficy the column headers, so that the application knows how to save your samples</p>
+          <p>Please speficy the sample type, total column number and column headers before uploading the excel file (.xlsx), 
+            so that the application knows how to save your samples</p>
         </div>
       </div>
       <!-- end info -->
+      <!-- sample type, columns -->
+      <div class="ui raised mini attached segment left aligned">
+        <div class="ui header blue">
+          <i class="icon caret right"></i>SAMPLE TYPE & COLUMN HEADERS</div>
+      </div>
+      <div class="ui two attached huge steps">
+        <div class="step">
+          <div class="ui top left attached brown label">STEP 1</div>
+          <div class="content">
+            <div class="ui horizontal divider">SAMPLE TYPE</div>
+            <div class="ui form">
+              <div class="grouped fields">
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_general" type="radio" name="sample_type" [attr.checked]="sample_type === 'GENERAL' ? 'checked': null" (change)="updateSampleType('GENERAL')">
+                    <label for="sample_general">GENERAL</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_cell" type="radio" name="sample_type" [attr.checked]="sample_type === 'CELL' ? 'checked': null" (change)="updateSampleType('CELL')">
+                    <label for="sample_cell">CELL</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_construct" type="radio" name="sample_type" [attr.checked]="sample_type === 'CONSTRUCT' ? 'checked': null"
+                      (change)="updateSampleType('CONSTRUCT')">
+                    <label for="sample_construct">CONSTRUCT</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'OLIGO' ? 'checked': null" (change)="updateSampleType('OLIGO')">
+                    <label for="sample_OLIGO">OLIGO</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_gRNA_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'gRNA_OLIGO' ? 'checked': null"
+                      (change)="updateSampleType('gRNA_OLIGO')">
+                    <label for="sample_gRNA_OLIGO">gRNA_OLIGO</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_TISSUE" type="radio" name="sample_type" [attr.checked]="sample_type === 'TISSUE' ? 'checked': null" (change)="updateSampleType('TISSUE')">
+                    <label for="sample_TISSUE">TISSUE</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input id="sample_VIRUS" type="radio" name="sample_type" [attr.checked]="sample_type === 'VIRUS' ? 'checked': null" (change)="updateSampleType('VIRUS')">
+                    <label for="sample_VIRUS">VIRUS</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ui horizontal divider">COLUMN HEADER</div>
+            <div class="ui slider checkbox">
+              <input type="checkbox" name="" id="excel_file_header" (change)="toggleExcelFilerHeader()" checked="checked">
+              <label for="excel_file_header">
+                <span *ngIf="excel_file_has_header" class="">I have column headers in the excel file</span>
+                <span *ngIf="!excel_file_has_header" class="red-text">I have NO column header in the excel file</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+            <div class="ui top left attached brown label">STEP 2</div>
+            <div class="content">
+                <div class="ui horizontal divider">TOTAL NUMBER OF COLUMNS</div>
+                <div class="ui mini right labeled focus fluid input">
+                  <label for="sample_column_count" class="ui basic label"><span class="grey-text">I have total</span></label>
+                  <input type="number" placeholder="total #column" id="sample_column_count" 
+                  min="1" max="{{max_column_count}}" [(ngModel)]="column_count" (ngModelChange)="updateColumnCount($event)">
+                  <div class="ui basic label"><span class="grey-text">columns in my excel file</span></div>
+                </div>
+                <div class="ui horizontal divider">COLUMN SPECIFICATION</div>
+            </div>
+          </div>
+      </div>
+      <!-- end sample type, columns -->
       <!-- drop file -->
       <div class="ui mini segment attached" *ngIf="!uploaded">
           <div *ngIf="!uploaded && !parsing_file" class="dropzone" appFileDrop 
