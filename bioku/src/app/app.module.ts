@@ -99,6 +99,9 @@ import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.compon
 import { FileDropDirective } from './_directives/file-drop/file-drop.directive'; // driective
 import { ContainerSampleUploadComponent } from './containers/container-sample-upload/container-sample-upload.component';
 import { ContainerSampleUploadHelperComponent } from './containers/container-sample-upload-helper/container-sample-upload-helper.component';
+import { ContainerSampleUploaderStepOneComponent } from './containers/container-sample-uploader-step-one/container-sample-uploader-step-one.component';
+import { ContainerSampleUploaderStepTwoComponent } from './containers/container-sample-uploader-step-two/container-sample-uploader-step-two.component';
+import { ContainerSampleUploaderStepThreeComponent } from './containers/container-sample-uploader-step-three/container-sample-uploader-step-three.component';
 
 @NgModule({
   declarations: [
@@ -156,6 +159,9 @@ import { ContainerSampleUploadHelperComponent } from './containers/container-sam
     FileDropDirective,
     ContainerSampleUploadComponent,
     ContainerSampleUploadHelperComponent,
+    ContainerSampleUploaderStepOneComponent,
+    ContainerSampleUploaderStepTwoComponent,
+    ContainerSampleUploaderStepThreeComponent,
   ],
   imports: [
     BrowserModule,

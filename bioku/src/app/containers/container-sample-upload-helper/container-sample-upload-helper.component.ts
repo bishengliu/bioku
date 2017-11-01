@@ -25,7 +25,6 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   box = 1;
   // end step 1
 
-  
   // step 2
   sampleLabelDefinition = 0; // row-column in on data column; 1: in 2 columns; 2: increasing numbers
   // samplePrefix = '';
@@ -191,6 +190,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   updateSampleType(sample_type: string): void {
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
     ////////////need to get column count and data attrs ////////////
+
   }
   toggleExcelFilerHeader() {
     this.excel_file_has_header = !this.excel_file_has_header;
