@@ -22,15 +22,12 @@ import { StoreSampleComponent } from '../containers/store-sample/store-sample.co
 import { ForgetPasswordComponent } from '../account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
 import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
-// upload
-import { XlsxUploadComponent } from '../containers/xlsx-upload/xlsx-upload.component';
 // guards
 import { AuthGuard } from '../_guards/AuthGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
 import { PIGuard } from '../_guards/PIGuard';
 import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
-
 // routing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';

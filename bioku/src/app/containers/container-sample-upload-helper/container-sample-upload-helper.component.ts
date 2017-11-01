@@ -24,6 +24,8 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   shelf = 1;
   box = 1;
   // end step 1
+
+  
   // step 2
   sampleLabelDefinition = 0; // row-column in on data column; 1: in 2 columns; 2: increasing numbers
   // samplePrefix = '';
@@ -38,6 +40,8 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   box_vertical: string;
   vArray: Array<string> = new Array<string>();
   // end step 2
+
+
   // step 3
   uploaded: Boolean = false;
   data: Array<Array<any>> = [];
