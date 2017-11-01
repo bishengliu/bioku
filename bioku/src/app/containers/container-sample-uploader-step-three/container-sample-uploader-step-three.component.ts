@@ -72,9 +72,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit {
   }
   updateSampleType(sample_type: string): void {
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
-    //////////// need to get column count and data attrs ////////////
     this.column_headers = this.updateSampleAttr(this.sample_type, this.bLabel, this.sLabel);
-
+    this.max_column_count = this.column_headers.length;
+    this.column_count = this.column_headers.length;
   }
   toggleExcelFilerHeader() {
     this.excel_file_has_header = !this.excel_file_has_header;
