@@ -28,7 +28,13 @@ export class SampleFile {
     excel_file_has_header: Boolean; // default true
 }
 
-export class SampleAttr {
+export class ColumnAttr {
     col_number: number;
     col_header: string;
+    sample_attr_index: number;
+}
+
+export class SampleExcelHeaders {
+    header_type: string;
+    headers: Array<string>;
 }

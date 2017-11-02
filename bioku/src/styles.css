@@ -516,3 +516,7 @@ div [class*="right floated"] {
 .wide_content{
   width: 100% !important;
 }
+.column_min_height{
+  min-height: 45px;
+  height: 45px;
+}

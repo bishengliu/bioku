@@ -19,78 +19,109 @@
           <div class="step">
             <div class="ui top left attached brown label">STEP 1</div>
             <div class="content">
-              <div class="ui horizontal divider">SAMPLE TYPE</div>
-              <div class="ui form">
-                <div class="grouped fields">
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_general" type="radio" name="sample_type" [attr.checked]="sample_type === 'GENERAL' ? 'checked': null" (change)="updateSampleType('GENERAL')">
-                      <label for="sample_general">GENERAL</label>
+              <div class="ui grid">
+                <div class="ui horizontal divider">SAMPLE TYPE</div>
+                <div class="ui form">
+                  <div class="grouped fields">
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_general" type="radio" name="sample_type" [attr.checked]="sample_type === 'GENERAL' ? 'checked': null" (change)="updateSampleType('GENERAL')">
+                        <label for="sample_general">GENERAL</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_cell" type="radio" name="sample_type" [attr.checked]="sample_type === 'CELL' ? 'checked': null" (change)="updateSampleType('CELL')">
-                      <label for="sample_cell">CELL</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_cell" type="radio" name="sample_type" [attr.checked]="sample_type === 'CELL' ? 'checked': null" (change)="updateSampleType('CELL')">
+                        <label for="sample_cell">CELL</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_construct" type="radio" name="sample_type" [attr.checked]="sample_type === 'CONSTRUCT' ? 'checked': null"
-                        (change)="updateSampleType('CONSTRUCT')">
-                      <label for="sample_construct">CONSTRUCT</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_construct" type="radio" name="sample_type" [attr.checked]="sample_type === 'CONSTRUCT' ? 'checked': null"
+                          (change)="updateSampleType('CONSTRUCT')">
+                        <label for="sample_construct">CONSTRUCT</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'OLIGO' ? 'checked': null" (change)="updateSampleType('OLIGO')">
-                      <label for="sample_OLIGO">OLIGO</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'OLIGO' ? 'checked': null" (change)="updateSampleType('OLIGO')">
+                        <label for="sample_OLIGO">OLIGO</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_gRNA_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'gRNA_OLIGO' ? 'checked': null"
-                        (change)="updateSampleType('gRNA_OLIGO')">
-                      <label for="sample_gRNA_OLIGO">gRNA_OLIGO</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_gRNA_OLIGO" type="radio" name="sample_type" [attr.checked]="sample_type === 'gRNA_OLIGO' ? 'checked': null"
+                          (change)="updateSampleType('gRNA_OLIGO')">
+                        <label for="sample_gRNA_OLIGO">gRNA_OLIGO</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_TISSUE" type="radio" name="sample_type" [attr.checked]="sample_type === 'TISSUE' ? 'checked': null" (change)="updateSampleType('TISSUE')">
-                      <label for="sample_TISSUE">TISSUE</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_TISSUE" type="radio" name="sample_type" [attr.checked]="sample_type === 'TISSUE' ? 'checked': null" (change)="updateSampleType('TISSUE')">
+                        <label for="sample_TISSUE">TISSUE</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <div class="ui slider checkbox">
-                      <input id="sample_VIRUS" type="radio" name="sample_type" [attr.checked]="sample_type === 'VIRUS' ? 'checked': null" (change)="updateSampleType('VIRUS')">
-                      <label for="sample_VIRUS">VIRUS</label>
+                    <div class="field">
+                      <div class="ui slider checkbox">
+                        <input id="sample_VIRUS" type="radio" name="sample_type" [attr.checked]="sample_type === 'VIRUS' ? 'checked': null" (change)="updateSampleType('VIRUS')">
+                        <label for="sample_VIRUS">VIRUS</label>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="ui step">
+            <div class="ui top left attached brown label">STEP 2</div>
+            <div class="content">
               <div class="ui horizontal divider">COLUMN HEADER</div>
-              <div class="ui slider checkbox">
+              <div class="ui slider checkbox">                 
                 <input type="checkbox" name="" id="excel_file_header" (change)="toggleExcelFilerHeader()" checked="checked">
                 <label for="excel_file_header">
                   <span *ngIf="excel_file_has_header" class="">I have column headers in the excel file</span>
-                  <span *ngIf="!excel_file_has_header" class="red-text">I have NO column header in the excel file</span>
+                  <span *ngIf="!excel_file_has_header" class="red-text">I have NO column headers in the excel file</span>
                 </label>
               </div>
             </div>
           </div>
-          <div class="step">
-              <div class="ui top left attached brown label">STEP 2</div>
-              <div class="content">
-                  <div class="ui horizontal divider">TOTAL NUMBER OF COLUMNS</div>
-                  <div class="ui mini right labeled focus fluid input">
-                    <label for="sample_column_count" class="ui basic label"><span class="grey-text">I have total</span></label>
-                    <input type="number" placeholder="total #column" id="sample_column_count" 
-                    min="1" max="{{max_column_count}}" [(ngModel)]="column_count" (ngModelChange)="updateColumnCount($event)">
-                    <div class="ui basic label"><span class="grey-text">columns in my excel file</span></div>
-                  </div>
-                  <div class="ui horizontal divider">COLUMN SPECIFICATION</div>
-              </div>
+        </div>
+        <!-- COLUMN SPECIFICATION -->
+        <div class="ui raised mini attached segment left aligned">
+            <div class="ui header blue">
+            <i class="icon caret right"></i>COLUMN SPECIFICATION</div>
+        </div>
+        <div class="ui attached segment wrapper">
+            <div class="ui top left attached brown label">STEP 3</div>
+            <div>
+                <div class="ui horizontal divider">AVAILABLE COLUMN HEADERS</div>
+                <div [dragula]='"bag"' [dragulaOptions]="dragulaOptions" [attr.column]="-1" class="container">
+                    <div *ngFor="let header of column_headers" [attr.header]="header"
+                      class="ui basic label movable">
+                      {{header}}
+                    </div>
+                </div>
+                <small class="grey-text"><i class="icon announcement"></i>drag the column headers above to the table below to sepecify the columns in your excel file</small>
             </div>
+            <br />
+            <div>
+                <div class="ui horizontal divider">COLUMN HEADERS IN YOUR EXCEL FILE</div>
+                <table class="ui small very compact unstackable striped teal table celled single line fixed">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let c of column_headers; let cindex = index">column {{cindex + 1}}</th>
+                    </tr>
+                    <tr>
+                      <td
+                      [attr.column]="(cindex + 1)"        
+                      [dragula]='"bag"' 
+                      [dragulaOptions]="dragulaOptions"
+                      *ngFor="let c of column_headers; let cindex= index" 
+                      class="column_min_height column_target container"></td>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
         </div>
         <!-- end sample type, columns -->
         <!-- drop file -->
