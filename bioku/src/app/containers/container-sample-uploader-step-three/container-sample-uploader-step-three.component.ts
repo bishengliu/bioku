@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { XlsxHelperService } from '../../_services/XlsxHelperService';
@@ -14,7 +14,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
   templateUrl: './container-sample-uploader-step-three.component.html',
   styleUrls: ['./container-sample-uploader-step-three.component.css']
 })
-export class ContainerSampleUploaderStepThreeComponent implements OnInit {
+export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDestroy {
   @Output() activeStep: EventEmitter<number> = new EventEmitter<number> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
@@ -38,10 +38,15 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit {
   excelColAttrs: Array<ColumnAttr> = [];
 
    // dragular driective options
-   private dragulaDrop$: any
+   private dragulaDrop$: any;
    dragulaOptions: any = {
-     revertOnSpill: true
+      direction: 'vertical',
+      revertOnSpill: true,
+      // accepts: (el, container, handle) => { return container.id !== 'no-drop'; }, // prevent from drop back
+      // copy: (el, container, handle) => { return container.id === 'no-drop'; }, // copy for this container only
+      // removeOnSpill: (el, container, handle) => { return container.id !== 'no-drop'; }, // for not this container
    }
+
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService) { }
 
@@ -51,17 +56,22 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit {
 
     // dragular
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
-      const header_div_moved = value[1];
+      const header_div_moved = value[1]; // el moved
       const source = value[3];
       const target = value[2];
-      const source_column = source.attributes['column'].value;
-      const target_column = target.attributes['column'].value
-      const header_moved = header_div_moved.attributes['header'].value
-      this.onDragulaDrop(+source_column, +target_column, header_moved);
+      // prevent from put 2 heders in td
+      if (target.id !== 'column_headers' &&  target.children.length > 1 ) {
+        this.dragulaService.find('bag').drake.cancel(true);
+      } else {
+        const source_column = source.attributes['column'].value;
+        const target_column = target.attributes['column'].value
+        const header_moved = header_div_moved.attributes['header'].value
+        this.onDragulaDrop(+source_column, +target_column, header_moved);
+      }
     });
   }
   private onDragulaDrop(source_column: number, target_column: number, header_moved: string) {
-    console.log([source_column, target_column, header_moved]);
+    // console.log([source_column, target_column, header_moved]);
     this.updateColumnAttrs(source_column, target_column, header_moved);
   }
 
@@ -195,19 +205,12 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit {
   }
 
   updateColumnAttrs (source_column: number, target_column: number, header_moved: string): void {
-    console.log(this.excelColAttrs);
     // move
     this.excelColAttrs.forEach(a => {
       if (a.col_header === header_moved) {
-        a.col_number = target_column; } });
-    // switch
-    if (source_column !== -1 && target_column !== -1) {
-      // fist find the target header col
-      this.excelColAttrs.forEach(a => {
-        if (a.col_number === target_column) {
-          a.col_number = source_column ; } });
-    }
-    console.log(this.excelColAttrs);
+        a.col_number = target_column;
+      }
+    });
   }
 
   ///////////// DONOT CHANGE THIS /////////////////
@@ -292,5 +295,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit {
     all_headers = [...box_position_headers, ...sample_position_headers, ...general_headers,
       ...cell_headers, ...construct_headers, ...oligo_headers, ...tissue_headers, ...virus_headers];
     return all_headers;
+  }
+  ngOnDestroy() {
+    if (this.dragulaDrop$ !== undefined) {
+      this.dragulaDrop$.unsubscribe();
+    }
   }
 }

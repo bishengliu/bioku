@@ -518,5 +518,5 @@ div [class*="right floated"] {
 }
 .column_min_height{
   min-height: 45px;
-  height: 45px;
+  height: 65px;
 }
