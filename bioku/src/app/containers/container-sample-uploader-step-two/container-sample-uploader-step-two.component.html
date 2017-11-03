@@ -76,7 +76,7 @@
               </div>
               <div class="field">
                 <label for="sample_join">sample label joined with</label>
-                <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 || sampleLabelDefinition === 1 }">
                   <option value="-">-</option>
                   <option value="/">/</option>
                   <option value="~">~</option>

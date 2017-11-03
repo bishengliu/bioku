@@ -15,13 +15,14 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
   activeStep = 1;
   bLabel: BoxLabel = new BoxLabel();
   sLabel: SampleLabel = new SampleLabel();
-
+  trigerChange = 0;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, ) {}
 
   // seprated
   captureActiveStep (evt: number) {
     this.activeStep = evt;
+    this.trigerChange++;
   }
   captureBoxLabel(boxLabel: BoxLabel) {
     this.bLabel = boxLabel;

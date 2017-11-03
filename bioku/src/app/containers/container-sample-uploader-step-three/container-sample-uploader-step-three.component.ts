@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output, Input, OnDestroy, OnChanges } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { XlsxHelperService } from '../../_services/XlsxHelperService';
@@ -14,10 +14,11 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
   templateUrl: './container-sample-uploader-step-three.component.html',
   styleUrls: ['./container-sample-uploader-step-three.component.css']
 })
-export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDestroy {
+export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDestroy, OnChanges {
   @Output() activeStep: EventEmitter<number> = new EventEmitter<number> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
+  @Input() trigerChange;
   uploaded: Boolean = false;
   data: Array<Array<any>> = [];
   original_file_headers_uploaded: Array<any> = [];
@@ -119,6 +120,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         this.parsing_file = false;
       });
   }
+
   renderExcelHeader(hdr: string, hindex: number) {
     const html_hder = this.excel_file_has_header ? '<span class="grey-text">' + hdr + '</span>' : '';
     let excel_header = '';
@@ -127,12 +129,14 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     excel_header = matched_headers.length > 0 ? ('<span class="red-text">' + matched_headers[0].col_header + '</span>') : html_hder;
     return excel_header;
   }
+
   // only trim the top not the left side
   trimData (data: Array<Array<any>>): Array<Array<any>> {
     return data.filter((d: Array<any>) => {
       return d.length > 0;
     })
   }
+
   backSecondStep() {
     this.activeStep.emit(2);
     this.data = [];
@@ -140,11 +144,13 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.data_to_display = 100;
     this.setDefaultSampleFile()
   }
+
   updateSampleType(sample_type: string): void {
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();
   }
+
   toggleExcelFilerHeader() {
     this.excel_file_has_header = !this.excel_file_has_header;
   }
@@ -183,7 +189,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     }
     // sample label
     const sample_label_headers = all_headers.filter(h => h.header_type === 'sample_position')[0].headers;
-    if (sLabel.sampleLabelDefinition === 2) {
+    if (sLabel.sampleLabelDefinition === 1) {
       // 2 cols for sample label
       sample_headers.push(sample_label_headers[1]);
       sample_headers.push(sample_label_headers[2]);
@@ -264,11 +270,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     });
     this.column_header_is_set = is_valid ? true : false;
   }
-
   doneColumnHeaders() {
     this.all_set_start_to_upload_file = true;
   }
-
   ///////////// DONOT CHANGE THIS /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
@@ -362,5 +366,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     if (this.dragulaDrop$ !== undefined) {
       this.dragulaDrop$.unsubscribe();
     }
+  }
+  ngOnChanges() {
+    this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.setDefaultColumnAttrs();
   }
 }
