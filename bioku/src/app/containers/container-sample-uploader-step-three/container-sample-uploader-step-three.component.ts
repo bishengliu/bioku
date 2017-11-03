@@ -20,6 +20,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Input() bLabel: BoxLabel;
   uploaded: Boolean = false;
   data: Array<Array<any>> = [];
+  original_file_headers_uploaded: Array<any> = [];
   workbook_opts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
   fileName = 'SheetJS.xlsx';
   worksheet_name = 'sheet';
@@ -36,6 +37,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
   // excel upload map to sample model
   excelColAttrs: Array<ColumnAttr> = [];
+  // get the requied columns
+   all_requied_headers: Array<string> = [];
 
    // dragular driective options
    private dragulaDrop$: any;
@@ -45,7 +48,16 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       // accepts: (el, container, handle) => { return container.id !== 'no-drop'; }, // prevent from drop back
       // copy: (el, container, handle) => { return container.id === 'no-drop'; }, // copy for this container only
       // removeOnSpill: (el, container, handle) => { return container.id !== 'no-drop'; }, // for not this container
-   }
+   };
+  // check for requied column
+  column_header_is_set: Boolean = false;
+  // start to upload excel
+  all_set_start_to_upload_file: Boolean = false;
+
+  // no data after upload
+  // parse excel file failed
+  excel_parse_failed: Boolean = false;
+  no_valid_sample: Boolean = false;
 
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService) { }
@@ -53,7 +65,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   ngOnInit() {
     this.sampleFile = new SampleFile();
     this.setDefaultSampleFile();
-
+    this.all_requied_headers = this.getRequiredColumnHeader();
     // dragular
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
       const header_div_moved = value[1]; // el moved
@@ -75,13 +87,26 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.updateColumnAttrs(source_column, target_column, header_moved);
   }
 
-
   handleValidFileDrop(evt: Array<File>) {
     this.parsing_file = true;
+    this.uploaded = false;
+    this.no_valid_sample = false;
+    this.excel_parse_failed = false;
     this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
     .subscribe(
       (data: Array<Array<any>>) => {
         this.data = this.trimData(data);
+        if (this.data.length > 0) {
+          if (this.excel_file_has_header) {
+            const header_data = this.data.splice(0, 1);
+            this.original_file_headers_uploaded = [...header_data[0]];
+          } else {
+            this.original_file_headers_uploaded = [...this.data[0]];
+          }
+        }
+        if (this.data.length === 0) {
+          this.no_valid_sample = true;
+        }
         this.uploaded = true;
         this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
         this.parsing_file = false;
@@ -89,9 +114,18 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       },
       (err: string) => {
         console.log(err);
+        this.excel_parse_failed = true;
         this.uploaded = false;
         this.parsing_file = false;
       });
+  }
+  renderExcelHeader(hdr: string, hindex: number) {
+    const html_hder = this.excel_file_has_header ? '<span class="grey-text">' + hdr + '</span>' : '';
+    let excel_header = '';
+    const col = hindex + 1;
+    const matched_headers = this.excelColAttrs.filter(a => a.col_number === col);
+    excel_header = matched_headers.length > 0 ? ('<span class="red-text">' + matched_headers[0].col_header + '</span>') : html_hder;
+    return excel_header;
   }
   // only trim the top not the left side
   trimData (data: Array<Array<any>>): Array<Array<any>> {
@@ -118,10 +152,16 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   setDefaultSampleFile() {
     this.sample_type = 'GENERAL';
     this.excel_file_has_header = true;
+    this.column_header_is_set = false;
+    this.all_set_start_to_upload_file = false;
+    this.excel_parse_failed = false;
+    this.no_valid_sample = false;
+    this.parsing_file = false
     // set up column count and headers
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();
   }
+
   updateColumnHeaders (sample_type: string, bLabel: BoxLabel, sLabel: SampleLabel): Array<string> {
     const all_headers: Array<SampleExcelHeaders> = this.getAllExcelHeaders();
     let sample_headers: Array<string> = [];
@@ -160,28 +200,28 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     const virus_headers: Array<string> = all_headers.filter(h => h.header_type === 'virus_headers')[0].headers;
     switch (sample_type) {
       case 'GENERAL':
-        sample_headers = [...general_headers];
+        sample_headers = [...sample_headers, ...general_headers];
         break;
       case 'CELL':
-        sample_headers = [...general_headers, ...cell_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...cell_headers];
         break;
       case 'CONSTRUCT':
-        sample_headers = [...general_headers, ...construct_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...construct_headers];
         break;
       case 'OLIGO':
-        sample_headers = [...general_headers, ...oligo_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...oligo_headers];
         break;
       case 'gRNA_OLIGO':
-        sample_headers = [...general_headers, ...oligo_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...oligo_headers];
         break;
       case 'TISSUE':
-        sample_headers = [...general_headers, ...tissue_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...tissue_headers];
         break;
       case 'VIRUS':
-        sample_headers = [...general_headers, ...virus_headers];
+        sample_headers = [...sample_headers, ...general_headers, ...virus_headers];
         break;
       default:
-        sample_headers = [...general_headers];
+        sample_headers = [...sample_headers, ...general_headers];
         break;
     }
     return sample_headers;
@@ -211,12 +251,27 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         a.col_number = target_column;
       }
     });
+    this.validRequiredColumns(); // update required colmns
+  }
+
+  validRequiredColumns() {
+    let is_valid = true;
+    const all_requied_headers = this.all_requied_headers;
+    this.excelColAttrs.forEach( (c: ColumnAttr) => {
+      if ( all_requied_headers.indexOf(c.col_header) !== -1 && c.col_number === -1) {
+        is_valid = false;
+      }
+    });
+    this.column_header_is_set = is_valid ? true : false;
+  }
+
+  doneColumnHeaders() {
+    this.all_set_start_to_upload_file = true;
   }
 
   ///////////// DONOT CHANGE THIS /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
-
     const box_position_headers = new SampleExcelHeaders();
     box_position_headers.headers =  ['BoxLabel', 'BoxLabel_Tower', 'BoxLabel_Shelf', 'BoxLabel_Box'];
     box_position_headers.header_type = 'box_position';
@@ -295,6 +350,13 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     all_headers = [...box_position_headers, ...sample_position_headers, ...general_headers,
       ...cell_headers, ...construct_headers, ...oligo_headers, ...tissue_headers, ...virus_headers];
     return all_headers;
+  }
+  ///////////// DONOT CHANGE THIS /////////////////
+  getRequiredColumnHeader() {
+    const sampleExcelHeaders: Array<SampleExcelHeaders> = this.getAllExcelHeaders();
+    const box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+    const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
+    return [...box_label_headers, ...sample_label_headers, 'Name'];
   }
   ngOnDestroy() {
     if (this.dragulaDrop$ !== undefined) {

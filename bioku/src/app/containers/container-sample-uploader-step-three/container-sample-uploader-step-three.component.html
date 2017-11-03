@@ -11,11 +11,11 @@
         </div>
         <!-- end info -->
         <!-- sample type, columns -->
-        <div class="ui raised mini attached segment left aligned">
+        <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
           <div class="ui header blue">
             <i class="icon caret right"></i>SAMPLE TYPE & COLUMN HEADERS</div>
         </div>
-        <div class="ui two attached huge steps">
+        <div class="ui two attached huge steps" *ngIf="!all_set_start_to_upload_file">
           <div class="step">
             <div class="ui top left attached brown label">STEP 1</div>
             <div class="content">
@@ -87,13 +87,23 @@
           </div>
         </div>
         <!-- COLUMN SPECIFICATION -->
-        <div class="ui raised mini attached segment left aligned">
+        <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
             <div class="ui header blue">
             <i class="icon caret right"></i>COLUMN SPECIFICATION</div>
         </div>
-        <div class="ui attached segment wrapper">
+        <div class="ui attached segment wrapper" *ngIf="!all_set_start_to_upload_file">
             <div class="ui top left attached brown label">STEP 3</div>
             <div>
+                <div class="ui mini icon positive message">
+                  <i class="announcement icon"></i>
+                  <div class="content">
+                    <div class="header">How-To</div>
+                    <p>Drag the available column headers to the table below to specify the columns in your excel file. 
+                      The available column headers in red are required headers.
+                      Specify only the columns you want to save; empty columns will be ignored!
+                    </p>
+                  </div>
+                </div><br />              
                 <div class="ui horizontal divider">AVAILABLE COLUMN HEADERS</div>
                 <div 
                 id="column_headers"
@@ -103,16 +113,16 @@
                 class="container"> 
                     <div *ngFor="let header of column_headers"
                       [attr.header]="header"
-                      class="ui basic label movable">
+                      class="ui label movable" [ngClass]="{'red': all_requied_headers.indexOf(header) !== -1 }">
+                      <i class="move icon"></i>
                       {{header}}
                     </div>
                 </div>
-                <small class="grey-text"><i class="icon announcement"></i>drag the column headers above to the table below to sepecify the columns in your excel file</small>
             </div>
             <br />
             <div>
                 <div class="ui horizontal divider">COLUMN HEADERS IN YOUR EXCEL FILE</div>
-                <table class="ui small very compact unstackable striped teal table celled single line fixed">
+                <table class="ui small very compact unstackable striped blue table celled single line fixed">
                   <thead>
                     <tr>
                       <th *ngFor="let c of column_headers; let cindex = index">column {{cindex + 1}}</th>
@@ -130,28 +140,57 @@
                 </table>
               </div>
         </div>
+        <div class="ui two mini buttons attached">
+          <button class="ui button" (click)="backSecondStep()" *ngIf="!all_set_start_to_upload_file">
+            <i class="icon caret left"></i> PREVIOUS </button>
+          <button class="ui positive button" (click)="doneColumnHeaders()" *ngIf="column_header_is_set && !all_set_start_to_upload_file">
+            <i class="icon checkmark"></i> ALL SET & UPLOAD FILE <i class="icon caret right"></i>
+          </button>
+        </div>
         <!-- end sample type, columns -->
         <!-- drop file -->
-        <div class="ui mini segment attached" *ngIf="!uploaded">
-            <div *ngIf="!uploaded && !parsing_file" class="dropzone" appFileDrop 
+        <div class="ui mini segment attached" *ngIf="!uploaded && all_set_start_to_upload_file">
+          <!-- no sample found -->
+          <div *ngIf="!uploaded && no_valid_sample" class="ui segment center aligned">
+            <br/>
+            <br/>
+            <p>
+              <i class="ui massive warning sign icon brown"></i>
+            </p>
+            <h3 class="ui brown header">The file uploaded is empty!</h3>
+            <br/>
+            <br/>
+          </div>
+          <!--failed  -->
+          <div *ngIf="!uploaded && excel_parse_failed" class="ui segment center aligned">
+            <br/>
+            <br/>
+            <p>
+              <i class="ui massive warning sign icon brown"></i>
+            </p>
+            <h3 class="ui brown header">Something went wrong, fail to parse the file uploaded!</h3>
+            <br/>
+            <br/>
+          </div>
+          <div *ngIf="!uploaded && !parsing_file" class="dropzone" appFileDrop 
             (validFiles)="handleValidFileDrop($event)"
             [allowedExtensions]="allowedFileExtension"
             [allowedMultipleFiles]="allowedMultipleFiles" >
               <div class="text-wrapper">
                 <div class="text-center brown-text">DROP YOUR FILE HERE!</div>
               </div>
-            </div>
+          </div>
             <!-- parsing file info -->
-            <div *ngIf="parsing_file" class="ui loading segment center aligned parse_file_zone">
-                <div class="text-wrapper">
-                    <div class="text-center brown-text">parsing file ... </div>
-                  </div>
-            </div>
+          <div *ngIf="parsing_file" class="ui loading segment center aligned parse_file_zone">
+            <div class="text-wrapper">
+              <div class="text-center brown-text">parsing file ... </div>
+              </div>
+          </div>
             <!-- end drop file -->
         </div>
         <!-- buttons-->
         <div class="ui two mini buttons attached">
-          <button class="ui button" (click)="backSecondStep()">
+          <button class="ui button" (click)="backSecondStep()" *ngIf="all_set_start_to_upload_file">
             <i class="icon caret left"></i> PREVIOUS </button>
           <button *ngIf="uploaded" class="ui blue button" (click)="testSampleUpload()"> VALIDATE
             <i class="icon caret right"></i>
@@ -163,8 +202,8 @@
             <table class="ui small very compact unstackable striped teal table">
               <thead>
                   <tr>
-                    <th *ngFor="let val of data[0]">
-                      {{val}}
+                    <th *ngFor="let hdr of original_file_headers_uploaded; let hindex = index;">
+                      <span [innerHTML]= "renderExcelHeader(hdr, hindex)"></span>
                     </th>
                   </tr>
               </thead>

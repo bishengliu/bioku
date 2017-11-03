@@ -14,7 +14,7 @@
         <i class="icon caret right"></i>HOW IS THE BOX LABELD?</div>
     </div>
     <div class="ui two attached huge steps">
-      <div class="step">
+      <div class="step step_min_height">
         <div class="ui top left attached brown label">STEP 1</div>
         <div class="content">
           <div class="ui slider checkbox">
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="step">
+      <div class="step step_min_height">
         <div class="ui top left attached brown label">STEP 2</div>
         <div class="content">
           <!-- for box_defined_as_normal == true -->
@@ -52,7 +52,7 @@
       <div class="ui header blue">
         <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
     </div>
-    <div class="ui attached segment" [ngClass]="{'disabled': !box_defined_as_normal}">
+    <div class="ui attached segment step_min_height" [ngClass]="{'disabled': !box_defined_as_normal}">
       <div class="ui top left attached brown label">STEP 3</div>
       <div class="ui form">
         <div class="four fields">

@@ -520,3 +520,7 @@ div [class*="right floated"] {
   min-height: 45px;
   height: 65px;
 }
+.step_min_height{
+  min-height: 250px;
+  height: 250px;
+}
