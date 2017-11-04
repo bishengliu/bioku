@@ -15,7 +15,7 @@
     </div>
     <div class="ui two attached huge steps">
       <div class="step step_min_height">
-        <div class="ui top left attached brown label">STEP 1</div>
+        <div class="ui top left attached teal label">STEP 1</div>
         <div class="content">
           <div class="ui slider checkbox">
             <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="step step_min_height">
-        <div class="ui top left attached brown label">STEP 2</div>
+        <div class="ui top left attached teal label">STEP 2</div>
         <div class="content">
           <!-- for box_defined_as_normal == true -->
           <div class="ui slider checkbox" *ngIf="box_defined_as_normal">
@@ -53,7 +53,7 @@
         <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
     </div>
     <div class="ui attached segment step_min_height" [ngClass]="{'disabled': !box_defined_as_normal}">
-      <div class="ui top left attached brown label">STEP 3</div>
+      <div class="ui top left attached teal label">STEP 3</div>
       <div class="ui form">
         <div class="four fields">
           <div class="field" *ngIf="box_tsb_one_column">
