@@ -5,7 +5,7 @@ import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders } from '../../_classes/sampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat } from '../../_classes/sampleUpload';
 // dragula
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
@@ -59,7 +59,18 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   // parse excel file failed
   excel_parse_failed: Boolean = false;
   no_valid_sample: Boolean = false;
+  // sample date
+  short_months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                                'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  long_months: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                                'August', 'September', 'October', 'November', 'December'];
+  FREEZING_DATE = 'Freezing Date';
+  freezing_date_sample_attr_index: number;
+  freezing_date_included: Boolean = false;
+  freezing_date_format_is_set: Boolean = false;
+  freezing_date_format: SampleDateFormat = new SampleDateFormat();
 
+  // all dates need to format to '2017-05-01',
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService) { }
 
@@ -86,6 +97,19 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   private onDragulaDrop(source_column: number, target_column: number, header_moved: string) {
     // console.log([source_column, target_column, header_moved]);
     this.updateColumnAttrs(source_column, target_column, header_moved);
+    // check whether the freezing date is drag into the table or drag out of the table
+    if (header_moved === this.FREEZING_DATE) {
+      if ( target_column !== -1 ) {
+        // draged into the table
+        this.freezing_date_included = true;
+        this.freezing_date_format_is_set = false;
+      } else {
+        // draged out of the table
+        this.freezing_date_included = false;
+        this.freezing_date_format_is_set = false;
+      }
+    }
+    // this.freezing_date_sample_attr_index
   }
 
   handleValidFileDrop(evt: Array<File>) {
@@ -136,6 +160,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       return d.length > 0;
     })
   }
+  // need to parse the freezing date //////////////////s
 
   backSecondStep() {
     this.activeStep.emit(2);
@@ -147,7 +172,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
   updateSampleType(sample_type: string): void {
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
+    // get the column headers for current sample type
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    // prepare the default column attrs
     this.setDefaultColumnAttrs();
   }
 
@@ -163,6 +190,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.excel_parse_failed = false;
     this.no_valid_sample = false;
     this.parsing_file = false
+    this.freezing_date_included = false;
+    this.freezing_date_format_is_set = false;
     // set up column count and headers
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();
@@ -238,7 +267,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     const allColumnHeaders = this.getAllColumnHeaders();
     this.column_headers.forEach((h: string) => {
       const colAttr = new ColumnAttr();
-            // get the index of current header
+      // get the index of current header
       const col_index = allColumnHeaders.indexOf(h);
       if (col_index !== -1) {
         const columnAttr = new ColumnAttr();
@@ -247,7 +276,11 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         columnAttr.sample_attr_index = col_index; // use this to map to sample table attr
         this.excelColAttrs.push(columnAttr);
       }
-    })
+    });
+    // find the freezing date sample_attr_index
+    this.freezing_date_sample_attr_index = this.getFreezingDateSampleModelIndex();
+    // preapre the freezing date format
+    this.setDefaultFreezingDateFormat();
   }
 
   updateColumnAttrs (source_column: number, target_column: number, header_moved: string): void {
@@ -270,10 +303,52 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     });
     this.column_header_is_set = is_valid ? true : false;
   }
+
+  // if freezing_date is drage, ask the user to provide the date format
+  getFreezingDateSampleModelIndex(): number {
+    const allColumnHeaders = this.getAllColumnHeaders();
+    return allColumnHeaders.indexOf(this.FREEZING_DATE);
+  }
+  // set up the default freezing_date_format
+  setDefaultFreezingDateFormat(): void {
+    this.freezing_date_format.day_position = 3;
+    this.freezing_date_format.month_position = 2;
+    this.freezing_date_format.year_position = 1;
+    this.freezing_date_format.join_symbol = '-';
+    this.freezing_date_format.month_format = 0; // nummeric
+    this.freezing_date_format.year_format = 0; // yyyy
+  }
+  // set freezing_date_format upon draged into the table
+  updateFreezingDateFormat(type: string, value: any): void {
+    this.freezing_date_format[type] = value;
+    console.log(this.freezing_date_format);
+  }
+  // display formated date
+  displayFreezingDate() {
+    const fArray: Array<string> = [];
+    fArray[this.freezing_date_format.day_position - 1] = '25';
+    // month
+    let month_example = '12';
+    if (+this.freezing_date_format.month_format === 1) {
+    // full month
+      month_example = 'December';
+    } else if (+this.freezing_date_format.month_format === 2) {
+      month_example = 'Dec';
+    } else {
+      month_example = '12';
+    }
+    fArray[+this.freezing_date_format.month_position - 1] = month_example;
+    // year
+    fArray[+this.freezing_date_format.year_position - 1] = this.freezing_date_format.year_format === 0 ? '2017' : '17';
+    return fArray.join(this.freezing_date_format.join_symbol);
+  }
+  doneFreezingDateFormat() {
+    this.freezing_date_format_is_set = true;
+  }
   doneColumnHeaders() {
     this.all_set_start_to_upload_file = true;
   }
-  ///////////// DONOT CHANGE THIS /////////////////
+  ///////////// DONOT CHANGE THIS: the order of each item must not be changed /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
     const box_position_headers = new SampleExcelHeaders();
@@ -288,7 +363,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
     const general_headers = new SampleExcelHeaders();
     general_headers.headers =  ['Name', 'Tag', 'Offical Name', 'Sample Code', 'External Reference', 'Quantity',
-    'Quantity Unit', 'Freezing Code', 'Freezing Date', 'Description'];
+    'Quantity Unit', 'Freezing Code', this.FREEZING_DATE, 'Description'];
     general_headers.header_type = 'general_headers';
     all_headers.push(general_headers);
 
@@ -320,7 +395,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
     return all_headers;
   }
-  ///////////// DONOT CHANGE THIS /////////////////
+  ///////////// DONOT CHANGE THIS: the order of each item must not be changed/////////////////
   getAllColumnHeaders(): Array<string> {
     let all_headers: Array<string>  = [];
     const sampleExcelHeaders: Array<SampleExcelHeaders> = this.getAllExcelHeaders();
@@ -338,7 +413,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     ];
     return all_headers;
   }
-  ///////////// DONOT CHANGE THIS /////////////////
+  ///////////// DONOT CHANGE THIS: the order of each item must not be changed/////////////////
   getAllColumnAttrs(): Array<string> {
     let all_headers: Array<string>  = [];
     const box_position_headers =  ['box_position', 'box_position_tower', 'box_position_shelf', 'box_position_box'];

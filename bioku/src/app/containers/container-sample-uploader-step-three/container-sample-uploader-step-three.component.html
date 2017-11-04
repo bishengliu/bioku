@@ -1,14 +1,14 @@
 <div class="ui grid row medium_bottom">
     <div class="sixteen wide column">
       <!-- info -->
-      <div class="ui icon mini top attached blue inverted message">
-          <i class="icon file excel outline"></i>
-          <div class="content">
-            <div class="header">UPLOAD SAMPLE FILE</div>
-            <p>Please speficy the sample type and column headers before uploading the excel file (.xlsx), 
-              so that the application knows how to save your samples</p>
-          </div>
+      <div class="ui icon top attached blue inverted message">
+        <i class="icon file excel outline"></i>
+        <div class="content">
+          <div class="header">UPLOAD SAMPLE FILE</div>
+          <p>Please speficy the sample type and column headers before uploading the excel file (.xlsx), so that the application knows
+            how to save your samples</p>
         </div>
+      </div>
         <!-- end info -->
         <!-- sample type, columns -->
         <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
@@ -94,7 +94,7 @@
         <div class="ui attached segment wrapper" *ngIf="!all_set_start_to_upload_file">
             <div class="ui top left attached brown label">STEP 3</div>
             <div>
-                <div class="ui mini icon positive message">
+                <div class="ui small icon positive message">
                   <i class="announcement icon"></i>
                   <div class="content">
                     <div class="header">How-To</div>
@@ -121,29 +121,92 @@
             </div>
             <br />
             <div>
-                <div class="ui horizontal divider">COLUMN HEADERS IN YOUR EXCEL FILE</div>
+              <div class="ui horizontal divider">COLUMN HEADERS IN YOUR EXCEL FILE</div>
                 <table class="ui small very compact unstackable striped blue table celled single line fixed">
                   <thead>
                     <tr>
                       <th *ngFor="let c of column_headers; let cindex = index">column {{cindex + 1}}</th>
                     </tr>
                     <tr>
-                      <td
-                      id="column_target"
-                      [attr.column]="(cindex + 1)"        
-                      [dragula]='"bag"' 
-                      [dragulaOptions]="dragulaOptions"
-                      *ngFor="let c of column_headers; let cindex= index" 
-                      class="column_min_height container"></td>
+                      <td id="column_target" [attr.column]="(cindex + 1)" [dragula]='"bag"' [dragulaOptions]="dragulaOptions" *ngFor="let c of column_headers; let cindex= index"
+                        class="column_min_height container"></td>
+                    </tr>
+                    <tr *ngIf="freezing_date_included && !freezing_date_format_is_set">
+                      <!--  freezing date format -->
+                      <td [attr.colspan]="column_headers.length">
+                        <div class="ui warning icon message">
+                          <i class="icon alarm"></i>
+                          <div class="content">
+                            <p>You've selected the 'Freezing Date' column to be uploaded, please specifiy the date format before proceeding further.</p>
+                            <p>You can drag out/in the "Freezing Date" to hide or show this.</p>
+                          </div>
+                        </div>
+                        <div class="ui grid row">
+                          <div class="eight wide column">
+                            <div class="ui divider horizontal">Specifiy the freezing date format</div>
+                            <div class="ui form">                              
+                              <div class="four fields">
+                                <div class="field">
+                                  <label for="year">year</label>
+                                  <select id="year" class="ui dropdown" [(ngModel)]="freezing_date_format.year_format" (ngModelChange)="updateFreezingDateFormat('year_format', $event)">
+                                    <option value="0">yyyy</option>
+                                    <option value="1">yy</option>
+                                  </select>
+                                </div>
+                                <div class="field">
+                                  <label for="month">month</label>
+                                  <select id="month" class="ui dropdown" [(ngModel)]="freezing_date_format.month_format" (ngModelChange)="updateFreezingDateFormat('month_format', $event)">
+                                    <option value="0">MM (digits)</option>
+                                    <option value="1">full month names</option>
+                                    <option value="2">3-letter abbreviations</option>                                    
+                                  </select>
+                                </div>
+                                <div class="field">
+                                  <label for="day">day</label>
+                                  <select id="day" class="ui disabled dropdown">
+                                    <option value="">dd</option>
+                                  </select>
+                                </div>
+                                <div class="field">
+                                  <label for="join_date">joined with</label>
+                                  <select id="join_date" class="ui dropdown" [(ngModel)]="freezing_date_format.join_symbol" (ngModelChange)="updateFreezingDateFormat('join_symbol', $event)">
+                                    <option value="/">/</option>
+                                    <option value="-">-</option>
+                                    <option value=".">.</option>
+                                    <option value=" ">space</option>
+                                    <option value="">nothing</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="grey-text">
+                                <span><i class="icon chevron right"></i>"3-letter abbreviations": the months are named as <span><span *ngFor="let m of short_months">"{{m}}" </span></span>;</span><br />
+                                <span><i class="icon chevron right"></i>"full month names": the months are named as <span *ngFor="let m of long_months">"{{m}}" </span>.</span>
+                            </div>
+                          </div>
+                          <div class="eight wide column">
+                              <div class="ui divider horizontal">Your freezing date</div>
+                            <div class="ui red secondary attached segment">
+                              The freezing date in your excel file looks like this: <span class="red-text">{{ displayFreezingDate() }}</span>.
+                            </div>
+                            <div class="ui two mini buttons attached">
+                              <button class="ui positive button" (click)="doneFreezingDateFormat()">
+                                <i class="icon checkmark"></i> Looks Good
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   </thead>
                 </table>
-              </div>
+            </div>
         </div>
         <div class="ui two mini buttons attached">
           <button class="ui button" (click)="backSecondStep()" *ngIf="!all_set_start_to_upload_file">
             <i class="icon caret left"></i> PREVIOUS </button>
-          <button class="ui positive button" (click)="doneColumnHeaders()" *ngIf="column_header_is_set && !all_set_start_to_upload_file">
+          <button class="ui positive button" (click)="doneColumnHeaders()" 
+            *ngIf="(column_header_is_set && !all_set_start_to_upload_file) && (!freezing_date_included || (freezing_date_included && freezing_date_format_is_set ))">
             <i class="icon checkmark"></i> ALL SET & UPLOAD FILE <i class="icon caret right"></i>
           </button>
         </div>

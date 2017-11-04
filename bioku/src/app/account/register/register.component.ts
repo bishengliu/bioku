@@ -64,8 +64,8 @@ export class RegisterComponent implements OnInit {
       'password2': ['', Validators.compose([Validators.required, this.cValidators.passwordValidator()])],
       'first_name': ['', Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
       'last_name': ['', Validators.compose([Validators.required, this.cValidators.humanNameValidator()])],
-      'birth_date': ['',],
-      'photo': ['',],
+      'birth_date': ['', ],
+      'photo': ['', ],
       'telephone': ['', this.cValidators.telephoneValidator()]
     });
     // app name

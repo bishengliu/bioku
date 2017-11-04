@@ -38,3 +38,12 @@ export class SampleExcelHeaders {
     header_type: string;
     headers: Array<string>;
 }
+
+export class SampleDateFormat {
+    day_position: number; // 1, 2, 3, day start with 1
+    month_position: number;
+    month_format: number; // 0 is the numeric format, start with 1; 1: full text month, 2: shot 3-letter abbreviation format
+    year_position: number;
+    year_format: number; // 0 is yyyy; 1 is yy
+    join_symbol: string; // '-', '', ' ' or '/'
+}
