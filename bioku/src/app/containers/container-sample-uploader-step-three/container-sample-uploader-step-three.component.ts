@@ -46,6 +46,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
    dragulaOptions: any = {
       direction: 'vertical',
       revertOnSpill: true,
+      accepts: (el, container, handle) => { return el.id !== 'no-drop'; },
       // accepts: (el, container, handle) => { return container.id !== 'no-drop'; }, // prevent from drop back
       // copy: (el, container, handle) => { return container.id === 'no-drop'; }, // copy for this container only
       // removeOnSpill: (el, container, handle) => { return container.id !== 'no-drop'; }, // for not this container
@@ -69,7 +70,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   freezing_date_included: Boolean = false;
   freezing_date_format_is_set: Boolean = false;
   freezing_date_format: SampleDateFormat = new SampleDateFormat();
-
   // all dates need to format to '2017-05-01',
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService) { }
@@ -78,19 +78,26 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.sampleFile = new SampleFile();
     this.setDefaultSampleFile();
     this.all_requied_headers = this.getRequiredColumnHeader();
-    // dragular
+    // dragular column headers
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
-      const header_div_moved = value[1]; // el moved
-      const source = value[3];
-      const target = value[2];
-      // prevent from put 2 heders in td
-      if (target.id !== 'column_headers' &&  target.children.length > 1 ) {
-        this.dragulaService.find('bag').drake.cancel(true);
+      console.log(value);
+      if (value[0] === 'bag') {
+        // col header bag
+        const header_div_moved = value[1]; // el moved
+        const source = value[3];
+        const target = value[2];
+        // prevent from put 2 heders in td
+        if (target.id !== 'column_headers' &&  target.children.length > 1 ) {
+          this.dragulaService.find('bag').drake.cancel(true);
+        } else {
+          const source_column = source.attributes['column'].value;
+          const target_column = target.attributes['column'].value
+          const header_moved = header_div_moved.attributes['header'].value
+          this.onDragulaDrop(+source_column, +target_column, header_moved);
+        }
       } else {
-        const source_column = source.attributes['column'].value;
-        const target_column = target.attributes['column'].value
-        const header_moved = header_div_moved.attributes['header'].value
-        this.onDragulaDrop(+source_column, +target_column, header_moved);
+        console.log('date ...');
+        
       }
     });
   }

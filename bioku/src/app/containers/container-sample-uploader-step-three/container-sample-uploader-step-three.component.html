@@ -137,51 +137,66 @@
                         <div class="ui warning icon message">
                           <i class="icon alarm"></i>
                           <div class="content">
-                            <p>You've selected the 'Freezing Date' column to be uploaded, please specifiy the date format before proceeding further.</p>
-                            <p>You can drag out/in the "Freezing Date" to hide or show this.</p>
+                            <div class="header">specifiy the date format</div>
+                            <p><i class="small icon circle"></i>You've selected the "Freezing Date" column, please specifiy the date format before proceeding further;</p>
+                            <p><i class="small icon circle"></i>You can drag the "Freezing Date" out/into table to hide or show this;</p>
+                            <p><i class="small icon circle"></i>Drag the "year", "month" and "day" to change their orders; "joined with" cannot be dragged.</p>
                           </div>
                         </div>
                         <div class="ui grid row">
                           <div class="eight wide column">
                             <div class="ui divider horizontal">Specifiy the freezing date format</div>
-                            <div class="ui form">                              
-                              <div class="four fields">
-                                <div class="field">
-                                  <label for="year">year</label>
-                                  <select id="year" class="ui dropdown" [(ngModel)]="freezing_date_format.year_format" (ngModelChange)="updateFreezingDateFormat('year_format', $event)">
-                                    <option value="0">yyyy</option>
-                                    <option value="1">yy</option>
-                                  </select>
-                                </div>
-                                <div class="field">
-                                  <label for="month">month</label>
-                                  <select id="month" class="ui dropdown" [(ngModel)]="freezing_date_format.month_format" (ngModelChange)="updateFreezingDateFormat('month_format', $event)">
-                                    <option value="0">MM (digits)</option>
-                                    <option value="1">full month names</option>
-                                    <option value="2">3-letter abbreviations</option>                                    
-                                  </select>
-                                </div>
-                                <div class="field">
-                                  <label for="day">day</label>
-                                  <select id="day" class="ui disabled dropdown">
-                                    <option value="">dd</option>
-                                  </select>
-                                </div>
-                                <div class="field">
-                                  <label for="join_date">joined with</label>
-                                  <select id="join_date" class="ui dropdown" [(ngModel)]="freezing_date_format.join_symbol" (ngModelChange)="updateFreezingDateFormat('join_symbol', $event)">
-                                    <option value="/">/</option>
-                                    <option value="-">-</option>
-                                    <option value=".">.</option>
-                                    <option value=" ">space</option>
-                                    <option value="">nothing</option>
-                                  </select>
-                                </div>
+                            <div class="ui equal width form">                              
+                              <div class="four fields container"
+                              id="date_position"
+                              [attr.column]="-1"
+                              [dragula]='"bag_date"' 
+                              [dragulaOptions]="dragulaOptions">
+                              <div class="field">
+                                <label for="year"><i class="brown icon move"></i>year</label>
+                                <select id="year" class="ui dropdown" [(ngModel)]="freezing_date_format.year_format" (ngModelChange)="updateFreezingDateFormat('year_format', $event)">
+                                  <option value="0">yyyy</option>
+                                  <option value="1">yy</option>
+                                </select>
+                              </div>
+                              <div class="field">
+                                <label for="month"><i class="brown icon move"></i>month</label>
+                                <select id="month" class="ui dropdown" [(ngModel)]="freezing_date_format.month_format" (ngModelChange)="updateFreezingDateFormat('month_format', $event)">
+                                  <option value="0">MM (digits)</option>
+                                  <option value="1">full month names</option>
+                                  <option value="2">3-letter abbreviations</option>
+                                </select>
+                              </div>
+                              <div class="field">
+                                <label for="day"><i class="brown icon move"></i>day</label>
+                                <select id="day" class="ui disabled dropdown">
+                                  <option value="">dd</option>
+                                </select>
+                              </div>
+                              <div class="field" id='no-drop'>
+                                <label for="join_date">
+                                    <i class="icons">
+                                        <i class="red dont icon"></i>
+                                        <i class="grey small move icon"></i>
+                                      </i>
+                                  joined with
+                                </label>
+                                <select id="join_date" class="ui dropdown" [(ngModel)]="freezing_date_format.join_symbol" (ngModelChange)="updateFreezingDateFormat('join_symbol', $event)">
+                                  <option value="/">/</option>
+                                  <option value="-">-</option>
+                                  <option value=".">.</option>
+                                  <option value=" ">space</option>
+                                  <option value="">nothing</option>
+                                </select>
+                              </div>
                               </div>
                             </div>
-                            <div class="grey-text">
-                                <span><i class="icon chevron right"></i>"3-letter abbreviations": the months are named as <span><span *ngFor="let m of short_months">"{{m}}" </span></span>;</span><br />
-                                <span><i class="icon chevron right"></i>"full month names": the months are named as <span *ngFor="let m of long_months">"{{m}}" </span>.</span>
+                            <br />
+                            <div class="">                              
+                              <small>
+                                <span class="grey-text"><i class="icon small chevron right"></i>"3-letter abbreviations": the months are named as <span><span *ngFor="let m of short_months">"{{m}}" </span></span>;</span><br />
+                                <span class="grey-text"><i class="icon small chevron right"></i>"full month names": the months are named as <span *ngFor="let m of long_months">"{{m}}" </span>.</span>
+                              </small>
                             </div>
                           </div>
                           <div class="eight wide column">
