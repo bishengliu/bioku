@@ -1,6 +1,6 @@
 <div class="ui grid row medium_bottom">
-  <div class="sixteen wide column medium_around">
-    <div class="ui icon top attached blue inverted message">
+  <div class="sixteen wide column">
+    <div class="ui icon top attached info message">
       <i class="icon table"></i>
       <div class="content">
         <div class="header">BOX LABEL: HELP THE APPLICAIOTN TO RECOGNIZE YOUR BOXES</div>
@@ -104,7 +104,7 @@
       </div>
     </div>
     <div class="ui mini red tertiary segment attached">
-      <div class="grey-text text-center">your box label looks like this:
+      <div class="text-center">your box label looks like this:
         <span *ngIf="box_defined_as_normal">
           <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
         </span>

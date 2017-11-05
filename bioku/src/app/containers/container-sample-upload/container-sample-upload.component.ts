@@ -29,6 +29,7 @@ export class ContainerSampleUploadComponent implements OnInit {
   allowUpload: Boolean = false;
   load_failed: Boolean = false;
   loading: Boolean = true;
+  simple_or_advanced_mode: number; // 0, not chosen, 1; simple mode, 2 advanced mode
   constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
     private localStorageService: LocalStorageService, private containerService: ContainerService,
     private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
@@ -51,6 +52,7 @@ export class ContainerSampleUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.simple_or_advanced_mode = 0;
     this.loading = true;
     this.load_failed = false;
     this.sub = this.route.params
@@ -72,5 +74,9 @@ export class ContainerSampleUploadComponent implements OnInit {
         this.load_failed = true;
         this.alertService.error('Something went wrong, fail to load current container from the server!', true);
       });
+  }
+
+  chooseUploadMode(mode: number) {
+    this.simple_or_advanced_mode = mode;
   }
 }

@@ -17,16 +17,26 @@
 </div>
 
 <div class="ui grid row small_padding" *ngIf="!load_failed && !loading">
-  <div class="ui floating info icon message">
-      <i class="announcement icon"></i>
-      <div class="content">
-          <div class="header">
-            PLEASE READ THIS CAREFULLY BEFORE PROCEED!
-          </div>
-          <p>need to update the text here ...</p>
-        </div>
+  <div class="sixteen wide column" *ngIf="simple_or_advanced_mode === 0">
+      <div class="ui fluid attached blue icon message">
+          <i class="announcement icon"></i>
+          <div class="content">
+              <div class="header">
+                PLEASE READ THIS CAREFULLY BEFORE PROCEED!
+              </div>
+              <p>need to update the text here ...</p>
+            </div>
+      </div>
+      <div class="two ui fluid bottom attached buttons">
+          <button class="ui blue button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> SIMPLE UPLOAD MODE</button>
+          <button class="ui black button" (click)="chooseUploadMode(2)"><i class="icon options"></i> ADVANCED UPLOAD MODE</button>
+      </div>
   </div>
-  <app-container-sample-upload-helper class="sixteen wide column" *ngIf="allowUpload"></app-container-sample-upload-helper>
+  <app-container-sample-upload-helper
+    [uploadMode]="simple_or_advanced_mode"
+    class="sixteen wide column" 
+    *ngIf="allowUpload && simple_or_advanced_mode !== 0">
+  </app-container-sample-upload-helper>
 </div>
 
 <!--loading info-->

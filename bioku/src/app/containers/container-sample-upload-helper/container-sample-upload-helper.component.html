@@ -1,4 +1,4 @@
-<div class="ui mini three steps">
+<!-- <div class="ui mini three steps">
   <a class="step" [ngClass]="{'active': activeStep === 1, 'disabled': activeStep !== 1, 'completed': activeStep > 1 }">
     <i class="icon table"></i>
     <div class="content">
@@ -20,7 +20,7 @@
       <div class="description">define sample attributes to upload</div>
     </div>
   </a>
-</div>
+</div> -->
 
 <app-container-sample-uploader-step-one 
 [ngClass]="{'hidden': activeStep !== 1 }"
@@ -36,6 +36,7 @@
 <app-container-sample-uploader-step-three
 [bLabel]="bLabel"
 [sLabel]="sLabel"
+[uploadMode]="uploadMode"
 [trigerChange]="trigerChange"
 (activeStep)="captureActiveStep($event)" 
 [ngClass]="{'hidden': activeStep !== 3 }"></app-container-sample-uploader-step-three>

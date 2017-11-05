@@ -31,7 +31,6 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
   ngOnInit() {
     this.sLabel = new SampleLabel();
     this.setDefaultSampleLabel();
-
   }
   updateSampleLabelDefinition (evt: any) {
     this.sampleLabelDefinition = evt;

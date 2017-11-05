@@ -1,7 +1,7 @@
 <div class="ui grid row medium_bottom">
     <div class="sixteen wide column">
       <!-- info -->
-      <div class="ui icon top attached blue inverted message">
+      <div class="ui icon top attached info message">
         <i class="icon file excel outline"></i>
         <div class="content">
           <div class="header">UPLOAD SAMPLE FILE</div>
@@ -9,6 +9,19 @@
             how to save your samples</p>
         </div>
       </div>
+      <div class="ui mini red tertiary segment attached">
+          <div class="grey-text text-center">
+            <p>
+              your box label looks like this: 
+              <span *ngIf="bLabel.box_defined_as_normal" class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{bLabel.tower === 1 ? 1: "A"}}{{bLabel.join}}{{bLabel.shelf === 1 ? 1: "A"}}{{bLabel.join}}{{bLabel.box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>          
+              <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+              <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
+              your sample label looks like this:
+              <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{sLabel.boxLabel === 1 ? 1: "A"}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{sLabel.sampleRow === 1 ? 1: "A"}}{{sLabel.sampleJoin}}{{sLabel.sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
+              your box layout looks like this: (<span class="red-text"><strong>{{sLabel.box_horizontal}}X{{parseLetter2Number(sLabel.box_vertical)}}</strong></span>);
+            </p>
+          </div>
+        </div>
         <!-- end info -->
         <!-- sample type, columns -->
         <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
@@ -219,7 +232,7 @@
             </div>
         </div>
         <div class="ui two mini buttons attached">
-          <button class="ui button" (click)="backSecondStep()" *ngIf="!all_set_start_to_upload_file">
+          <button class="ui button" (click)="backSecondStep()" *ngIf="!all_set_start_to_upload_file && uploadMode === 2">
             <i class="icon caret left"></i> PREVIOUS </button>
           <button class="ui positive button" (click)="doneColumnHeaders()" 
             *ngIf="(column_header_is_set && !all_set_start_to_upload_file) && (!freezing_date_included || (freezing_date_included && freezing_date_format_is_set ))">
@@ -269,7 +282,7 @@
         </div>
         <!-- buttons-->
         <div class="ui two mini buttons attached">
-          <button class="ui button" (click)="backSecondStep()" *ngIf="all_set_start_to_upload_file">
+          <button class="ui button" (click)="backSecondStep()" *ngIf="all_set_start_to_upload_file && uploadMode === 2">
             <i class="icon caret left"></i> PREVIOUS </button>
           <button *ngIf="uploaded" class="ui blue button" (click)="testSampleUpload()"> VALIDATE
             <i class="icon caret right"></i>

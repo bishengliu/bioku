@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Input, OnChanges } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { XlsxHelperService } from '../../_services/XlsxHelperService';
@@ -11,7 +11,8 @@ import { BoxLabel, SampleLabel } from '../../_classes/sampleUpload';
   templateUrl: './container-sample-upload-helper.component.html',
   styleUrls: ['./container-sample-upload-helper.component.css']
 })
-export class ContainerSampleUploadHelperComponent implements OnInit {
+export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
+  @Input() uploadMode: number;
   activeStep = 1;
   bLabel: BoxLabel = new BoxLabel();
   sLabel: SampleLabel = new SampleLabel();
@@ -53,5 +54,10 @@ export class ContainerSampleUploadHelperComponent implements OnInit {
     this.sLabel.sampleJoin = '';
     this.sLabel.box_horizontal = this.appSetting.BOX_HORIZONTAL;
     this.sLabel.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; // a letter
+  }
+  ngOnChanges() {
+    if (this.uploadMode === 1) {
+      this.activeStep = 3;
+    }
   }
 }

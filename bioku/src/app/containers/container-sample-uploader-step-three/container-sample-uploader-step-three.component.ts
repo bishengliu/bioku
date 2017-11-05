@@ -18,6 +18,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Output() activeStep: EventEmitter<number> = new EventEmitter<number> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
+  @Input() uploadMode: number;
   @Input() trigerChange;
   uploaded: Boolean = false;
   data: Array<Array<any>> = [];
@@ -449,8 +450,13 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       this.dragulaDrop$.unsubscribe();
     }
   }
+  parseLetter2Number(letter: string) {
+    return this.appSetting.BOX_POSITION_LETTERS.indexOf(letter.toUpperCase()) + 1;
+  }
   ngOnChanges() {
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();
+    console.log(this.bLabel);
+    console.log(this.sLabel);
   }
 }
