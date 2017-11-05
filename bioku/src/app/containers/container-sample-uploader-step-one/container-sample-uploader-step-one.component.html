@@ -20,8 +20,8 @@
           <div class="ui slider checkbox">
             <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked">
             <label for="box_position_definition">
-              <span *ngIf="box_defined_as_normal" class="">box labeled with "tower", "shelf" and "box"</span>
-              <span *ngIf="!box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
+              <span *ngIf="bLabel.box_defined_as_normal" class="">box labeled with "tower", "shelf" and "box"</span>
+              <span *ngIf="!bLabel.box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
             </label>
           </div>
         </div>
@@ -30,62 +30,62 @@
         <div class="ui top left attached teal label">STEP 2</div>
         <div class="content">
           <!-- for box_defined_as_normal == true -->
-          <div class="ui slider checkbox" *ngIf="box_defined_as_normal">
+          <div class="ui slider checkbox" *ngIf="bLabel.box_defined_as_normal">
             <input type="checkbox" name="" id="box_tsb_one_column" (change)="toggleBoxTSBColumn()" checked="checked">
             <label for="box_tsb_one_column">
-              <span *ngIf="box_tsb_one_column" class="">"tower", "shelf" and "box" in one data column</span>
-              <span *ngIf="!box_tsb_one_column" class="red-text">"tower", "shelf" and "box" in 3 data columns</span>
+              <span *ngIf="bLabel.box_tsb_one_column" class="">"tower", "shelf" and "box" in one data column</span>
+              <span *ngIf="!bLabel.box_tsb_one_column" class="red-text">"tower", "shelf" and "box" in 3 data columns</span>
             </label>
           </div>
           <!-- for box_defined_as_normal == false-->
-          <div class="ui slider checkbox" *ngIf="!box_defined_as_normal">
+          <div class="ui slider checkbox" *ngIf="!bLabel.box_defined_as_normal">
             <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked">
             <label for="box_sample_separated">
-              <span *ngIf="box_sample_separated" class="">box label is separated from sample label</span>
-              <span *ngIf="!box_sample_separated" class="red-text">box label is integrated into sample label</span>
+              <span *ngIf="bLabel.box_sample_separated" class="">box label is separated from sample label</span>
+              <span *ngIf="!bLabel.box_sample_separated" class="red-text">box label is integrated into sample label</span>
             </label>
           </div>
         </div>
       </div>
     </div>
-    <div class="ui raised mini attached segment left aligned" [ngClass]="{'disabled': !box_defined_as_normal}">
+    <div class="ui raised mini attached segment left aligned" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}">
       <div class="ui header blue">
         <i class="icon caret right"></i>HOW DOES THE BOX LABEL LOOK LIKE?</div>
     </div>
-    <div class="ui attached segment step_min_height" [ngClass]="{'disabled': !box_defined_as_normal}">
+    <div class="ui attached segment step_min_height" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}">
       <div class="ui top left attached teal label">STEP 3</div>
       <div class="ui form">
         <div class="four fields">
-          <div class="field" *ngIf="box_tsb_one_column">
+          <div class="field" *ngIf="bLabel.box_tsb_one_column">
             <label for="prefix">prefix to trim</label>
-            <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
-              <input id="prefix" type="text" placeholder="what to trim" [(ngModel)]="prefix" (ngModelChange)="updatePrefix($event)">
+            <div class="ui input" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}">
+              <input id="prefix" type="text" placeholder="what to trim" [(ngModel)]="bLabel.prefix" (ngModelChange)="updatebLabel($event, 'prefix')">
             </div>
           </div>
           <div class="field">
             <label for="tower">tower</label>
-            <select id="tower" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="tower" (ngModelChange)="updateTower($event)">
+            <select id="tower" class="ui dropdown" value="" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}" [(ngModel)]="bLabel.tower" (ngModelChange)="updatebLabel($event, 'tower')">
               <option value="1">digits</option>
               <option value="0">letter</option>
             </select>
           </div>
           <div class="field">
             <label for="shelf">shelf</label>
-            <select id="shelf" class="ui dropdown" value="" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="shelf" (ngModelChange)="updateShelf($event)">
+            <select id="shelf" class="ui dropdown" value="" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}" [(ngModel)]="bLabel.shelf" (ngModelChange)="updatebLabel($event, 'shelf')">
               <option value="1" selected>digits</option>
               <option value="0">letter</option>
             </select>
           </div>
           <div class="field">
             <label for="box">box</label>
-            <select id="box" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="box" (ngModelChange)="updateBox($event)">
+            <select id="box" class="ui dropdown" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}" [(ngModel)]="bLabel.box" (ngModelChange)="updatebLabel($event, 'box')">
               <option value="1" selected>digits</option>
               <option value="0">letter</option>
             </select>
           </div>
           <div class="field">
             <label for="join">joined with</label>
-            <select id="join" class="ui dropdown" [ngClass]="{'disabled': !box_defined_as_normal}" [(ngModel)]="join" (ngModelChange)="updateJoin($event)">
+            <select id="join" class="ui dropdown" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}" [(ngModel)]="bLabel.join" (ngModelChange)="updatebLabel($event, 'join')">
               <option value="-" selected>-</option>
               <option value="/">/</option>
               <option value="~">~</option>
@@ -94,10 +94,10 @@
               <option value="">nothing</option>
             </select>
           </div>
-          <div class="field" *ngIf="box_tsb_one_column">
+          <div class="field" *ngIf="bLabel.box_tsb_one_column">
             <label for="appendix">appendix to trim</label>
-            <div class="ui input" [ngClass]="{'disabled': !box_defined_as_normal}">
-              <input id="appendix" type="text" placeholder="what to trim" [(ngModel)]="appendix" (ngModelChange)="updateAppendix($event)">
+            <div class="ui input" [ngClass]="{'disabled': !bLabel.box_defined_as_normal}">
+              <input id="appendix" type="text" placeholder="what to trim" [(ngModel)]="bLabel.appendix" (ngModelChange)="updatebLabel($event, 'appendix')">
             </div>
           </div>
         </div>
@@ -105,12 +105,12 @@
     </div>
     <div class="ui mini red tertiary segment attached">
       <div class="text-center">your box label looks like this:
-        <span *ngIf="box_defined_as_normal">
-          <span class="red-text"><s>{{prefix}}</s></span><strong class="red-text">{{tower === 1 ? 1: "A"}}{{join}}{{shelf === 1 ? 1: "A"}}{{join}}{{box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{appendix}}</s></span>
+        <span *ngIf="bLabel.box_defined_as_normal">
+          <span class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{ +bLabel.tower === 1 ? 1: "A" }}{{ bLabel.join}}{{+bLabel.shelf === 1 ? 1: "A" }}{{ bLabel.join}}{{+bLabel.box === 1 ? 1: "A" }}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>
         </span>
-        <span *ngIf="!box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
-        <span *ngIf="!box_defined_as_normal && box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-        <span *ngIf="!box_defined_as_normal && !box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
+        <span *ngIf="!bLabel.box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
+        <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+        <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
       </div>
     </div>
     <div class="ui two mini buttons bottom attached">

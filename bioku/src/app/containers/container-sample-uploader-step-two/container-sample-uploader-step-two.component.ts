@@ -46,9 +46,11 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
   }
   updateSampleRow(evt: any) {
     this.sampleRow = evt;
+    console.log(this.sampleRow);
   }
   updateSampleColumn(evt: any) {
     this.sampleColumn = evt;
+    console.log(this.sampleColumn);
   }
   updateSampleJoin(evt: any) {
     this.sampleJoin = evt;
