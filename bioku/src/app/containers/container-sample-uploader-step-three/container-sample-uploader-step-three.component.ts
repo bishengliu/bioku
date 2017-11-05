@@ -453,6 +453,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   parseLetter2Number(letter: string) {
     return this.appSetting.BOX_POSITION_LETTERS.indexOf(letter.toUpperCase()) + 1;
   }
+  genOneorA(value: number) {
+    if ( +value === 1) { return 1 } else { return 'A'; }
+  }
   ngOnChanges() {
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();

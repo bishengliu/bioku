@@ -9,17 +9,19 @@
             how to save your samples</p>
         </div>
       </div>
-      <div class="ui mini red tertiary segment attached">
-          <div class="grey-text text-center">
-            <p>
-              your box label looks like this: 
-              <span *ngIf="bLabel.box_defined_as_normal" class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{bLabel.tower === 1 ? 1: "A"}}{{bLabel.join}}{{bLabel.shelf === 1 ? 1: "A"}}{{bLabel.join}}{{bLabel.box === 1 ? 1: "A"}}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>          
+      <div class="ui visible inverted attached icon message">
+          <i class="info circle icon"></i>
+          <div class="content">
+              <div class="header">
+                  Please make sure:
+              </div>
+              <i class="caret right icon"></i> your box label looks like this: 
+              <span *ngIf="bLabel.box_defined_as_normal" class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{genOneorA(bLabel.tower)}}{{bLabel.join}}{{genOneorA(bLabel.shelf)}}{{bLabel.join}}{{genOneorA(bLabel.box)}}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>          
               <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
               <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
-              your sample label looks like this:
-              <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{sLabel.boxLabel === 1 ? 1: "A"}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{sLabel.sampleRow === 1 ? 1: "A"}}{{sLabel.sampleJoin}}{{sLabel.sampleColumn === 1 ? 1: "A"}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
-              your box layout looks like this: (<span class="red-text"><strong>{{sLabel.box_horizontal}}X{{parseLetter2Number(sLabel.box_vertical)}}</strong></span>);
-            </p>
+              <br /><i class="caret right icon"></i> your sample label looks like this:
+              <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
+              <br /><i class="caret right icon"></i> your box layout looks like this: (<span class="red-text"><strong>{{sLabel.box_horizontal}}X{{parseLetter2Number(sLabel.box_vertical)}}</strong></span>);
           </div>
         </div>
         <!-- end info -->
