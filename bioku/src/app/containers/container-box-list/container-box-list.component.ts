@@ -34,10 +34,13 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   searchedBoxes: Array<Box> = [];
   show_all: Boolean = false;
   all_boxes_loaded: Boolean = false;
+  // allow uploading samples to container
+  allowUpload2Container: Boolean = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private utilityService: UtilityService, private router: Router, private containerService: ContainerService,
               private alertService: AlertService, private logAppStateService: LogAppStateService,
               private refreshService: RefreshService, ) {
+    this.allowUpload2Container = this.appSetting.ALLOW_UPLOAD_SAMPLES_2_CONTAINER;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();

@@ -3,6 +3,7 @@ import { PIGuard } from '../_guards/PIGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
 import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
+import { ContainerSampleUploadGuard } from '../_guards/ContainerSampleUploadGuard';
 
 export const GuardProviders: Array<any> = [
         {provide: FetchAuthInfoGuard, useClass: FetchAuthInfoGuard},
@@ -10,4 +11,5 @@ export const GuardProviders: Array<any> = [
         {provide: AuthGuard, useClass: AuthGuard},
         {provide: PIGuard, useClass: PIGuard},
         {provide: AdminGuard, useClass: AdminGuard},
+        {provide: ContainerSampleUploadGuard, useClass: ContainerSampleUploadGuard},
     ];

@@ -14,7 +14,7 @@ export class PIGuard implements CanActivate {
             return true;
         } else {
             // reditrect
-            this.alertService.error('You are not the PI user!', true);
+            this.alertService.error('You have insufficient permissions!', true);
             this.router.navigate(['/denied']);
         }
         return false;

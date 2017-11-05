@@ -9,7 +9,8 @@ export const AppSetting = {
     'APP_URL': 'http://127.0.0.1:4200',
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
-
+    // allow upload samples newly created freezer?
+    'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // APP VERSION
     'VERSION': '0.0.1-alpha3',
     ///////////////////////////////////////////////////////////////////////////////////////////////

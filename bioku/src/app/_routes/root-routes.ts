@@ -28,6 +28,7 @@ import { AdminGuard } from '../_guards/AdminGuard';
 import { PIGuard } from '../_guards/PIGuard';
 import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
+import { ContainerSampleUploadGuard } from '../_guards/ContainerSampleUploadGuard';
 // routing
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
@@ -51,7 +52,8 @@ export const routes: Routes = [
   {path: 'containers/edit/:id', component: EditContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
-  {path: 'containers/:id/upload', component: ContainerSampleUploadComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, PIGuard, ] },
+  {path: 'containers/:id/upload', component: ContainerSampleUploadComponent,
+                                  canActivate: [ContainerSampleUploadGuard, FetchAuthInfoGuard, AuthGuard, PIGuard, ] },
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent, canActivate: [FetchAuthInfoGuard, AuthGuard,  ] },
