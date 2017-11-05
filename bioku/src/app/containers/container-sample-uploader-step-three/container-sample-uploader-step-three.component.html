@@ -168,23 +168,23 @@
                               [attr.column]="-1"
                               [dragula]='"bag_date"' 
                               [dragulaOptions]="dragulaOptions">
-                              <div class="field">
-                                <label for="year"><i class="brown icon move"></i>year</label>
+                              <div class="field dragable_field movable" id="year">
+                                <label class="movable" for="year"><i class="brown icon move"></i>year</label>
                                 <select id="year" class="ui dropdown" [(ngModel)]="freezing_date_format.year_format" (ngModelChange)="updateFreezingDateFormat('year_format', $event)">
                                   <option value="0">yyyy</option>
                                   <option value="1">yy</option>
                                 </select>
                               </div>
-                              <div class="field">
-                                <label for="month"><i class="brown icon move"></i>month</label>
+                              <div class="field dragable_field movable" id="month">
+                                <label class="movable" for="month"><i class="brown icon move"></i>month</label>
                                 <select id="month" class="ui dropdown" [(ngModel)]="freezing_date_format.month_format" (ngModelChange)="updateFreezingDateFormat('month_format', $event)">
                                   <option value="0">MM (digits)</option>
                                   <option value="1">full month names</option>
                                   <option value="2">3-letter abbreviations</option>
                                 </select>
                               </div>
-                              <div class="field">
-                                <label for="day"><i class="brown icon move"></i>day</label>
+                              <div class="field dragable_field movable" id="day">
+                                <label class="movable" for="day"><i class="brown icon move"></i>day</label>
                                 <select id="day" class="ui disabled dropdown">
                                   <option value="">dd</option>
                                 </select>

@@ -18,3 +18,11 @@
   background-color: #eee;
   border: dotted 1px #aaa;
 }
+
+.dragable_field{
+  border: 1px  solid #573a08 !important;
+  border-radius: 3px !important;
+  padding-right: 10px !important;
+  margin-right: 10px !important;
+  background-color: #fffaf3;
+}

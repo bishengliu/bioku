@@ -47,7 +47,21 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
    dragulaOptions: any = {
       direction: 'vertical',
       revertOnSpill: true,
-      accepts: (el, container, handle) => { return el.id !== 'no-drop'; },
+      accepts: (el, target, source, sibling) => {
+        if (target.id === 'date_position') {
+          if (el.id === 'no-drop') {
+            return false;
+          } else {
+            if (sibling == null) {
+              return false;
+            }
+            return true;
+          }
+        } else {
+          // allow drop for colmn headers
+          return true;
+        }
+      },
       // accepts: (el, container, handle) => { return container.id !== 'no-drop'; }, // prevent from drop back
       // copy: (el, container, handle) => { return container.id === 'no-drop'; }, // copy for this container only
       // removeOnSpill: (el, container, handle) => { return container.id !== 'no-drop'; }, // for not this container
@@ -81,24 +95,25 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.all_requied_headers = this.getRequiredColumnHeader();
     // dragular column headers
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
-      console.log(value);
+      const el = value[1]; // el moved
+      const source = value[3];
+      const target = value[2];
       if (value[0] === 'bag') {
         // col header bag
-        const header_div_moved = value[1]; // el moved
-        const source = value[3];
-        const target = value[2];
         // prevent from put 2 heders in td
         if (target.id !== 'column_headers' &&  target.children.length > 1 ) {
           this.dragulaService.find('bag').drake.cancel(true);
         } else {
           const source_column = source.attributes['column'].value;
           const target_column = target.attributes['column'].value
-          const header_moved = header_div_moved.attributes['header'].value
+          const header_moved = el.attributes['header'].value
           this.onDragulaDrop(+source_column, +target_column, header_moved);
         }
       } else {
-        console.log('date ...');
-        
+        const sibling = value[4];
+        if (sibling != null) {
+          this.onDragulaDateDrop(el.id, sibling.id);
+        }
       }
     });
   }
@@ -120,6 +135,27 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     // this.freezing_date_sample_attr_index
   }
 
+  private onDragulaDateDrop(el_id: string, sb_id: string) {
+    // gen array from this.freezing_date_format
+    const array = [];
+    array[ (this.freezing_date_format['year_position'] - 1)] = 'year';
+    array[ (this.freezing_date_format['month_position'] - 1)] = 'month';
+    array[ (this.freezing_date_format['day_position'] - 1)] = 'day';
+    // find the index of the el
+    const el_index = array.indexOf(el_id);
+    array.splice(el_index, 1);
+    if (sb_id === 'no-drop') {
+      array.push(el_id);
+    } else {
+      // find the sb_id index
+      const sb_index = array.indexOf(sb_id);
+      array.splice(sb_index, 0, el_id);
+    }
+    // update his.freezing_date_format
+    this.freezing_date_format['year_position'] = array.indexOf('year') + 1;
+    this.freezing_date_format['month_position'] = array.indexOf('month') + 1;
+    this.freezing_date_format['day_position'] = array.indexOf('day') + 1;
+  }
   handleValidFileDrop(evt: Array<File>) {
     this.parsing_file = true;
     this.uploaded = false;
