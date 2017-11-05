@@ -18,14 +18,37 @@
 
 <div class="ui grid row small_padding" *ngIf="!load_failed && !loading">
   <div class="sixteen wide column" *ngIf="simple_or_advanced_mode === 0">
-      <div class="ui fluid attached blue icon message">
+      <div class="ui large fluid attached info icon message">
           <i class="announcement icon"></i>
           <div class="content">
               <div class="header">
                 PLEASE READ THIS CAREFULLY BEFORE PROCEED!
               </div>
-              <p>need to update the text here ...</p>
+              <p><i class="icon circle outline"></i>We only accept uploading the <span class="red-text"><strong>MS excel file ('.xlsx')</strong></span>, containing only one sheet!</p>
+              <p><i class="icon circle outline"></i>We prefer that the boxes are labeled following the pattern of '<span class="red-text"><strong>TOWER-SHELF-BOX</strong></span>', for example ' 1<sup>(tower)</sup>-1<sup>(shelf)</sup>-1<sup>(box)</sup> <span>'</span>;</p>
+              <p><i class="icon circle outline"></i>We prefer that the samples are labeled following the pattern of '<span class="red-text"><strong>ROW-COLUMN</strong></span>', for example 'A1';</p>
+              <p><i class="icon circle outline"></i>We prefer that all the dates are stored as 'YYYY-MM-DD';</p>
+              <p><i class="icon circle outline"></i>If your samples are not saved as we recommended, we suggest that you format your samples as we recommended, using 3rd party applications,
+                or you can try upload your samples using the <span class="ui black label">ADVANCED UPLOAD MODE</span> below;</p>
+              <p><i class="icon circle outline"></i>It is not possible to consider all the possible ways of labeling your boxes or samples. If it is really not working for you, please contact us for support.</p>
             </div>
+      </div>
+      <div class="ui horizontal attached segments">
+          <div class="ui blue attached segment">
+              <div class="ui horizontal divider">WHEN TO USE THE <span class="ui blue label">SIMPLE UPLOAD MODE</span></div>             
+              <div>                 
+                  <span><i class="icon caret right"></i>The boxes in your excel file are labeled following the pattern of '<span class="red-text"><strong>TOWER-SHELF-BOX</strong></span>';</span><br />
+                  <span><i class="icon caret right"></i>The samples in your excel file are labeled following the pattern of '<span class="red-text"><strong>ROW-COLUMN</strong></span>';</span><br />
+                  <span><i class="icon caret right"></i>The box layout is <span class="red-text"><strong>8 rows x 8 columns</strong></span>;</span>
+              </div>
+          </div>
+          <div class="ui black attached segment">
+              <div class="ui horizontal divider">WHEN TO USE THE <span class="ui black label">ADVANCED UPLOAD MODE</span></div>
+              <div>
+                  <span><i class="icon caret right"></i>The box layout is <span class="red-text"><strong>NOT</strong></span> 8 rows x 8 columns;</span><br />
+                <span><i class="icon caret right"></i>If you cannot upload your samples using the "SIMPLE UPLOAD MODE", you can try the "ADVANCED UPLOAD MODE" first before using 3rd party applications to reformat your samples.</span>
+              </div>
+          </div>
       </div>
       <div class="two ui fluid bottom attached buttons">
           <button class="ui blue button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> SIMPLE UPLOAD MODE</button>
