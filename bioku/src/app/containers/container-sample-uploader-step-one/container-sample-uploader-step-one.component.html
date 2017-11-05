@@ -106,7 +106,7 @@
     <div class="ui mini red tertiary segment attached">
       <div class="text-center">your box label looks like this:
         <span *ngIf="bLabel.box_defined_as_normal">
-          <span class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{ +bLabel.tower === 1 ? 1: "A" }}{{ bLabel.join}}{{+bLabel.shelf === 1 ? 1: "A" }}{{ bLabel.join}}{{+bLabel.box === 1 ? 1: "A" }}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>
+          <span class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{ genOneorA(bLabel.tower) }}{{ bLabel.join }}{{ genOneorA(bLabel.shelf) }}{{ bLabel.join}}{{ genOneorA(bLabel.box) }}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>
         </span>
         <span *ngIf="!bLabel.box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
         <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>

@@ -46,11 +46,9 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
   }
   updateSampleRow(evt: any) {
     this.sampleRow = evt;
-    console.log(this.sampleRow);
   }
   updateSampleColumn(evt: any) {
     this.sampleColumn = evt;
-    console.log(this.sampleColumn);
   }
   updateSampleJoin(evt: any) {
     this.sampleJoin = evt;
@@ -116,5 +114,8 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
     this.hArray = this.utilityService.genArray(this.box_horizontal);
     this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
     this.updateSampleLabel();
+  }
+  genOneorA(value: number) {
+    if ( +value === 1) { return 1 } else { return 'A'; }
   }
 }

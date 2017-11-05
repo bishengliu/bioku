@@ -20,7 +20,6 @@ export class ContainerSampleUploaderStepOneComponent implements OnInit {
   ngOnInit() {
     this.bLabel = new BoxLabel();
     this.setDefaultBoxLabel();
-    // this.updateBoxLabel();
   }
   // step 1
   updatebLabel(evt: any, type: string) {
@@ -49,5 +48,8 @@ export class ContainerSampleUploaderStepOneComponent implements OnInit {
     this.bLabel.box_defined_as_normal = true;
     this.bLabel.box_tsb_one_column = true;
     this.bLabel.box_sample_separated = true;
+  }
+  genOneorA(value: number) {
+    if ( +value === 1) { return 1 } else { return 'A'; }
   }
 }
