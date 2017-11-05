@@ -9,21 +9,38 @@
             how to save your samples</p>
         </div>
       </div>
-      <div class="ui visible inverted attached icon message">
-          <i class="info circle icon"></i>
-          <div class="content">
-              <div class="header">
-                  Please make sure:
-              </div>
-              <i class="caret right icon"></i> your box label looks like this: 
-              <span *ngIf="bLabel.box_defined_as_normal" class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{genOneorA(bLabel.tower)}}{{bLabel.join}}{{genOneorA(bLabel.shelf)}}{{bLabel.join}}{{genOneorA(bLabel.box)}}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>          
-              <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
-              <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
-              <br /><i class="caret right icon"></i> your sample label looks like this:
-              <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
-              <br /><i class="caret right icon"></i> your box layout looks like this: (<span class="red-text"><strong>{{sLabel.box_horizontal}}X{{parseLetter2Number(sLabel.box_vertical)}}</strong></span>);
+      <div class="ui visible inverted attached icon message" *ngIf="!all_set_start_to_upload_file">
+        <i class="info circle icon"></i>
+        <div class="content">
+          <div class="header">
+            Please make sure:
           </div>
+          <i class="caret right icon"></i> your box label looks like this:
+          <span *ngIf="bLabel.box_defined_as_normal" class="red-text">
+            <s>{{bLabel.prefix}}</s>
+          </span>
+          <strong class="red-text">{{genOneorA(bLabel.tower)}}{{bLabel.join}}{{genOneorA(bLabel.shelf)}}{{bLabel.join}}{{genOneorA(bLabel.box)}}</strong>
+          <span
+            class="red-text">
+            <s>{{bLabel.appendix}}</s>
+            </span>
+            <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
+            <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
+            <br />
+            <i class="caret right icon"></i> your sample label looks like this:
+            <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">
+              <strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong>
+            </span>
+            <strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong>
+            <strong class="red-text"
+              *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
+            <br />
+            <i class="caret right icon"></i> your box layout looks like this: (
+            <span class="red-text">
+              <strong>{{sLabel.box_horizontal}}X{{parseLetter2Number(sLabel.box_vertical)}}</strong>
+            </span>);
         </div>
+      </div>
         <!-- end info -->
         <!-- sample type, columns -->
         <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
@@ -217,8 +234,8 @@
                           </div>
                           <div class="eight wide column">
                               <div class="ui divider horizontal">Your freezing date</div>
-                            <div class="ui red secondary attached segment">
-                              The freezing date in your excel file looks like this: <span class="red-text">{{ displayFreezingDate() }}</span>.
+                            <div class="ui inverted attached segment">
+                              <i class="icon caret right"></i>The freezing date in your excel file looks like this: <span class="red-text">{{ displayFreezingDate() }}</span>.
                             </div>
                             <div class="ui two mini buttons attached">
                               <button class="ui positive button" (click)="doneFreezingDateFormat()">
@@ -242,6 +259,7 @@
           </button>
         </div>
         <!-- end sample type, columns -->
+        <!-- ////////////////////////////////// -->
         <!-- drop file -->
         <div class="ui mini segment attached" *ngIf="!uploaded && all_set_start_to_upload_file">
           <!-- no sample found -->
@@ -310,6 +328,10 @@
               </tbody>
             </table>            
         </div>
+        <div *ngIf="uploaded && data.length > 0" class="ui mini segment attached">
+          <p class="grey-text">Only show {{data_to_display}} rows</p>
+        </div>
         <!-- end sample parses-->
+        <!-- ////////////////////////////////// -->
     </div>
   </div>

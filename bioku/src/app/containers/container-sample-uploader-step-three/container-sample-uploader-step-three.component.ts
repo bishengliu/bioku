@@ -118,7 +118,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     });
   }
   private onDragulaDrop(source_column: number, target_column: number, header_moved: string) {
-    // console.log([source_column, target_column, header_moved]);
     this.updateColumnAttrs(source_column, target_column, header_moved);
     // check whether the freezing date is drag into the table or drag out of the table
     if (header_moved === this.FREEZING_DATE) {
@@ -156,6 +155,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.freezing_date_format['month_position'] = array.indexOf('month') + 1;
     this.freezing_date_format['day_position'] = array.indexOf('day') + 1;
   }
+
   handleValidFileDrop(evt: Array<File>) {
     this.parsing_file = true;
     this.uploaded = false;
@@ -182,7 +182,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         console.log(this.data);
       },
       (err: string) => {
-        console.log(err);
+        // console.log(err);
         this.excel_parse_failed = true;
         this.uploaded = false;
         this.parsing_file = false;
@@ -204,7 +204,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       return d.length > 0;
     })
   }
-  // need to parse the freezing date //////////////////s
 
   backSecondStep() {
     this.activeStep.emit(2);
@@ -365,7 +364,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   // set freezing_date_format upon draged into the table
   updateFreezingDateFormat(type: string, value: any): void {
     this.freezing_date_format[type] = value;
-    console.log(this.freezing_date_format);
   }
   // display formated date
   displayFreezingDate() {
@@ -497,3 +495,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.setDefaultColumnAttrs();
   }
 }
+// need to check these
+// bLabel, sLabel, freezing_date_format, excelColAttrs
+// this.data
