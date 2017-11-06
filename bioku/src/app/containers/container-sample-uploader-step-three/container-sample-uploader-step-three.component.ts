@@ -16,6 +16,9 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 })
 export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDestroy, OnChanges {
   @Output() activeStep: EventEmitter<number> = new EventEmitter<number> ();
+  @Output() excelData: EventEmitter<Array<Array<any>>> = new EventEmitter<Array<Array<any>>> ();
+  @Output() colAttrs: EventEmitter<Array<ColumnAttr>> = new EventEmitter<Array<ColumnAttr>> ();
+  @Output() freezingDateFormat: EventEmitter<SampleDateFormat> = new EventEmitter<SampleDateFormat> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
   @Input() uploadMode: number;
@@ -179,7 +182,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         this.uploaded = true;
         this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
         this.parsing_file = false;
-        console.log(this.data);
+        // console.log(this.data);
       },
       (err: string) => {
         // console.log(err);
@@ -493,6 +496,11 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   ngOnChanges() {
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.setDefaultColumnAttrs();
+  }
+  validateSampleUpload () {
+    this.excelData.emit(this.data);
+    this.colAttrs.emit(this.excelColAttrs);
+    this.freezingDateFormat.emit(this.freezing_date_format);
   }
 }
 // need to check these

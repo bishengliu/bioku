@@ -5,7 +5,7 @@ import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-import { BoxLabel, SampleLabel } from '../../_classes/sampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat} from '../../_classes/sampleUpload';
 @Component({
   selector: 'app-container-sample-upload-helper',
   templateUrl: './container-sample-upload-helper.component.html',
@@ -17,6 +17,12 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   bLabel: BoxLabel = new BoxLabel();
   sLabel: SampleLabel = new SampleLabel();
   trigerChange = 0;
+  // data passed from step 3
+  excelData: Array<Array<any>>;
+  excelColAttrs: Array<ColumnAttr>;
+  freezingDateFormat: SampleDateFormat;
+  // validate and save
+  start_validation_save: Boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private xlsxHelperService: XlsxHelperService, ) {}
 
@@ -33,6 +39,16 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
     this.sLabel = sampleLabel;
   }
 
+  captureExcelData(data: Array<Array<any>>) {
+    this.excelData = data;
+    this.start_validation_save = true;
+  }
+  captureExcelCOlAttrs(excelColAttrs: Array<ColumnAttr>) {
+    this.excelColAttrs = excelColAttrs;
+  }
+  captureFreezingDateFormat (freezing_date_format: SampleDateFormat) {
+    this.freezingDateFormat = freezing_date_format;
+  }
   ngOnInit() {
     // BoxLabel default
     this.bLabel.appendix = '';

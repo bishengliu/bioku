@@ -23,20 +23,36 @@
 </div> -->
 
 <app-container-sample-uploader-step-one 
+*ngIf="!start_validation_save"
 [ngClass]="{'hidden': activeStep !== 1 }"
 (activeStep)="captureActiveStep($event)" 
 (boxLabel)="captureBoxLabel($event)"></app-container-sample-uploader-step-one>
 
 <app-container-sample-uploader-step-two 
+*ngIf="!start_validation_save"
 [ngClass]="{'hidden': activeStep !== 2 }"
 [bLabel]="bLabel"
 (activeStep)="captureActiveStep($event)" 
 (sampleLabel)="captureSampleLabel($event)"></app-container-sample-uploader-step-two>
 
 <app-container-sample-uploader-step-three
+*ngIf="!start_validation_save"
 [bLabel]="bLabel"
 [sLabel]="sLabel"
 [uploadMode]="uploadMode"
 [trigerChange]="trigerChange"
 (activeStep)="captureActiveStep($event)" 
+(excelData)="captureExcelData($event)"
+(colAttrs)="captureExcelCOlAttrs($event)"
+(freezingDateFormat)="captureFreezingDateFormat($event)"
 [ngClass]="{'hidden': activeStep !== 3 }"></app-container-sample-uploader-step-three>
+
+<app-container-sample-uploader-validate-save
+*ngIf="start_validation_save"
+[bLabel]="bLabel"
+[sLabel]="sLabel"
+[excelData]="excelData"
+[excelColAttrs]="excelColAttrs"
+[freezingDateFormat]="freezingDateFormat"
+[startValidation]="start_validation_save"
+></app-container-sample-uploader-validate-save>
