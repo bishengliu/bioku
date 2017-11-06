@@ -50,13 +50,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   ngOnChanges() {
     if (this.startValidation) {
-      console.log('start validaiton ...');
-      // start validation
       // console.log(this.bLabel);
       // console.log(this.sLabel);
       // console.log(this.freezingDateFormat);
       // console.log(this.excelColAttrs);
-      // console.log(this.excelData);
+      console.log(this.excelData);
       this.sampleValidation();
     }
   }
@@ -70,15 +68,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // set pointer
     this.sampleValidator.validator_pointer = 0;
     // emit step
-    this.valiadtionStep$.next(this.getValidationStep());
+    this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
 
     const msg1: ValidatorOutput = new ValidatorOutput();
     msg1.validation_step = 0;
     // box_defined_as_normal
     msg1.status = 3;
     msg1.message = this.bLabel.box_defined_as_normal
-      ? 'your boxes are labeled following the pattern of TOWER-SHELF-BOX'
-      : 'your boxes are labeled NOT following the pattern of TOWER-SHELF-BOX';
+      ? 'your boxes are labeled following the pattern of "TOWER-SHELF-BOX"'
+      : 'your boxes are labeled NOT following the pattern of "TOWER-SHELF-BOX"';
     this.valdatorOutput$.next(msg1);
     // if normal
     if (this.bLabel.box_defined_as_normal) {
@@ -90,6 +88,33 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         msg2.message = 'your box labels are stored in one cloumn (column ' + this.getColumnByHeader('BoxLabel') + ')';
         this.valdatorOutput$.next(msg2);
         // validate the boxlabel
+        // format box label
+        const msg6: ValidatorOutput = new ValidatorOutput();
+        msg6.validation_step = 0;
+        msg6.status = 3;
+        msg6.message = 'validate box labels (column ' + this.getColumnByHeader('BoxLabel') + ') ...';
+        this.valdatorOutput$.next(msg6);
+        const box_label_validation_output = this.parseBoxLabel();
+        if (box_label_validation_output  === 0) {
+          const msg: ValidatorOutput = new ValidatorOutput();
+          msg.validation_step = 0;
+          msg.status = 0;
+          msg.message = 'validate box labels (column ' + this.getColumnByHeader('BoxLabel') + ') passed';
+          this.valdatorOutput$.next(msg);
+        } else if (box_label_validation_output  === 1) {
+          const msg: ValidatorOutput = new ValidatorOutput();
+          msg.validation_step = 0;
+          msg.status = 1;
+          msg.message = 'validate box labels (column ' + this.getColumnByHeader('BoxLabel') + ') passed with warning';
+          this.valdatorOutput$.next(msg);
+        } else {
+          const msg: ValidatorOutput = new ValidatorOutput();
+          msg.validation_step = 0;
+          msg.status = 2;
+          msg.message = 'validate box labels (column ' + this.getColumnByHeader('BoxLabel') + ') failed';
+          this.valdatorOutput$.next(msg);
+          this.validator_failed = true;
+        }
       } else {
         // 3 columns
         const msg3: ValidatorOutput = new ValidatorOutput();
@@ -109,7 +134,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const msg5: ValidatorOutput = new ValidatorOutput();
         msg5.validation_step = 0;
         msg5.status = 3;
-        msg5.message = 'your box labels are stored in 1 cloumn (column ' + this.getColumnByHeader('BoxLabel_Tower')
+        msg5.message = 'your box labels are stored in 1 cloumn (column ' + this.getColumnByHeader('BoxLabel')
         + ') and seperated from sample labels';
       } else {
         // box label together with sample label
@@ -122,6 +147,19 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
   }
 
+  validateSampleLabel() {}
+
+  validateFreezingDateFormat() {}
+
+  validateBoxCreation() {}
+
+  validateSampleCreation() {}
+
+  // general clean the data after alll validation
+  formatData() {}
+
+  validateServerSerializer() {}
+
   getColumnByHeader(header: string) {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
     if (cols.length > 0) {
@@ -131,7 +169,63 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
   }
 
-  getValidationStep(): string {
-    return this.sampleValidator.validation_steps[this.sampleValidator.validator_pointer];
+  getValidationStep(index: number): string {
+    return this.sampleValidator.validation_steps[index];
+  }
+
+  getIconbyStatus (status: number) {
+    // 0 passed, 1, passed with warning; 2 failed, 3 info;
+    if (status === 0) {
+      return 'icon green checkmark';
+    } else if (status === 1) {
+      return 'icon brown announcement';
+    } else if (status === 2 ) {
+      return 'icon red warning sign';
+    } else {
+      return 'icon blue info';
+    }
+  }
+
+  getColorByStatus(status: number) {
+    // 0 passed, 1, passed with warning; 2 failed, 3 info;
+    if (status === 0) {
+      return 'green-text';
+    } else if (status === 1) {
+      return 'brown-text';
+    } else if (status === 2 ) {
+      return 'red-text';
+    } else {
+      return 'blue-text';
+    }
+  }
+
+  parseBoxLabel(): number {
+    let output = 2;
+    if (this.bLabel.box_defined_as_normal) {
+      // definition for tow, shefl and box
+      if (this.bLabel.box_tsb_one_column) {
+        // 1 col
+        const box_label_header = this.getColumnByHeader('BoxLabel');
+        console.log(box_label_header);
+        // format data and test
+        this.excelData.forEach( (d: Array<any>) => {
+          console.log(d[( '' + (box_label_header - 1) )]);
+        })
+      } else {
+        // 3 cols
+        const box_label_tower = this.getColumnByHeader('BoxLabel_Tower');
+        const box_label_shelf = this.getColumnByHeader('BoxLabel_Shelf');
+        const box_label_box = this.getColumnByHeader('BoxLabel_Box');
+        // format data and test
+      }
+    } else {
+      // abnormal
+      if (this.bLabel.box_sample_separated) {
+        // seperated with sample
+      } else {
+        // with sample label
+      }
+    }
+    return output;
   }
 }
