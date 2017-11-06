@@ -102,6 +102,7 @@ import { ContainerSampleUploadHelperComponent } from './containers/container-sam
 import { ContainerSampleUploaderStepOneComponent } from './containers/container-sample-uploader-step-one/container-sample-uploader-step-one.component';
 import { ContainerSampleUploaderStepTwoComponent } from './containers/container-sample-uploader-step-two/container-sample-uploader-step-two.component';
 import { ContainerSampleUploaderStepThreeComponent } from './containers/container-sample-uploader-step-three/container-sample-uploader-step-three.component';
+import { ContainerSampleUploaderValidateSaveComponent } from './containers/container-sample-uploader-validate-save/container-sample-uploader-validate-save.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { ContainerSampleUploaderStepThreeComponent } from './containers/containe
     ContainerSampleUploaderStepOneComponent,
     ContainerSampleUploaderStepTwoComponent,
     ContainerSampleUploaderStepThreeComponent,
+    ContainerSampleUploaderValidateSaveComponent,
   ],
   imports: [
     BrowserModule,
