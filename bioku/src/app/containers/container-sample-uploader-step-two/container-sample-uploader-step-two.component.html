@@ -26,9 +26,10 @@
                   <label for="sample_one_column">Sample labeled with "row" and "column" in one data column</label>
                 </div>
               </div>
-              <div class="field">
+              <div class="field" [ngClass]="{'hidden': !bLabel.box_defined_as_normal && !bLabel.box_sample_separated }">
                 <div class="ui slider checkbox">
-                  <input id="sample_two_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
+                  <input id="sample_two_column" type="radio" name="define_sample_position" 
+                    [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
                     (change)="updateSampleLabelDefinition(1)">
                   <label for="sample_two_column">Sample labeled with "row" and "column" in 2 data columns</label>
                 </div>

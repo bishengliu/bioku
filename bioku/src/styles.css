@@ -524,3 +524,8 @@ div [class*="right floated"] {
   min-height: 250px;
   height: 250px;
 }
+.validation_message{
+  min-height: 650px;
+  max-height: 650px;
+  height: 650px;
+}

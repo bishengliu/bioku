@@ -47,3 +47,17 @@ export class SampleDateFormat {
     year_format: number; // 0 is yyyy; 1 is yy
     join_symbol: string; // '-', '', ' ' or '/'
 }
+
+export class SampleValidator {
+    validation_steps: Array<string>;
+    validation_steps_icons: Array<string>;
+    validator_pointer: number;
+    validator_outputs: Array<ValidatorOutput>;
+    validation_status: Boolean; // true -- passed; false-- failed
+}
+
+export class ValidatorOutput {
+    validation_step: number;
+    status: number; // 0 passed, 1, passed with warning; 2 failed, 3 info;
+    message: string;
+}

@@ -1,3 +1,12 @@
-<p>
-  container-sample-uploader-validate-save works!
-</p>
+<div class="ui grid row">
+  <div class="sixteen wide column">
+    <div class="ui segments">
+      <div class="ui secondary segment validation_message">
+        <p class="back_text" *ngFor="let output of sampleValidator.validator_outputs"><i class="icon"></i>({{output.validation_step}}) ==> {{output.message}}</p>
+      </div>
+      <div class="ui green segment">
+        <div><i class="icon loading spinner"></i>{{validation_step}}</div>
+      </div>
+    </div>
+  </div>
+</div>
