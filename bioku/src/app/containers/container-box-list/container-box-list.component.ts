@@ -6,7 +6,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
-import {  ContainerService } from '../../_services/ContainerService';
+import { ContainerService } from '../../_services/ContainerService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { UtilityService } from '../../_services/UtilityService';
 import { RefreshService } from '../../_services/RefreshService';

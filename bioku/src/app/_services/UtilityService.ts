@@ -40,4 +40,14 @@ export class UtilityService {
         array.push(1); }
         return array;
     }
+    // get number from a single letter
+    convertLetters2Integer(letters: string) {
+        const alphabeta = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                           'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        // split letters to array
+        const array = letters.toUpperCase().split('');
+        let result;
+        array.forEach( l => result = result + alphabeta.indexOf(l) + 1);
+        return result;
+    }
 }
