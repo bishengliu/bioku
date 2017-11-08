@@ -1,4 +1,5 @@
 export class BoxLabel {
+    box_has_label: Boolean; // true or false
     box_defined_as_normal: Boolean; // default true
     box_tsb_one_column: Boolean; // default true, "tower", "shelf" and "box" in one data column
     box_sample_separated: Boolean; // default true, box position is separated from sample position in my excel
