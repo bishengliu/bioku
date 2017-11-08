@@ -2,9 +2,9 @@
   <div class="sixteen wide column">
     <div class="ui segments">
         <div class="ui center aligned mini tertiary segment">
-            <div><i class="icon comment outline"></i>validation outputs</div>
-          </div>
-      <div class="ui secondary segment validation_message scrollable">
+          <div><i class="icon comment outline"></i>validation outputs</div>
+        </div>
+      <div class="ui secondary segment validation_message scrollable" #messageBox>
         <p class="tight_around" *ngFor="let output of sampleValidator.validator_outputs">
           <span class="grey-text">({{getValidationStep(+output.validation_step)}})</span>
           <span class="grey-text">==></span> 

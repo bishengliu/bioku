@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Inject, OnInit, Input, OnChanges, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat,
   SampleValidator, ValidatorOutput } from '../../_classes/sampleUpload';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import { UtilityService } from '../../_services/UtilityService';
   templateUrl: './container-sample-uploader-validate-save.component.html',
   styleUrls: ['./container-sample-uploader-validate-save.component.css']
 })
-export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnChanges {
+export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
   @Input() excelData: Array<Array<any>>;
@@ -32,8 +32,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   valiadtionStep$: Subject<string> = new Subject<string>();
   // validator output subject
   valdatorOutput$: Subject<ValidatorOutput> = new Subject<ValidatorOutput>();
-
-  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService) {
+  // implement auto scroll to bottom
+  @ViewChild('messageBox') private messageBox: ElementRef;
+  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, ) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -53,6 +54,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     .subscribe(
       (outout: ValidatorOutput) => {
         this.sampleValidator.validator_outputs.push(outout);
+        // this.scrollToBottom();
       }, () => {});
    }
 
@@ -69,7 +71,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // console.log(this.sLabel);
       // console.log(this.freezingDateFormat);
       // console.log(this.excelColAttrs);
-      console.log(this.excelData);
+      // console.log(this.excelData);
       this.data = this.excelData;
       this.sampleValidation();
     }
@@ -365,4 +367,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const max_sample_per_box = this.utilityService.convertLetters2Integer(sLabel.box_vertical) * sLabel.box_horizontal;
     return total_boxes * max_sample_per_box;
   }
+
+  // scrool to bottom
+  scrollToBottom(): void {
+    try {
+        this.messageBox.nativeElement.scrollTop = this.messageBox.nativeElement.scrollHeight;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
 }

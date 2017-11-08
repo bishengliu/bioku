@@ -528,9 +528,9 @@ div [class*="right floated"] {
   height: 250px;
 }
 .validation_message{
-  min-height: 650px;
-  max-height: 650px;
-  height: 650px;
+  min-height: 680px;
+  max-height: 680px;
+  height: 680px;
 }
 .scrollable{
   overflow-y: scroll !important;
