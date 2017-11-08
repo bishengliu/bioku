@@ -26,7 +26,7 @@
                   <label for="sample_one_column">Sample labeled with "row" and "column" in one data column</label>
                 </div>
               </div>
-              <div class="field" [ngClass]="{'hidden': !bLabel.box_defined_as_normal && !bLabel.box_sample_separated }">
+              <div class="field" *ngIf="show2ColumnOption()">
                 <div class="ui slider checkbox">
                   <input id="sample_two_column" type="radio" name="define_sample_position" 
                     [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
@@ -50,14 +50,14 @@
         <div class="content wide_content">
           <div class="ui form">
             <div class="five fields">
-              <div class="field" [ngClass]="{'hidden': bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
+              <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_label">box label</label>
                 <select id="box_label" class="ui dropdown" [(ngModel)]="boxLabel" (ngModelChange)="updateBoxLabel($event)">
                   <option value="1">digits</option>
                   <option value="0">letter</option>
                 </select>
               </div>
-              <div class="field" [ngClass]="{'hidden': bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
+              <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_join">box and sample labels joined with</label>
                 <select id="box_join" class="ui dropdown" [(ngModel)]="boxJoin" (ngModelChange)="updateBoxJoin($event)">
                   <option value="-">-</option>

@@ -105,7 +105,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
   setDefaultSampleLabel() {
     this.sampleLabelDefinition = 0;
     this.boxLabel = 0;
-    this.boxJoin = '';
+    this.boxJoin = '-';
     this.sampleRow = 0;
     this.sampleColumn = 1;
     this.sampleJoin = '';
@@ -117,5 +117,19 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit {
   }
   genOneorA(value: number) {
     if ( +value === 1) { return 1 } else { return 'A'; }
+  }
+
+  show2ColumnOption(): boolean {
+    if (!this.bLabel.box_has_label) {
+      return true;
+    } else {
+      if (this.bLabel.box_defined_as_normal) {
+        return true;
+      }
+      if (!this.bLabel.box_defined_as_normal && this.bLabel.box_sample_separated) {
+        return true;
+      }
+    }
+    return false;
   }
 }

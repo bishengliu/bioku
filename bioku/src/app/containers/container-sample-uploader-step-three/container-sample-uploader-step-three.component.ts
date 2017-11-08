@@ -478,7 +478,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   ///////////// DONOT CHANGE THIS /////////////////
   getRequiredColumnHeader() {
     const sampleExcelHeaders: Array<SampleExcelHeaders> = this.getAllExcelHeaders();
-    const box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+    let box_label_headers = [];
+    if (this.bLabel.box_has_label) {
+      box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+    }
     const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
     return [...box_label_headers, ...sample_label_headers, 'Name'];
   }

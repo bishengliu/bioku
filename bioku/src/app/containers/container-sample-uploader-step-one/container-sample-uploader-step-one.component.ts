@@ -22,6 +22,9 @@ export class ContainerSampleUploaderStepOneComponent implements OnInit {
     this.setDefaultBoxLabel();
   }
   // step 1
+  toggleBoxHasLabel() {
+    this.bLabel.box_has_label = !this.bLabel.box_has_label;
+  }
   updatebLabel(evt: any, type: string) {
     this.bLabel[type] = evt;
   }
@@ -39,6 +42,7 @@ export class ContainerSampleUploaderStepOneComponent implements OnInit {
     this.boxLabel.emit(this.bLabel);
   }
   setDefaultBoxLabel() {
+    this.bLabel.box_has_label = true;
     this.bLabel.appendix = '';
     this.bLabel.prefix = '';
     this.bLabel.join = '-';
@@ -51,5 +55,8 @@ export class ContainerSampleUploaderStepOneComponent implements OnInit {
   }
   genOneorA(value: number) {
     if ( +value === 1) { return 1 } else { return 'A'; }
+  }
+  genDisabled() {
+    return this.bLabel.box_has_label ? null : 'disabled';
   }
 }

@@ -367,7 +367,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         // first need to seperate box labels and sample labels
         // box and sample label must be seperated with a symbol
         //split the box label and sample label ///////////////////////////////////////////////
-
+        const box_label_header = this.getColumnByHeader('SampleLabel');
+        
       }
       // validate box count
       if (this.abnormal_boxes_to_create.length === 0) {
