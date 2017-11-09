@@ -686,7 +686,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validation_finished = true;
       this.valiadtionStep$.next('validation finished.');
       // emit messages
-      const message = 'all validation passed! You may want to check the possible warnning outputs';
+      const message = 'all validations passed! You may want to check the possible warning outputs';
       this.emitValidationOutput(0, 0, message);
     }
   }
