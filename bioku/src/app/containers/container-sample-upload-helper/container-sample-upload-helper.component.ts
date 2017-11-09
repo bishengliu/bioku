@@ -33,6 +33,9 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   }
   captureBoxLabel(boxLabel: BoxLabel) {
     this.bLabel = boxLabel;
+    if (this.bLabel.box_defined_as_normal === false && this.bLabel.box_sample_separated === false) {
+      this.sLabel.sampleLabelDefinition = 0;
+    }
   }
 
   captureSampleLabel(sampleLabel: SampleLabel) {
@@ -51,6 +54,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     // BoxLabel default
+    this.bLabel.box_has_label = true;
     this.bLabel.appendix = '';
     this.bLabel.prefix = '';
     this.bLabel.join = '-';

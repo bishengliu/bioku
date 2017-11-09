@@ -500,6 +500,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   }
   ngOnChanges() {
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.all_requied_headers = this.getRequiredColumnHeader();
     this.setDefaultColumnAttrs();
   }
   validateSampleUpload () {
