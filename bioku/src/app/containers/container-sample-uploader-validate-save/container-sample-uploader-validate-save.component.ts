@@ -26,6 +26,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   validator_under_going: Boolean = true;
   saving_sample_posting_validation: Boolean = false;
   validator_failed: Boolean = false;
+  validation_finished: Boolean = false;
   sampleValidator: SampleValidator = new SampleValidator();
   data: Array<Array<any>> []; // for keep the origin nal copy
   validation_step = 'validator initiated ...';
@@ -39,7 +40,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
-    this.sampleValidator.validation_steps = ['validating box labels ...', 'validating sample labels'];
+    this.sampleValidator.validation_steps = ['validating sample names ...' , 'validating box labels ...', 'validating sample labels ...'];
     this.sampleValidator.validation_steps_icons = ['grid layout'];
     this.sampleValidator.validator_pointer = 0;
     this.sampleValidator.validation_status = true;
@@ -74,7 +75,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // console.log(this.excelColAttrs);
       // console.log(this.excelData);
       this.data = this.excelData;
-      console.log(this.data);
       this.sampleValidation();
     }
   }
@@ -87,28 +87,53 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.emitValidationOutput(0, 2, message);
       this.validator_failed = true;
     }
+    // validate name col
+    if (this.data.length > 0) {
+      this.validateSampleName();
+      // filter the data
+      this.data = this.filterValidSamples(this.data);
+    }
+    console.log(this.data);
     // only when the file has box label
-    if (this.bLabel.box_has_label && this.data.length > 0) {
+    if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
       // step one check box label
       this.validateBoxLabel();
+      this.data = this.filterValidSamples(this.data);
     }
-    //////////////UNCOMENT THIS AFTER FINISH ///////////////////
-    // this.data = this.filterValidSamples(this.data);
-    console.log(this.data);
-    if (this.data.length > 0) {
+    // console.log(this.data);
+    if (!this.validator_failed && this.data.length > 0) {
       // valid sample labels after box label
       this.validateSampleLabel();
+      this.data = this.filterValidSamples(this.data);
     }
+    // valiate date format /////////////
+    // final outcome
+    this.passAllValidation();
   }
-
-  // box label validation
-  validateBoxLabel() {
+  // validate samle names
+  validateSampleName () {
     // set pointer
     this.sampleValidator.validator_pointer = 0;
     // emit step
     this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
     // emit messages
-    let message = this.bLabel.box_defined_as_normal
+    const message = 'start to validate sample names ...';
+    this.emitValidationOutput(0, 3, message);
+    // parse box labels
+    const sample_name_validation_output = this.parseSampleName();
+    this.checkValidationOutcome(sample_name_validation_output, 'sample names');
+  }
+  // box label validation
+  validateBoxLabel() {
+    // set pointer
+    this.sampleValidator.validator_pointer = 1;
+    // emit step
+    this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
+    // emit messages
+    let message = 'start to validate box labels ...';
+    this.emitValidationOutput(0, 3, message);
+    // emit messages
+    message = this.bLabel.box_defined_as_normal
       ? 'your boxes are labeled following the pattern of "TOWER-SHELF-BOX"'
       : 'your boxes are labeled NOT following the pattern of "TOWER-SHELF-BOX"';
     this.emitValidationOutput(0, 3, message);
@@ -145,40 +170,37 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     // parse box labels
     const box_label_validation_output = this.parseBoxLabel();
-    if (box_label_validation_output  === 0) {
-      message = 'validate box labels passed';
-      this.emitValidationOutput(0, 0, message);
-    } else if (box_label_validation_output  === 1) {
-      message = 'validate box labels passed with warning, samples with invalid box labels will be ignored!';
-      this.emitValidationOutput(0, 1, message);
-    } else {
-      message = 'validate box labels failed, please fix box labels before proceeding further!';
-      this.emitValidationOutput(0, 2, message);
-      this.validator_failed = true;
-    }
+    this.checkValidationOutcome(box_label_validation_output, 'box labels');
   }
 
   // filter samples for valid
   filterValidSamples(data: Array<Array<any>>) {
     return data.filter( (d: Array<any>) => {
-      return d['invalid'] === false;
+      return d['invalid'] === undefined || d['invalid'] === false;
     })
   }
 
   // sample label validaiton
   validateSampleLabel() {
     // set pointer
-    this.sampleValidator.validator_pointer = 1;
+    this.sampleValidator.validator_pointer = 2;
     // emit step
     this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
     // emit messages
-
+    // emit messages
+    const message = 'start to validate sample labels ...';
+    this.emitValidationOutput(0, 3, message);
     // only check when box labels are integreted with sample
     // need to trim the box label from the sample label
 
     // split the samples and validate
 
     // validate sample labels and sample numbe in a box
+
+    // final check
+    // parse box labels
+    const sample_label_validation_output = this.parseSampleLabel();
+    this.checkValidationOutcome(sample_label_validation_output, 'sample labels');
   }
 
   validateFreezingDateFormat() {}
@@ -238,7 +260,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     msg.message = message;
     this.valdatorOutput$.next(msg);
   }
-
+  parseSampleName(): number {
+    return 0;
+  }
   parseBoxLabel(): number {
     // max boxes in the containers
     const max_boxes_of_conatiner = this.getContainerTotalBoxes(this.container);
@@ -288,7 +312,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     return output;
   }
-
+  parseSampleLabel() {
+    return 0;
+  }
   validNormal1Col(output: number) {
     const box_label_header = this.getColumnByHeader('BoxLabel');
     // format data and test
@@ -566,8 +592,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         new_abnormal_boxes_to_create = [...this.abnormal_boxes_to_create];
       }
       // filter the data array
-      //////////////UNCOMENT THIS AFTER FINISH ///////////////////
-      // this.data = this.filterValidSamples(this.data);
+      ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
+      this.data = this.filterValidSamples(this.data);
       // appliy invalid == true
       this.data.forEach( (d, i) => {
         if (separated) {
@@ -592,8 +618,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         }
       });
       // filter the samples again
-      //////////////UNCOMENT THIS AFTER FINISH ///////////////////
-      // this.data = this.filterValidSamples(this.data);
+      ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
+      this.data = this.filterValidSamples(this.data);
       // generate all possible boxes in a container
       const all_containerboxes: Array<Array<number>> = this.genAllBoxesInContainer(this.container);
       new_abnormal_boxes_to_create.forEach( (b, i) => {
@@ -640,6 +666,29 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }
     }
     return bArray;
+  }
+  checkValidationOutcome(output: number, type: string) {
+    let message = '';
+    if (output  === 0) {
+      message = 'validate ' + type + ' passed';
+      this.emitValidationOutput(0, 0, message);
+    } else if (output  === 1) {
+      message = 'validate ' + type + ' passed with warning, samples with invalid ' + type + ' will be ignored!';
+      this.emitValidationOutput(0, 1, message);
+    } else {
+      message = 'validate ' + type + ' failed, please fix ' + type + ' before proceeding further!';
+      this.emitValidationOutput(0, 2, message);
+      this.validator_failed = true;
+    }
+  }
+  passAllValidation () {
+    if (!this.validator_failed) {
+      this.validation_finished = true;
+      this.valiadtionStep$.next('validation finished.');
+      // emit messages
+      const message = 'all validation passed! You may want to check the possible warnning outputs';
+      this.emitValidationOutput(0, 0, message);
+    }
   }
   // scrool to bottom
   scrollToBottom(): void {
