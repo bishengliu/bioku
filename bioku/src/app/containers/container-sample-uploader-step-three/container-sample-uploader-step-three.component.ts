@@ -248,19 +248,21 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     let sample_headers: Array<string> = [];
     // box label
     const box_label_headers = all_headers.filter(h => h.header_type === 'box_position')[0].headers;
-    if (bLabel.box_defined_as_normal && bLabel.box_tsb_one_column) {
-      sample_headers.push(box_label_headers[0]);
-      // 1 col for box label
-    } else if (bLabel.box_defined_as_normal && !bLabel.box_tsb_one_column) {
-      sample_headers.push(box_label_headers[1]);
-      sample_headers.push(box_label_headers[2]);
-      sample_headers.push(box_label_headers[3]);
-      // 3 col for box label
-    } else if (!bLabel.box_defined_as_normal && bLabel.box_sample_separated) {
-      // 1 col for box label
-      sample_headers.push(box_label_headers[0]);
-    } else {
-      // no box lable col
+    if (bLabel.box_has_label) {
+      if (bLabel.box_defined_as_normal && bLabel.box_tsb_one_column) {
+        sample_headers.push(box_label_headers[0]);
+        // 1 col for box label
+      }
+      if (bLabel.box_defined_as_normal && !bLabel.box_tsb_one_column) {
+        sample_headers.push(box_label_headers[1]);
+        sample_headers.push(box_label_headers[2]);
+        sample_headers.push(box_label_headers[3]);
+        // 3 col for box label
+      }
+      if (!bLabel.box_defined_as_normal && bLabel.box_sample_separated) {
+        // 1 col for box label
+        sample_headers.push(box_label_headers[0]);
+      }
     }
     // sample label
     const sample_label_headers = all_headers.filter(h => h.header_type === 'sample_position')[0].headers;
