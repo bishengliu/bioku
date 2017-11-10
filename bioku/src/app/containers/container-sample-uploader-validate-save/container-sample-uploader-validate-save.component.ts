@@ -82,17 +82,14 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // aim is to check box labels and return the valid boxes, boxes to create, row_index_to_remove
   sampleValidation () {
     // if this.data.length === 0
-    if (this.data === undefined  || this.data.length === 0) {
-      const message = 'no sample to validate, please make sure the file uploaded is not empty!';
-      this.emitValidationOutput(0, 2, message);
-      this.validator_failed = true;
-    }
+    this.validateDataLength(true); // inital validation
     // validate name col
-    if (this.data.length > 0) {
+    if (!this.validator_failed && this.data.length > 0) {
       this.validateSampleName();
       // filter the data
       this.data = this.filterValidSamples(this.data);
     }
+    this.validateDataLength(false);
     console.log(this.data);
     // only when the file has box label
     if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
@@ -100,12 +97,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateBoxLabel();
       this.data = this.filterValidSamples(this.data);
     }
+    this.validateDataLength(false);
     // console.log(this.data);
     if (!this.validator_failed && this.data.length > 0) {
       // valid sample labels after box label
       this.validateSampleLabel();
       this.data = this.filterValidSamples(this.data);
     }
+    this.validateDataLength(false);
+
     // valiate date format /////////////
     // final outcome
     this.passAllValidation();
@@ -187,14 +187,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // emit step
     this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
     // emit messages
-    // emit messages
     const message = 'start to validate sample labels ...';
     this.emitValidationOutput(0, 3, message);
-    // only check when box labels are integreted with sample
-    // need to trim the box label from the sample label
-
     // split the samples and validate
-
     // validate sample labels and sample numbe in a box
 
     // final check
@@ -261,7 +256,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const sample_name_col = this.getColumnByHeader('Name'); // sample name is required
     // emit message
     // one cloumn
-    let message = 'the sample names are stored in column ' + sample_name_col + '.';
+    const message = 'the sample names are stored in column ' + sample_name_col + '.';
     this.emitValidationOutput(0, 3, message);
     // validate sample names
     this.data.forEach( (d, i) => {
@@ -269,9 +264,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (sample_name === '') {
          // sample is null, sample invalid
          d['invalid'] = true;
-         output = this.updateRowToRemove4SampleNameValidation(i, output);
+         this.updateRowToRemove4SampleNameValidation(i);
+         output = 1;
       } else {
-
+        d['name'] = sample_name;
+        d['invalid'] = false;
       }
     })
     return output;
@@ -706,6 +703,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.emitValidationOutput(0, 1, message);
     } else {
       message = 'validate ' + type + ' failed, please fix ' + type + ' before proceeding further!';
+      this.emitValidationOutput(0, 2, message);
+      this.validator_failed = true;
+    }
+  }
+  validateDataLength(initial: boolean) {
+    if (this.data === undefined  || this.data.length === 0) {
+      const message = initial
+      ?
+      'no sample to validate, please make sure the file uploaded is not empty!' :
+      'no valid sample left, validation failed!';
       this.emitValidationOutput(0, 2, message);
       this.validator_failed = true;
     }
