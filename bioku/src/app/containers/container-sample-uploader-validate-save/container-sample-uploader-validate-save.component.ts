@@ -90,7 +90,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.data = this.filterValidSamples(this.data);
     }
     this.validateDataLength(false);
-    console.log(this.data);
     // only when the file has box label
     if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
       // step one check box label
@@ -109,6 +108,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateSampleLabel();
       this.data = this.filterValidSamples(this.data);
     }
+    console.log(this.data);
     this.validateDataLength(false);
 
     // valiate date format /////////////
@@ -718,69 +718,76 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.data.forEach((d, i) => {
       const sample_label = '' + d[( '' + (sample_label_col - 1) )];
       let invalid = false;
+      let row_valid = false; 
+      let col_valid = false;
       if (sample_label === '') {
         invalid = true;
       } else {
         // sample join
         const sample_join = this.sLabel.sampleJoin;
         if (sample_label.indexOf(sample_join) === -1) {
+          d['invalid'] = true;
+          has_warning = true;
+          this.updateRowToRemove4SampleLabelValidation(i);
           invalid = true;
         } else {
           // this.utilityService.convertLetters2Integer(this.sLabel.box_vertical)
           // split sample label
           const sArray = sample_label.split(sample_join);
           const sample_row = sArray[0]; // need save as number // box_horizontal
-          const sample_col = sArray[1]; // need to save as letter
-          let row_valid = false; 
-          let col_valid = false;
+          const sample_col = sArray[1]; // need to save as letter          
           if (this.sLabel.sampleRow === 0 ) {
             // letters
-            if (/^[a-zA-Z]+$/.test(sample_row)) {
-              // compare with max box_horizontal
-              if (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) <
-              this.utilityService.convertLetters2Integer(sample_row)) {
-                invalid = true;
-              } else {
-                row_valid = true;
-              }
+            if ( (/^[a-zA-Z]+$/.test(sample_row))
+                && (+this.sLabel.box_horizontal >= this.utilityService.convertLetters2Integer(sample_row)) ) {
+              invalid = false;
+              row_valid = true;              
             } else {
               invalid = true;
             }
           } else {
             // 1, number
-            if (/^[0-9]+$/.test(sample_row)) {
-              
+            if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row ) {
+                invalid = false;
+                row_valid = true;
             } else {
               invalid = true;
             }
           }
           if (this.sLabel.sampleColumn === 0 ) {
             // letters
-            if (/^[a-zA-Z]+$/.test(sample_col)) {
-              if (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) <
-              this.utilityService.convertLetters2Integer(sample_col)) {
-                invalid = true;
-              } else {
-                col_valid = true;
-              }
+            if ((/^[a-zA-Z]+$/.test(sample_col)) 
+                && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >=
+                this.utilityService.convertLetters2Integer(sample_col))) {
+                  invalid = false;
+                  col_valid = true;
             } else {
               invalid = true;
             }
           } else {
             // 1, number
-            if (/^[0-9]+$/.test(sample_col)) {
-              
+            if ( (/^[0-9]+$/.test(sample_col)) 
+            && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col)) {
+              invalid = false;
+              col_valid = true;
             } else {
               invalid = true;
             }
           }
+          // sum
+          if (invalid || !col_valid || !row_valid) {
+            d['invalid'] = true;
+            has_warning = true;
+            this.updateRowToRemove4SampleLabelValidation(i);
+          } else {
+            d['invalid'] = false;
+            // number
+            d['hposition'] = this.sLabel.sampleRow === 0 ? this.utilityService.convertLetters2Integer(sample_row) : +sample_row;
+            // letter
+            d['vposition'] = this.sLabel.sampleColumn === 0 ? sample_col : this.utilityService.convertInteger2Letter(+sample_col)
+          }
         }
-      }
-      if (invalid) {
-        d['invalid'] = true;
-        has_warning = true;
-        this.updateRowToRemove4SampleLabelValidation(i);
-      }
+      }  
     });
     return has_warning;
   }

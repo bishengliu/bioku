@@ -1,4 +1,5 @@
 import { Injectable , Inject} from '@angular/core';
+import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 
 @Injectable()
 export class UtilityService {
@@ -40,14 +41,38 @@ export class UtilityService {
         array.push(1); }
         return array;
     }
-    // get number from a single letter
-    convertLetters2Integer(letters: string) {
+    // get number from letters
+    convertLetters2Integer(letters: string): number {
         const alphabeta = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                            'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
         // split letters to array
         const array = letters.toUpperCase().split('');
-        let result;
-        array.forEach( l => result = result + alphabeta.indexOf(l) + 1);
+        let result = 0;
+        for (let i = 0; i< array.length; i++) {
+            result += (alphabeta.indexOf(array[i]) + 1);
+        }
         return result;
+    }
+    //number to letters
+    convertInteger2Letter(digit: number): string {
+        const alphabeta = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        if(digit <= 0) {
+            return '';
+        } else if (digit > 0 &&  digit < 26 ) {
+            return alphabeta[digit -1];
+        } else{
+            const index: number = digit % alphabeta.length;
+            const repeats: number = Math.floor(digit / alphabeta.length);
+            console.log([repeats, index])
+            let result = '';
+            for(let i=0; i < repeats; i++) {
+                result += 'Z';
+            }         
+            if( index > 0){
+                result += alphabeta[index - 1];
+            }
+            return result;
+        }        
     }
 }
