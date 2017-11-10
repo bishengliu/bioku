@@ -205,10 +205,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
 
   validateFreezingDateFormat() {}
 
-  validateBoxCreation() {}
-
-  validateSampleCreation() {}
-
   // general clean the data after all validation
   formatData() {}
 
@@ -261,7 +257,24 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.valdatorOutput$.next(msg);
   }
   parseSampleName(): number {
-    return 0;
+    let output = 0; // default passed
+    const sample_name_col = this.getColumnByHeader('Name'); // sample name is required
+    // emit message
+    // one cloumn
+    let message = 'the sample names are stored in column ' + sample_name_col + '.';
+    this.emitValidationOutput(0, 3, message);
+    // validate sample names
+    this.data.forEach( (d, i) => {
+      const sample_name = d[( '' + (sample_name_col - 1) )];
+      if (sample_name === '') {
+         // sample is null, sample invalid
+         d['invalid'] = true;
+         output = this.updateRowToRemove4SampleNameValidation(i, output);
+      } else {
+
+      }
+    })
+    return output;
   }
   parseBoxLabel(): number {
     // max boxes in the containers
@@ -271,10 +284,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // definition for tow, shefl and box
       if (this.bLabel.box_tsb_one_column) {
         // 1 col
-        this.validNormal1Col(output);
+        this.validNormal1Col();
       } else {
         // 3 cols
-        this.validNormal3Col(output);
+        this.validNormal3Col();
       }
       // validate box count
       if (this.boxes_to_create.length === 0 ) {
@@ -287,16 +300,22 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         if (this.boxes_to_create.length > max_boxes_of_conatiner) {
           output = 1;
           const message = 'too many boxes founded, not all samples will be uploaded!';
-          this.emitValidationOutput(0, 2, message);
+          this.emitValidationOutput(0, 1, message);
         }
       }
     } else {
       // abnormal
       if (this.bLabel.box_sample_separated) {
-        this.validAbnormalSeparated(output);
+        const too_many_samples = this.validAbnormalSeparated();
+        if (too_many_samples) {
+          output = 1;
+        }
       } else {
         // integreted with sample label
-        this.validAbnormalIntegrated(output);
+        const too_many_samples = this.validAbnormalIntegrated();
+        if (too_many_samples) {
+          output = 1;
+        }
       }
       // validate box count
       if (this.abnormal_boxes_to_create.length === 0) {
@@ -307,7 +326,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (this.abnormal_boxes_to_create.length > max_boxes_of_conatiner) {
         output = 1;
         const message = 'too many boxes founded, not all samples will be uploaded!';
-        this.emitValidationOutput(0, 2, message);
+        this.emitValidationOutput(0, 1, message);
       }
     }
     return output;
@@ -315,7 +334,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   parseSampleLabel() {
     return 0;
   }
-  validNormal1Col(output: number) {
+  validNormal1Col() {
     const box_label_header = this.getColumnByHeader('BoxLabel');
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
@@ -323,7 +342,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (box_label === '') {
         // box label is null, sample invalid
         d['invalid'] = true;
-        this.updateRowToRemove4BoxLabelValidation(i, output);
+        this.updateRowToRemove4BoxLabelValidation(i);
       } else {
         // get the box label patthern
         // trim the label;
@@ -351,16 +370,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
-            this.updateRowToRemove4BoxLabelValidation(i, output);
+            this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           d['invalid'] = true;
-          this.updateRowToRemove4BoxLabelValidation(i, output);
+          this.updateRowToRemove4BoxLabelValidation(i);
         }
       }
     })
   }
-  validNormal3Col(output: number) {
+  validNormal3Col() {
     const box_label_tower = this.getColumnByHeader('BoxLabel_Tower');
     const box_label_shelf = this.getColumnByHeader('BoxLabel_Shelf');
     const box_label_box = this.getColumnByHeader('BoxLabel_Box');
@@ -369,7 +388,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         || d[( '' + (box_label_shelf - 1) )] === null
         || d[( '' + (box_label_box - 1) )] === null ) {
         d['invalid'] = true;
-        this.updateRowToRemove4BoxLabelValidation(i, output);
+        this.updateRowToRemove4BoxLabelValidation(i);
       } else {
         const lArray: Array<string> = [ d[( '' + (box_label_tower - 1) )],
         d[( '' + (box_label_shelf - 1) )], d[( '' + (box_label_box - 1) )]];
@@ -384,22 +403,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
-            this.updateRowToRemove4BoxLabelValidation(i, output);
+            this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           d['invalid'] = true;
-          this.updateRowToRemove4BoxLabelValidation(i, output);
+          this.updateRowToRemove4BoxLabelValidation(i);
         }
       }
     });
   }
-  validAbnormalSeparated(output) {
+  validAbnormalSeparated(): boolean {
+    let too_many_samples = false;
     // seperated with sample
     if ( this.data.length > this.getContainerCapacity(this.sLabel, this.container)) {
       // dn not mark samples as invalid, will be checked during sample label validation
       const message = 'too many samples sample uploaded, not all samples will be uploaded!';
-      this.emitValidationOutput(0, 2, message);
-      output = 2;
+      this.emitValidationOutput(0, 1, message);
+      too_many_samples = true;
     };
     // validate max boxes
     const box_label_header = this.getColumnByHeader('BoxLabel');
@@ -412,18 +432,20 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       } else {
         d['invalid'] = true;
         // add row to remove
-        this.updateRowToRemove4BoxLabelValidation(i, output);
+        this.updateRowToRemove4BoxLabelValidation(i);
       }
     });
     // update tower, shelf and box attrs
-    this.genAbnormalBoxLabelInfo(box_label_header, this.container, output, true);
+    this.genAbnormalBoxLabelInfo(box_label_header, this.container, true);
+    return too_many_samples;
   }
-  validAbnormalIntegrated(output) {
+  validAbnormalIntegrated(): boolean {
+    let too_many_samples = false;
     // emit message
     if ( this.data.length > this.getContainerCapacity(this.sLabel, this.container)) {
       const message = 'too many samples sample uploaded, not all samples will be uploaded!';
-      this.emitValidationOutput(0, 2, message);
-      output = 2;
+      this.emitValidationOutput(0, 1, message);
+      too_many_samples = true;
     }
     // box label is validated with sample labels
     // first need to seperate box labels and sample labels
@@ -438,7 +460,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (box_join === '' || box_join === null) {
         d['invalid'] = true;
         // add row to remove
-        this.updateRowToRemove4BoxLabelValidation(i, output);
+        this.updateRowToRemove4BoxLabelValidation(i);
       } else {
         // box_join === sample_join ?
         if (sample_label.indexOf(box_join) !== -1 && sample_label.length === sample_label.indexOf(box_join) + 1) {
@@ -454,17 +476,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           } else {
             d['invalid'] = true;
             // add row to remove
-            this.updateRowToRemove4BoxLabelValidation(i, output);
+            this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           d['invalid'] = true;
           // add row to remove
-          this.updateRowToRemove4BoxLabelValidation(i, output);
+          this.updateRowToRemove4BoxLabelValidation(i);
         }
       }
     })
     // update tower, shelf and box attrs
-    this.genAbnormalBoxLabelInfo(sample_header_col, this.container, output, false);
+    this.genAbnormalBoxLabelInfo(sample_header_col, this.container, false);
+    return too_many_samples;
   }
   testBoxLabel1Col(trimed_box_label: string, bLabel: BoxLabel, container: Container): Array<number> {
     const array: Array<number> = [];
@@ -551,15 +574,21 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   getContainerTotalBoxes(container: Container) {
     return container.tower * container.shelf * container.box;
   }
-  updateRowToRemove4BoxLabelValidation(index: number, output: number) {
+  updateRowToRemove4BoxLabelValidation(index: number) {
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
-      output = 1; // warning
       // emit message
       const message = 'box label for row ' + index + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(0, 1, message);
     }
-    return output;
+  }
+  updateRowToRemove4SampleNameValidation(index: number) {
+    if (this.row_indexes_to_remove.indexOf(index) === -1) {
+      this.row_indexes_to_remove.push(index);
+      // emit message
+      const message = 'sample name for row ' + index + ' is invalid, this sample will be ignored!';
+      this.emitValidationOutput(0, 1, message);
+    }
   }
   // remove the repeats in the array of this.boxes_to_create
   removeRepeatedBoxes(boxes_to_create: Array<Array<number>>) {
@@ -575,7 +604,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     return array;
   }
   // generate box info in the data array for abnormal box labels
-  genAbnormalBoxLabelInfo(header_col: number, container: Container, output: number, separated: boolean) {
+  genAbnormalBoxLabelInfo(header_col: number, container: Container, separated: boolean) {
     // only when there are boxes to create
     if (this.abnormal_boxes_to_create.length > 0) {
       this.abnormal_boxes_to_create.sort();
@@ -601,7 +630,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           if (abnormal_boxes_to_remove.indexOf(box_label.toLowerCase()) !== -1) {
             d['invalid'] = true;
             // add row to remove
-            this.updateRowToRemove4BoxLabelValidation(i, output);
+            this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           // integreted
@@ -612,7 +641,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             if (abnormal_boxes_to_remove.indexOf(box_label.toLowerCase()) !== -1) {
               d['invalid'] = true;
               // add row to remove
-              this.updateRowToRemove4BoxLabelValidation(i, output);
+              this.updateRowToRemove4BoxLabelValidation(i);
             }
           }
         }
