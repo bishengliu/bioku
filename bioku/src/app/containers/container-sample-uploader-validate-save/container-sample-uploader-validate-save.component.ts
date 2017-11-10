@@ -97,6 +97,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateBoxLabel();
       this.data = this.filterValidSamples(this.data);
     }
+    if (!this.validator_failed && !this.bLabel.box_has_label) {
+      // no box validation is required
+      const message = 'your samples have no box labels, box label validation is skipped.';
+      this.emitValidationOutput(0, 3, message);
+    }
     this.validateDataLength(false);
     // console.log(this.data);
     if (!this.validator_failed && this.data.length > 0) {
@@ -191,7 +196,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.emitValidationOutput(0, 3, message);
     // split the samples and validate
     // validate sample labels and sample numbe in a box
-
+    if ( !this.bLabel.box_defined_as_normal && !this.bLabel.box_sample_separated ) {
+      // sample label is in one column
+      //row-col in 1 col or increasing number
+    } else {
+      //row-col in 1 col , 3 cols or increasing number
+    }
     // final check
     // parse box labels
     const sample_label_validation_output = this.parseSampleLabel();
