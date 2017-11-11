@@ -6,7 +6,7 @@
         </div>
       <div class="ui secondary segment validation_message scrollable" #messageBox>
         <p class="tight_around" *ngFor="let output of sampleValidator.validator_outputs">
-          <span class="grey-text">({{getValidationStep(+output.validation_step)}})</span>
+          <span class="grey-text">({{output.validation_step}})</span>
           <span class="grey-text">==></span> 
           <i [attr.class]="getIconbyStatus(+output.status)"></i><span [attr.class]="getColorByStatus(+output.status)">{{output.message}}</span>
         </p>

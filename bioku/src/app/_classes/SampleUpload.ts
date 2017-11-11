@@ -58,7 +58,7 @@ export class SampleValidator {
 }
 
 export class ValidatorOutput {
-    validation_step: number;
+    validation_step: string;
     status: number; // 0 passed, 1, passed with warning; 2 failed, 3 info;
     message: string;
 }
