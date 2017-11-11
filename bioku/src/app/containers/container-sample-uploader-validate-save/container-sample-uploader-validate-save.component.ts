@@ -91,7 +91,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // filter the data
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    console.log(this.data);
     this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate box label ////////////////////////////////////////
     // only when the file has box label
@@ -106,8 +105,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const message = 'your samples have no box labels, box label validation is skipped.';
       this.emitValidationOutput(0, 3, message);
     }
-    console.log('===> box label');
-    console.log(this.data);
     this.validateDataLength(false); // data set validation
     // console.log(this.data);
     ///////////////////////////////// validate sample label ////////////////////////////////////////
@@ -116,7 +113,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateSampleLabel();
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    console.log('===> sample label');
     console.log(this.data);
     this.validateDataLength(false); // data set validation
     // re-gen the boxes to create
@@ -559,7 +555,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               const s_array  = sample_label.split(box_join);
               new_sample_label = s_array[s_array.length - 1]; // last item
             }
-            console.log([box_label, new_sample_label]);
             // update sample label
             d['sample_label'] = new_sample_label; ////////// only generated with abnormal and integreted ////////////////////
             d['box_label'] = box_label; ////////// only generated with abnormal and integreted ////////////////////

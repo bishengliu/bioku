@@ -20,22 +20,22 @@
           </span>
           <span *ngIf="bLabel.box_has_label">
             <i class="caret right icon"></i> your box label looks like this:
-            <span *ngIf="bLabel.box_defined_as_normal" class="red-text">
-              <s>{{bLabel.prefix}}</s>
-            </span>
-            <strong class="red-text">{{genOneorA(bLabel.tower)}}{{bLabel.join}}{{genOneorA(bLabel.shelf)}}{{bLabel.join}}{{genOneorA(bLabel.box)}}</strong>
-            <span class="red-text">
-              <s>{{bLabel.appendix}}</s>
-            </span>
+            <span *ngIf="bLabel.box_defined_as_normal">
+              <span *ngIf="bLabel.box_defined_as_normal" class="red-text">
+                <s>{{bLabel.prefix}}</s>
+              </span>
+              <strong class="red-text">{{genOneorA(bLabel.tower)}}{{bLabel.join}}{{genOneorA(bLabel.shelf)}}{{bLabel.join}}{{genOneorA(bLabel.box)}}</strong>
+              <span class="red-text">
+                <s>{{bLabel.appendix}}</s>
+              </span>
+            </span>            
             <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
             <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
             <br />
           </span>
             <i class="caret right icon"></i> your sample label looks like this:
             <span class="green-text" *ngIf="bLabel.box_has_label && !bLabel.box_defined_as_normal && !bLabel.box_sample_separated">
-              <strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong>            
-              <strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong>
-              <strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
+              <strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
             </span>
             <br />
             <i class="caret right icon"></i> your box layout looks like this: (
