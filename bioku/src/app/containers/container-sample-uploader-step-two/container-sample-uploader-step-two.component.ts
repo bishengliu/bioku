@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, EventEmitter, Output, Input, OnChanges } fro
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
+import { AlertService } from '../../_services/AlertService';
 import { SampleLabel, BoxLabel } from '../../_classes/sampleUpload';
 @Component({
   selector: 'app-container-sample-uploader-step-two',
@@ -17,7 +18,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   sLabel: SampleLabel = new SampleLabel();
   @Output() sampleLabel: EventEmitter<SampleLabel> = new EventEmitter<SampleLabel> ();
   @Input() bLabel: BoxLabel;
-  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, ) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, private alertService: AlertService) {
     this.sLabel = new SampleLabel();
   }
 
@@ -27,7 +28,10 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateSampleLabelDefinition (evt: any) {
     this.sLabel.sampleLabelDefinition = evt;
-    this.preventSameJoinSymbol();
+    // set the default
+    this.sLabel.boxJoin = '-';
+    this.sLabel.sampleJoin = '';
+    // this.preventSameJoinSymbol();
   }
 
   updateBoxLabel(evt: any) {
@@ -35,7 +39,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateBoxJoin(evt: any) {
     this.sLabel.boxJoin = evt;
-    this.preventSameJoinSymbol();
+    // this.preventSameJoinSymbol();
   }
   updateSampleRow(evt: any) {
     this.sLabel.sampleRow = evt;
@@ -45,7 +49,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateSampleJoin(evt: any) {
     this.sLabel.sampleJoin = evt;
-    this.preventSameJoinSymbol();
+    // this.preventSameJoinSymbol();
   }
 
   backFirstStep() {
@@ -120,9 +124,10 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   preventSameJoinSymbol() {
     if (this.sLabel.sampleLabelDefinition === 0 && !this.bLabel.box_defined_as_normal && !this.bLabel.box_sample_separated) {
       // box_join and sample join cannot be the same
-      if (this.sLabel.boxJoin === this.sLabel.sampleJoin) {
+      if (this.sLabel.boxJoin === this.sLabel.sampleJoin && this.sLabel.boxJoin === '') {
         this.sLabel.boxJoin = '-';
         this.sLabel.sampleJoin = '';
+        this.alertService.error('the 2 join symbols can not be both "nothing"!', true);
         return true;
       }
     }

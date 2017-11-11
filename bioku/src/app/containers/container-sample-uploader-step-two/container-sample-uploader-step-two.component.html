@@ -50,7 +50,7 @@
         <div class="ui top left attached teal label">STEP 2</div>
         <div class="content wide_content">
           <div class="ui form">
-            <div class="five fields">
+            <div class="four fields">
               <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_label">(begin with) box label</label>
                 <select id="box_label" class="ui dropdown" [(ngModel)]="sLabel.boxLabel" (ngModelChange)="updateBoxLabel($event)">
@@ -59,7 +59,7 @@
                 </select>
               </div>
               <div class="field" 
-                [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false, 'error': preventSameJoinSymbol() }">
+                [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false}">
                 <label for="box_join">box and sample labels joined with</label>
                 <select id="box_join" class="ui dropdown" [(ngModel)]="sLabel.boxJoin" (ngModelChange)="updateBoxJoin($event)">
                   <option value="-">-</option>
@@ -67,18 +67,18 @@
                   <option value="~">~</option>
                   <option value=".">.</option>
                   <option value=";">;</option>
-                  <option value="">nothing</option>
+                  <option value="" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">nothing</option>
                 </select>
               </div>
               <div class="field">
-                <label for="sample_row">sample row</label>
+                <label for="sample_row">sample row in the box</label>
                 <select id="sample_row" class="ui dropdown" [(ngModel)]="sLabel.sampleRow" (ngModelChange)="updateSampleRow($event)" 
                 [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 }">
                   <option value="1">digits</option>
                   <option value="0">letter</option>
                 </select>
               </div>
-              <div class="field" [ngClass]="{'error': preventSameJoinSymbol() }">
+              <!-- <div class="field hidden">
                 <label for="sample_join">sample label joined with</label>
                 <select id="sample_join" class="ui dropdown" [(ngModel)]="sLabel.sampleJoin" (ngModelChange)="updateSampleJoin($event)" 
                 [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 || sLabel.sampleLabelDefinition === 1 }">
@@ -89,9 +89,9 @@
                   <option value=";">;</option>
                   <option value="">nothing</option>
                 </select>
-              </div>
+              </div> -->
               <div class="field">
-                <label for="sample_column">sample column</label>
+                <label for="sample_column">sample column in the box</label>
                 <select id="sample_column" class="ui dropdown" [(ngModel)]="sLabel.sampleColumn" (ngModelChange)="updateSampleColumn($event)" 
                 [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 }">
                   <option value="1">digits</option>
