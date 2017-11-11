@@ -91,6 +91,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // filter the data
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
+    console.log(this.data);
     this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate box label ////////////////////////////////////////
     // only when the file has box label
@@ -105,6 +106,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const message = 'your samples have no box labels, box label validation is skipped.';
       this.emitValidationOutput(0, 3, message);
     }
+    console.log('===> box label');
+    console.log(this.data);
     this.validateDataLength(false); // data set validation
     // console.log(this.data);
     ///////////////////////////////// validate sample label ////////////////////////////////////////
@@ -113,6 +116,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateSampleLabel();
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
+    console.log('===> sample label');
     console.log(this.data);
     this.validateDataLength(false); // data set validation
     // re-gen the boxes to create
@@ -306,7 +310,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         if (this.boxes_to_create.length > max_boxes_of_conatiner) {
           output = 1;
           const message = 'too many boxes founded, not all samples will be uploaded!';
-          this.emitValidationOutput(0, 1, message);
+          this.emitValidationOutput(1, 1, message);
         }
       }
     } else {
@@ -327,7 +331,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (this.abnormal_boxes_to_create.length === 0) {
         output = 2;
         const message = 'no box label is valid; no box to create!';
-        this.emitValidationOutput(0, 2, message);
+        this.emitValidationOutput(1, 2, message);
       }
       if (this.abnormal_boxes_to_create.length > max_boxes_of_conatiner) {
         output = 1;
@@ -539,9 +543,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           // add row to remove
           this.updateRowToRemove4BoxLabelValidation(i);
         } else {
-          if (sample_label.lastIndexOf(box_join) !== -1 && sample_label.length === sample_label.lastIndexOf(box_join) + 1) {
-            const box_label = sample_label.substring(0, sample_label.lastIndexOf(box_join)); // only accept last occurance
-            const new_sample_label = sample_label.substring(sample_label.lastIndexOf(box_join) + 1);
+          console.log(sample_label.lastIndexOf(box_join) !== -1);
+          if (sample_label.lastIndexOf(box_join) !== -1) {
+            let box_label = sample_label.substring(0, sample_label.lastIndexOf(box_join)); // only accept last occurance
+            let new_sample_label = sample_label.substring(sample_label.lastIndexOf(box_join) + 1);
+            if ( box_join === '') {
+              // box label is only letters
+              box_label = sample_label;
+              box_label = box_label.replace(/[0-9]/g, ''); // remove all the numbers
+              new_sample_label = sample_label;
+              new_sample_label = new_sample_label.replace(/[a-zA-Z]/g, '');
+              // sample label is only number
+            } else {
+              box_label = sample_label.substring(0, sample_label.lastIndexOf(box_join)); // only accept last occurance
+              const s_array  = sample_label.split(box_join);
+              new_sample_label = s_array[s_array.length - 1]; // last item
+            }
+            console.log([box_label, new_sample_label]);
             // update sample label
             d['sample_label'] = new_sample_label; ////////// only generated with abnormal and integreted ////////////////////
             d['box_label'] = box_label; ////////// only generated with abnormal and integreted ////////////////////
@@ -658,7 +676,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.row_indexes_to_remove.push(index);
       // emit message
       const message = 'box label for row ' + index + ' is invalid, this sample will be ignored!';
-      this.emitValidationOutput(0, 1, message);
+      this.emitValidationOutput(1, 1, message);
     }
   }
   updateRowToRemove4SampleNameValidation(index: number) {
@@ -674,7 +692,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.row_indexes_to_remove.push(index);
       // emit message
       const message = 'sample label for row ' + index + ' is invalid, this sample will be ignored!';
-      this.emitValidationOutput(0, 1, message);
+      this.emitValidationOutput(2, 1, message);
     }
   }
   // remove the repeats in the array of this.boxes_to_create

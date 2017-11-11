@@ -54,7 +54,9 @@
               <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_label">(begin with) box label</label>
                 <select id="box_label" class="ui dropdown" [(ngModel)]="sLabel.boxLabel" (ngModelChange)="updateBoxLabel($event)">
-                  <option value="1">digits</option>
+                  <option value="1"
+                  *ngIf="!(!bLabel.box_defined_as_normal && !bLabel.box_sample_separated && sLabel.sampleLabelDefinition === 2)"
+                  >digits</option>
                   <option value="0">letter</option>
                 </select>
               </div>
