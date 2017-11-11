@@ -721,14 +721,17 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       let row_valid = false; 
       let col_valid = false;
       if (sample_label === '') {
+        d['invalid'] = true;
+        has_warning = true;
+        this.updateRowToRemove4SampleLabelValidation(i);
         invalid = true;
       } else {
         // sample join
         const sample_join = this.sLabel.sampleJoin;
-        if (sample_label.indexOf(sample_join) === -1) {
+        if (sample_label !== '' && sample_label.indexOf(sample_join) === -1) {   
           d['invalid'] = true;
           has_warning = true;
-          this.updateRowToRemove4SampleLabelValidation(i);
+          this.updateRowToRemove4SampleLabelValidation(i); 
           invalid = true;
         } else {
           // this.utilityService.convertLetters2Integer(this.sLabel.box_vertical)
@@ -796,12 +799,83 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // SampleLabel_Row and SampleLabel_Column
     const sample_label_row = this.getColumnByHeader('SampleLabel_Row');
     const sample_label_col = this.getColumnByHeader('SampleLabel_Column');
+    // get the max sample in a box
+    const max_sample_count = this.getMaxSamplePerBox();
+    this.data.forEach((d ,i) =>{
+      let invalid = false;
+      let row_valid = false; 
+      let col_valid = false;
+      const sample_row = '' + d[( '' + (sample_label_row - 1) )];
+      const sample_col = '' + d[( '' + (sample_label_col - 1) )];
+      if (sample_row === '' || sample_col === '') {
+        invalid = true;
+      } else {
+        if (this.sLabel.sampleRow === 0 ) {
+          // letters
+          if ( (/^[a-zA-Z]+$/.test(sample_row))
+              && (+this.sLabel.box_horizontal >= this.utilityService.convertLetters2Integer(sample_row)) ) {
+            invalid = false;
+            row_valid = true;              
+          } else {
+            invalid = true;
+          }
+        } else {
+          // 1, number
+          if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row ) {
+              invalid = false;
+              row_valid = true;
+          } else {
+            invalid = true;
+          }
+        }
+        
+        if (this.sLabel.sampleColumn === 0 ) {
+          // letters
+          if ((/^[a-zA-Z]+$/.test(sample_col)) 
+              && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >=
+              this.utilityService.convertLetters2Integer(sample_col))) {
+                invalid = false;
+                col_valid = true;
+          } else {
+            invalid = true;
+          }
+        } else {
+          // 1, number
+          if ( (/^[0-9]+$/.test(sample_col)) 
+          && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col)) {
+            invalid = false;
+            col_valid = true;
+          } else {
+            invalid = true;
+          }
+        }
+      }  
+      // sum
+      if (invalid || !col_valid || !row_valid) {
+        d['invalid'] = true;
+        has_warning = true;
+        this.updateRowToRemove4SampleLabelValidation(i);
+      } else {
+        d['invalid'] = false;
+        // number
+        d['hposition'] = this.sLabel.sampleRow === 0 ? this.utilityService.convertLetters2Integer(sample_row) : +sample_row;
+        // letter
+        d['vposition'] = this.sLabel.sampleColumn === 0 ? sample_col : this.utilityService.convertInteger2Letter(+sample_col)
+      }
+    });
     return has_warning;
   }
   validSampleLabelIncreasingNumber(): boolean {
     let has_warning = false;
     // SampleLabel
     const sample_label_col = this.getColumnByHeader('SampleLabel');
+    // get the max sample in a box
+    const max_sample_count = this.getMaxSamplePerBox();
+    this.data.forEach((d, i) => { 
+      const sample_label = '' + d[( '' + (sample_label_col - 1) )];
+      let invalid = false;
+      ////////////allow sample label is null.... ?
+    });
     return has_warning;
   }
   // generate all the possible boxes in a container
