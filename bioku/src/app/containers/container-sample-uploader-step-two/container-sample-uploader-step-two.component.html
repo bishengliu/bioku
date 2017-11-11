@@ -19,9 +19,9 @@
         <div class="content wide_content">
           <div class="ui form">
             <div class="grouped fields">
-              <div class="field">
+              <div class="field" *ngIf="show1ColumnOption()">
                 <div class="ui slider checkbox">
-                  <input id="sample_one_column" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 0 ? 'checked': null"
+                  <input id="sample_one_column" type="radio" name="define_sample_position" [attr.checked]="sLabel.sampleLabelDefinition === 0 ? 'checked': null"
                     (change)="updateSampleLabelDefinition(0)">
                   <label for="sample_one_column">Sample labeled with "row" and "column" in one data column</label>
                 </div>
@@ -29,14 +29,15 @@
               <div class="field" *ngIf="show2ColumnOption()">
                 <div class="ui slider checkbox">
                   <input id="sample_two_column" type="radio" name="define_sample_position" 
-                    [attr.checked]="sampleLabelDefinition === 1 ? 'checked': null"
+                    [attr.checked]="sLabel.sampleLabelDefinition === 1 ? 'checked': null"
                     (change)="updateSampleLabelDefinition(1)">
                   <label for="sample_two_column">Sample labeled with "row" and "column" in 2 data columns</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui slider checkbox">
-                  <input id="sample_increasing_number" type="radio" name="define_sample_position" [attr.checked]="sampleLabelDefinition === 2 ? 'checked': null"
+                  <input id="sample_increasing_number" type="radio" name="define_sample_position" 
+                  [attr.checked]="sLabel.sampleLabelDefinition === 2 ? 'checked': null"
                     (change)="updateSampleLabelDefinition(2)">
                   <label for="sample_increasing_number">Sample labeled with the increaing numbers in one data column</label>
                 </div>
@@ -52,32 +53,32 @@
             <div class="five fields">
               <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_label">(begin with) box label</label>
-                <select id="box_label" class="ui dropdown" [(ngModel)]="boxLabel" (ngModelChange)="updateBoxLabel($event)">
+                <select id="box_label" class="ui dropdown" [(ngModel)]="sLabel.boxLabel" (ngModelChange)="updateBoxLabel($event)">
                   <option value="1">digits</option>
                   <option value="0">letter</option>
                 </select>
               </div>
               <div class="field" [ngClass]="{'hidden': !bLabel.box_has_label || bLabel.box_defined_as_normal != false || bLabel.box_sample_separated != false }">
                 <label for="box_join">box and sample labels joined with</label>
-                <select id="box_join" class="ui dropdown" [(ngModel)]="boxJoin" (ngModelChange)="updateBoxJoin($event)">
+                <select id="box_join" class="ui dropdown" [(ngModel)]="sLabel.boxJoin" (ngModelChange)="updateBoxJoin($event)">
                   <option value="-">-</option>
                   <option value="/">/</option>
                   <option value="~">~</option>
                   <option value=".">.</option>
                   <option value=";">;</option>
-                  <option value=" ">space</option>
+                  <option value="">nothing</option>
                 </select>
               </div>
               <div class="field">
                 <label for="sample_row">sample row</label>
-                <select id="sample_row" class="ui dropdown" [(ngModel)]="sampleRow" (ngModelChange)="updateSampleRow($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                <select id="sample_row" class="ui dropdown" [(ngModel)]="sLabel.sampleRow" (ngModelChange)="updateSampleRow($event)" [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 }">
                   <option value="1">digits</option>
                   <option value="0">letter</option>
                 </select>
               </div>
               <div class="field">
                 <label for="sample_join">sample label joined with</label>
-                <select id="sample_join" class="ui dropdown" [(ngModel)]="sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 || sampleLabelDefinition === 1 }">
+                <select id="sample_join" class="ui dropdown" [(ngModel)]="sLabel.sampleJoin" (ngModelChange)="updateSampleJoin($event)" [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 || sLabel.sampleLabelDefinition === 1 }">
                   <option value="-">-</option>
                   <option value="/">/</option>
                   <option value="~">~</option>
@@ -88,7 +89,7 @@
               </div>
               <div class="field">
                 <label for="sample_column">sample column</label>
-                <select id="sample_column" class="ui dropdown" [(ngModel)]="sampleColumn" (ngModelChange)="updateSampleColumn($event)" [ngClass]="{'disabled': sampleLabelDefinition === 2 }">
+                <select id="sample_column" class="ui dropdown" [(ngModel)]="sLabel.sampleColumn" (ngModelChange)="updateSampleColumn($event)" [ngClass]="{'disabled': sLabel.sampleLabelDefinition === 2 }">
                   <option value="1">digits</option>
                   <option value="0">letter</option>
                 </select>
@@ -114,20 +115,20 @@
               <div class="ui teal raised card">
                 <div class="content small_vertial_padding">
                   <h3 class="tight_around">box layout (
-                    <span>{{box_horizontal}}X{{vArray.length}}</span>)</h3>
+                    <span>{{sLabel.box_horizontal}}X{{vArray.length}}</span>)</h3>
                   <div class="description">
                     <div class="ui form tiny small_vertial_padding">
                       <div class="ui inline fields small_vertial_padding">
                         <div class="field">
                           <label>horizontal: </label>
-                          <select name="horizontal" [(ngModel)]="box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
+                          <select name="horizontal" [(ngModel)]="sLabel.box_horizontal" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'horizontal')"
                             #horizontalCtl>
                             <option *ngFor="let option of genHorizontalOptions()" [ngValue]="option">{{option}}</option>
                           </select>
                         </div>
                         <div class="field">
                           <label>vertical: </label>
-                          <select name="vertical" [(ngModel)]="box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
+                          <select name="vertical" [(ngModel)]="sLabel.box_vertical" class="ui fluid dropdown" (ngModelChange)="updateLayout($event, 'vertical')"
                             #verticalCtl>
                             <option *ngFor="let option of genVerticalOptions()" [ngValue]="option">{{option}}</option>
                           </select>
@@ -173,8 +174,8 @@
           <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
           <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>;
           your sample label looks like this:
-          <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{genOneorA(boxLabel)}}{{boxJoin}}</strong></span><strong class="red-text" *ngIf="sampleLabelDefinition !== 2">{{genOneorA(sampleRow)}}{{sampleJoin}}{{genOneorA(sampleColumn)}}</strong><strong class="red-text" *ngIf="sampleLabelDefinition === 2">1</strong>;
-          your box layout looks like this: (<span class="red-text"><strong>{{box_horizontal}}X{{vArray.length}}</strong></span>);
+          <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
+          your box layout looks like this: (<span class="red-text"><strong>{{sLabel.box_horizontal}}X{{vArray.length}}</strong></span>);
         </p>
       </div>
     </div>

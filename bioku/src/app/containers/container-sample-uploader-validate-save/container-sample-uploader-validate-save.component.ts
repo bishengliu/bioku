@@ -263,7 +263,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // validate sample names
     this.data.forEach( (d, i) => {
       const sample_name = d[( '' + (sample_name_col - 1) )];
-      if (sample_name === '') {
+      if (sample_name === '' || sample_name === null) {
          // sample is null, sample invalid
          d['invalid'] = true;
          this.updateRowToRemove4SampleNameValidation(i);
@@ -361,7 +361,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
       let box_label = d[( '' + (box_label_header - 1) )];
-      if (box_label === '') {
+      if (box_label === '' || box_label === null ) {
         // box label is null, sample invalid
         d['invalid'] = true;
         this.updateRowToRemove4BoxLabelValidation(i);
@@ -447,7 +447,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const box_label_header = this.getColumnByHeader('BoxLabel');
     this.data.forEach((d, i) => {
       const box_label = '' + d[( '' + (box_label_header - 1) )];
-      if (box_label !== null) {
+      if (box_label !== null && box_label !== '') {
         if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
           this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
         }
@@ -461,6 +461,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.genAbnormalBoxLabelInfo(box_label_header, this.container, true);
     return too_many_samples;
   }
+  /////////////////////////////////////box join problem///////////////////////////////////
   validAbnormalIntegrated(): boolean {
     let too_many_samples = false;
     // emit message
@@ -491,7 +492,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           // update sample label
           d[( '' + (sample_header_col - 1) )] = new_sample_label;
           // validate box_label
-          if (box_label !== null) {
+          if (box_label !== null && box_label !== '') {
             if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
               this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
             }
@@ -709,6 +710,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       });
     }
   }
+  ////////////////////////need to deal with box has label or not and box join/////////////////
   validSampleLabel1Col(): boolean {
     let has_warning = false;
     // SampleLabel
@@ -718,9 +720,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.data.forEach((d, i) => {
       const sample_label = '' + d[( '' + (sample_label_col - 1) )];
       let invalid = false;
-      let row_valid = false; 
+      let row_valid = false;
       let col_valid = false;
-      if (sample_label === '') {
+      if (sample_label === '' || sample_label === null) {
         d['invalid'] = true;
         has_warning = true;
         this.updateRowToRemove4SampleLabelValidation(i);
@@ -728,17 +730,17 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       } else {
         // sample join
         const sample_join = this.sLabel.sampleJoin;
-        if (sample_label !== '' && sample_label.indexOf(sample_join) === -1) {   
+        if (sample_label !== '' && sample_label !== null && sample_label.indexOf(sample_join) === -1) {
           d['invalid'] = true;
           has_warning = true;
-          this.updateRowToRemove4SampleLabelValidation(i); 
+          this.updateRowToRemove4SampleLabelValidation(i);
           invalid = true;
         } else {
           // this.utilityService.convertLetters2Integer(this.sLabel.box_vertical)
           // split sample label
           const sArray = sample_label.split(sample_join);
           const sample_row = sArray[0]; // need save as number // box_horizontal
-          const sample_col = sArray[1]; // need to save as letter          
+          const sample_col = sArray[1]; // need to save as letter
           if (this.sLabel.sampleRow === 0 ) {
             // letters
             if ( (/^[a-zA-Z]+$/.test(sample_row))
@@ -790,10 +792,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['vposition'] = this.sLabel.sampleColumn === 0 ? sample_col : this.utilityService.convertInteger2Letter(+sample_col)
           }
         }
-      }  
+      }
     });
     return has_warning;
   }
+  ////////////////////////need to deal with box has label or not and box join/////////////////
   validSampleLabel2Col(): boolean {
     let has_warning = false;
     // SampleLabel_Row and SampleLabel_Column
@@ -807,7 +810,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       let col_valid = false;
       const sample_row = '' + d[( '' + (sample_label_row - 1) )];
       const sample_col = '' + d[( '' + (sample_label_col - 1) )];
-      if (sample_row === '' || sample_col === '') {
+      if (sample_row === '' || sample_row === null || sample_col === '' || sample_col === null) {
         invalid = true;
       } else {
         if (this.sLabel.sampleRow === 0 ) {
@@ -865,16 +868,29 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     });
     return has_warning;
   }
+  ////////////////////////need to deal with box has label or not and box join/////////////////
   validSampleLabelIncreasingNumber(): boolean {
     let has_warning = false;
     // SampleLabel
     const sample_label_col = this.getColumnByHeader('SampleLabel');
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
-    this.data.forEach((d, i) => { 
+    this.data.forEach((d, i) => {
       const sample_label = '' + d[( '' + (sample_label_col - 1) )];
       let invalid = false;
-      ////////////allow sample label is null.... ?
+      if (sample_label === ''  || sample_label == null) {
+        d['invalid'] = true;
+        has_warning = true;
+        this.updateRowToRemove4SampleLabelValidation(i);
+        invalid = true;
+      } else {
+        // gen h/v positions
+        if (this.bLabel.box_has_label) {
+          
+        } else {
+
+        }
+      }
     });
     return has_warning;
   }

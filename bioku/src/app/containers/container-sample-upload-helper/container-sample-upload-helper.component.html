@@ -32,6 +32,7 @@
 *ngIf="!start_validation_save"
 [ngClass]="{'hidden': activeStep !== 2 }"
 [bLabel]="bLabel"
+[trigerChange]="trigerChange"
 (activeStep)="captureActiveStep($event)" 
 (sampleLabel)="captureSampleLabel($event)"></app-container-sample-uploader-step-two>
 
