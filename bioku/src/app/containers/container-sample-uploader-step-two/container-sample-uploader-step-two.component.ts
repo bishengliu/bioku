@@ -92,7 +92,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
     this.sLabel.boxJoin = '-';
     this.sLabel.sampleRow = 0;
     this.sLabel.sampleColumn = 1;
-    this.sLabel.sampleJoin = '';
+    this.sLabel.sampleJoin = ''; // neve allow changes
     this.sLabel.box_horizontal = this.appSetting.BOX_HORIZONTAL;
     this.sLabel.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; // a letter
     this.hArray = this.utilityService.genArray(this.sLabel.box_horizontal);

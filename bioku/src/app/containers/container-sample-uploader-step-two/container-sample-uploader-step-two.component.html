@@ -67,7 +67,9 @@
                   <option value="~">~</option>
                   <option value=".">.</option>
                   <option value=";">;</option>
-                  <option value="" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">nothing</option>
+                  <option value="" 
+                  *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated && sLabel.sampleLabelDefinition === 2">
+                  nothing</option>
                 </select>
               </div>
               <div class="field">
