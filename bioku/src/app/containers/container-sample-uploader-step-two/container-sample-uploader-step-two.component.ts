@@ -27,13 +27,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateSampleLabelDefinition (evt: any) {
     this.sLabel.sampleLabelDefinition = evt;
-    if (this.sLabel.sampleLabelDefinition === 0 && !this.bLabel.box_defined_as_normal && !this.bLabel.box_sample_separated) {
-      // box_join and sample join cannot be the same
-      if (this.sLabel.boxJoin === this.sLabel.sampleJoin) {
-        this.sLabel.boxJoin = '-';
-        this.sLabel.sampleJoin = '';
-      }
-    }
+    this.preventSameJoinSymbol();
   }
 
   updateBoxLabel(evt: any) {
@@ -41,6 +35,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateBoxJoin(evt: any) {
     this.sLabel.boxJoin = evt;
+    this.preventSameJoinSymbol();
   }
   updateSampleRow(evt: any) {
     this.sLabel.sampleRow = evt;
@@ -50,6 +45,7 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
   }
   updateSampleJoin(evt: any) {
     this.sLabel.sampleJoin = evt;
+    this.preventSameJoinSymbol();
   }
 
   backFirstStep() {
@@ -120,6 +116,15 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
       }
     }
     return false;
+  }
+  preventSameJoinSymbol() {
+    if (this.sLabel.sampleLabelDefinition === 0 && !this.bLabel.box_defined_as_normal && !this.bLabel.box_sample_separated) {
+      // box_join and sample join cannot be the same
+      if (this.sLabel.boxJoin === this.sLabel.sampleJoin) {
+        this.sLabel.boxJoin = '-';
+        this.sLabel.sampleJoin = '';
+      }
+    }
   }
   ngOnChanges () {
     if (!this.bLabel.box_has_label) {
