@@ -115,9 +115,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     console.log(this.data);
     this.validateDataLength(false); // data set validation
+    // re-gen the boxes to create
 
     // valiate date format /////////////
-    // final outcome
+
+    // format all other column to upload
+
     this.passAllValidation();
   }
   // validate samle names
@@ -202,12 +205,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const sample_label_validation_output = this.parseSampleLabel();
     this.checkValidationOutcome(sample_label_validation_output, 'sample labels');
   }
+
   validateFreezingDateFormat() {}
 
   // general clean the data after all validation
+  // format all other columns
   formatData() {}
-
-  validateServerSerializer() {}
 
   getColumnByHeader(header: string): number {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
@@ -281,10 +284,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // definition for tow, shefl and box
       if (this.bLabel.box_tsb_one_column) {
         // 1 col
-        this.validNormal1Col();
+        const has_warning = this.validNormal1Col();
+        if (has_warning) {
+          output = 1;
+        }
       } else {
         // 3 cols
-        this.validNormal3Col();
+        const has_warning = this.validNormal3Col();
+        if (has_warning) {
+          output = 1;
+        }
       }
       // validate box count
       if (this.boxes_to_create.length === 0 ) {
@@ -330,31 +339,36 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   parseSampleLabel() {
     let output = 0; // default passed
-    // validate sample labels and sample numbe in a box
-    // row-col in 1 col , 2 cols or increasing number
-    if (this.sLabel.sampleLabelDefinition === 0) {
-      // row-col in 1 col
-      const has_warning = this.validSampleLabel1Col();
-      if (has_warning) {
-        output = 1;
-      }
-    } else if (this.sLabel.sampleLabelDefinition === 1) {
-      // row-col in 2 cols
-      const has_warning = this.validSampleLabel2Col();
-      if (has_warning) {
-        output = 1;
-      }
+    if ( !this.bLabel.box_has_label ) {
+      // sample label is the increasing number
+      this.validSampleLabelIncreasingNumber(false); // !this.bLabel.box_has_label
     } else {
-      // this.sLabel.sampleLabelDefinition === 2
-      // increasing number
-      const has_warning = this.validSampleLabelIncreasingNumber();
-      if (has_warning) {
-        output = 1;
+      // row-col in 1 col , 2 cols or increasing number
+      if (this.sLabel.sampleLabelDefinition === 0) {
+          // row-col in 1 col
+        const has_warning = this.validSampleLabel1Col();
+        if (has_warning) {
+          output = 1;
+        }
+      } else if (this.sLabel.sampleLabelDefinition === 1) {
+        // row-col in 2 cols
+        const has_warning = this.validSampleLabel2Col();
+        if (has_warning) {
+          output = 1;
+        }
+      } else {
+        // this.sLabel.sampleLabelDefinition === 2
+        // increasing number
+        const has_warning = this.validSampleLabelIncreasingNumber(true);
+        if (has_warning) {
+          output = 1;
+        }
       }
     }
     return output;
   }
-  validNormal1Col() {
+  validNormal1Col(): boolean {
+    let has_warning = false;
     const box_label_header = this.getColumnByHeader('BoxLabel');
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
@@ -362,6 +376,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (box_label === '' || box_label === null ) {
         // box label is null, sample invalid
         d['invalid'] = true;
+        has_warning = true;
         this.updateRowToRemove4BoxLabelValidation(i);
       } else {
         // get the box label patthern
@@ -390,16 +405,20 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
+            has_warning = true;
             this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           d['invalid'] = true;
+          has_warning = true;
           this.updateRowToRemove4BoxLabelValidation(i);
         }
       }
     })
+    return has_warning;
   }
-  validNormal3Col() {
+  validNormal3Col(): boolean {
+    let has_warning = false;
     const box_label_tower = this.getColumnByHeader('BoxLabel_Tower');
     const box_label_shelf = this.getColumnByHeader('BoxLabel_Shelf');
     const box_label_box = this.getColumnByHeader('BoxLabel_Box');
@@ -408,6 +427,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         || d[( '' + (box_label_shelf - 1) )] === null
         || d[( '' + (box_label_box - 1) )] === null ) {
         d['invalid'] = true;
+        has_warning = true;
         this.updateRowToRemove4BoxLabelValidation(i);
       } else {
         const lArray: Array<string> = [ d[( '' + (box_label_tower - 1) )],
@@ -423,14 +443,17 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
+            has_warning = true;
             this.updateRowToRemove4BoxLabelValidation(i);
           }
         } else {
           d['invalid'] = true;
+          has_warning = true;
           this.updateRowToRemove4BoxLabelValidation(i);
         }
       }
     });
+    return has_warning;
   }
   validAbnormalSeparated(): boolean {
     let too_many_samples = false;
@@ -459,7 +482,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.genAbnormalBoxLabelInfo(box_label_header, this.container, true);
     return too_many_samples;
   }
-  /////////////////////////////////////box join problem///////////////////////////////////
   validAbnormalIntegrated(): boolean {
     let too_many_samples = false;
     // emit message
@@ -724,11 +746,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           } else {
             // integreted
             box_label = d['box_label'];
-            // const sample_label = '' + d[( '' + (header_col - 1) )];
-            // const box_join = this.sLabel.boxJoin;
-            // if (sample_label.indexOf(box_join) !== -1) {
-            //   box_label = sample_label.substring(0, sample_label.indexOf(box_join)); // only accept in the begin
-            // }
           }
           if (box_label.toLowerCase() === blabel) {
             d['tower'] = box_label_array[0];
@@ -740,7 +757,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       });
     }
   }
-  ////////////////////////need to deal with box has label or not and box join/////////////////
   validSampleLabel1Col(): boolean {
     let has_warning = false;
     // SampleLabel
@@ -776,13 +792,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             if ( (/^[a-zA-Z]+$/.test(sample_row))
                 && (+this.sLabel.box_horizontal >= this.utilityService.convertLetters2Integer(sample_row)) ) {
               invalid = false;
-              row_valid = true;              
+              row_valid = true;
             } else {
               invalid = true;
             }
           } else {
             // 1, number
-            if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row ) {
+            if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row && +sample_row > 0) {
                 invalid = false;
                 row_valid = true;
             } else {
@@ -791,7 +807,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           }
           if (this.sLabel.sampleColumn === 0 ) {
             // letters
-            if ((/^[a-zA-Z]+$/.test(sample_col)) 
+            if ((/^[a-zA-Z]+$/.test(sample_col))
                 && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >=
                 this.utilityService.convertLetters2Integer(sample_col))) {
                   invalid = false;
@@ -801,8 +817,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             }
           } else {
             // 1, number
-            if ( (/^[0-9]+$/.test(sample_col)) 
-            && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col)) {
+            if ( (/^[0-9]+$/.test(sample_col))
+            && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col) && +sample_col > 0) {
               invalid = false;
               col_valid = true;
             } else {
@@ -826,7 +842,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     });
     return has_warning;
   }
-  ////////////////////////need to deal with box has label or not and box join/////////////////
   validSampleLabel2Col(): boolean {
     let has_warning = false;
     // SampleLabel_Row and SampleLabel_Column
@@ -848,23 +863,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           if ( (/^[a-zA-Z]+$/.test(sample_row))
               && (+this.sLabel.box_horizontal >= this.utilityService.convertLetters2Integer(sample_row)) ) {
             invalid = false;
-            row_valid = true;              
+            row_valid = true;
           } else {
             invalid = true;
           }
         } else {
           // 1, number
-          if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row ) {
+          if ( (/^[0-9]+$/.test(sample_row)) && +this.sLabel.box_horizontal >= +sample_row && +sample_row > 0 ) {
               invalid = false;
               row_valid = true;
           } else {
             invalid = true;
           }
         }
-        
+
         if (this.sLabel.sampleColumn === 0 ) {
           // letters
-          if ((/^[a-zA-Z]+$/.test(sample_col)) 
+          if ((/^[a-zA-Z]+$/.test(sample_col))
               && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >=
               this.utilityService.convertLetters2Integer(sample_col))) {
                 invalid = false;
@@ -874,8 +889,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           }
         } else {
           // 1, number
-          if ( (/^[0-9]+$/.test(sample_col)) 
-          && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col)) {
+          if ( (/^[0-9]+$/.test(sample_col))
+          && (this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) >= +sample_col) && +sample_col > 0) {
             invalid = false;
             col_valid = true;
           } else {
@@ -898,30 +913,56 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     });
     return has_warning;
   }
-  ////////////////////////need to deal with box has label or not and box join/////////////////
-  validSampleLabelIncreasingNumber(): boolean {
+  validSampleLabelIncreasingNumber(has_box_label: boolean): boolean {
     let has_warning = false;
-    // SampleLabel
-    const sample_label_col = this.getColumnByHeader('SampleLabel');
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
-    this.data.forEach((d, i) => {
-      const sample_label = '' + d[( '' + (sample_label_col - 1) )];
-      let invalid = false;
-      if (sample_label === ''  || sample_label == null) {
-        d['invalid'] = true;
-        has_warning = true;
-        this.updateRowToRemove4SampleLabelValidation(i);
-        invalid = true;
-      } else {
-        // gen h/v positions
-        if (this.bLabel.box_has_label) {
-          
+    const total_samples_of_container = this.getContainerCapacity(this.sLabel, this.container);
+    const max_boxes_of_conatiner = this.getContainerTotalBoxes(this.container);
+    const all_containerboxes: Array<Array<number>> = this.genAllBoxesInContainer(this.container);
+    // SampleLabel
+    if (!has_box_label) {
+      // no box label
+      const sample_label_col = this.getColumnByHeader('SampleLabel');
+      this.data.forEach((d, i) => {
+        const sample_label = '' + d[( '' + (sample_label_col - 1) )];
+        if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
+          d = this.updateDForIncreaingNumberWithoutBoxLabel(sample_label, d, max_sample_count, all_containerboxes);
         } else {
-
+          d['invalid'] = true;
+          has_warning = true;
+          this.updateRowToRemove4SampleLabelValidation(i);
         }
+      });
+    } else {
+      // has box label
+      if ( !this.bLabel.box_defined_as_normal && !this.bLabel.box_sample_separated) {
+        // already has sample_label attr
+        this.data.forEach((d, i) => {
+          const sample_label = d['sample_label'];
+          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= max_sample_count && +sample_label > 0 ) {
+            d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
+          } else {
+            d['invalid'] = true;
+            has_warning = true;
+            this.updateRowToRemove4SampleLabelValidation(i);
+          }
+        });
+      } else {
+        // no sample_label attr yet
+        const sample_label_col = this.getColumnByHeader('SampleLabel');
+        this.data.forEach((d, i) => {
+          const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
+          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= max_sample_count && +sample_label > 0 ) {
+            d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
+          } else {
+            d['invalid'] = true;
+            has_warning = true;
+            this.updateRowToRemove4SampleLabelValidation(i);
+          }
+        });
       }
-    });
+    }
     return has_warning;
   }
   // generate all the possible boxes in a container
@@ -988,5 +1029,72 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // scrool to bottom
   ngAfterViewChecked() {
     this.scrollToBottom();
+  }
+  updateDForIncreaingNumberWithoutBoxLabel(sample_label: string, d: Array<any>, max_sample_count: number,
+                            all_containerboxes: Array<Array<number>>): Array<any> {
+    d['invalid'] = false;
+    // gen the box label and v/h positions
+    // box position
+    const b_index = Math.floor ( +sample_label / max_sample_count );
+    const box_position = all_containerboxes[ b_index ];
+    d['tower'] = box_position[0];
+    d['shelf'] = box_position[1];
+    d['box'] = box_position[2];
+    // sample position in the box
+    const s_index = +sample_label % max_sample_count;
+    if (s_index === 0 && b_index === 0) {
+      // first position in the box
+      d['vposition'] = 'A';
+      d['hposition'] = 1;
+    } else if (s_index === 0 && b_index > 0) {
+      // last position
+      d['vposition'] = this.sLabel.box_vertical;
+      d['hposition'] = this.sLabel.box_horizontal ;
+    } else {
+      // get v/h positions
+      const s_vposition_index = Math.floor (s_index / this.sLabel.box_horizontal );
+      const s_hposiiton_index = s_index % this.sLabel.box_horizontal;
+      if ( s_hposiiton_index === 0) {
+        if (s_vposition_index > 0) {
+          d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
+          d['hposition'] = this.sLabel.box_horizontal;
+        } else {
+          d['vposition'] = 'A';
+          d['hposition'] = 0;
+        }
+      } else {
+        if ( s_vposition_index === 0) {
+          d['vposition'] = 'A';
+        } else {
+          const s_vposition = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+          d['vposition'] = s_vposition;
+        }
+        d['hposition'] = s_hposiiton_index;
+      }
+    }
+    return d;
+  }
+  updateDForIncreaingNumberWithBoxLabel(sample_label: string, d: Array<any>, max_sample_count: number): Array<any> {
+    // get v/h positions
+    const s_vposition_index = Math.floor (+sample_label / this.sLabel.box_horizontal );
+    const s_hposiiton_index = +sample_label % this.sLabel.box_horizontal;
+    if ( s_hposiiton_index === 0) {
+      if (s_vposition_index > 0) {
+        d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
+        d['hposition'] = this.sLabel.box_horizontal;
+      } else {
+        d['vposition'] = 'A';
+        d['hposition'] = 0;
+      }
+    } else {
+      if ( s_vposition_index === 0) {
+        d['vposition'] = 'A';
+      } else {
+        const s_vposition = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+        d['vposition'] = s_vposition;
+      }
+      d['hposition'] = s_hposiiton_index;
+    }
+    return d;
   }
 }

@@ -48,31 +48,32 @@ export class UtilityService {
         // split letters to array
         const array = letters.toUpperCase().split('');
         let result = 0;
-        for (let i = 0; i< array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             result += (alphabeta.indexOf(array[i]) + 1);
         }
         return result;
     }
-    //number to letters
+    // number to letters
+    // digit start with 1
     convertInteger2Letter(digit: number): string {
         const alphabeta = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
         'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        if(digit <= 0) {
+        if (digit <= 0) {
             return '';
         } else if (digit > 0 &&  digit < 26 ) {
-            return alphabeta[digit -1];
-        } else{
+            return alphabeta[digit - 1 ];
+        } else {
             const index: number = digit % alphabeta.length;
             const repeats: number = Math.floor(digit / alphabeta.length);
             console.log([repeats, index])
             let result = '';
-            for(let i=0; i < repeats; i++) {
+            for (let i = 0; i < repeats; i++) {
                 result += 'Z';
-            }         
-            if( index > 0){
+            }
+            if ( index > 0) {
                 result += alphabeta[index - 1];
             }
             return result;
-        }        
+        }
     }
 }
