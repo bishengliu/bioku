@@ -12,7 +12,7 @@ import { UtilityService } from '../../_services/UtilityService';
   templateUrl: './container-sample-uploader-validate-save.component.html',
   styleUrls: ['./container-sample-uploader-validate-save.component.css']
 })
-export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnChanges, AfterViewChecked {
+export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnChanges {
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
   @Input() excelData: Array<Array<any>>;
@@ -98,6 +98,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // filter the data
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
+    console.log(this.data);
     this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate box label ////////////////////////////////////////
     // only when the file has box label
@@ -119,7 +120,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateSampleLabel();
       this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    console.log(this.data);
     this.validateDataLength(false); // data set validation
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
@@ -131,6 +131,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // format all other columns to upload
 
     this.passAllValidation();
+    this.scrollToBottom();
   }
   // validate samle names
   validateSampleName () {
@@ -274,7 +275,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // validate sample names
     this.data.forEach( (d, i) => {
       const sample_name = d[( '' + (sample_name_col - 1) )];
-      if (sample_name === '' || sample_name === null) {
+      if (sample_name === '' || sample_name === null || sample_name === undefined) {
          // sample is null, sample invalid
          d['invalid'] = true;
          this.updateRowToRemove4SampleNameValidation(i);
@@ -383,7 +384,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
       let box_label = d[( '' + (box_label_header - 1) )];
-      if (box_label === '' || box_label === null ) {
+      if (box_label === '' || box_label === null || box_label === undefined) {
         // box label is null, sample invalid
         d['invalid'] = true;
         has_warning = true;
@@ -478,7 +479,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const box_label_header = this.getColumnByHeader('BoxLabel');
     this.data.forEach((d, i) => {
       const box_label = '' + d[( '' + (box_label_header - 1) )];
-      if (box_label !== null && box_label !== '') {
+      if (box_label !== null && box_label !== '' || box_label === undefined) {
         if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
           this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
         }
@@ -526,7 +527,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['box_label'] = box_label; ////////// only generated with abnormal and integreted ////////////////////
             // d[( '' + (sample_header_col - 1) )] = new_sample_label;
             // validate box_label
-            if (box_label !== null && box_label !== '') {
+            if (box_label !== null && box_label !== '' && box_label !== undefined) {
               if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
                 this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
               }
@@ -1022,13 +1023,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
   }
   validateDataLength(initial: boolean) {
-    if (this.data === undefined  || this.data.length === 0) {
+    if (!this.validator_failed && (this.data === undefined  || this.data.length === 0)) {
       const message = initial
       ?
       'no sample to validate, please make sure the file uploaded is not empty!' :
       'no valid sample left, validation stopped!';
       this.emitValidationOutput(this.VALIDATION_SAMPLE_COUNT, 2, message);
       this.validator_failed = true;
+    } else {
+      const message =  initial
+      ? 'total number of samples is: ' + this.data.length + '.'
+      : 'total number of samples left is: ' + this.data.length + '.';
+      this.emitValidationOutput(this.VALIDATION_SAMPLE_COUNT, 3, message);
     }
   }
   passAllValidation () {
@@ -1049,9 +1055,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
   }
   // scrool to bottom
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
+  // ngAfterViewChecked() {
+  //   this.scrollToBottom();
+  // }
   updateDForIncreaingNumberWithoutBoxLabel(sample_label: string, d: Array<any>, max_sample_count: number,
                             all_containerboxes: Array<Array<number>>): Array<any> {
     d['invalid'] = false;
@@ -1141,7 +1147,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.emitValidationOutput(this.VALIDAITON_BOXES_TO_CREATE_CHECKING, 2, message);
       this.validator_failed = true;
     } else {
-      const message = 'total boxes to create: ' + this.final_boxes_to_create.length + '!';
+      const message = 'total number of boxes to create: ' + this.final_boxes_to_create.length + '!';
       this.emitValidationOutput(this.VALIDAITON_BOXES_TO_CREATE_CHECKING, 0, message);
     }
   }

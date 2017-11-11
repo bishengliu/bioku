@@ -531,6 +531,8 @@ div [class*="right floated"] {
   min-height: 680px;
   max-height: 680px;
   height: 680px;
+  font-family: monospace !important;
+  font-size: 10px;
 }
 .scrollable{
   overflow-y: scroll !important;

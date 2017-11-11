@@ -34,9 +34,7 @@
             <br />
           </span>
             <i class="caret right icon"></i> your sample label looks like this:
-            <span class="green-text" *ngIf="bLabel.box_has_label && !bLabel.box_defined_as_normal && !bLabel.box_sample_separated">
-              <strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
-            </span>
+            <span class="violet-text" *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated"><strong>{{genOneorA(sLabel.boxLabel)}}{{sLabel.boxJoin}}</strong></span><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition !== 2">{{genOneorA(sLabel.sampleRow)}}{{sLabel.sampleJoin}}{{genOneorA(sLabel.sampleColumn)}}</strong><strong class="red-text" *ngIf="sLabel.sampleLabelDefinition === 2">1</strong>;
             <br />
             <i class="caret right icon"></i> your box layout looks like this: (
             <span class="red-text">
