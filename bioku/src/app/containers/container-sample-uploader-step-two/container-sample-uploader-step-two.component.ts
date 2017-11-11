@@ -123,9 +123,12 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
       if (this.sLabel.boxJoin === this.sLabel.sampleJoin) {
         this.sLabel.boxJoin = '-';
         this.sLabel.sampleJoin = '';
+        return true;
       }
     }
+    return false;
   }
+
   ngOnChanges () {
     if (!this.bLabel.box_has_label) {
       if (this.sLabel !== undefined) {

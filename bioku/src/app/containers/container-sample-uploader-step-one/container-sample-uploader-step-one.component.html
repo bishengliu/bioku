@@ -32,7 +32,8 @@
         <div class="content">
           <div class="ui horizontal divider">box label pattern</div>
           <div class="ui slider checkbox" [ngClass]="{'disabled': !bLabel.box_has_label }">
-            <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked" [attr.disabled]="genDisabled()">
+            <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked" 
+            [attr.disabled]="genDisabled()">
             <label for="box_position_definition">
               <span *ngIf="bLabel.box_defined_as_normal" class="">box labeled with "tower", "shelf" and "box"</span>
               <span *ngIf="!bLabel.box_defined_as_normal" class="red-text">box NOT labeled with "tower", "shelf" and "box"</span>
