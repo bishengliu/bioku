@@ -16,6 +16,11 @@
   src: url('./assets/fonts/Rubik/Rubik-Regular.ttf')  format('truetype');
   font-weight: normal;
 }
+@font-face {
+  font-family: 'STMono';
+  src: url('./assets/fonts/STMono/ShareTechMono-Regular.ttf')  format('truetype');
+  font-weight: normal;
+}
 
 body{
     font-family: Rubik, Lato !important;
@@ -531,8 +536,8 @@ div [class*="right floated"] {
   min-height: 680px;
   max-height: 680px;
   height: 680px;
-  font-family: monospace !important;
-  font-size: 10px;
+  font-family: STMono, monospace !important;
+  font-size: 11px;
 }
 .scrollable{
   overflow-y: scroll !important;

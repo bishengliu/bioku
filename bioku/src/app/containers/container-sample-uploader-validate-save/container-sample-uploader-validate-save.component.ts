@@ -143,7 +143,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // check whether there is freezing_date has been included
     if (!this.validator_failed && this.data.length > 0) {
       this.formatFreezingDate();
-      this.formatData();
+      this.formatData(); /////////////////////////////////////////////////////////////////////////////////
     }
     // format all other columns to upload
 
