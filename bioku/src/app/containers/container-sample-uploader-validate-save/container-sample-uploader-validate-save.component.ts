@@ -91,8 +91,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   ngOnChanges() {
     if (this.startValidation) {
-      console.log(this.freezingDateFormat);
-      console.log(this.excelColAttrs);
+      // console.log(this.freezingDateFormat);
+      // console.log(this.excelColAttrs);
       // console.log(this.excelData);
       this.data = this.excelData;
       this.sampleValidation();
@@ -103,22 +103,22 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   sampleValidation () {
     ///////////////////////////////// validate initial data set ///////////////////////////////
     // if this.data.length === 0
+    console.log(this.data);
     this.validateDataLength(true); // inital data set validation
     ///////////////////////////////// validate sample name ////////////////////////////////////
     // validate name col
     if (!this.validator_failed && this.data.length > 0) {
       this.validateSampleName();
       // filter the data
-      this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
+      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    console.log(this.data);
-    this.validateDataLength(false); // data set validation
+    // this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate box label ////////////////////////////////////////
     // only when the file has box label
     if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
       // step one check box label
       this.validateBoxLabel();
-      this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
+      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
     if (!this.validator_failed && !this.bLabel.box_has_label) {
       // no box validation is required
@@ -126,27 +126,30 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const message = 'your samples have no box labels, box label validation is skipped.';
       this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 3, message);
     }
-    this.validateDataLength(false); // data set validation
+    // this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate sample label ////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
       // valid sample labels after box label
       this.validateSampleLabel();
-      this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
+      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    this.validateDataLength(false); // data set validation
+    // this.validateDataLength(false); // data set validation
+    // valiate date format /////////////
+    // check whether there is freezing_date has been included
+    if (!this.validator_failed && this.data.length > 0) {
+      this.formatFreezingDate();
+      // format all other columns to upload
+      this.formatData(); /////////////////////////////////////////////////////////////////////////////////
+    }
+    console.log(this.data);
+    this.data = this.filterValidSamples(this.data);
+    this.validateDataLength(false);
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
       this.final_boxes_to_create = this.collectBoxes2Create();
       this.validateFinalBoxes2Create();
     }
-    // valiate date format /////////////
-    // check whether there is freezing_date has been included
-    if (!this.validator_failed && this.data.length > 0) {
-      this.formatFreezingDate();
-      this.formatData(); /////////////////////////////////////////////////////////////////////////////////
-    }
-    // format all other columns to upload
-
+    console.log(this.data);
     this.passAllValidation();
     this.scrollToBottom();
   }
@@ -182,7 +185,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.bLabel.box_defined_as_normal) {
       if (this.bLabel.box_tsb_one_column) {
         // one cloumn
-        message = 'your box labels are stored in one cloumn (column ' + this.getColumnByHeader('BoxLabel') + ')';
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('BoxLabel') + ')';
         this.emitValidationOutput(message_step, 3, message);
         // validate the boxlabel
         // format box label
@@ -190,7 +193,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.emitValidationOutput(message_step, 3, message);
       } else {
         // 3 columns
-        message = 'your box labels are stored in 3 cloumns (tower in column ' + this.getColumnByHeader('BoxLabel_Tower') + ', '
+        message = 'your box labels are stored in three columns (tower in column ' + this.getColumnByHeader('BoxLabel_Tower') + ', '
         + 'shelf in column ' + this.getColumnByHeader('BoxLabel_Shelf') + ', '
         + 'box in column ' + this.getColumnByHeader('BoxLabel_Box') + ')';
         this.emitValidationOutput(message_step, 3, message);
@@ -199,12 +202,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // box defined abnormal
       if (this.bLabel.box_sample_separated) {
         // box label is seperated
-        message = 'your box labels are stored in 1 cloumn (column ' + this.getColumnByHeader('BoxLabel')
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('BoxLabel')
         + ') and seperated from sample labels';
         this.emitValidationOutput(message_step, 3, message);
       } else {
         // box label together with sample label
-        message = 'your box labels are stored in 1 cloumn (column ' + this.getColumnByHeader('SampleLabel')
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('SampleLabel')
         + ') and integrated with sample labels';
         this.emitValidationOutput(message_step, 3, message);
       }
@@ -270,7 +273,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         d['freezing_date'] = null;
         output = 1;
         // emit warning
-        const message = 'invalid date or date not recognizable for row ' + i + ', this sample will be saved with an empty date!';
+        const message = 'invalid date or date not recognizable for row ' + (i + 1 ) + ', this sample will be saved with an empty date!';
         this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
       } else {
         // test date
@@ -280,7 +283,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           output = 1;
           d['freezing_date'] = null;
           // emit warning
-          const message = 'invalid date or date not recognizable  for row ' + i + ', this sample will be saved with an empty date!';
+          const message = 'invalid date or date not recognizable  for row ' + (i + 1 ) + ', this sample will be saved with an empty date!';
           this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
         } else {
           d['freezing_date'] = parsedDate;
@@ -556,8 +559,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
          this.updateRowToRemove4SampleNameValidation(i);
          output = 1;
       } else {
-        d['name'] = sample_name;
-        d['invalid'] = false;
+        // remove space
+        if (sample_name.replace(/\s/g, '').length > 0) {
+          d['name'] = sample_name;
+          // d['invalid'] = false;
+        } else {
+          // sample is only space, sample invalid
+         d['invalid'] = true;
+         this.updateRowToRemove4SampleNameValidation(i);
+        }
       }
     })
     return output;
@@ -687,7 +697,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['tower'] = label_array[0];
             d['shelf'] = label_array[1];
             d['box'] = label_array[2];
-            d['invalid'] = false;
+            // d['invalid'] = false;
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
@@ -725,7 +735,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['tower'] = label_array[0];
             d['shelf'] = label_array[1];
             d['box'] = label_array[2];
-            d['invalid'] = false;
+            // d['invalid'] = false;
             this.boxes_to_create.push(label_array); // need filter out the duplicates later on
           } else {
             d['invalid'] = true;
@@ -956,7 +966,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'box label for row ' + index + ' is invalid, this sample will be ignored!';
+      const message = 'box label for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 1, message);
     }
   }
@@ -964,7 +974,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'sample name for row ' + index + ' is invalid, this sample will be ignored!';
+      const message = 'sample name for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_SAMPLE_NAME, 1, message);
     }
   }
@@ -972,7 +982,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'sample label for row ' + index + ' is invalid, this sample will be ignored!';
+      const message = 'sample label for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_SAMPLE_LABEL, 1, message);
     }
   }
@@ -1008,12 +1018,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }
       // filter the data array
       ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
-      this.data = this.filterValidSamples(this.data);
+      //this.data = this.filterValidSamples(this.data);
       // appliy invalid == true
       this.data.forEach( (d, i) => {
         if (separated) {
           const box_label = '' + d[( '' + (header_col - 1) )];
-          if (abnormal_boxes_to_remove.indexOf(box_label.toLowerCase()) !== -1) {
+          if (box_label === undefined || box_label === '' || box_label === null
+          || abnormal_boxes_to_remove.indexOf(box_label.toLowerCase()) !== -1) {
             d['invalid'] = true;
             // add row to remove
             this.updateRowToRemove4BoxLabelValidation(i);
@@ -1029,7 +1040,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       });
       // filter the samples again
       ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
-      this.data = this.filterValidSamples(this.data);
+      //this.data = this.filterValidSamples(this.data);
       // generate all possible boxes in a container
       const all_containerboxes: Array<Array<number>> = this.genAllBoxesInContainer(this.container);
       new_abnormal_boxes_to_create.forEach( (b, i) => {
@@ -1046,11 +1057,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             // integreted
             box_label = d['box_label'];
           }
-          if (box_label.toLowerCase() === blabel) {
+          if (box_label !== undefined && box_label !== '' && box_label !== null && box_label.toLowerCase() === blabel) {
             d['tower'] = box_label_array[0];
             d['shelf'] = box_label_array[1];
             d['box'] = box_label_array[2];
-            d['invalid'] = false;
+            // d['invalid'] = false;
           }
         });
       });
@@ -1130,7 +1141,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             has_warning = true;
             this.updateRowToRemove4SampleLabelValidation(i);
           } else {
-            d['invalid'] = false;
+            // d['invalid'] = false;
             // number
             d['hposition'] = this.sLabel.sampleRow === 0 ? this.utilityService.convertLetters2Integer(sample_row) : +sample_row;
             // letter
@@ -1204,7 +1215,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         has_warning = true;
         this.updateRowToRemove4SampleLabelValidation(i);
       } else {
-        d['invalid'] = false;
+        // d['invalid'] = false;
         // number
         d['hposition'] = this.sLabel.sampleRow === 0 ? this.utilityService.convertLetters2Integer(sample_row) : +sample_row;
         // letter
@@ -1277,7 +1288,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         // box
         for (let b = 0; b < container.tower; b++) {
           const array = []
-          array[0] = t; array[1] = s; array[2] = b;
+          array[0] = t + 1; array[1] = s + 1; array[2] = b + 1;
           bArray.push(array);
         }
       }
@@ -1339,7 +1350,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // }
   updateDForIncreaingNumberWithoutBoxLabel(sample_label: string, d: Array<any>, max_sample_count: number,
                             all_containerboxes: Array<Array<number>>): Array<any> {
-    d['invalid'] = false;
+    // d['invalid'] = false;
     // gen the box label and v/h positions
     // box position
     const b_index = Math.floor ( +sample_label / max_sample_count );
@@ -1429,5 +1440,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const message = 'total number of boxes to create: ' + this.final_boxes_to_create.length + '!';
       this.emitValidationOutput(this.VALIDAITON_BOXES_TO_CREATE_CHECKING, 0, message);
     }
+  }
+  trimData (data: Array<Array<any>>): Array<Array<any>> {
+    return data.filter((d: Array<any>) => {
+      return d.length > 0;
+    })
   }
 }

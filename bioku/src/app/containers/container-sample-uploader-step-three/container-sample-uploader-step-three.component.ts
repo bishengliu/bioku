@@ -26,6 +26,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Input() trigerChange;
   uploaded: Boolean = false;
   data: Array<Array<any>> = [];
+  excelRawData: Array<Array<any>> = [];
   original_file_headers_uploaded: Array<any> = [];
   workbook_opts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
   fileName = 'SheetJS.xlsx';
@@ -170,6 +171,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.xlsxHelperService.parseDrop(evt, this.rABS, this.fileName)
     .subscribe(
       (data: Array<Array<any>>) => {
+        this.excelRawData = data;
         this.data = this.trimData(data);
         if (this.data.length > 0) {
           if (this.excel_file_has_header) {
@@ -410,7 +412,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.setDefaultColumnAttrs();
   }
   validateSampleUpload () {
-    this.excelData.emit(this.data);
+    this.excelData.emit(this.excelRawData);
     this.colAttrs.emit(this.excelColAttrs);
     this.freezingDateFormat.emit(this.freezing_date_format);
   }
