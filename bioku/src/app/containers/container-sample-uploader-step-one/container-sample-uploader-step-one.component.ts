@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-import { BoxLabel } from '../../_classes/sampleUpload';
+import { BoxLabel } from '../../_classes/SampleUpload';
 
 @Component({
   selector: 'app-container-sample-uploader-step-one',

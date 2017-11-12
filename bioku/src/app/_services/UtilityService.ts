@@ -76,4 +76,27 @@ export class UtilityService {
             return result;
         }
     }
+    getShortMonthNames(): Array<string> {
+        const short_months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+        'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return short_months;
+    }
+
+    getLongMonthNames() {
+        const long_months: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+        'August', 'September', 'October', 'November', 'December'];
+        return long_months;
+    }
+
+    getMonthNumber(month: string): number {
+        const short_months = this.getShortMonthNames().map( m => m.toLowerCase());
+        const long_months = this.getLongMonthNames().map( m => m.toLowerCase());
+        if (short_months.indexOf(month.toLowerCase()) !== -1 ) {
+            return short_months.indexOf(month.toLowerCase()) + 1;
+        } else  if (long_months.indexOf(month.toLowerCase()) !== -1) {
+            return long_months.indexOf(month.toLowerCase()) + 1;
+        } else {
+            return -1;
+        }
+    }
 }

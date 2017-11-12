@@ -5,7 +5,7 @@ import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat} from '../../_classes/sampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat} from '../../_classes/SampleUpload';
 @Component({
   selector: 'app-container-sample-upload-helper',
   templateUrl: './container-sample-upload-helper.component.html',

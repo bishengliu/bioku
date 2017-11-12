@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit, Input, OnChanges, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat,
-  SampleValidator, ValidatorOutput } from '../../_classes/sampleUpload';
+  SampleValidator, ValidatorOutput } from '../../_classes/SampleUpload';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
 import { UtilityService } from '../../_services/UtilityService';
+import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
 @Component({
   selector: 'app-container-sample-uploader-validate-save',
   templateUrl: './container-sample-uploader-validate-save.component.html',
@@ -38,6 +39,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   valdatorOutput$: Subject<ValidatorOutput> = new Subject<ValidatorOutput>();
   // implement auto scroll to bottom
   @ViewChild('messageBox') private messageBox: ElementRef;
+  // freezing_date
+  FREEZING_DATE = 'Freezing Date';
+  FREEZING_DATE_INDEX = -1;
   // some consts
   VALIDATION_SAMPLE_NAME = 'validating sample names ...';
   VALIDATION_BOX_LABEL = 'validating box labels ...';
@@ -45,11 +49,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   VALIDATION_SAMPLE_COUNT = 'validating the number of samples ...';
   VALIDAITON_CHECKING = 'validation step reporting ...';
   VALIDAITON_BOXES_TO_CREATE_CHECKING = 'generate boxes to create ...';
-  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, ) {
+  VALIDAITON_DATEFORMAT = 'validation date format ...';
+  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService,
+              private excelUploadLoadService: ExcelUploadLoadService, ) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
-    this.sampleValidator.validation_steps = [this.VALIDATION_SAMPLE_NAME, this.VALIDATION_BOX_LABEL, this.VALIDATION_SAMPLE_LABEL];
+    this.sampleValidator.validation_steps = [
+      this.VALIDATION_SAMPLE_NAME,
+      this.VALIDATION_BOX_LABEL,
+      this.VALIDATION_SAMPLE_LABEL,
+      this.VALIDAITON_DATEFORMAT
+    ];
     this.sampleValidator.validation_steps_icons = ['grid layout'];
     this.sampleValidator.validator_pointer = 0;
     this.sampleValidator.validation_status = true;
@@ -67,6 +78,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.sampleValidator.validator_outputs.push(outout);
         // this.scrollToBottom();
       }, () => {});
+      // GET FREEZING DATE INDEX
+      // this.FREEZING_DATE_INDEX = this.excelUploadLoadService.getAllColumnHeaders().indexOf(this.FREEZING_DATE);
    }
 
   ngOnInit() { }
@@ -127,7 +140,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateFinalBoxes2Create();
     }
     // valiate date format /////////////
-
+    // check whether there is freezing_date has been included
+    if (!this.validator_failed && this.data.length > 0) {
+      this.formatFreezingDate();
+      this.formatData();
+    }
     // format all other columns to upload
 
     this.passAllValidation();
@@ -216,13 +233,271 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const sample_label_validation_output = this.parseSampleLabel();
     this.checkValidationOutcome(sample_label_validation_output, 'sample labels');
   }
-
-  validateFreezingDateFormat() {}
-
+  // validate freezingdate
+  formatFreezingDate() {
+    // set pointer
+    this.sampleValidator.validator_pointer = 3;
+    // emit step
+    this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
+    // check wether freezing date is included
+    let freezing_date_included = false;
+    this.excelColAttrs.forEach((c, i) => {
+      if (c.col_header === this.FREEZING_DATE && c.col_number > 0 ) {
+        freezing_date_included = true;
+        this.FREEZING_DATE_INDEX = c.sample_attr_index;
+      }
+    })
+    if (freezing_date_included) {
+      // emit message
+      let message = 'start to validate date format ...';
+      this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
+      // get the date format
+      message = 'your date should like this: ' + this.excelUploadLoadService.displayFreezingDate(this.freezingDateFormat);
+      this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
+      // format Data
+      const date_formating_validation_output = this.formatDate();
+      this.checkValidationOutcome(date_formating_validation_output, 'date format');
+    }
+  }
+  formatDate(): number {
+    let output = 0;
+    let has_warning = false;
+    const freezing_date_col = this.getColumnByHeader(this.FREEZING_DATE);
+    this.data.forEach((d: Array<any>, i) => {
+      const freezing_date = d[( '' + (freezing_date_col - 1) )];
+      if (freezing_date === undefined || freezing_date === null  || freezing_date === '') {
+        has_warning = true;
+        d['freezing_date'] = null;
+        output = 1;
+        // emit warning
+        const message = 'invalid date or date not recognizable for row ' + i + ', this sample will be saved with an empty date!';
+        this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
+      } else {
+        // test date
+        const parsedDate = this.parseDate(freezing_date);
+        if (parsedDate === '') {
+          has_warning = true;
+          output = 1;
+          d['freezing_date'] = null;
+          // emit warning
+          const message = 'invalid date or date not recognizable  for row ' + i + ', this sample will be saved with an empty date!';
+          this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
+        } else {
+          d['freezing_date'] = parsedDate;
+        }
+      }
+    });
+    return output;
+  }
+  parseDate (freezing_date: string): string {
+    const join_symbol = this.freezingDateFormat.join_symbol;
+    let year_final: string;
+    let month_final: string;
+    let day_final: string;
+    if (join_symbol !== '') {
+      if (freezing_date.indexOf(join_symbol) !== -1 &&  freezing_date.split(join_symbol).length === 3) {
+        // splite
+        const dArray = freezing_date.split(join_symbol);
+        let year_valid = false;
+        let month_valid = false;
+        let day_valid = false;
+        // get the year
+        const year = dArray[this.freezingDateFormat.year_position - 1];
+        if (this.freezingDateFormat.year_format === 0) {
+          // yyyy
+          year_valid = (/^([0-9]+){4}$/.test(year));
+          if (year_valid) {
+            year_final = year;
+          }
+        } else {
+          // yy
+          year_valid = (/^([0-9]+){2}$/.test(year));
+          if (year_valid) {
+            year_final = 20 + year;
+          }
+        }
+        // get the month
+        const month = dArray[this.freezingDateFormat.month_position - 1];
+        if (this.freezingDateFormat.month_format === 0) {
+          // number
+          month_valid = (/^([0-9]+){1,2}$/.test(month));
+          if (month_valid) {
+            month_final = month.length === 2 ? month : '0' + month;
+          }
+        } else {
+          // 3 or 5 letters
+          month_valid = (/^([a-zA-Z]+){3,9}$/.test(month));
+          if (month_valid) {
+            const month_number = this.utilityService.getMonthNumber(month);
+            if (month_number !== -1) {
+              const monthStrng = month_number + '';
+              month_final = monthStrng.length === 2 ? monthStrng : '0' + monthStrng;
+            } else {
+              month_valid = false;
+            }
+          }
+        }
+        // get the day
+        const day = dArray[this.freezingDateFormat.day_position - 1];
+        day_valid = (/^([0-9]+){1,2}$/.test(day));
+        if (day_valid) {
+          day_final = day.length === 2 ? day : '0' + day;
+        }
+        if (year_valid && month_valid && day_valid) {
+          return year_final + '-' + month_final + '-' + day_final;
+        }
+      }
+    } else {
+      // join === ''
+        // check the year since it number
+        let year = '';
+        let month = '';
+        let day = '';
+        if ((freezing_date.length < 6 && this.freezingDateFormat.year_format === 0)
+        ||  (freezing_date.length < 4 && this.freezingDateFormat.year_format === 1)) {
+          return '';
+        }
+        // join_symbol === ''
+        let left = '';
+        // year in the beginning
+        if (this.freezingDateFormat.year_position === 1) {
+          if (this.freezingDateFormat.year_format === 0) {
+            // yyyy
+            year = freezing_date.substring(0, 4);
+            left = freezing_date.substring(4);
+          } else {
+            // 2
+            year = 20 + freezing_date.substring(0, 2);
+            left = freezing_date.substring(2);
+          }
+          // month and day
+          if (this.freezingDateFormat.month_position === 2) {
+            if (this.freezingDateFormat.month_format === 0) {
+              // number
+              if (left.length === 2) {
+                // 11
+                month = left.substring(0, 1);
+                day = left.substring(1);
+              } else if (left.length === 3) {
+                  if (left.startsWith('0')) {
+                    month = left.substring(0, 2);
+                    day = left.substring(2);
+                  }
+                  if (left.endsWith('0')) {
+                    month = left.substring(0, 1);
+                    day = left.substring(1);
+                  }
+              } else {
+                // 4
+                month = left.substring(0, 2);
+                day = left.substring(2);
+              }
+            } else {
+              // letter
+              const left_copy = left;
+              month = left.replace(/[0-9]/g, '');
+              month = this.utilityService.getMonthNumber(month) + '';
+              day = left_copy.replace(/\D/g, '');
+            }
+          }
+          if (this.freezingDateFormat.month_position === 3) {
+            if (this.freezingDateFormat.month_format === 0) {
+              // number
+              if (left.startsWith('0')) {
+                day = left.substring(0, 2);
+                month = left.substring(2);
+              }
+              if (left.endsWith('0')) {
+                day = left.substring(0, 1);
+                month = left.substring(1);
+              }
+            } else {
+              // letter
+              const left_copy = left;
+              month = left.replace(/[0-9]/g, '');
+              month = this.utilityService.getMonthNumber(month) + '';
+              day = left_copy.replace(/\D/g, '');
+            }
+          }
+        } else if (this.freezingDateFormat.year_position === 3) {
+          if (this.freezingDateFormat.year_format === 0) {
+            // yyyy
+            year = freezing_date.substring(freezing_date.length - 4, freezing_date.length);
+            left = freezing_date.substring(0, freezing_date.length - 4);
+          } else {
+            // 2
+            year = 20 + freezing_date.substring(freezing_date.length - 2, freezing_date.length);
+            left = freezing_date.substring(0, freezing_date.length - 2);
+          }
+          // month and day
+          if (this.freezingDateFormat.month_position === 1) {
+            if (this.freezingDateFormat.month_format === 0) {
+              // number
+              if (left.length === 2) {
+                // 11
+                month = left.substring(0, 1);
+                day = left.substring(1);
+              } else if (left.length === 3) {
+                  if (left.startsWith('0')) {
+                    month = left.substring(0, 2);
+                    day = left.substring(2);
+                  }
+                  if (left.endsWith('0')) {
+                    month = left.substring(0, 1);
+                    day = left.substring(1);
+                  }
+              } else {
+                // 4
+                month = left.substring(0, 2);
+                day = left.substring(2);
+              }
+            } else {
+              // letter
+              const left_copy = left;
+              month = left.replace(/[0-9]/g, '');
+              month = this.utilityService.getMonthNumber(month) + '';
+              day = left_copy.replace(/\D/g, '');
+            }
+          }
+          if (this.freezingDateFormat.month_position === 2) {
+            if (this.freezingDateFormat.month_format === 0) {
+              // number
+              if (left.startsWith('0')) {
+                day = left.substring(0, 2);
+                month = left.substring(2);
+              }
+              if (left.endsWith('0')) {
+                day = left.substring(0, 1);
+                month = left.substring(1);
+              }
+            } else {
+              // letter
+              const left_copy = left;
+              month = left.replace(/[0-9]/g, '');
+              month = this.utilityService.getMonthNumber(month) + '';
+              day = left_copy.replace(/\D/g, '');
+            }
+          }
+        } else {
+          // year in the middle
+          // donot support this
+        }
+        if (year !== '' && month !== '' && day !== '' ) {
+          if (  (/^([0-9]+){2,4}$/.test(year))
+              && (/^([0-9]+){1,2}$/.test(month))
+              && (/^([0-9]+){1,2}$/.test(day)) ) {
+            return year_final + '-' + month_final + '-' + day_final;
+          }
+        }
+    }
+    // (/^[0-9]+$/.test(sample_label))
+    return '';
+  }
   // general clean the data after all validation
   // format all other columns
-  formatData() {}
+  formatData() {
 
+  }
   getColumnByHeader(header: string): number {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
     if (cols.length > 0) {
@@ -434,9 +709,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const box_label_shelf = this.getColumnByHeader('BoxLabel_Shelf');
     const box_label_box = this.getColumnByHeader('BoxLabel_Box');
     this.data.forEach( (d: Array<any>, i) => {
-      if ( d[( '' + (box_label_tower - 1) )] === null
-        || d[( '' + (box_label_shelf - 1) )] === null
-        || d[( '' + (box_label_box - 1) )] === null ) {
+      if ( d[( '' + (box_label_tower - 1) )] === null || d[( '' + (box_label_tower - 1) )] === undefined
+        || d[( '' + (box_label_shelf - 1) )] === null || d[( '' + (box_label_shelf - 1) )] === undefined
+        || d[( '' + (box_label_box - 1) )] === null || d[( '' + (box_label_box - 1) )] === undefined) {
         d['invalid'] = true;
         has_warning = true;
         this.updateRowToRemove4BoxLabelValidation(i);
@@ -519,7 +794,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           this.updateRowToRemove4BoxLabelValidation(i);
         } else {
           // sample label is with row and column
-          if (sample_label.lastIndexOf(box_join) !== -1 && sample_label.length === sample_label.lastIndexOf(box_join) + 1) {
+          if (sample_label !== undefined && sample_label !== null && sample_label.lastIndexOf(box_join) !== -1
+              && sample_label.length === sample_label.lastIndexOf(box_join) + 1) {
             const box_label = sample_label.substring(0, sample_label.lastIndexOf(box_join)); // only accept last occurance
             const new_sample_label = sample_label.substring(sample_label.lastIndexOf(box_join) + 1);
             // update sample label
@@ -544,13 +820,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         }
       } else {
         // sample label is with increasing number
-        if ( this.sLabel.boxLabel === 1  &&  (box_join === '' || box_join === null)) {
+        if ( this.sLabel.boxLabel === 1 && (box_join === '' || box_join === null)) {
           // cannot be seperated
           d['invalid'] = true;
           // add row to remove
           this.updateRowToRemove4BoxLabelValidation(i);
         } else {
-          if (sample_label.lastIndexOf(box_join) !== -1) {
+          if (sample_label !== undefined && sample_label !== null && sample_label.lastIndexOf(box_join) !== -1) {
             let box_label = sample_label.substring(0, sample_label.lastIndexOf(box_join)); // only accept last occurance
             let new_sample_label = sample_label.substring(sample_label.lastIndexOf(box_join) + 1);
             if ( box_join === '') {
@@ -791,7 +1067,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       let invalid = false;
       let row_valid = false;
       let col_valid = false;
-      if (sample_label === '' || sample_label === null) {
+      if (sample_label === '' || sample_label === null || sample_label === undefined) {
         d['invalid'] = true;
         has_warning = true;
         this.updateRowToRemove4SampleLabelValidation(i);
@@ -878,7 +1154,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       let col_valid = false;
       const sample_row = '' + d[( '' + (sample_label_row - 1) )];
       const sample_col = '' + d[( '' + (sample_label_col - 1) )];
-      if (sample_row === '' || sample_row === null || sample_col === '' || sample_col === null) {
+      if (sample_row === '' || sample_row === null || sample_row === undefined
+          || sample_col === '' || sample_col === null || sample_col === undefined) {
         invalid = true;
       } else {
         if (this.sLabel.sampleRow === 0 ) {
@@ -949,7 +1226,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const sample_label_col = this.getColumnByHeader('SampleLabel');
       this.data.forEach((d, i) => {
         const sample_label = '' + d[( '' + (sample_label_col - 1) )];
-        if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
+        if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
+            && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
           d = this.updateDForIncreaingNumberWithoutBoxLabel(sample_label, d, max_sample_count, all_containerboxes);
         } else {
           d['invalid'] = true;
@@ -976,7 +1254,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const sample_label_col = this.getColumnByHeader('SampleLabel');
         this.data.forEach((d, i) => {
           const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
-          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= max_sample_count && +sample_label > 0 ) {
+          if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
+              && +sample_label <= max_sample_count && +sample_label > 0 ) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;

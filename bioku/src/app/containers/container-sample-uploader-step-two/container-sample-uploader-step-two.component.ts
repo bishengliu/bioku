@@ -3,7 +3,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
 import { AlertService } from '../../_services/AlertService';
-import { SampleLabel, BoxLabel } from '../../_classes/sampleUpload';
+import { SampleLabel, BoxLabel } from '../../_classes/SampleUpload';
 @Component({
   selector: 'app-container-sample-uploader-step-two',
   templateUrl: './container-sample-uploader-step-two.component.html',
