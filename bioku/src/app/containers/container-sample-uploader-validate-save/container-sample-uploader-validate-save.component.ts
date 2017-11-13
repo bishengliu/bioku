@@ -121,6 +121,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.validateBoxLabel();
       // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
+    console.log(this.data);
     if (!this.validator_failed && !this.bLabel.box_has_label) {
       // no box validation is required
       // sample label is labeled with the increaing number
@@ -669,7 +670,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const box_label_header = this.getColumnByHeader('BoxLabel');
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
-      let box_label = d[( '' + (box_label_header - 1) )];
+      let box_label = d[('' + (box_label_header - 1))];
       if (box_label === '' || box_label === null || box_label === undefined) {
         // box label is null, sample invalid
         d['invalid'] = true;
@@ -682,29 +683,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           && box_label.toLowerCase().startsWith(this.bLabel.prefix.toLowerCase())) {
           const prefix_index = box_label.toLowerCase().indexOf(this.bLabel.prefix.toLowerCase());
           d[('' + (box_label_header - 1))] = box_label.substring(prefix_index);
+          box_label = d[('' + (box_label_header - 1))];
         }
-        box_label = d[('' + (box_label_header - 1))];
         if (this.bLabel.appendix !== '' && this.bLabel.appendix != null
           && box_label.toLowerCase().endsWith(this.bLabel.appendix.toLowerCase())) {
           const appendix_index = box_label.toLowerCase().indexOf(this.bLabel.appendix.toLowerCase());
           d[('' + (box_label_header - 1))] = box_label.substring(0, appendix_index);
+          box_label = d[('' + (box_label_header - 1))];
         }
-        box_label = d[('' + (box_label_header - 1))];
         // test the label, retrun parsed box label array or null
         const label_array = this.testBoxLabel1Col(box_label, this.bLabel, this.container);
-        if (label_array.length > 0) {
+        if (label_array.length > 0 && this.testTowerShelfBox(label_array, i)) {
           // validate tower, shelf and box
-          if ( this.testTowerShelfBox(label_array, i)) {
-            d['tower'] = label_array[0];
-            d['shelf'] = label_array[1];
-            d['box'] = label_array[2];
-            // d['invalid'] = false;
-            this.boxes_to_create.push(label_array); // need filter out the duplicates later on
-          } else {
-            d['invalid'] = true;
-            has_warning = true;
-            this.updateRowToRemove4BoxLabelValidation(i);
-          }
+          d['tower'] = label_array[0];
+          d['shelf'] = label_array[1];
+          d['box'] = label_array[2];
+          // d['invalid'] = false;
+          this.boxes_to_create.push(label_array); // need filter out the duplicates later on
         } else {
           d['invalid'] = true;
           has_warning = true;
@@ -892,10 +887,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (tower != null && shelf != null && box != null) {
         array[0] = tower;
         array[1] = shelf;
-        array[3] = shelf;
+        array[2] = box;
+        return array;
       }
-    } else {
-      return [];
     }
     return [];
   }
@@ -912,7 +906,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (tower != null && shelf != null && box != null) {
         array[0] = tower;
         array[1] = shelf;
-        array[3] = shelf;
+        array[2] = box;
+        return array;
       }
     } else {
       return [];
@@ -940,7 +935,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (bLabel.tower === 1) {
       //  is digits
       if (!isNaN(+lArray[type_index]) && Number.isInteger(+lArray[type_index]) && +lArray[type_index] <= container.tower) {
-        return +lArray[type_index]
+        return +lArray[type_index];
       }
     } else {
       //  is letters

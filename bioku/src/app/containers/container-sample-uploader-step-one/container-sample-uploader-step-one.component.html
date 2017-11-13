@@ -108,10 +108,10 @@
               <option value="0">letter</option>
             </select>
           </div>
-          <div class="field">
+          <div class="field" *ngIf="bLabel.box_tsb_one_column">
             <label for="join">joined with</label>
             <select id="join" class="ui dropdown" 
-            [ngClass]="{'disabled': !bLabel.box_defined_as_normal || !bLabel.box_has_label}" 
+            [ngClass]="{'disabled': !bLabel.box_defined_as_normal || !bLabel.box_has_label || !bLabel.box_tsb_one_column}" 
             [(ngModel)]="bLabel.join" (ngModelChange)="updatebLabel($event, 'join')">
               <option value="-" selected>-</option>
               <option value="/">/</option>
@@ -139,7 +139,6 @@
         <span *ngIf="bLabel.box_defined_as_normal">
           <span class="red-text"><s>{{bLabel.prefix}}</s></span><strong class="red-text">{{ genOneorA(bLabel.tower) }}{{ bLabel.join }}{{ genOneorA(bLabel.shelf) }}{{ bLabel.join}}{{ genOneorA(bLabel.box) }}</strong><span class="red-text"><s>{{bLabel.appendix}}</s></span>
         </span>
-        <span *ngIf="!bLabel.box_defined_as_normal">your box label doesn't follow the pattern of "tower-shelf-box"</span>
         <span *ngIf="!bLabel.box_defined_as_normal && bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is stored as a separated data column</span>
         <span *ngIf="!bLabel.box_defined_as_normal && !bLabel.box_sample_separated">your box label doesn't follow the pattern of "tower-shelf-box" and is integrated with sample label</span>
       </div>

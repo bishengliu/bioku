@@ -140,5 +140,6 @@ export class ContainerSampleUploaderStepTwoComponent implements OnInit, OnChange
         this.sLabel.sampleLabelDefinition = 2;
       }
     }
+    console.log(this.bLabel);
   }
 }
