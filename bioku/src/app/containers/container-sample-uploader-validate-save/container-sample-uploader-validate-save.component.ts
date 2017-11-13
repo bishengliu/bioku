@@ -104,38 +104,29 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   sampleValidation () {
     ///////////////////////////////// validate initial data set ///////////////////////////////
     // if this.data.length === 0
-    console.log(this.data);
     this.validateDataLength(true); // inital data set validation
     ///////////////////////////////// validate sample name ////////////////////////////////////
     // validate name col
     if (!this.validator_failed && this.data.length > 0) {
       this.validateSampleName();
-      // filter the data
-      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    // this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate box label ////////////////////////////////////////
     // only when the file has box label
     if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
       // step one check box label
       this.validateBoxLabel();
-      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    console.log(this.data);
     if (!this.validator_failed && !this.bLabel.box_has_label) {
       // no box validation is required
       // sample label is labeled with the increaing number
       const message = 'your samples have no box labels, box label validation is skipped.';
       this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 3, message);
     }
-    // this.validateDataLength(false); // data set validation
     ///////////////////////////////// validate sample label ////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
       // valid sample labels after box label
       this.validateSampleLabel();
-      // this.data = this.filterValidSamples(this.data); // filter data set by invalid == false
     }
-    // this.validateDataLength(false); // data set validation
     // valiate date format /////////////
     // check whether there is freezing_date has been included
     if (!this.validator_failed && this.data.length > 0) {
@@ -143,7 +134,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // format all other columns to upload
       this.formatData(); /////////////////////////////////////////////////////////////////////////////////
     }
-    console.log(this.data);
     this.data = this.filterValidSamples(this.data);
     this.validateDataLength(false);
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
@@ -950,11 +940,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     return null;
   }
-  getContainerCapacity(sLabel: SampleLabel, container: Container) {
-    const total_boxes = container.tower * container.shelf * container.box;
-    const max_sample_per_box = this.utilityService.convertLetters2Integer(sLabel.box_vertical) * sLabel.box_horizontal;
-    return total_boxes * max_sample_per_box;
-  }
   getContainerTotalBoxes(container: Container) {
     return container.tower * container.shelf * container.box;
   }
@@ -1224,6 +1209,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     let has_warning = false;
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
+    // get total number of samples of the container
     const total_samples_of_container = this.getContainerCapacity(this.sLabel, this.container);
     const max_boxes_of_conatiner = this.getContainerTotalBoxes(this.container);
     const all_containerboxes: Array<Array<number>> = this.genAllBoxesInContainer(this.container);
@@ -1248,7 +1234,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         // already has sample_label attr
         this.data.forEach((d, i) => {
           const sample_label = d['sample_label'];
-          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= max_sample_count && +sample_label > 0 ) {
+          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;
@@ -1262,7 +1248,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.data.forEach((d, i) => {
           const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
           if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
-              && +sample_label <= max_sample_count && +sample_label > 0 ) {
+              && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;
@@ -1293,6 +1279,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   getMaxSamplePerBox(): number {
     return this.utilityService.convertLetters2Integer(this.sLabel.box_vertical) * this.sLabel.box_horizontal
+  }
+  getContainerCapacity(sLabel: SampleLabel, container: Container) {
+    const total_boxes = container.tower * container.shelf * container.box;
+    const max_sample_per_box = this.utilityService.convertLetters2Integer(sLabel.box_vertical) * sLabel.box_horizontal;
+    return total_boxes * max_sample_per_box;
   }
   checkValidationOutcome(output: number, type: string) {
     let message = '';
@@ -1350,41 +1341,39 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // gen the box label and v/h positions
     // box position
     const b_index = Math.floor ( +sample_label / max_sample_count );
-    const box_position = all_containerboxes[ b_index ];
+    const b_index_remainder = +sample_label % max_sample_count;
+    let box_position: Array<number> = [];
+    if (b_index_remainder === 0 && b_index_remainder === 0) {
+      box_position = all_containerboxes[0];
+    } else if (b_index_remainder === 0 && b_index_remainder > 0) {
+      box_position = all_containerboxes[0];
+    } else if (b_index_remainder > 0 && b_index_remainder === 0) {
+      box_position = all_containerboxes[ b_index - 1 ];
+    } else {
+      box_position = all_containerboxes[ b_index ];
+    }
     d['tower'] = box_position[0];
     d['shelf'] = box_position[1];
     d['box'] = box_position[2];
     // sample position in the box
     const s_index = +sample_label % max_sample_count;
-    if (s_index === 0 && b_index === 0) {
-      // first position in the box
+    // get v/h positions
+    const s_vposition_index = Math.floor (s_index / this.sLabel.box_horizontal );
+    const s_hposiiton_index = s_index % this.sLabel.box_horizontal;
+    if (s_hposiiton_index === 0 && s_hposiiton_index === 0) {
       d['vposition'] = 'A';
       d['hposition'] = 1;
-    } else if (s_index === 0 && b_index > 0) {
-      // last position
-      d['vposition'] = this.sLabel.box_vertical;
-      d['hposition'] = this.sLabel.box_horizontal ;
+    } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
+      // first row
+      d['vposition'] = this.utilityService.convertInteger2Letter (1);
+      d['hposition'] = s_hposiiton_index;
+    } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
+      // first row
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+      d['hposition'] = this.sLabel.box_horizontal;
     } else {
-      // get v/h positions
-      const s_vposition_index = Math.floor (s_index / this.sLabel.box_horizontal );
-      const s_hposiiton_index = s_index % this.sLabel.box_horizontal;
-      if ( s_hposiiton_index === 0) {
-        if (s_vposition_index > 0) {
-          d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
-          d['hposition'] = this.sLabel.box_horizontal;
-        } else {
-          d['vposition'] = 'A';
-          d['hposition'] = 0;
-        }
-      } else {
-        if ( s_vposition_index === 0) {
-          d['vposition'] = 'A';
-        } else {
-          const s_vposition = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-          d['vposition'] = s_vposition;
-        }
-        d['hposition'] = s_hposiiton_index;
-      }
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+      d['hposition'] = s_hposiiton_index;
     }
     return d;
   }
@@ -1392,21 +1381,20 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // get v/h positions
     const s_vposition_index = Math.floor (+sample_label / this.sLabel.box_horizontal );
     const s_hposiiton_index = +sample_label % this.sLabel.box_horizontal;
-    if ( s_hposiiton_index === 0) {
-      if (s_vposition_index > 0) {
-        d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
-        d['hposition'] = this.sLabel.box_horizontal;
-      } else {
-        d['vposition'] = 'A';
-        d['hposition'] = 0;
-      }
+    // get v/h positions
+    if (s_hposiiton_index === 0 && s_hposiiton_index === 0) {
+      d['vposition'] = 'A';
+      d['hposition'] = 1;
+    } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
+      // first row
+      d['vposition'] = this.utilityService.convertInteger2Letter (1);
+      d['hposition'] = s_hposiiton_index;
+    } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
+      // first row
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+      d['hposition'] = this.sLabel.box_horizontal;
     } else {
-      if ( s_vposition_index === 0) {
-        d['vposition'] = 'A';
-      } else {
-        const s_vposition = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-        d['vposition'] = s_vposition;
-      }
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
       d['hposition'] = s_hposiiton_index;
     }
     return d;

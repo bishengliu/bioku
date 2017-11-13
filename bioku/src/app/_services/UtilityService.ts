@@ -49,7 +49,7 @@ export class UtilityService {
         const array = letters.toUpperCase().split('');
         let result = 0;
         for (let i = 0; i < array.length; i++) {
-            result += (alphabeta.indexOf(array[i]) + 1 * alphabeta.length * i);
+            result += (alphabeta.indexOf(array[i]) + 1 + alphabeta.length * i);
         }
         return result;
     }
@@ -65,7 +65,6 @@ export class UtilityService {
         } else {
             const index: number = digit % alphabeta.length;
             const repeats: number = Math.floor(digit / alphabeta.length);
-            console.log([repeats, index])
             let result = '';
             for (let i = 0; i < repeats; i++) {
                 result += 'Z';
