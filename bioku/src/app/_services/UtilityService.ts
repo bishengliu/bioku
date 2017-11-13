@@ -98,4 +98,7 @@ export class UtilityService {
             return -1;
         }
     }
+    removeSpecialCharacters(string2Remove: string) {
+        return string2Remove.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''); // remove al special chars
+    }
 }

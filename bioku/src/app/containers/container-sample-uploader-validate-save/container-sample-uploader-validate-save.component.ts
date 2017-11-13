@@ -51,6 +51,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   VALIDAITON_CHECKING = 'validation step reporting ...';
   VALIDAITON_BOXES_TO_CREATE_CHECKING = 'generate boxes to create ...';
   VALIDAITON_DATEFORMAT = 'validation date format ...';
+  // the col attr to ignore for the final data format
+  excludedColumns4DataFormat: Array<string> = [];
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService,
               private excelUploadLoadService: ExcelUploadLoadService, ) {
     // subscribe store state changes
@@ -79,8 +81,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.sampleValidator.validator_outputs.push(outout);
         // this.scrollToBottom();
       }, () => {});
-      // GET FREEZING DATE INDEX
-      // this.FREEZING_DATE_INDEX = this.excelUploadLoadService.getAllColumnHeaders().indexOf(this.FREEZING_DATE);
    }
 
   ngOnInit() { }
@@ -132,8 +132,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (!this.validator_failed && this.data.length > 0) {
       this.formatFreezingDate();
       // format all other columns to upload
-      this.formatData(); /////////////////////////////////////////////////////////////////////////////////
+      this.formatData(); // format and clean data
     }
+    // filter the data
     this.data = this.filterValidSamples(this.data);
     this.validateDataLength(false);
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
@@ -491,7 +492,32 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // general clean the data after all validation
   // format all other columns
   formatData() {
-
+    // remove header
+    if (this.excelFileHeader) {
+      this.data[0]['invalid'] = true;
+    };
+    // match data col to sample model attrs
+    // the col attr to ignore for the final data format
+    this.excludedColumns4DataFormat = this.getExcludedColumns4DataFormat();
+    // get all the sample mode attrs
+    const sampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
+    // format data
+    this.excelColAttrs.forEach( (c: ColumnAttr, i: number) => {
+      if (this.excludedColumns4DataFormat.indexOf(c.col_header) === -1) {
+        const data_excel_col = c.col_number;
+        // sample model attr
+        const sample_model_attr = sampleModelAttrs[c.sample_attr_index];
+        this.data.forEach(d => {
+          const data_col = d[('' + (data_excel_col - 1))];
+          if (data_col === '' || data_col === null || data_col === undefined) {
+            // add attr
+            d[sample_model_attr] = null;
+          } else {
+            d[sample_model_attr] = this.utilityService.removeSpecialCharacters(data_col);
+          }
+        })
+      }
+    });
   }
   getColumnByHeader(header: string): number {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
@@ -1317,7 +1343,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   passAllValidation () {
     if (!this.validator_failed) {
       this.validation_finished = true;
-      this.valiadtionStep$.next('validation finished.');
+      this.valiadtionStep$.next('all validations passed!');
       // emit messages
       const message = 'all validations passed! You may want to check the possible warning outputs';
       this.emitValidationOutput(this.VALIDAITON_CHECKING, 0, message);
@@ -1425,9 +1451,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.emitValidationOutput(this.VALIDAITON_BOXES_TO_CREATE_CHECKING, 0, message);
     }
   }
-  trimData (data: Array<Array<any>>): Array<Array<any>> {
-    return data.filter((d: Array<any>) => {
-      return d.length > 0;
-    })
+  getExcludedColumns4DataFormat() {
+    const sampleExcelHeaders: Array<SampleExcelHeaders> = this.excelUploadLoadService.getAllExcelHeaders();
+    let box_label_headers = [];
+    if (this.bLabel.box_has_label) {
+      box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+    }
+    const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
+    return [...box_label_headers, ...sample_label_headers, 'Name', this.FREEZING_DATE];
   }
 }

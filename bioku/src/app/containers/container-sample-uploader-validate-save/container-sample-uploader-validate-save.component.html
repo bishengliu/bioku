@@ -1,8 +1,8 @@
 <div class="ui grid row">
   <div class="sixteen wide column">
-    <div class="ui segments">
-        <div class="ui mini center aligned tertiary segment">
-          <div><i class="icon comment outline"></i>validation outputs</div>
+    <div class="ui attached segments">
+        <div class="ui raised mini center aligned secondary inverted brown segment tight_around">
+          <div><i class="icon comment outline"></i> VALIDATION OUTPUTS</div>
         </div>
       <div class="ui secondary segment validation_message scrollable" #messageBox>
         <p class="tight_around" *ngFor="let output of sampleValidator.validator_outputs">
@@ -15,14 +15,17 @@
       <div class="ui green segment">
         <div *ngIf="!validation_finished">
           <i *ngIf="!validator_failed" class="icon loading spinner"></i>
-          <i *ngIf="validator_failed" class="icon red warning sign"></i>{{validation_step}} 
-          <span *ngIf="validator_failed" class="red-text">FAILED!</span>
+          <i *ngIf="validator_failed" class="icon red remove"></i>{{validation_step}} 
+          <span *ngIf="validator_failed" class="ui red label">FAILED</span>
         </div>
         <div *ngIf="validation_finished">
-          <i class="icon blue checkmark"></i> {{validation_step}} 
-          <span class="blue-text">FINISHED!</span>
+          <i class="icon blue checkmark"></i><span class="blue-text">{{validation_step}}</span>
+          <span class="ui green label">SUCCESS</span>
         </div>
       </div>
     </div>
+    <button *ngIf="validation_finished" class="fluid ui blue bottom attached button"> SAVE SAMPLES
+      <i class="icon caret right"></i>
+    </button>
   </div>
 </div>
