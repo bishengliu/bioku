@@ -110,7 +110,8 @@ export class RegisterComponent implements OnInit {
       first_name: values.first_name,
       last_name: values.last_name,
       // birth_date : '2017-05-01',
-      birth_date: values.birth_date.date.year + '-' + values.birth_date.date.month + '-' + values.birth_date.date.day,
+      birth_date: values.birth_date === '' ? null :
+        values.birth_date.date.year + '-' + values.birth_date.date.month + '-' + values.birth_date.date.day,
       telephone: values.telephone
     };
     // url for get auth user details

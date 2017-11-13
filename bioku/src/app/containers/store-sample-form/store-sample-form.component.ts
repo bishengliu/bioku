@@ -38,7 +38,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   sample_type = '-';
   // ALL SAMPLE TYPES
   all_sample_types: Array<String> = new Array<String>();
-  freezing_date = {};
+  freezing_date: string = null;
   color = '#000000';
   // mydatepicker
   myDatePickerOptions: IMyOptions = {
