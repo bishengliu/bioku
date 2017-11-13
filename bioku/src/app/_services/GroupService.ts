@@ -169,10 +169,6 @@ export class GroupService {
 
     // get group count
     getGroupCount() {
-        this.updateState();
-        if (!this.state.authInfo.authUser.is_superuser) {
-            return Observable.throw('Please login as Admin');
-        }
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_GROUPS + 'count/';
         return this.http.get(query_url, this.options)
         .map((response: Response) => response.json())

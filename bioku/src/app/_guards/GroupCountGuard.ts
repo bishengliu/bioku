@@ -15,17 +15,25 @@ export class GroupCountGuard implements CanActivate {
         if (this.appSetting.MAX_G === -1) {
             return true;
         } else {
-            this.groupService.getGroupCount().subscribe(
-                c => this.gCount = c.count,
-                e => this.gCount = 0
+            this.groupService.getGroupCount()
+            .subscribe(
+                c => {
+                    this.gCount = c.count;
+                    if (this.gCount > this.appSetting.MAX_G) {
+                        this.alertService
+                        .error('Exceded maximum allowed number of groups for the application, please contact us for support!', true);
+                        this.router.navigate(['/denied']);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                e => {
+                    this.gCount = 0;
+                    return false;
+                 }
               );
-            if (this.gCount > this.appSetting.MAX_G) {
-                this.alertService
-                .error('Exceded maximum allowed number of groups for the application, please contact us for support!', true);
-                this.router.navigate(['/denied']);
-            } else {
-                return true;
-            }
+            return false;
         }
     }
 }
