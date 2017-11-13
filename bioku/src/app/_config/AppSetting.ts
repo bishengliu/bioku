@@ -15,6 +15,7 @@ export const AppSetting = {
     'VERSION': '0.0.1-alpha3',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
+    'MAX_G': -1,
     'NAME': 'BIOKU', // ALSO USED FOR PASSWORD RESET EMAIL MESSAGE
     // APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,
