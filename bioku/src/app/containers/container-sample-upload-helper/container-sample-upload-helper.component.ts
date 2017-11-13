@@ -21,6 +21,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   excelData: Array<Array<any>>;
   excelColAttrs: Array<ColumnAttr>;
   freezingDateFormat: SampleDateFormat;
+  excelFileHeader: Boolean = false;
   // validate and save
   start_validation_save: Boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
@@ -51,6 +52,9 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   }
   captureFreezingDateFormat (freezing_date_format: SampleDateFormat) {
     this.freezingDateFormat = freezing_date_format;
+  }
+  captureExcelHasFileHeader(excel_has_file_header: Boolean) {
+    this.excelFileHeader = excel_has_file_header
   }
   ngOnInit() {
     // BoxLabel default

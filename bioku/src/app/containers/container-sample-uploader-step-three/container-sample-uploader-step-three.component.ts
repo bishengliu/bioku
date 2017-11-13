@@ -20,6 +20,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Output() excelData: EventEmitter<Array<Array<any>>> = new EventEmitter<Array<Array<any>>> ();
   @Output() colAttrs: EventEmitter<Array<ColumnAttr>> = new EventEmitter<Array<ColumnAttr>> ();
   @Output() freezingDateFormat: EventEmitter<SampleDateFormat> = new EventEmitter<SampleDateFormat> ();
+  @Output() excelHasFileHeader: EventEmitter<Boolean> = new EventEmitter<Boolean> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
   @Input() uploadMode: number;
@@ -415,6 +416,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.excelData.emit(this.excelRawData);
     this.colAttrs.emit(this.excelColAttrs);
     this.freezingDateFormat.emit(this.freezing_date_format);
+    this.excelHasFileHeader.emit(this.excel_file_has_header);
   }
 }
 // need to check these

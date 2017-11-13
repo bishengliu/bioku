@@ -20,6 +20,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   @Input() excelColAttrs: Array<ColumnAttr>;
   @Input() freezingDateFormat: SampleDateFormat;
   @Input() startValidation: Boolean;
+  @Input() excelFileHeader: Boolean;
   container: Container;
   row_indexes_to_remove: Array<number> = []; // rows that failed the validation, only for validaiton messages
   boxes_to_create: Array<Array<number>> = []; // for following tower-shelf-box
@@ -1018,7 +1019,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }
       // filter the data array
       ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
-      //this.data = this.filterValidSamples(this.data);
+      // this.data = this.filterValidSamples(this.data);
       // appliy invalid == true
       this.data.forEach( (d, i) => {
         if (separated) {
@@ -1040,7 +1041,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       });
       // filter the samples again
       ////////////// UNCOMENT THIS AFTER FINISH ///////////////////
-      //this.data = this.filterValidSamples(this.data);
+      // this.data = this.filterValidSamples(this.data);
       // generate all possible boxes in a container
       const all_containerboxes: Array<Array<number>> = this.genAllBoxesInContainer(this.container);
       new_abnormal_boxes_to_create.forEach( (b, i) => {

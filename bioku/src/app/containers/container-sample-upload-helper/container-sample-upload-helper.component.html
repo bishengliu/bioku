@@ -46,6 +46,7 @@
 (excelData)="captureExcelData($event)"
 (colAttrs)="captureExcelCOlAttrs($event)"
 (freezingDateFormat)="captureFreezingDateFormat($event)"
+(excelHasFileHeader)="captureExcelHasFileHeader($event)"
 [ngClass]="{'hidden': activeStep !== 3 }"></app-container-sample-uploader-step-three>
 
 <app-container-sample-uploader-validate-save
@@ -56,4 +57,5 @@
 [excelColAttrs]="excelColAttrs"
 [freezingDateFormat]="freezingDateFormat"
 [startValidation]="start_validation_save"
+[excelFileHeader]="excelFileHeader"
 ></app-container-sample-uploader-validate-save>
