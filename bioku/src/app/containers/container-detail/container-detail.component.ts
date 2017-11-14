@@ -6,6 +6,7 @@ import { User } from '../../_classes/User';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
+import { concat } from 'rxjs/operator/concat';
 @Component({
   selector: 'app-container-detail',
   templateUrl: './container-detail.component.html',
@@ -58,7 +59,7 @@ export class ContainerDetailComponent implements OnInit {
         const max_sample_per_box = this.container.first_box.box_vertical * this.container.first_box.box_horizontal;
         this.totalCapacity = total_boxes * max_sample_per_box;
         this.actualOccupation = this.container.sample_count;
-        this.percentageOccupation = Math.ceil((this.actualOccupation / this.totalCapacity) * 100)
+        this.percentageOccupation = Math.ceil((this.actualOccupation / this.totalCapacity) * 100);
       }
     }
   }
