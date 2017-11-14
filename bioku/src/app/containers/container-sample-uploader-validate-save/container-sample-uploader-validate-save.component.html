@@ -1,4 +1,4 @@
-<div class="ui grid row">
+<div class="ui grid row" *ngIf="!saving_samples && !saving_samples_failed">
   <div class="sixteen wide column">
     <div class="ui attached segments">
         <div class="ui raised mini center aligned secondary inverted brown segment tight_around">
@@ -24,8 +24,22 @@
         </div>
       </div>
     </div>
-    <button *ngIf="validation_finished" class="fluid ui blue bottom attached button"> SAVE SAMPLES
+    <button *ngIf="validation_finished" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
       <i class="icon caret right"></i>
     </button>
   </div>
+</div>
+<!--info-->
+<div class="sixteen wide column"  *ngIf="saving_samples">
+  <div *ngIf="loading" class="ui loading segment center aligned">
+    <br/><br/><br/><br/>
+    <p class="brown-text">saving samples ... </p>
+</div>
+</div>
+<!--failed-->
+<div *ngIf="!saving_samples && saving_samples_failed" class="ui tertiary segment center aligned">
+  <br/><br/><br/>
+  <p><i class="ui massive warning sign icon brown"></i></p>
+  <h3 class="ui brown header">We are sorry! Something went wrong; failed to upload your samples!</h3>
+  <br/><br/><br/>
 </div>

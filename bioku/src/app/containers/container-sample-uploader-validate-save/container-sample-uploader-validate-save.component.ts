@@ -8,6 +8,9 @@ import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
 import { UtilityService } from '../../_services/UtilityService';
 import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
+import { BookType } from 'xlsx/types';
+import { ContainerService } from '../../_services/ContainerService';
+import { AlertService } from '../../_services/AlertService';
 @Component({
   selector: 'app-container-sample-uploader-validate-save',
   templateUrl: './container-sample-uploader-validate-save.component.html',
@@ -32,6 +35,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   saving_sample_posting_validation: Boolean = false;
   validator_failed: Boolean = false;
   validation_finished: Boolean = false;
+  saving_samples: Boolean = false;
+  saving_samples_failed: Boolean = false;
   sampleValidator: SampleValidator = new SampleValidator();
   data: Array<Array<any>> []; // for keep the origin nal copy
   validation_step = 'validator initiated ...';
@@ -54,8 +59,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   VALIDAITON_DATEFORMAT = 'validation date format ...';
   // the col attr to ignore for the final data format
   excludedColumns4DataFormat: Array<string> = [];
-  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService,
-              private excelUploadLoadService: ExcelUploadLoadService, ) {
+  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
+              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -1459,6 +1464,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   format4Saving() {
     this.data.forEach(d => {
       d['type'] = this.sampleType;
+      d['box_horizontal'] = this.sLabel.box_horizontal;
+      d['box_vertical'] = this.utilityService.convertLetters2Integer(this.sLabel.box_vertical);
       for (let i = 0; i < d.length; i++) {
         if (d[ i + '' ] !== undefined ) {
           delete d[ i + '' ];
@@ -1474,5 +1481,21 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
     return [...box_label_headers, ...sample_label_headers, 'Name', this.FREEZING_DATE];
+  }
+  saveSamples() {
+    this.saving_samples = true;
+    this.saving_samples_failed = false;
+    this.containerService.uploadSample2Container(this.data, this.container.pk)
+    .subscribe(() => {
+      this.saving_samples = false;
+      this.saving_samples_failed = false;
+      this.alertService.success('Your samples have been successfully uploaded!', true);
+    },
+  (e) => {
+    console.log(e);
+    this.saving_samples = false;
+    this.saving_samples_failed = true;
+    this.alertService.error('Failed to upload your samples!', true);
+  });
   }
 }

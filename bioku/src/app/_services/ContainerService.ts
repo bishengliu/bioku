@@ -361,4 +361,13 @@ export class ContainerService {
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // upload samples to container
+    uploadSample2Container(data: any, container_pk: number) {
+        this.updateState();
+        const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+        container_pk + '/upload_samples/';
+        const body: string = JSON.stringify(data);
+        return this.http.post(query_url, body, this.options)
+        .map((response: Response) => response.json())
+        .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
 }
