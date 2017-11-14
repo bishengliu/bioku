@@ -1491,7 +1491,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.saving_samples = false;
       this.saving_samples_failed = false;
       this.alertService.success('Your samples have been successfully uploaded!', true);
-      this.router.navigate(['/containers', this.container.pk]);
+      this.router.navigate(['/containers']);
     },
   (e) => {
     console.log(e);
@@ -1516,6 +1516,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           sample[a] = null;
         }
       });
+      if ( d['freezing_date'] === '' || d['freezing_date'] === null) {
+        d['freezing_date']  = this.utilityService.getTodayFormat();
+      }
       samples.push(sample);
     })
     return samples;
