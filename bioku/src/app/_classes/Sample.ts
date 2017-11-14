@@ -104,6 +104,63 @@ export class SampleTissue extends SampleGeneral {
     tissue: string;
 }
 
+export class UploadSample {
+    box_horizontal: number;
+    box_vertical: number;
+    tower: number;
+    shelf: number;
+    box: number;
+    type: string;
+    name: string;
+    label: string;
+    tag: string;
+    color: string;
+    official_name: string;
+    registration_code: string; // primary code
+    reference_code: string;
+    quantity: number;
+    quantity_unit: string;
+    freezing_code: string;
+    freezing_date: Date;
+    hposition: string;
+    vposition: string;
+    qrcode: string;
+    code39: string;
+    description: string;
+
+    clone_number: string;
+    against_260_280: number;
+    feature: string;
+    r_e_analysis: string;
+    backbone: string;
+    insert: string;
+    first_max: string;
+    marker: string;
+    has_glycerol_stock: boolean;
+    strain: string;
+
+    passage_number: string;
+    cell_amount: string;
+    project: string;
+    creator: string;
+
+    oligo_name: string;
+    s_or_as: boolean;
+    oligo_sequence: string;
+    oligo_length: number;
+    oligo_GC: number;
+    target_sequence: string;
+
+    plasmid: string;
+    titration_titer: string;
+    titration_unit: string;
+    titration_cell_type: string;
+    titration_code: string;
+
+    pathology_code: string;
+    tissue: string;
+}
+
 export class Sample extends SampleGeneral {
     // construct
     clone_number: string;

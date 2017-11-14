@@ -6,6 +6,7 @@ import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
+import { UploadSample, Sample } from '../../_classes/Sample';
 import { UtilityService } from '../../_services/UtilityService';
 import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
 import { BookType } from 'xlsx/types';
@@ -147,10 +148,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (!this.validator_failed && this.data.length > 0) {
       this.final_boxes_to_create = this.collectBoxes2Create();
       this.validateFinalBoxes2Create();
+      // format for saving
+      this.format4Saving();
     }
     this.passAllValidation();
-    this.scrollToBottom();
-    console.log(this.data);
   }
   // validate samle names
   validateSampleName () {
@@ -525,9 +526,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         })
       }
     });
-
-    // format for saving
-    this.format4Saving();
   }
   getColumnByHeader(header: string): number {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
@@ -1485,7 +1483,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   saveSamples() {
     this.saving_samples = true;
     this.saving_samples_failed = false;
-    this.containerService.uploadSample2Container(this.data, this.container.pk)
+    // convert data
+    const samples: Array<UploadSample> = this.convertData2Samples();
+    this.containerService.uploadSample2Container(samples, this.container.pk)
     .subscribe(() => {
       this.saving_samples = false;
       this.saving_samples_failed = false;
@@ -1497,5 +1497,25 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.saving_samples_failed = true;
     this.alertService.error('Failed to upload your samples!', true);
   });
+  }
+  // convert to samples
+  convertData2Samples() {
+    const samples: Array<UploadSample> = new Array<UploadSample>();
+    this.data.forEach(d => {
+      const sample: UploadSample = new UploadSample();
+      // get all headers
+      const allSampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
+      const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type', 'freezing_date',
+                                       ...allSampleModelAttrs];
+      allAttrs.forEach(a => {
+        if (d[a] !== undefined) {
+          sample[a] = d[a];
+        } else {
+          sample[a] = null;
+        }
+      });
+      samples.push(sample);
+    })
+    return samples;
   }
 }

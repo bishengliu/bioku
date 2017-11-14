@@ -6,7 +6,7 @@ import { AppSetting} from '../_config/AppSetting';
 import {APP_CONFIG} from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
 import { MoveSample } from '../_classes/MoveSample';
-import { SampleSearch, Sample } from '../_classes/Sample';
+import { SampleSearch, Sample, UploadSample } from '../_classes/Sample';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 
@@ -361,7 +361,7 @@ export class ContainerService {
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // upload samples to container
-    uploadSample2Container(data: any, container_pk: number) {
+    uploadSample2Container(data: Array<UploadSample>, container_pk: number) {
         this.updateState();
         const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
         container_pk + '/upload_samples/';
