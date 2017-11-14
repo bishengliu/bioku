@@ -49,6 +49,9 @@ export class ContainerSampleUploadComponent implements OnInit {
     if (this.container != null && !this.container.has_box) {
       this.allowUpload = true;
     }
+    if (this.appSetting.ALLOW_UPLOAD_SAMPLES_2_CONTAINER) {
+      this.allowUpload = true;
+  }
   }
 
   ngOnInit() {

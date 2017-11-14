@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, Input, OnChanges, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat,
   SampleValidator, ValidatorOutput } from '../../_classes/SampleUpload';
+  import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -61,7 +62,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // the col attr to ignore for the final data format
   excludedColumns4DataFormat: Array<string> = [];
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
-              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService) {
+              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService, private router: Router,) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -1490,6 +1491,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.saving_samples = false;
       this.saving_samples_failed = false;
       this.alertService.success('Your samples have been successfully uploaded!', true);
+      this.router.navigate(['/containers', this.container.pk]);
     },
   (e) => {
     console.log(e);
@@ -1505,8 +1507,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const sample: UploadSample = new UploadSample();
       // get all headers
       const allSampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
-      const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type', 'freezing_date',
-                                       ...allSampleModelAttrs];
+      const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
+                                      'freezing_date', 'vposition', 'hposition', ...allSampleModelAttrs];
       allAttrs.forEach(a => {
         if (d[a] !== undefined) {
           sample[a] = d[a];

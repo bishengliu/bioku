@@ -50,7 +50,7 @@ export class SampleGeneral extends SamplePartial {
     quantity_unit: string;
     freezing_code: string;
     freezing_date: Date;
-    hposition: string;
+    hposition: number;
     vposition: string;
     // position: string;
     // occupied: Boolean;

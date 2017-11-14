@@ -23,8 +23,9 @@
   <div class="six wide column"> 
     <a class="ui blue button float-right" [routerLink]="['/containers/overview/', id]"><i class="icon pie chart"></i>OVERVIEW</a>
     <a *ngIf="container.has_box" class="ui blue button float-right" [routerLink]="['/containers/search/']"><i class="icon search"></i>SAMPLES</a>
-    <a *ngIf="!container.has_box && allowUpload2Container" class="ui brown button float-right" [routerLink]="['/containers/', id, 'upload']"><i class="icon colud upload"></i>IMPORT</a>
+    <a class="ui brown button float-right" [routerLink]="['/containers/', id, 'upload']"><i class="icon colud upload"></i>IMPORT</a>
   </div>
+  <!-- *ngIf="!container.has_box && allowUpload2Container" -->
 </div>
 <!--loading info-->
 <div *ngIf="loading" class="ui loading segment center aligned">
