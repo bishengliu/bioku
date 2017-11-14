@@ -18,7 +18,7 @@ export class GroupCountGuard implements CanActivate {
             this.groupService.getGroupCount()
             .subscribe(
                 c => {
-                    this.gCount = c.count;
+                    this.gCount = !isNaN(+c.count) ? c.count : 0;
                     if (this.gCount > this.appSetting.MAX_G) {
                         this.alertService
                         .error('Exceded maximum allowed number of groups for the application, please contact us for support!', true);
