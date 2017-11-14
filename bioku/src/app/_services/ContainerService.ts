@@ -360,4 +360,5 @@ export class ContainerService {
             .map((response: Response) => response.json())
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
+    // upload samples to container
 }

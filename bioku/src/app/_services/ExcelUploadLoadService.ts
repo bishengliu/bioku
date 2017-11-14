@@ -19,7 +19,7 @@ export class ExcelUploadLoadService {
 
     const general_headers = new SampleExcelHeaders();
     general_headers.headers =  ['Name', 'Tag', 'Offical Name', 'Sample Code', 'External Reference', 'Quantity',
-    'Quantity Unit', 'Freezing Code', 'Freezing Date', 'Description'];
+    'Quantity Unit', 'Freezing Code', 'Freezing Date', 'Description', 'Label'];
     general_headers.header_type = 'general_headers';
     all_headers.push(general_headers);
 
@@ -75,7 +75,7 @@ export class ExcelUploadLoadService {
     const box_position_headers =  ['box_position', 'box_position_tower', 'box_position_shelf', 'box_position_box'];
     const sample_position_headers =  ['sample_position', 'sample_position_row', 'sample_position_column'];
     const general_headers =  ['name', 'tag', 'official_name', 'registration_code', 'reference_code', 'quantity',
-    'quantity_unit', 'freezing_code', 'freezing_date', 'description'];
+    'quantity_unit', 'freezing_code', 'freezing_date', 'description', 'label'];
     const cell_headers =  ['passage_number', 'cell_amount', 'project', 'creator'];
     const construct_headers =  ['clone_number', 'against_260_280', 'feature', 'r_e_analysis', 'backbone', 'insert',
     'first_max', 'marker', 'has_glycerol_stock', 'strain'];

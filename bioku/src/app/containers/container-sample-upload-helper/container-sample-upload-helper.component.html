@@ -47,6 +47,7 @@
 (colAttrs)="captureExcelCOlAttrs($event)"
 (freezingDateFormat)="captureFreezingDateFormat($event)"
 (excelHasFileHeader)="captureExcelHasFileHeader($event)"
+(sampleType)="captureSampleType($event)"
 [ngClass]="{'hidden': activeStep !== 3 }"></app-container-sample-uploader-step-three>
 
 <app-container-sample-uploader-validate-save
@@ -58,4 +59,5 @@
 [freezingDateFormat]="freezingDateFormat"
 [startValidation]="start_validation_save"
 [excelFileHeader]="excelFileHeader"
+[sampleType]="sampleType"
 ></app-container-sample-uploader-validate-save>

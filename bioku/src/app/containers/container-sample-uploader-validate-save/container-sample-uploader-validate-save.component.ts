@@ -21,6 +21,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   @Input() freezingDateFormat: SampleDateFormat;
   @Input() startValidation: Boolean;
   @Input() excelFileHeader: Boolean;
+  @Input() sampleType: string;
   container: Container;
   row_indexes_to_remove: Array<number> = []; // rows that failed the validation, only for validaiton messages
   boxes_to_create: Array<Array<number>> = []; // for following tower-shelf-box
@@ -142,9 +143,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.final_boxes_to_create = this.collectBoxes2Create();
       this.validateFinalBoxes2Create();
     }
-    console.log(this.data);
     this.passAllValidation();
     this.scrollToBottom();
+    console.log(this.data);
   }
   // validate samle names
   validateSampleName () {
@@ -498,11 +499,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     };
     // match data col to sample model attrs
     // the col attr to ignore for the final data format
+    // freezing date is always excluded
     this.excludedColumns4DataFormat = this.getExcludedColumns4DataFormat();
     // get all the sample mode attrs
     const sampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
     // format data
-    this.excelColAttrs.forEach( (c: ColumnAttr, i: number) => {
+    this.excelColAttrs.forEach((c: ColumnAttr, i: number) => {
       if (this.excludedColumns4DataFormat.indexOf(c.col_header) === -1) {
         const data_excel_col = c.col_number;
         // sample model attr
@@ -518,6 +520,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         })
       }
     });
+
+    // format for saving
+    this.format4Saving();
   }
   getColumnByHeader(header: string): number {
     const cols = this.excelColAttrs.filter(attr => attr.col_header === header);
@@ -1450,6 +1455,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       const message = 'total number of boxes to create: ' + this.final_boxes_to_create.length + '!';
       this.emitValidationOutput(this.VALIDAITON_BOXES_TO_CREATE_CHECKING, 0, message);
     }
+  }
+  format4Saving() {
+    this.data.forEach(d => {
+      d['type'] = this.sampleType;
+      for (let i = 0; i < d.length; i++) {
+        if (d[ i + '' ] !== undefined ) {
+          delete d[ i + '' ];
+        }
+      }
+    })
   }
   getExcludedColumns4DataFormat() {
     const sampleExcelHeaders: Array<SampleExcelHeaders> = this.excelUploadLoadService.getAllExcelHeaders();
