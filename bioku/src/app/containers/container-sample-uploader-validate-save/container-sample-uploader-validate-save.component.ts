@@ -62,7 +62,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // the col attr to ignore for the final data format
   excludedColumns4DataFormat: Array<string> = [];
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
-              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService, private router: Router,) {
+              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService, private router: Router, ) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -274,7 +274,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         d['freezing_date'] = null;
         output = 1;
         // emit warning
-        const message = 'invalid date or date not recognizable for row ' + (i + 1 ) + ', this sample will be saved with an empty date!';
+        const message = 'invalid date or date not recognizable for row ' + (i + 1 ) +
+                        ', this sample will be saved with an date of today!';
         this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
       } else {
         // test date
@@ -282,9 +283,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         if (parsedDate === '') {
           has_warning = true;
           output = 1;
-          d['freezing_date'] = null;
+          d['freezing_date'] = this.utilityService.getTodayFormat;
           // emit warning
-          const message = 'invalid date or date not recognizable  for row ' + (i + 1 ) + ', this sample will be saved with an empty date!';
+          const message = 'invalid date or date not recognizable  for row ' + (i + 1 ) +
+                          ', this sample will be saved with an date of today!';
           this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
         } else {
           d['freezing_date'] = parsedDate;
@@ -324,13 +326,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const month = dArray[this.freezingDateFormat.month_position - 1];
         if (this.freezingDateFormat.month_format === 0) {
           // number
-          month_valid = (/^([0-9]+){1,2}$/.test(month));
+          month_valid = (/^([0-9]+){1,2}$/.test(month)) && +month > 0 && + month < 13;
           if (month_valid) {
             month_final = month.length === 2 ? month : '0' + month;
           }
         } else {
           // 3 or 5 letters
-          month_valid = (/^([a-zA-Z]+){3,9}$/.test(month));
+          month_valid = (/^([a-zA-Z]+){3,9}$/.test(month)) && +month > 0 && + month < 13;
           if (month_valid) {
             const month_number = this.utilityService.getMonthNumber(month);
             if (month_number !== -1) {
@@ -343,7 +345,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         }
         // get the day
         const day = dArray[this.freezingDateFormat.day_position - 1];
-        day_valid = (/^([0-9]+){1,2}$/.test(day));
+        day_valid = (/^([0-9]+){1,2}$/.test(day)) && +day > 0 && +day < 32;
         if (day_valid) {
           day_final = day.length === 2 ? day : '0' + day;
         }
@@ -488,13 +490,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         }
         if (year !== '' && month !== '' && day !== '' ) {
           if (  (/^([0-9]+){2,4}$/.test(year))
-              && (/^([0-9]+){1,2}$/.test(month))
-              && (/^([0-9]+){1,2}$/.test(day)) ) {
+              && ((/^([0-9]+){1,2}$/.test(month)) && +month > 0 && + month < 13)
+              && ((/^([0-9]+){1,2}$/.test(day)) && +day > 0 && +day < 32) ) {
             return year_final + '-' + month_final + '-' + day_final;
           }
         }
     }
-    // (/^[0-9]+$/.test(sample_label))
     return '';
   }
   // general clean the data after all validation
@@ -1493,22 +1494,22 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.alertService.success('Your samples have been successfully uploaded!', true);
       this.router.navigate(['/containers']);
     },
-  (e) => {
-    console.log(e);
-    this.saving_samples = false;
-    this.saving_samples_failed = true;
-    this.alertService.error('Failed to upload your samples!', true);
-  });
+    (e) => {
+      console.log(e);
+      this.saving_samples = false;
+      this.saving_samples_failed = true;
+      this.alertService.error('Failed to upload your samples!', true);
+    });
   }
   // convert to samples
   convertData2Samples() {
     const samples: Array<UploadSample> = new Array<UploadSample>();
+    // get all headers
+    const allSampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
+    const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
+                                    'freezing_date', 'vposition', 'hposition', ...allSampleModelAttrs];
     this.data.forEach(d => {
       const sample: UploadSample = new UploadSample();
-      // get all headers
-      const allSampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
-      const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
-                                      'freezing_date', 'vposition', 'hposition', ...allSampleModelAttrs];
       allAttrs.forEach(a => {
         if (d[a] !== undefined) {
           sample[a] = d[a];
@@ -1516,8 +1517,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           sample[a] = null;
         }
       });
+      // force the default freezing date
       if ( d['freezing_date'] === '' || d['freezing_date'] === null) {
-        d['freezing_date']  = this.utilityService.getTodayFormat();
+        sample['freezing_date']  = this.utilityService.getTodayFormat();
       }
       samples.push(sample);
     })

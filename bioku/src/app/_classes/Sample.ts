@@ -121,7 +121,7 @@ export class UploadSample {
     quantity: number;
     quantity_unit: string;
     freezing_code: string;
-    freezing_date: Date;
+    freezing_date: string;
     hposition: string;
     vposition: string;
     qrcode: string;
