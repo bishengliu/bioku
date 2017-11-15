@@ -29,6 +29,7 @@ export class ContainerSampleUploadComponent implements OnInit {
   allowUpload: Boolean = false;
   load_failed: Boolean = false;
   loading: Boolean = true;
+  appName: string;
   simple_or_advanced_mode: number; // 0, not chosen, 1; simple mode, 2 advanced mode
   constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
     private localStorageService: LocalStorageService, private containerService: ContainerService,
@@ -36,6 +37,7 @@ export class ContainerSampleUploadComponent implements OnInit {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
+    this.appName = this.appSetting.NAME;
   }
 
   updateState() {
@@ -51,8 +53,6 @@ export class ContainerSampleUploadComponent implements OnInit {
         this.allowUpload = true;
       }
     }
-    /////////////////for develop only ///////////////
-    this.allowUpload = true;
   }
 
   ngOnInit() {

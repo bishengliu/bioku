@@ -16,21 +16,20 @@
   </div>
 </div>
 
-<div class="ui grid row small_padding" *ngIf="!load_failed && !loading">
+<div class="ui grid row small_padding" *ngIf="!load_failed && !loading && allowUpload">
   <div class="sixteen wide column" *ngIf="simple_or_advanced_mode === 0">
-      <div class="ui large fluid attached violet icon message">
+      <div class="ui large fluid top attached violet icon message">
           <i class="announcement icon"></i>
           <div class="content">
               <div class="header">
-                PLEASE READ THIS CAREFULLY BEFORE PROCEED!
+                PLEASE READ THIS FOLLOWING CAREFULLY BEFORE PROCEED:
               </div>
               <p><i class="icon circle outline"></i>We only accept uploading the <span class="red-text"><strong>MS excel file ('.xlsx')</strong></span>, containing only <strong>ONE</strong> sheet and <strong>ONE</strong> sample type!</p>
               <p><i class="icon circle outline"></i>We prefer that the boxes are labeled following the pattern of '<span class="red-text"><strong>TOWER-SHELF-BOX</strong></span>', for example ' 1<sup>(tower)</sup>-1<sup>(shelf)</sup>-1<sup>(box)</sup> <span>'</span>;</p>
               <p><i class="icon circle outline"></i>We prefer that the samples are labeled following the pattern of '<span class="red-text"><strong>ROW-COLUMN</strong></span>', for example 'A1';</p>
-              <p><i class="icon circle outline"></i>We prefer that all the dates are stored as 'YYYY-MM-DD';</p>
+              <p><i class="icon circle outline"></i>We prefer that all the dates are stored as 'YYYY-MM-DD', for example '2017-12-25';</p>
               <p><i class="icon circle outline"></i>If your samples are not saved as we recommended, we suggest that you format your samples as we recommended, using 3rd party applications,
                 or you can try upload your samples using the <span class="ui black label">ADVANCED UPLOAD MODE</span> below;</p>
-              <p><i class="icon circle outline"></i>It is not possible to consider all the possible ways of labeling your boxes or samples. If it is really not working for you, please contact us for support.</p>
             </div>
       </div>
       <div class="ui horizontal attached segments">
@@ -54,6 +53,40 @@
           <button class="ui blue button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> SIMPLE UPLOAD MODE</button>
           <button class="ui black button" (click)="chooseUploadMode(2)"><i class="icon options"></i> ADVANCED UPLOAD MODE</button>
       </div>
+      <div class="ui secondary top attached segment">
+        <div class="header">HOW DOES THE UPLOADER WORK?</div>
+      </div>
+      <div class="ui attached secondary segment">
+        <div class="content">
+          <p>
+            <i class="icon caret right"></i>In all cases, the {{appName}} sample uploader needs to know where to put the boxes (
+            <em>box labels</em>) and where to put your samples (
+            <em>sample labels</em>) in each box (
+            <em>box dimension/layout</em>) in your container!</p>
+          <p>
+            <i class="icon caret right"></i>The {{appName}} uses the pattern of "TOWER-SHELF-BOX" to locate a box in a container, where a "TOWER" conatins many
+            "SHELVES" (similar to drawers) and each "SHELF" contains several "BOXES"; the uploader first needs to understand your boxes
+            and samples;</p>
+          <p>
+            <i class="icon caret right"></i>The next step is to specify the cloumn headers in your excel file, so that uploader understands the details of your
+            samples.</p>
+          <p>
+            <i class="icon caret right"></i>The sample uploader allows you specify various date formats for your samples; You will be asked to provide the date
+            format in your file, if necessary.</p>
+          <p>
+            <i class="icon caret right"></i>You can upload your excel file after provide the above details; the sample uploader has a powerful buildin validator,
+            which will validate your samples and output all the necessary messages; please read always carefuly these outputs even
+            your samples have passed the validation;</p>
+          <p>
+            <i class="icon caret right"></i>The sample uploader will NOT override any box or sample already in your container; If the uploader detects the existence
+            of a box or sample in place, it will IGNORE SILENTLY the current sample in your excel file and move to the next sample;
+            therefore, you might end up uploading less samples and it is always good to check carefully what have actually been upladed;</p>
+          <p>
+            <i class="icon caret right"></i>Though it is not possible to consider all the possible ways of labeling your boxes or samples, we do offer you with
+            quite a lot of choices in the "ADVANCED UPLOAD MODE"; If it is really not working for you, please contact us for support.
+          </p>
+        </div>
+    </div>
   </div>
   <app-container-sample-upload-helper
     [uploadMode]="simple_or_advanced_mode"
@@ -69,9 +102,16 @@
 </div>
 
 <!--failed  -->
-<div *ngIf="!load && load_failed" class="ui tertiary segment center aligned">
+<div *ngIf="!loading && load_failed" class="ui tertiary segment center aligned">
   <br/><br/><br/>
   <p><i class="ui massive warning sign icon brown"></i></p>
   <h3 class="ui brown header">Something went wrong, fail to load current container from the server!</h3>
+  <br/><br/><br/>
+</div>
+
+<div *ngIf="!allowUpload && !loading && !load_failed" class="ui tertiary segment center aligned">
+  <br/><br/><br/>
+  <p><i class="ui massive warning sign icon brown"></i></p>
+  <h3 class="ui brown header">You are not allowed to upload samples to the current container any more!</h3>
   <br/><br/><br/>
 </div>

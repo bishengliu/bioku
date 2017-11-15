@@ -62,7 +62,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // the col attr to ignore for the final data format
   excludedColumns4DataFormat: Array<string> = [];
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
-              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService, private router: Router, ) {
+              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService,
+              private router: Router, ) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
