@@ -99,7 +99,9 @@ export class UtilityService {
         }
     }
     removeSpecialCharacters(string2Remove: string) {
-        return string2Remove.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''); // remove al special chars
+        return string2Remove.replace(/[`!<>\{\}\[\]\\\/]/gi, ''); // remove al special chars
+
+        // return string2Remove.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ''); // remove al special chars
     }
     getTodayFormat(): string {
         const today = new Date();
@@ -114,5 +116,52 @@ export class UtilityService {
             mm = '0' + mm
         }
         return yyyy + '-' + mm + '-' + dd;
+    }
+    isSpaceCheck(string2Check: string): boolean {
+        return string2Check.replace(/\s/g, '').length === 0;
+    }
+    convert2Float(number2Format: string, max_digits: number, decimal_places: number): number {
+        if (!isNaN(+number2Format)) {
+            let number2Format_string = number2Format  + '';
+            let symbol = '';
+            if (number2Format_string.startsWith('+')) {
+                symbol = '+';
+                number2Format_string = number2Format_string.substring(1)
+            }
+            if (number2Format_string.startsWith('-')) {
+                symbol = '-';
+                number2Format_string = number2Format_string.substring(1)
+            }
+            if (number2Format_string.indexOf('.') === -1) {
+                if (number2Format_string.length <= max_digits) {
+                    return +number2Format;
+                }
+            } else {
+                const fArray = number2Format_string.split('.');
+                if ((fArray[0] + '').length <= max_digits) {
+                    const right_len = max_digits - (fArray[1] + '').length;
+                    if (right_len <= decimal_places) {
+                        return +number2Format;
+                    } else {
+                        const res = symbol + (fArray[0] + '') + '.' + (fArray[1] + '').substring(0, decimal_places);
+                        return +res;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    convert2Integer(number2Format: string) {
+        if (!isNaN(+number2Format)) {
+            let number2Format_string = number2Format  + '';
+            if (number2Format_string.indexOf('.') !== -1) {
+                const fArray = number2Format_string.split('.');
+                number2Format_string = fArray[0];
+                return +number2Format_string;
+            } else {
+                return +number2Format;
+            }
+        }
+        return null;
     }
 }

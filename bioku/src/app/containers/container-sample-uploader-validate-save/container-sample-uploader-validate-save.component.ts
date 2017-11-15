@@ -92,7 +92,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }, () => {});
    }
 
-  ngOnInit() { }
+  ngOnInit() {}
   updateState() {
     const state = this.appStore.getState();
     if (state.containerInfo && state.containerInfo.currentContainer) {
@@ -525,6 +525,24 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d[sample_model_attr] = null;
           } else {
             d[sample_model_attr] = this.utilityService.removeSpecialCharacters(data_col);
+            // deal with space
+            const ori_value = d[sample_model_attr] + '';
+            if ( this.utilityService.isSpaceCheck(ori_value) ) {
+              d[sample_model_attr] = null;
+            }
+            // deal with decimal
+            if (sample_model_attr.toLowerCase() === 'quantity') {
+              d['quantity'] = this.utilityService.convert2Float(d['quantity'].replace(/\D/g, ''), 10, 3);
+            }
+            if (sample_model_attr.toLowerCase() === 'oligo_GC') {
+              d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'].replace(/\D/g, ''), 10, 2);
+            }
+            if (sample_model_attr.toLowerCase() === 'against_260_280') {
+              d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'].replace(/\D/g, ''), 10, 2);
+            }
+            if (sample_model_attr.toLowerCase() === 'oligo_length') {
+              d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length'].replace(/\D/g, ''));
+            }
           }
         })
       }

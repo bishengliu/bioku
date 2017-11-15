@@ -30,7 +30,7 @@ export class ExcelUploadLoadService {
 
     const construct_headers = new SampleExcelHeaders();
     construct_headers.headers =  ['Clone Number', '260/280', 'Feature', 'R.E. Analysis', 'Backbone', 'Insert',
-    '1st maxi', 'Marker', 'Has Glycerol Stock', 'Stock Strain'];
+    '1st maxi', 'Marker', 'Glycerol Stock', 'Stock Strain'];
     construct_headers.header_type = 'construct_headers';
     all_headers.push(construct_headers);
 

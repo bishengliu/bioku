@@ -31,7 +31,7 @@ export class ContainerSampleUploadComponent implements OnInit {
   loading: Boolean = true;
   appName: string;
   simple_or_advanced_mode: number; // 0, not chosen, 1; simple mode, 2 advanced mode
-  constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
+  constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
     private localStorageService: LocalStorageService, private containerService: ContainerService,
     private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
     // subscribe store state changes
