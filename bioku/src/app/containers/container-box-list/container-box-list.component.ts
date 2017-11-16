@@ -117,11 +117,11 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         if (Array.isArray(data)) {
           // if it array, then is the inital loading
-          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'full_position'));
+          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', '-full_position'));
           // this.searchedBoxes = this.myBoxes;
           if (this.show_all) {
             // show all
-            this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'full_position'));
+            this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate', '-full_position'));
           } else {
             this.searchedBoxes = this.myBoxes.filter((box, i) => {
               return box.rate != null; });
@@ -152,8 +152,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       } else {
         this.containerService.containerGroupBoxes(this.id)
         .subscribe((data: any) => {
-          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'full_position'));
-          this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'full_position'));
+          this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', '-full_position'));
+          this.searchedBoxes = this.myBoxes.sort(this.utilityService.sortArrayByMultipleProperty('-rate', '-full_position'));
           this.loading = false;
           this.all_boxes_loaded = true;
         },
