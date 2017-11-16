@@ -11,6 +11,9 @@ import { UploadSample, Sample } from '../../_classes/Sample';
 import { UtilityService } from '../../_services/UtilityService';
 import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
 import { BookType } from 'xlsx/types';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { ContainerService } from '../../_services/ContainerService';
 import { AlertService } from '../../_services/AlertService';
 @Component({
@@ -61,9 +64,14 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   VALIDAITON_DATEFORMAT = 'validation date format ...';
   // the col attr to ignore for the final data format
   excludedColumns4DataFormat: Array<string> = [];
+  // for down load checking
+  fileName = 'Samples.xlsx';
+  worksheet_name = 'sheet';
+  rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
+  col_offset = 0; // for get the correct col number
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
               private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService,
-              private router: Router, ) {
+              private router: Router, private xlsxHelperService: XlsxHelperService) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -111,6 +119,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // box label validation
   // aim is to check box labels and return the valid boxes, boxes to create, row_index_to_remove
   sampleValidation () {
+    // trim the top empty rows data and get row_offset
+    this.trimDataCalOffset();
+    // excel file header
+    if (this.excelFileHeader) {
+      this.data[0]['invalid'] = true;
+      this.col_offset += 1;
+    };
     ///////////////////////////////// validate initial data set ///////////////////////////////
     // if this.data.length === 0
     this.validateDataLength(true); // inital data set validation
@@ -145,6 +160,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     // filter the data
     this.data = this.filterValidSamples(this.data);
+    console.log(this.data);
     this.validateDataLength(false);
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
@@ -154,6 +170,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.format4Saving();
     }
     this.passAllValidation();
+  }
+  trimDataCalOffset() {
+    const ori_len = this.data.length;
+    this.data = this.trimData(this.data);
+    this.col_offset +=  (ori_len - this.data.length);
+  }
+  trimData (data: Array<Array<any>>): Array<Array<any>> {
+    return data.filter((d: Array<any>) => {
+      return d.length > 0;
+    })
   }
   // validate samle names
   validateSampleName () {
@@ -531,16 +557,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               d[sample_model_attr] = null;
             }
             // deal with decimal
-            if (sample_model_attr.toLowerCase() === 'quantity') {
+            if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
               d['quantity'] = this.utilityService.convert2Float(d['quantity'].replace(/\D/g, ''), 10, 3);
             }
-            if (sample_model_attr.toLowerCase() === 'oligo_GC') {
+            if (sample_model_attr.toLowerCase() === 'oligo_GC' && d['oligo_GC'] != null) {
               d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'].replace(/\D/g, ''), 10, 2);
             }
-            if (sample_model_attr.toLowerCase() === 'against_260_280') {
+            if (sample_model_attr.toLowerCase() === 'against_260_280' && d['against_260_280'] != null) {
               d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'].replace(/\D/g, ''), 10, 2);
             }
-            if (sample_model_attr.toLowerCase() === 'oligo_length') {
+            if (sample_model_attr.toLowerCase() === 'oligo_length' && d['oligo_length'] != null) {
               d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length'].replace(/\D/g, ''));
             }
           }
@@ -600,7 +626,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // validate sample names
     this.data.forEach( (d, i) => {
       const sample_name = d[( '' + (sample_name_col - 1) )];
-      if (sample_name === '' || sample_name === null || sample_name === undefined) {
+      if (sample_name === '' || sample_name === null || sample_name === undefined
+          || (d['invalid'] !== undefined && d['invalid'] === true) ) {
          // sample is null, sample invalid
          d['invalid'] = true;
          this.updateRowToRemove4SampleNameValidation(i);
@@ -716,7 +743,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
       let box_label = d[('' + (box_label_header - 1))];
-      if (box_label === '' || box_label === null || box_label === undefined) {
+      if (box_label === '' || box_label === null || box_label === undefined
+        || (d['invalid'] !== undefined && d['invalid'] === true) ) {
         // box label is null, sample invalid
         d['invalid'] = true;
         has_warning = true;
@@ -762,7 +790,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.data.forEach( (d: Array<any>, i) => {
       if ( d[( '' + (box_label_tower - 1) )] === null || d[( '' + (box_label_tower - 1) )] === undefined
         || d[( '' + (box_label_shelf - 1) )] === null || d[( '' + (box_label_shelf - 1) )] === undefined
-        || d[( '' + (box_label_box - 1) )] === null || d[( '' + (box_label_box - 1) )] === undefined) {
+        || d[( '' + (box_label_box - 1) )] === null || d[( '' + (box_label_box - 1) )] === undefined
+        || (d['invalid'] !== undefined && d['invalid'] === true) ) {
         d['invalid'] = true;
         has_warning = true;
         this.updateRowToRemove4BoxLabelValidation(i);
@@ -805,14 +834,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const box_label_header = this.getColumnByHeader('BoxLabel');
     this.data.forEach((d, i) => {
       const box_label = '' + d[( '' + (box_label_header - 1) )];
-      if (box_label !== null && box_label !== '' || box_label === undefined) {
-        if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
-          this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
-        }
-      } else {
+      if (box_label === '' || box_label === null || box_label === undefined
+        || (d['invalid'] !== undefined && d['invalid'] === true) ) {
+        // box label is null, sample invalid
         d['invalid'] = true;
-        // add row to remove
         this.updateRowToRemove4BoxLabelValidation(i);
+      } else {
+        if (this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) === -1 ) {
+          this.abnormal_boxes_to_create.push(box_label.replace(/\s/g, '').toLowerCase()); // no repeats
+        }
       }
     });
     // update tower, shelf and box attrs
@@ -854,9 +884,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['box_label'] = box_label; ////////// only generated with abnormal and integreted ////////////////////
             // d[( '' + (sample_header_col - 1) )] = new_sample_label;
             // validate box_label
-            if (box_label !== null && box_label !== '' && box_label !== undefined) {
-              if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
-                this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
+            if (box_label !== null && box_label !== '' && box_label !== undefined
+              && (d['invalid'] === undefined || d['invalid'] === false) ) {
+              if (this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) === -1 ) {
+                this.abnormal_boxes_to_create.push(box_label.replace(/\s/g, '').toLowerCase()); // no repeats
               }
             } else {
               d['invalid'] = true;
@@ -897,9 +928,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             d['box_label'] = box_label; ////////// only generated with abnormal and integreted ////////////////////
             // d[( '' + (sample_header_col - 1) )] = new_sample_label;
             // validate box_label
-            if (box_label !== null && box_label !== '') {
-              if (this.abnormal_boxes_to_create.indexOf(box_label.toLowerCase()) === -1 ) {
-                this.abnormal_boxes_to_create.push(box_label.toLowerCase()); // no repeats
+            if (box_label !== null && box_label !== '' && (d['invalid'] === undefined || d['invalid'] === false)) {
+              if (this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) === -1 ) {
+                this.abnormal_boxes_to_create.push(box_label.replace(/\s/g, '').toLowerCase()); // no repeats
               }
             } else {
               d['invalid'] = true;
@@ -977,17 +1008,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (type_index === -1) {
       return null;
     }
+    const trimed = lArray[type_index].replace(/\s/g, '');
     if (bLabel.tower === 1) {
       //  is digits
-      if (!isNaN(+lArray[type_index]) && Number.isInteger(+lArray[type_index]) && +lArray[type_index] <= container.tower) {
+      if (!isNaN(+trimed) && Number.isInteger(+trimed) && +trimed <= container.tower) {
         return +lArray[type_index];
       }
     } else {
       //  is letters
       // test only word
-      if (/^[a-zA-Z]+$/.test(lArray[type_index])) {
+      if (/^[a-zA-Z]+$/.test(trimed)) {
         // onvert letters to  digits
-        const result = this.utilityService.convertLetters2Integer(lArray[type_index]);
+        const result = this.utilityService.convertLetters2Integer(trimed);
         if (result >= 0 && result <= container.tower) {
           return result;
         }
@@ -1002,7 +1034,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'box label for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
+      const message = 'box label for row ' + (index + 1 + this.col_offset) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 1, message);
     }
   }
@@ -1010,7 +1042,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'sample name for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
+      const message = 'sample name for row ' + (index + 1 + this.col_offset) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_SAMPLE_NAME, 1, message);
     }
   }
@@ -1018,7 +1050,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.row_indexes_to_remove.indexOf(index) === -1) {
       this.row_indexes_to_remove.push(index);
       // emit message
-      const message = 'sample label for row ' + (index + 1) + ' is invalid, this sample will be ignored!';
+      const message = 'sample label for row ' + (index + 1 + this.col_offset) + ' is invalid, this sample will be ignored!';
       this.emitValidationOutput(this.VALIDATION_SAMPLE_LABEL, 1, message);
     }
   }
@@ -1039,7 +1071,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   genAbnormalBoxLabelInfo(header_col: number, container: Container, separated: boolean) {
     // only when there are boxes to create
     if (this.abnormal_boxes_to_create.length > 0) {
-      this.abnormal_boxes_to_create.sort();
+      // this.abnormal_boxes_to_create.sort();
       let new_abnormal_boxes_to_create: Array<any> = [];
       let abnormal_boxes_to_remove: Array<any> = [];
       // get max boxes in the container
@@ -1093,7 +1125,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             // integreted
             box_label = d['box_label'];
           }
-          if (box_label !== undefined && box_label !== '' && box_label !== null && box_label.toLowerCase() === blabel) {
+          if (box_label !== undefined && box_label !== '' && box_label !== null && box_label.replace(/\s/g, '').toLowerCase() === blabel
+            && (d['invalid'] === undefined || d['invalid'] === false) ) {
             d['tower'] = box_label_array[0];
             d['shelf'] = box_label_array[1];
             d['box'] = box_label_array[2];
@@ -1223,7 +1256,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             invalid = true;
           }
         }
-
         if (this.sLabel.sampleColumn === 0 ) {
           // letters
           if ((/^[a-zA-Z]+$/.test(sample_col))
@@ -1275,7 +1307,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.data.forEach((d, i) => {
         const sample_label = '' + d[( '' + (sample_label_col - 1) )];
         if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
-            && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
+            && +sample_label <= total_samples_of_container && +sample_label > 0
+            && (d['invalid'] === undefined || d['invalid'] === true)) {
           d = this.updateDForIncreaingNumberWithoutBoxLabel(sample_label, d, max_sample_count, all_containerboxes);
         } else {
           d['invalid'] = true;
@@ -1289,7 +1322,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         // already has sample_label attr
         this.data.forEach((d, i) => {
           const sample_label = d['sample_label'];
-          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
+          const box_label = d['box_label'];
+          if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0
+          && box_label !== undefined && box_label !== null && box_label !== ''
+          && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
+          && (d['invalid'] === undefined || d['invalid'] === true)
+          ) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;
@@ -1300,10 +1338,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       } else {
         // no sample_label attr yet
         const sample_label_col = this.getColumnByHeader('SampleLabel');
+        const box_label_col = this.getColumnByHeader('BoxLabel');
         this.data.forEach((d, i) => {
           const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
+          const box_label = d[('' + (box_label_col - 1))];
           if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
-              && +sample_label <= total_samples_of_container && +sample_label > 0 ) {
+              && +sample_label <= total_samples_of_container && +sample_label > 0
+              && box_label !== undefined && box_label !== null && box_label !== ''
+              && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
+              && (d['invalid'] === undefined || d['invalid'] === true)) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;
@@ -1421,14 +1464,14 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
       // first row
       d['vposition'] = this.utilityService.convertInteger2Letter (1);
-      d['hposition'] = s_hposiiton_index;
+      d['hposition'] = s_hposiiton_index + 1;
     } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
       // first row
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
       d['hposition'] = this.sLabel.box_horizontal;
     } else {
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-      d['hposition'] = s_hposiiton_index;
+      d['hposition'] = s_hposiiton_index + 1;
     }
     return d;
   }
@@ -1443,14 +1486,14 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
       // first row
       d['vposition'] = this.utilityService.convertInteger2Letter (1);
-      d['hposition'] = s_hposiiton_index;
+      d['hposition'] = s_hposiiton_index + 1;
     } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
       // first row
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
       d['hposition'] = this.sLabel.box_horizontal;
     } else {
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-      d['hposition'] = s_hposiiton_index;
+      d['hposition'] = s_hposiiton_index + 1;
     }
     return d;
   }
@@ -1543,5 +1586,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       samples.push(sample);
     })
     return samples;
+  }
+  // download for 2 checking
+  // format4Download(excelColAttrs: ColumnAttr, data:) {
+
+  // }
+  exportXlsx(): void {
+    this.xlsxHelperService.exportXlsx(this.data, this.worksheet_name, this.fileName);
   }
 }

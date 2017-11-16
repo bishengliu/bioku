@@ -24,9 +24,17 @@
         </div>
       </div>
     </div>
-    <button *ngIf="validation_finished" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
+    <div class="ui two buttons">
+        <button *ngIf="validation_finished" class="fluid ui red bottom attached button" (click)="exportXlsx()"> DOWNLOAD
+          <i class="icon caret right"></i>
+        </button>
+      <button *ngIf="validation_finished" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
+        <i class="icon caret right"></i>
+      </button>
+    </div>
+    <!-- <button *ngIf="validation_finished" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
       <i class="icon caret right"></i>
-    </button>
+    </button> -->
   </div>
 </div>
 <!--info-->
