@@ -1458,20 +1458,20 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // get v/h positions
     const s_vposition_index = Math.floor (s_index / this.sLabel.box_horizontal );
     const s_hposiiton_index = s_index % this.sLabel.box_horizontal;
-    if (s_hposiiton_index === 0 && s_hposiiton_index === 0) {
+    if (s_vposition_index === 0 && s_hposiiton_index === 0) {
       d['vposition'] = 'A';
       d['hposition'] = 1;
     } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
       // first row
       d['vposition'] = this.utilityService.convertInteger2Letter (1);
-      d['hposition'] = s_hposiiton_index + 1;
+      d['hposition'] = s_hposiiton_index;
     } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
       // first row
-      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
       d['hposition'] = this.sLabel.box_horizontal;
     } else {
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-      d['hposition'] = s_hposiiton_index + 1;
+      d['hposition'] = s_hposiiton_index
     }
     return d;
   }
@@ -1480,20 +1480,21 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const s_vposition_index = Math.floor (+sample_label / this.sLabel.box_horizontal );
     const s_hposiiton_index = +sample_label % this.sLabel.box_horizontal;
     // get v/h positions
-    if (s_hposiiton_index === 0 && s_hposiiton_index === 0) {
+    if (s_vposition_index === 0 && s_hposiiton_index === 0) {
       d['vposition'] = 'A';
       d['hposition'] = 1;
     } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
       // first row
+      // no A8
       d['vposition'] = this.utilityService.convertInteger2Letter (1);
-      d['hposition'] = s_hposiiton_index + 1;
+      d['hposition'] = s_hposiiton_index;
     } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
       // first row
-      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
+      d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index);
       d['hposition'] = this.sLabel.box_horizontal;
     } else {
       d['vposition'] = this.utilityService.convertInteger2Letter (s_vposition_index + 1);
-      d['hposition'] = s_hposiiton_index + 1;
+      d['hposition'] = s_hposiiton_index;
     }
     return d;
   }

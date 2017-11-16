@@ -164,4 +164,28 @@ export class UtilityService {
         }
         return null;
     }
+
+    getSamplePostion(sample_label: number, box_horizontal: number) {
+        const d = {};
+        const s_vposition_index = Math.floor (+sample_label / box_horizontal );
+        const s_hposiiton_index = +sample_label % box_horizontal;
+        // get v/h positions
+        if (s_vposition_index === 0 && s_hposiiton_index === 0) {
+          d['vposition'] = 'A';
+          d['hposition'] = 1;
+        } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
+          // first row
+          // no A8
+          d['vposition'] = this.convertInteger2Letter (1);
+          d['hposition'] = s_hposiiton_index;
+        } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
+          // first row
+          d['vposition'] = this.convertInteger2Letter (s_vposition_index);
+          d['hposition'] = box_horizontal;
+        } else {
+          d['vposition'] = this.convertInteger2Letter (s_vposition_index + 1);
+          d['hposition'] = s_hposiiton_index;
+        }
+        return d;
+    }
 }
