@@ -40,6 +40,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   saving_sample_posting_validation: Boolean = false;
   validator_failed: Boolean = false;
   validation_finished: Boolean = false;
+  double_checked: Boolean = false;
   saving_samples: Boolean = false;
   saving_samples_failed: Boolean = false;
   sampleValidator: SampleValidator = new SampleValidator();
@@ -160,7 +161,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     // filter the data
     this.data = this.filterValidSamples(this.data);
-    console.log(this.data);
     this.validateDataLength(false);
     // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
     if (!this.validator_failed && this.data.length > 0) {
@@ -558,16 +558,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             }
             // deal with decimal
             if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
-              d['quantity'] = this.utilityService.convert2Float(d['quantity'].replace(/\D/g, ''), 10, 3);
+              d['quantity'] = this.utilityService.convert2Float(d['quantity'], 10, 3);
             }
             if (sample_model_attr.toLowerCase() === 'oligo_GC' && d['oligo_GC'] != null) {
-              d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'].replace(/\D/g, ''), 10, 2);
+              d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'], 10, 2);
             }
             if (sample_model_attr.toLowerCase() === 'against_260_280' && d['against_260_280'] != null) {
-              d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'].replace(/\D/g, ''), 10, 2);
+              d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'], 10, 2);
             }
             if (sample_model_attr.toLowerCase() === 'oligo_length' && d['oligo_length'] != null) {
-              d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length'].replace(/\D/g, ''));
+              d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length']);
             }
           }
         })
@@ -1588,10 +1588,55 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     return samples;
   }
   // download for 2 checking
-  // format4Download(excelColAttrs: ColumnAttr, data:) {
-
-  // }
+  format4Download(data: Array<Array<any>>) {
+    let formated4Download: Array<Array<any>> = [];
+    // get all the sample mode attrs
+    const sampleModelAttrs: Array<string> = ['tower', 'shelf', 'box', 'vposition', 'hposition',
+                                              ...this.excelUploadLoadService.getAllSampleModelAttrs() ];
+    // get all col headers
+    const all_col_headers: Array<string> = ['Tower', 'Shelf', 'Box', 'Sample Row', 'Sample Column',
+                                            ...this.excelUploadLoadService.getAllColumnHeaders()];
+    // get all the sample model attr in data
+    const data_keys = this.getDataKeys(data[0], sampleModelAttrs); // this.data should be out put of this.formatData()
+    const data_headers = this.getDataHeaders(data_keys, sampleModelAttrs, all_col_headers); // map to all headers
+    // const data4download_headers = formated4Download.push();
+    const data4download = [...data];
+    data4download.forEach((d: Array<any>, di) => {
+      data_keys.forEach((k, i) => {
+        if (d[k] !== undefined) {
+          d[i + ''] = d[k];
+        } else {
+          d[i + ''] = null;
+        }
+      })
+    });
+    formated4Download = [data_headers, ...data4download];
+    return formated4Download;
+  }
+  getDataKeys(data_item: Array<any>, sampleModelAttrs: Array<string>) {
+    const keys: Array<string> = [];
+    sampleModelAttrs.forEach(a => {
+      if (data_item[a] !== undefined) {
+        keys.push(a);
+      }
+    });
+    return keys;
+  }
+  getDataHeaders(data_keys: Array<string>, sampleModelAttrs: Array<string>,  all_col_headers: Array<string>) {
+    const headers: Array<string> = [];
+    data_keys.forEach((k, i) => {
+      if (sampleModelAttrs.indexOf(k) !== -1 ) {
+        headers[i + ''] = all_col_headers[sampleModelAttrs.indexOf(k)];
+      } else {
+        headers[i + ''] = null;
+      }
+    })
+    return headers;
+  }
   exportXlsx(): void {
-    this.xlsxHelperService.exportXlsx(this.data, this.worksheet_name, this.fileName);
+    const data4download = this.format4Download([...this.data]);
+    this.xlsxHelperService.exportXlsx(data4download, this.worksheet_name, this.fileName);
+    this.double_checked = true;
+    this.alertService.success('Please open the downloaded excel file to double-check what will be uploaded!', true);
   }
 }
