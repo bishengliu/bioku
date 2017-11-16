@@ -227,6 +227,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
     // get the column headers for current sample type
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers.sort();
     // prepare the default column attrs
     this.setDefaultColumnAttrs();
   }
@@ -247,6 +248,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.freezing_date_format_is_set = false;
     // set up column count and headers
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers.sort();
     this.setDefaultColumnAttrs();
   }
 
@@ -410,6 +412,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   }
   ngOnChanges() {
     this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers.sort();
     this.all_requied_headers = this.getRequiredColumnHeader();
     this.setDefaultColumnAttrs();
   }
