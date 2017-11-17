@@ -139,7 +139,7 @@ export class UtilityService {
             } else {
                 const fArray = number2Format_string.split('.');
                 if ((fArray[0] + '').length <= max_digits) {
-                    const right_len = max_digits - (fArray[1] + '').length;
+                    const right_len = max_digits - (fArray[0] + '').length;
                     if (right_len <= decimal_places) {
                         return +number2Format;
                     } else {
@@ -164,7 +164,6 @@ export class UtilityService {
         }
         return null;
     }
-
     getSamplePostion(sample_label: number, box_horizontal: number) {
         const d = {};
         const s_vposition_index = Math.floor (+sample_label / box_horizontal );
@@ -187,5 +186,20 @@ export class UtilityService {
           d['hposition'] = s_hposiiton_index;
         }
         return d;
+    }
+    getBoxPostion(sample_label: number, max_sample_count: number, all_containerboxes: Array<Array<number>>): Array<any> {
+        const b_index = Math.floor ( +sample_label / max_sample_count );
+        const b_index_remainder = +sample_label % max_sample_count;
+        let box_position: Array<number> = [];
+        if (b_index === 0 && b_index_remainder === 0) {
+          box_position = all_containerboxes[0];
+        } else if (b_index === 0 && b_index_remainder > 0) {
+          box_position = all_containerboxes[0];
+        } else if (b_index > 0 && b_index_remainder === 0) {
+          box_position = all_containerboxes[ b_index - 1 ];
+        } else {
+          box_position = all_containerboxes[ b_index ];
+        }
+        return box_position;
     }
 }

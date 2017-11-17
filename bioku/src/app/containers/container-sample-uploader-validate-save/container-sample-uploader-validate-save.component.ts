@@ -560,7 +560,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
               d['quantity'] = this.utilityService.convert2Float(d['quantity'], 10, 3);
             }
-            if (sample_model_attr.toLowerCase() === 'oligo_GC' && d['oligo_GC'] != null) {
+            if (sample_model_attr.toLowerCase() === 'oligo_gc' && d['oligo_GC'] != null) {
               d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'], 10, 2);
             }
             if (sample_model_attr.toLowerCase() === 'against_260_280' && d['against_260_280'] != null) {
@@ -1296,6 +1296,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     let has_warning = false;
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
+    console.log(max_sample_count);
     // get total number of samples of the container
     const total_samples_of_container = this.getContainerCapacity(this.sLabel, this.container);
     const max_boxes_of_conatiner = this.getContainerTotalBoxes(this.container);
@@ -1308,7 +1309,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const sample_label = '' + d[( '' + (sample_label_col - 1) )];
         if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
             && +sample_label <= total_samples_of_container && +sample_label > 0
-            && (d['invalid'] === undefined || d['invalid'] === true)) {
+            && (d['invalid'] === undefined || d['invalid'] === false)) {
           d = this.updateDForIncreaingNumberWithoutBoxLabel(sample_label, d, max_sample_count, all_containerboxes);
         } else {
           d['invalid'] = true;
@@ -1326,7 +1327,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           if ( (/^[0-9]+$/.test(sample_label)) && +sample_label <= total_samples_of_container && +sample_label > 0
           && box_label !== undefined && box_label !== null && box_label !== ''
           && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
-          && (d['invalid'] === undefined || d['invalid'] === true)
+          && (d['invalid'] === undefined || d['invalid'] === false)
           ) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
@@ -1346,7 +1347,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               && +sample_label <= total_samples_of_container && +sample_label > 0
               && box_label !== undefined && box_label !== null && box_label !== ''
               && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
-              && (d['invalid'] === undefined || d['invalid'] === true)) {
+              && (d['invalid'] === undefined || d['invalid'] === false)) {
             d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
           } else {
             d['invalid'] = true;
@@ -1366,7 +1367,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // shelf
       for (let s = 0; s < container.tower; s++) {
         // box
-        for (let b = 0; b < container.tower; b++) {
+        for (let b = 0; b < container.box; b++) {
           const array = []
           array[0] = t + 1; array[1] = s + 1; array[2] = b + 1;
           bArray.push(array);
@@ -1441,15 +1442,17 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const b_index = Math.floor ( +sample_label / max_sample_count );
     const b_index_remainder = +sample_label % max_sample_count;
     let box_position: Array<number> = [];
-    if (b_index_remainder === 0 && b_index_remainder === 0) {
+    if (b_index === 0 && b_index_remainder === 0) {
       box_position = all_containerboxes[0];
-    } else if (b_index_remainder === 0 && b_index_remainder > 0) {
+    } else if (b_index === 0 && b_index_remainder > 0) {
+      // first box
       box_position = all_containerboxes[0];
-    } else if (b_index_remainder > 0 && b_index_remainder === 0) {
+    } else if (b_index > 0 && b_index_remainder === 0) {
       box_position = all_containerboxes[ b_index - 1 ];
     } else {
       box_position = all_containerboxes[ b_index ];
     }
+    console.log(sample_label, b_index, b_index_remainder, box_position);
     d['tower'] = box_position[0];
     d['shelf'] = box_position[1];
     d['box'] = box_position[2];
@@ -1485,7 +1488,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       d['hposition'] = 1;
     } else if (s_vposition_index === 0 && s_hposiiton_index > 0) {
       // first row
-      // no A8
       d['vposition'] = this.utilityService.convertInteger2Letter (1);
       d['hposition'] = s_hposiiton_index;
     } else if (s_vposition_index > 0 && s_hposiiton_index === 0) {
