@@ -173,8 +173,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   trimDataCalOffset() {
     const ori_len = this.data.length;
+    // get beginning empty rows
+    const beginning_empty_rows = this.getBeginningEmptyRows();
+    this.col_offset +=  beginning_empty_rows;
+    // trim data
     this.data = this.trimData(this.data);
-    this.col_offset +=  (ori_len - this.data.length);
+  }
+  getBeginningEmptyRows(): number {
+    const ori_len = this.data.length;
+    let count = 0;
+    for (let i = 0; i < ori_len; i++) {
+      if (this.data[i].length === 0) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
   }
   trimData (data: Array<Array<any>>): Array<Array<any>> {
     return data.filter((d: Array<any>) => {
@@ -1296,7 +1311,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     let has_warning = false;
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
-    console.log(max_sample_count);
     // get total number of samples of the container
     const total_samples_of_container = this.getContainerCapacity(this.sLabel, this.container);
     const max_boxes_of_conatiner = this.getContainerTotalBoxes(this.container);
@@ -1452,7 +1466,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     } else {
       box_position = all_containerboxes[ b_index ];
     }
-    console.log(sample_label, b_index, b_index_remainder, box_position);
     d['tower'] = box_position[0];
     d['shelf'] = box_position[1];
     d['box'] = box_position[2];
