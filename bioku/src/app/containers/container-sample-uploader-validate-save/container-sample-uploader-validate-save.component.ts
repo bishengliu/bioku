@@ -641,8 +641,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // validate sample names
     this.data.forEach( (d, i) => {
       const sample_name = d[( '' + (sample_name_col - 1) )];
-      if (sample_name === '' || sample_name === null || sample_name === undefined
-          || (d['invalid'] !== undefined && d['invalid'] === true) ) {
+      if (sample_name === '' || sample_name === null || sample_name === undefined ) {
          // sample is null, sample invalid
          d['invalid'] = true;
          this.updateRowToRemove4SampleNameValidation(i);
@@ -1024,9 +1023,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       return null;
     }
     const trimed = lArray[type_index].replace(/\s/g, '');
-    if (bLabel.tower === 1) {
+    if (bLabel[type] === 1) {
       //  is digits
-      if (!isNaN(+trimed) && Number.isInteger(+trimed) && +trimed <= container.tower) {
+      if (!isNaN(+trimed) && Number.isInteger(+trimed) && +trimed <= container[type] ) {
         return +lArray[type_index];
       }
     } else {
@@ -1035,7 +1034,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (/^[a-zA-Z]+$/.test(trimed)) {
         // onvert letters to  digits
         const result = this.utilityService.convertLetters2Integer(trimed);
-        if (result >= 0 && result <= container.tower) {
+        if (result >= 0 && result <= container[type]) {
           return result;
         }
       }
@@ -1351,24 +1350,42 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           }
         });
       } else {
-        // no sample_label attr yet
-        const sample_label_col = this.getColumnByHeader('SampleLabel');
-        const box_label_col = this.getColumnByHeader('BoxLabel');
-        this.data.forEach((d, i) => {
-          const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
-          const box_label = d[('' + (box_label_col - 1))];
-          if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
-              && +sample_label <= total_samples_of_container && +sample_label > 0
-              && box_label !== undefined && box_label !== null && box_label !== ''
-              && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
-              && (d['invalid'] === undefined || d['invalid'] === false)) {
-            d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
-          } else {
-            d['invalid'] = true;
-            has_warning = true;
-            this.updateRowToRemove4SampleLabelValidation(i);
-          }
-        });
+        if (this.bLabel.box_defined_as_normal) {
+          // normal box label
+          const sample_label_col = this.getColumnByHeader('SampleLabel');
+          this.data.forEach((d, i) => {
+            const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
+            if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
+            && +sample_label <= total_samples_of_container && +sample_label > 0
+            && (d['invalid'] === undefined || d['invalid'] === false) ) {
+              d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
+            } else {
+              d['invalid'] = true;
+              has_warning = true;
+              this.updateRowToRemove4SampleLabelValidation(i);
+            }
+          });
+        } else {
+          // abnormal but seperated
+          // no sample_label attr yet
+          const sample_label_col = this.getColumnByHeader('SampleLabel');
+          const box_label_col = this.getColumnByHeader('BoxLabel');
+          this.data.forEach((d, i) => {
+            const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
+            const box_label = d[('' + (box_label_col - 1))];
+            if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
+                && +sample_label <= total_samples_of_container && +sample_label > 0
+                && box_label !== undefined && box_label !== null && box_label !== ''
+                && this.abnormal_boxes_to_create.indexOf(box_label.replace(/\s/g, '').toLowerCase()) !== -1
+                && (d['invalid'] === undefined || d['invalid'] === false)) {
+              d = this.updateDForIncreaingNumberWithBoxLabel(sample_label, d, max_sample_count);
+            } else {
+              d['invalid'] = true;
+              has_warning = true;
+              this.updateRowToRemove4SampleLabelValidation(i);
+            }
+          });
+        }
       }
     }
     return has_warning;
