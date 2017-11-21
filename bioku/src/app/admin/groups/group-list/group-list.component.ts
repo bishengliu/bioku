@@ -18,10 +18,10 @@ import {GroupService} from '../../../_services/GroupService';
 export class GroupListComponent implements OnInit {
   groups: Observable<Array<Group>>;
   appUrl: string;
-  tableView: Boolean = false;
-  group_count: Number = 0;
-  loading: Boolean = true;
-  load_failed: Boolean = false;
+  tableView = false;
+  group_count = 0;
+  loading = true;
+  load_failed = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private alertService: AlertService, private groupService: GroupService) {
     this.appUrl = this.appSetting.URL;

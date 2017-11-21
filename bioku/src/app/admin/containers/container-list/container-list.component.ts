@@ -22,12 +22,12 @@ export class ContainerListComponent implements OnInit {
   containers: Observable<Array<Container>>;
   groups: Observable<Array<Group>>;
   appUrl: String;
-  tableView: Boolean = false;
+  tableView = false;
   // for list table view only
-  rowspan: Number = 1;
-  container_count: Number = 0;
-  loading: Boolean = true;
-  load_failed: Boolean = false;
+  rowspan = 1;
+  container_count = 0;
+  loading = true;
+  load_failed = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private router: Router,
               private changeDetector: ChangeDetectorRef, private alertService: AlertService,
               private containerService: ContainerService, private groupService: GroupService) {

@@ -21,8 +21,8 @@ import { SetCurrentBoxAction, setCurrentBoxActionCreator, setCurrentBoxActionAsy
   styleUrls: ['./container-box-list.component.css']
 })
 export class ContainerBoxListComponent implements OnInit, OnDestroy {
-  loading: Boolean = true;
-  load_failed: Boolean = false;
+  loading = true;
+  load_failed = false;
   // route param
   id: number;
   private sub: any; // subscribe to params observable
@@ -32,10 +32,10 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   currentBox: Box = null;
   myBoxes: Array<Box> = [];
   searchedBoxes: Array<Box> = [];
-  show_all: Boolean = false;
-  all_boxes_loaded: Boolean = false;
+  show_all = false;
+  all_boxes_loaded = false;
   // allow uploading samples to container
-  allowUpload2Container: Boolean = false;
+  allowUpload2Container = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private utilityService: UtilityService, private router: Router, private containerService: ContainerService,
               private alertService: AlertService, private logAppStateService: LogAppStateService,

@@ -16,7 +16,7 @@ export class ContainerDetailComponent implements OnInit {
   @Input() container: Container;
   @Input() displayMode: String = '';
   appUrl: string;
-  isPIorAssist: Boolean = false;
+  isPIorAssist = false;
   user: User = null;
   totalCapacity: number;
   actualOccupation: number;

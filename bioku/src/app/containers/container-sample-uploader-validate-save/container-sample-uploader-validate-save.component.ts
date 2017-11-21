@@ -36,13 +36,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   abnormal_boxes_to_create: Array<any> = []; // for not following tower-shelf-box
   // final boxes to create before API call
   final_boxes_to_create: Array<Array<number>> = [];
-  validator_under_going: Boolean = true;
-  saving_sample_posting_validation: Boolean = false;
-  validator_failed: Boolean = false;
-  validation_finished: Boolean = false;
-  double_checked: Boolean = false;
-  saving_samples: Boolean = false;
-  saving_samples_failed: Boolean = false;
+  validator_under_going = true;
+  saving_sample_posting_validation = false;
+  validator_failed = false;
+  validation_finished = false;
+  double_checked = false;
+  saving_samples = false;
+  saving_samples_failed = false;
   sampleValidator: SampleValidator = new SampleValidator();
   data: Array<Array<any>> []; // for keep the origin nal copy
   validation_step = 'validator initiated ...';

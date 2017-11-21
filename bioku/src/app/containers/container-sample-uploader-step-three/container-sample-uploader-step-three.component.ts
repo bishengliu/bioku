@@ -26,7 +26,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Input() bLabel: BoxLabel;
   @Input() uploadMode: number;
   @Input() trigerChange;
-  uploaded: Boolean = false;
+  uploaded = false;
   data: Array<Array<any>> = [];
   excelRawData: Array<Array<any>> = [];
   original_file_headers_uploaded: Array<any> = [];
@@ -34,15 +34,15 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   fileName = 'SheetJS.xlsx';
   worksheet_name = 'sheet';
   allowedFileExtension: Array<string> = ['xlsx'];
-  allowedMultipleFiles: Boolean = false;
+  allowedMultipleFiles = false;
   rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
   data_to_display = 100;
-  parsing_file: Boolean = false;
+  parsing_file = false;
 
   sampleFile: SampleFile = new SampleFile();
   column_headers: Array<string> = [];
   sample_type = 'GENERAL';
-  excel_file_has_header: Boolean = true;
+  excel_file_has_header = true;
 
   // excel upload map to sample model
   excelColAttrs: Array<ColumnAttr> = [];
@@ -74,21 +74,21 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       // removeOnSpill: (el, container, handle) => { return container.id !== 'no-drop'; }, // for not this container
    };
   // check for requied column
-  column_header_is_set: Boolean = false;
+  column_header_is_set = false;
   // start to upload excel
-  all_set_start_to_upload_file: Boolean = false;
+  all_set_start_to_upload_file = false;
 
   // no data after upload
   // parse excel file failed
-  excel_parse_failed: Boolean = false;
-  no_valid_sample: Boolean = false;
+  excel_parse_failed = false;
+  no_valid_sample = false;
   // sample date
   short_months: Array<string> = [];
   long_months: Array<string> = [];
   FREEZING_DATE = 'Freezing Date';
   freezing_date_sample_attr_index: number;
-  freezing_date_included: Boolean = false;
-  freezing_date_format_is_set: Boolean = false;
+  freezing_date_included = false;
+  freezing_date_format_is_set = false;
   freezing_date_format: SampleDateFormat = new SampleDateFormat();
   // all dates need to format to '2017-05-01',
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,

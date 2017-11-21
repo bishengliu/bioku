@@ -26,9 +26,9 @@ export class ContainerSampleUploadComponent implements OnInit {
   private sub: any;
   container: Container;
   user: User;
-  allowUpload: Boolean = false;
-  load_failed: Boolean = false;
-  loading: Boolean = true;
+  allowUpload = false;
+  load_failed = false;
+  loading = true;
   appName: string;
   simple_or_advanced_mode: number; // 0, not chosen, 1; simple mode, 2 advanced mode
   constructor( @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private utilityService: UtilityService,
