@@ -154,6 +154,12 @@ body{
   padding-top: 0px !important;
   padding-bottom: 10px !important;
 }
+.topnav_narrow_vertical_padding{ 
+  margin-top: 0px !important;
+  margin-bottom: 5px !important;
+  padding-top: 0px !important;
+  padding-bottom: 7px !important;
+}
 .narrow_secondary_menu{
   border-width: 0px !important;
   border-bottom: 0px !important;
