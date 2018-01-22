@@ -12,7 +12,7 @@ export const AppSetting = {
     // allow upload samples newly created freezer?
     'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // APP VERSION
-    'VERSION': '0.0.1-alpha3',
+    'VERSION': '0.0.1-beta',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
     'MAX_G': -1,
