@@ -58,7 +58,7 @@
       <tr *ngFor="let user of users | async">
         <td>
           <h4 class="ui image header">
-            <img src="{{appUrl + user.profile.photo }}" class="ui mini rounded image">
+            <img *ngIf="user.profile && user.profile.photo" src="{{appUrl + user.profile.photo }}" class="ui mini rounded image">
             <div class="content">
               {{user.first_name + " " + user.last_name}}
             <div class="sub header">{{user.username}}</div>
