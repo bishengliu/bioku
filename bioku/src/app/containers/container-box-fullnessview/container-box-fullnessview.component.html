@@ -1,3 +1,15 @@
-<p>
-  container-box-fullnessview works!
-</p>
+<!-- one card -->
+<div class="content box_cardview" [style.background-color]="color" *ngIf="box != null">
+  <div class="right floated">Box: {{box.box_position}} <span *ngIf="show_user_defined_label && box.label">/{{box.label}}</span></div>
+  <img *ngIf="box.researchers && box.researchers[0].profile && box.researchers[0].profile.photo" class="ui avatar image" src="{{appUrl + box.researchers[0].profile.photo}}">
+  <span class="meta" *ngIf="box.researchers">{{box.researchers[0].first_name.toUpperCase()+ " " + box.researchers[0].last_name.toUpperCase()}}</span>         
+</div>
+<!-- <app-box-layout-simple class="attached" [box]="box"></app-box-layout-simple> -->
+<div class="content" *ngIf="box != null">
+  <span class="ui bottom right floated">
+    <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
+    <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
+  </span>
+  <i class="icon pie chart"></i>{{currentSampleCount}} Samples
+</div>
+<!-- end one card -->

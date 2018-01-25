@@ -35,11 +35,16 @@
 </div>
 <!--after loading-->
 <div class="ui grid row small_padding stackable" *ngIf="!loading && !load_failed">
-  <div *ngIf="searchedBoxes.length > 0">
+  <div *ngIf="searchedBoxes.length > 0 && boxCardview(searchedBoxes.length)">
       <div class="ui link cards">
           <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>
         </div>
   </div>
+  <div *ngIf="searchedBoxes.length > 0 && !boxCardview(searchedBoxes.length)">
+    <div class="ui link cards">
+        <app-container-box-fullnessview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-fullnessview>
+      </div>
+</div>
 </div>
 <!--no record-->
 <div *ngIf="!loading && !load_failed && myBoxes.length > 0 && (searchedBoxes == null || searchedBoxes.length == 0)" 

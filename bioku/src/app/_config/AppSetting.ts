@@ -30,7 +30,7 @@ export const AppSetting = {
     'CONTAINER_IMAGE_WIDTH': 640,
     'CONTAINER_IMAGE_HEIGHT': 640,
     // when show the box card view OR CARD FULLNESS PROGRESS VIEW?
-    'BOX_FULNESS_PROGRESS_VIEW': 10,
+    'BOX_FULNESS_PROGRESS_VIEW': 1,
     // TOKEN EXPIRATION
     'TOKEN_EXPIRATION_HOUR': 6,
     // show user defined box label?

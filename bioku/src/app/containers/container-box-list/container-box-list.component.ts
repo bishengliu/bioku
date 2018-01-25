@@ -34,6 +34,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   searchedBoxes: Array<Box> = [];
   show_all = false;
   all_boxes_loaded = false;
+  max_box_cardview_switch = 1;
   // allow uploading samples to container
   allowUpload2Container = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
@@ -41,6 +42,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
               private alertService: AlertService, private logAppStateService: LogAppStateService,
               private refreshService: RefreshService, ) {
     this.allowUpload2Container = this.appSetting.ALLOW_UPLOAD_SAMPLES_2_CONTAINER;
+    this.max_box_cardview_switch = this.appSetting.BOX_FULNESS_PROGRESS_VIEW;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -168,7 +170,9 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       this.loading = false;
     }
   }
-
+  boxCardview(boxCount: number) {
+    return ( boxCount > 0 && boxCount <= this.max_box_cardview_switch) ? true : false;
+  }
   ngOnDestroy() {
     this.sub.unsubscribe();
     if (this.querySub !== undefined) {
