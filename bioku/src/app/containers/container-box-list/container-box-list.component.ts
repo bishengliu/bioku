@@ -133,7 +133,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
           this.displaySelectedBox(<Box>data); }
           this.loading = false;
       },
-      () => {
+      (err) => {
+        console.log(err);
         this.loading = false;
         this.load_failed = true;
         this.alertService.error('Something went wrong, fail to load boxes from the server!', true);

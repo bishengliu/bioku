@@ -59,7 +59,7 @@ export class ContainerBoxFullnessviewComponent implements OnInit {
   ngOnInit() {
     this.rate =  this.box.rate == null ? 0 : this.box.rate;
     this.color = this.box.color == null ? '#ffffff' : this.box.color;
-    this.currentSampleCount = this.box.samples != null ? this.box.samples.filter((s: Sample) => s.occupied === true).length : 0;
+    this.currentSampleCount = this.box.sample_count;
     this.boxCapacity = this.box.box_horizontal * this.box.box_vertical;
   }
 }
