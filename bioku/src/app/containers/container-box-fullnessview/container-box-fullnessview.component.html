@@ -12,4 +12,7 @@
   </span>
   <i class="icon pie chart"></i>{{currentSampleCount}} Samples
 </div>
+<div class="extra content">
+  <sui-progress class="indicating" [value]="currentSampleCount" [maximum]="boxCapacity" [autoSuccess]="false" [precision]="0">FULLNESS</sui-progress>
+</div>
 <!-- end one card -->

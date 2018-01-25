@@ -17,6 +17,7 @@ export class Box {
     description: string;
     researchers: Array<User>;
     samples: Array<Sample>;
+    sampleCount: number;
 }
 
 export class BoxFilter {
