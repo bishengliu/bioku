@@ -3,14 +3,14 @@ export const AppSetting = {
     ////////////////////////////////////////// CHECK THESE BEFORE PRODUCTION BUILD/////////////////
     // API BACKEND REST URL
     // amazon testing server backend server
-    // 'URL': 'http://34.216.52.204:8000',
-    'URL': 'http://127.0.0.1:8000',
+    'URL': 'http://34.216.52.204:8000',
+    // 'URL': 'http://127.0.0.1:8000',
     // 'URL': 'http://192.168.0.110:8000',
     // 'URL': 'http://127.0.0.1/biodataware',
     // APP URL FOR URL LINK TO THE FRONT-END
     // amazon testing server content server
-    // 'APP_URL': 'http://34.216.52.204',
-    'APP_URL': 'http://127.0.0.1:4200',
+    'APP_URL': 'http://34.216.52.204',
+    // 'APP_URL': 'http://127.0.0.1:4200',
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
     // allow upload samples newly created freezer?
