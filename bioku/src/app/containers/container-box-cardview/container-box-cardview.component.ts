@@ -46,12 +46,16 @@ export class ContainerBoxCardviewComponent implements OnInit {
   }
   updateRate(rate: number, box_position: string) {
     this.rate = rate;
-    this.containerService.updateBoxRate(this.container.pk, box_position, rate)
-    .subscribe(() => {}, (err) => console.log(err));
+    if (this.container !== null) {
+      this.containerService.updateBoxRate(this.container.pk, box_position, rate)
+      .subscribe(() => {}, (err) => console.log(err));
+    }
   }
   clearRate(box_position: string) {
-    this.containerService.updateBoxRate(this.container.pk, box_position, 0)
-    .subscribe(() => this.rate = 0, (err) => console.log(err));
+    if (this.container !== null) {
+      this.containerService.updateBoxRate(this.container.pk, box_position, 0)
+      .subscribe(() => this.rate = 0, (err) => console.log(err));
+    }
   }
   ngOnInit() {
     if (this.box != null) {

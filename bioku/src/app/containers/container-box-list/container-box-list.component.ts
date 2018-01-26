@@ -166,8 +166,22 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       }
     } else {
       // show favourite
-      this.searchedBoxes = this.myBoxes.filter((box, i) => { return box.rate != null; });
+      this.searchedBoxes = this.myBoxes.filter((box, i) => { return box.rate != null && box.rate > 0; });
       this.loading = false;
+      // update box layout
+      if (this.searchedBoxes.length <= this.appSetting.BOX_FULNESS_PROGRESS_VIEW) {
+        this.loading = true;
+        const favorites$: Observable<any> = this.containerService.containerGroupFavoriteBoxes(this.id);
+        favorites$.subscribe((data: any) => {
+            this.searchedBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'box_position'));
+            this.loading = false;
+            this.all_boxes_loaded = true;
+        }, () => {
+          // fall back to use empty layout
+          this.searchedBoxes = this.myBoxes.filter((box, i) => { return box.rate != null && box.rate > 0; });
+          this.loading = false;
+        });
+      }
     }
   }
   boxCardview(boxCount: number) {
