@@ -118,7 +118,6 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       })
       .subscribe((data: any) => {
         if (Array.isArray(data)) {
-          // if it array, then is the inital loading
           this.myBoxes = data.sort(this.utilityService.sortArrayByMultipleProperty('-rate', 'box_position'));
           // this.searchedBoxes = this.myBoxes;
           if (this.show_all) {

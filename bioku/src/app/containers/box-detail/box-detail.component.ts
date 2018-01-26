@@ -137,7 +137,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       .mergeMap((container: any) => {
         // set the container
         this.container = container;
-        if (this.box != null) {
+        if (this.box != null && this.box.samples !== undefined && this.box.samples.length > 0) {
             return Observable.of(this.box);
         } else {
           // get group boxes of the container
