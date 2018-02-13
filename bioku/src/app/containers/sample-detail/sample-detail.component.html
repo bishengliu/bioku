@@ -1,4 +1,4 @@
-<table class="ui sortable small striped compact padded single line table">
+<table class="ui sortable small striped compact single line table no_border narrow_table narrow_imput">
     <tbody>
       <!-- buttons -->
        <tr>
@@ -13,8 +13,8 @@
        </tr>
        <!-- general -->
       <tr>
-        <th class="six wide" [style.color]="sample.color">name & type</th>
-        <td class="ten wide">
+        <th class="four wide" [style.color]="sample.color">name & type</th>
+        <td class="twelve wide">
           <div class="ui input wide-form">
             <input class="" type="text" [(ngModel)]="sample.name" placeholder="update sample name ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'name', true)">
@@ -33,8 +33,8 @@
         </td>
       </tr>
       <tr>
-          <td class="six wide" [style.color]="sample.color">code & tag </td>
-          <td class="ten wide">
+          <td class="four wide" [style.color]="sample.color">code & tag </td>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.registration_code" placeholder="sample primary code ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'registration_code', false)">
@@ -44,8 +44,8 @@
           </td>
       </tr>     
       <tr>
-          <th class="six wide">official name</th>
-          <td class="ten wide">
+          <th class="four wide">official name</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.official_name" placeholder="update sample official name ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'official_name', true)">
@@ -53,8 +53,8 @@
           </td>
       </tr>
       <tr>
-        <th class="">position</th>
-        <td class="">
+        <th class="four wide">position</th>
+        <td class="twelve wide">
           <div class="ui grid">                    
             <div class="three wide column"><span>{{sample.position}}</span></div>
             <div *ngIf="sample.occupied" class="two wide column" suiPopup popupText="Move/switch current sample to another position in the box">
@@ -85,8 +85,8 @@
         </td>
       </tr>      
       <tr *ngIf="sample.type !=='CELL' && sample.type !=='VIRUS'">
-        <td class="">quantity</td>
-        <td class="ten wide">
+        <td class="four wide">quantity</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="numner" step=0.001 
             [(ngModel)]="sample.quantity" placeholder="sample quantity ..." 
@@ -99,8 +99,8 @@
       </tr>
       <!-- virus-->
       <tr *ngIf="sample.type === 'VIRUS'">
-          <th class="six wide">plasmid</th>
-          <td class="ten wide">
+          <th class="four wide">plasmid</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.plasmid" placeholder="update plasmid ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'plasmid', true)">
@@ -108,8 +108,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type === 'VIRUS'">
-          <th class="six wide">titer & unit</th>
-          <td class="ten wide">
+          <th class="four wide">titer & unit</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.titration_titer" placeholder="titer ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_titer', true)">
@@ -119,8 +119,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type === 'VIRUS'">
-          <th class="six wide">celltype & code</th>
-          <td class="ten wide">
+          <th class="four wide">celltype & code</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
                 <input class="" type="text" [(ngModel)]="sample.titration_cell_type" placeholder="cell type ..." 
                 (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'titration_cell_type', true)">
@@ -131,8 +131,8 @@
       </tr>
       <!-- Oligo OR gRNA OLIGO-->
       <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
-          <th class="six wide">oligo name</th>
-          <td class="ten wide">
+          <th class="four wide">oligo name</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.oligo_name" placeholder="update oligo name ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_name', true)">
@@ -140,8 +140,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
-          <th class="six wide">oligo sequence</th>
-          <td class="ten wide">
+          <th class="four wide">oligo sequence</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.oligo_sequence" placeholder="update oligo sequence ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_sequence', true)">
@@ -149,8 +149,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
-          <th class="six wide">length & %GC</th>
-          <td class="ten wide">
+          <th class="four wide">length & %GC</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="number" [(ngModel)]="sample.oligo_length" placeholder="update oligo length ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'oligo_length', true)">
@@ -160,8 +160,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type === 'OLIGO' || sample.type === 'gRNA_OLIGO'">
-          <th class="six wide">target sequence</th>
-          <td class="ten wide">
+          <th class="four wide">target sequence</th>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.target_sequence" placeholder="update oligo target sequence ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'target_sequence', true)">
@@ -170,8 +170,8 @@
       </tr>
       <!-- construct only -->
       <tr *ngIf="sample.type==='CONSTRUCT'">
-        <td class="">clone nr. & 1st maxi</td>
-        <td class="ten wide">
+        <td class="four wide">clone nr. & 1st maxi</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.clone_number" placeholder="construct clone number ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'clone_number', false)">
@@ -181,8 +181,8 @@
         </td>
       </tr>
       <tr *ngIf="sample.type==='CONSTRUCT'">
-        <td class="">260/280 & R.E. analysis</td>
-        <td class="ten wide">
+        <td class="four wide">260/280 & R.E. analysis</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="number" step="0.01" [(ngModel)]="sample.against_260_280" placeholder="construct 260/280 ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'against_260_280', false)">
@@ -192,8 +192,8 @@
         </td>
       </tr>
       <tr *ngIf="sample.type==='CONSTRUCT'">
-        <td class="">feature & marker</td>
-        <td class="ten wide">
+        <td class="four wide">feature & marker</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.feature" placeholder="construct feature ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'feature', false)">
@@ -203,8 +203,8 @@
         </td>
       </tr>
       <tr *ngIf="sample.type==='CONSTRUCT'">
-        <td class="">backbone & insert</td>
-        <td class="ten wide">
+        <td class="four wide">backbone & insert</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.backbone" placeholder="construct backbone ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'backbone', false)">
@@ -214,8 +214,8 @@
         </td>
       </tr>      
       <tr *ngIf="sample.type==='CONSTRUCT'">
-        <td class="">glycerol stock & strain</td>
-        <td class="ten wide">
+        <td class="four wide">glycerol stock & strain</td>
+        <td class="twelve wide">
           <div class="ui input wide-form">
               <div class="ui slider checkbox">
                   <input type="checkbox" [(ngModel)]="sample.has_glycerol_stock" id="glycerol_stock"
@@ -230,8 +230,8 @@
 
       <!-- cell line only  -->
       <tr *ngIf="sample.type==='CELL'">
-          <td class="">passage nr. & amount</td>
-          <td class="ten wide">
+          <td class="four wide">passage nr. & amount</td>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.passage_number" placeholder="passage number ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'passage_number', false)">
@@ -241,8 +241,8 @@
           </td>
       </tr>
       <tr *ngIf="sample.type==='CELL'">
-          <td class="">project & creator</td>
-          <td class="ten wide">
+          <td class="four wide">project & creator</td>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.project" placeholder="project ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'project', false)">
@@ -254,8 +254,8 @@
 
       <!-- pathology only -->
       <tr *ngIf="sample.type==='TISSUE'">
-        <td class="">pathology code</td>
-        <td class="ten wide">
+        <td class="four wide">pathology code</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.pathology_code" placeholder="update sample pathology code ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'pathology_code', false)">
@@ -263,8 +263,8 @@
         </td>
       </tr>
       <tr *ngIf="sample.type==='TISSUE'">
-        <td class="">tissue</td>
-        <td class="ten wide">
+        <td class="four wide">tissue</td>
+        <td class="twelve wide">
             <div class="ui icon input wide-form">
                 <input class="" type="text" [(ngModel)]="sample.tissue" placeholder="update sample tissue ..." 
                 (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'tissue', false)">
@@ -272,7 +272,7 @@
           </td>
       </tr>
       <!-- not occupied -->
-      <tr *ngIf="!sample.occupied"><td class="">date out</td><td class="">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
+      <tr *ngIf="!sample.occupied"><td class="four wide">date out</td><td class="twelve wide">{{sample.date_out | date: 'yyyy-MM-dd' }}</td></tr>
       <!-- general -->
       <tr>
         <td class="">freezing date</td>            
@@ -282,8 +282,8 @@
         </my-date-picker>
       </tr>
       <tr>
-        <td class="">freezing code</td>
-        <td class="ten wide">
+        <td class="four wide">freezing code</td>
+        <td class="twelve wide">
           <div class="ui icon input wide-form">
             <input class="" type="text" [(ngModel)]="sample.freezing_code" placeholder="update sample freezing code ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'freezing_code', false)">
@@ -291,8 +291,8 @@
         </td>
       </tr>
       <tr>
-          <td class="six wide">external code </td>
-          <td class="ten wide">
+          <td class="four wide">external code </td>
+          <td class="twelve wide">
             <div class="ui icon input wide-form">
               <input class="" type="text" [(ngModel)]="sample.reference_code" placeholder="reference to external or another sample ..." 
               (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'reference_code', false)">
@@ -300,8 +300,8 @@
           </td>
       </tr> 
       <tr>
-        <td class="">attachments</td>
-        <td class="">
+        <td class="four wide">attachments</td>
+        <td class="twelve wide">
             <a *ngIf="attachment_upload== false" class="ui right floated primary mini compact icon basic button" 
                 (click)="displayAttachmentUpload()">
                 <i class="cloud upload icon"></i>
@@ -357,22 +357,22 @@
             </div> 
           </td>
         </tr>
-      <tr>
-        <td class="">researcher</td>
-        <td class="">
+      <!-- <tr>
+        <td class="four wide">researcher</td>
+        <td class="twelve wide">
             <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
               <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
                 {{researcher.first_name != null ? researcher.first_name + ' ' + researcher.last_name : ""}}
               </span>
             </div> 
           </td>
-      </tr>
+      </tr> -->
       <tr>
-        <td class="">comments</td>
-        <td class="ui form">
+        <td class="four wide">comments</td>
+        <td class="ui form twelve wide">
           <div class="field wide-form">
             <textarea class=""
-            rows="2"
+            rows="1"
             [(ngModel)]="sample.description" 
             placeholder="update sample description ..." 
             (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'description', false)">

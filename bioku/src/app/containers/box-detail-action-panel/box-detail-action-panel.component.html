@@ -30,14 +30,14 @@
       </div>
       <!--msg-->
     </div>
-    <!--single selection-->
+    <!-- single selection style="overflow-y:scroll;white-space:nowrap;"-->
     <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
-        class="ui segment" style="overflow-y:scroll;white-space:nowrap;">
-      <app-sample-detail
-      [box]="box"
-      [container]="container"
-      [samplePK]="samplePKs[0]">
-    </app-sample-detail>
+        class="ui segment mini_around" >
+      <app-sample-detail       
+        [box]="box"
+        [container]="container"
+        [samplePK]="samplePKs[0]">
+      </app-sample-detail>
     </div>
 
   <!--multiple selection-->

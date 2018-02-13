@@ -60,7 +60,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     this.searchForm = fb.group({
       // general
       'container': [, Validators.required],
-      'type': [, Validators.required],
+      'type': [, ],
       'name': [, ],
       'tag': [, ],
       'label': [, ],

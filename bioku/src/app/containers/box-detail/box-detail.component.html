@@ -50,8 +50,10 @@
       (sampleSelected)="captureSampleSelected($event)" 
       (cellSelected)="captureCellSelected($event)">
     </app-box-layout>
+  </div>
+  <div class="sixteen wide column">
     <div *ngIf="(selectedSamples != null && selectedSamples.length > 0) || (selectedCells != null && selectedCells.length > 0)" 
-        class="sticky-box-top-left">
+      class="sticky-box-top-left">
         <app-box-detail-action-panel
         [box]="box"
         [container]="container"
