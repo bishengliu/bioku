@@ -20,7 +20,7 @@
         [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
         <td class="collapsing">
           <div>
-            <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15)? (sample.name | slice:0:15)+'..':(sample.name) }}</span>
+            <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>25)? (sample.name | slice:0:25)+'..':(sample.name) }}</span>
             <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>
             <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
           </div>        
