@@ -1,8 +1,8 @@
 <div class="ui segments" *ngIf="show_form">
-  <div class="ui tertiary segment">
+  <div class="ui tertiary top attached segment">
     <a><i class="icon filter"></i>FILTER SAMPLES</a>
   </div>
-  <div class="ui black segment">
+  <div class="ui black attached segment">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
       <button *ngIf="searchForm.touched || sample_types.length > 0" type="submit" class="ui mini fluid primary button">
               <i class="icon search"></i> SEARCH SAMPLES 
@@ -215,5 +215,8 @@
         </div>
       </div>
     </form>
+  </div>
+  <div *ngIf="presearch_sample_count > 250" class="ui mini button attached message">
+      <p>{{presearch_sample_count}} samples found; it will take very long time to load all the sample details.</p>
   </div>
 </div>

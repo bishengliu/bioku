@@ -370,6 +370,25 @@ export class ContainerService {
             .map((response: Response) => response.json())
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
+    // sample presearch return the sample count
+    PreSearchSample(obj: SampleSearch) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'presearch_samples/';
+        // format type
+        if (Array.isArray(obj.type)) {
+            if (obj.type.length === 0) {
+                obj.type = '';
+            } else if (obj.type.length === 1) {
+                obj.type = obj.type[0];
+            } else {
+                obj.type = obj.type.join('|');
+            }
+        }
+        const body: string = JSON.stringify(obj);
+        return this.http.post(query_url, body, this.options)
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // upload samples to container
     uploadSample2Container(data: Array<UploadSample>, container_pk: number) {
         this.updateState();

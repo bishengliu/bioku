@@ -5,6 +5,7 @@ import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { SampleSearch } from '../../_classes/Sample';
 import { Container, ContainerNamePK } from '../../_classes/Container';
 import {  LocalStorageService } from '../../_services/LocalStorageService';
+import {  ContainerService } from '../../_services/ContainerService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -46,9 +47,11 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   // SAPMPLE TYPE
   sample_type: String = '';
   sample_types: Array<String> = new Array<String>();
+  // sample presearch count
+  presearch_sample_count: Number = -1;
   searchForm: FormGroup;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-              private localStorageService: LocalStorageService,
+              private localStorageService: LocalStorageService, private containerService: ContainerService,
               private cValidators: CustomFormValidators, private fb: FormBuilder) {
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -89,6 +92,13 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       'pathology_code': [, ],
       'tissue': [, ]
       });
+      // watch form changes
+    this.searchForm.valueChanges
+    .mergeMap((data: SampleSearch) => this.containerService.PreSearchSample(data))
+    .subscribe(
+      (count: Number) => { this.presearch_sample_count = count },
+      () => { this.presearch_sample_count = 0; }
+    );
   }
 
   updateContainer(value: any) {
