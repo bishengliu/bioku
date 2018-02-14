@@ -31,7 +31,7 @@
                     <sui-multi-select class="selection wide-form"
                       id="type"
                       [ngModel]="''"
-                      [isSearchable]="searchable"
+                      [options]="all_sample_types"
                       [formControl]="searchForm.controls['type']" 
                       (ngModelChange)="updateType($event)">
                         <sui-select-option *ngFor="let option of all_sample_types" value="{{option}}"></sui-select-option>
@@ -216,7 +216,7 @@
       </div>
     </form>
   </div>
-  <div *ngIf="presearch_sample_count > 250" class="ui mini button attached message">
-      <p>{{presearch_sample_count}} samples found; it will take very long time to load all the sample details.</p>
+  <div *ngIf="presearch_sample_count > 0" class="ui mini button attached message">
+      <p>{{presearch_sample_count}} samples found; <span class="red-text" *ngIf="presearch_sample_count > 250">too many sample matched! It will take very long time to load all the sample details.</span></p>
   </div>
 </div>

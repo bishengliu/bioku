@@ -13,6 +13,8 @@ import { AppState } from '../../_redux/root/state';
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 // mydatepicker
 import {IMyOptions} from 'mydatepicker';
+//rxjs
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sample-search-form',
@@ -94,9 +96,15 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       });
       // watch form changes
     this.searchForm.valueChanges
-    .mergeMap((data: SampleSearch) => this.containerService.PreSearchSample(data))
+    .mergeMap((data: SampleSearch) => {
+      if (data.occupied === null ) {
+        return Observable.of({'count': 0 });
+      } else {
+        return this.containerService.PreSearchSample(data);
+      }
+    })
     .subscribe(
-      (count: Number) => { this.presearch_sample_count = count },
+      (res: any) => { this.presearch_sample_count = res.count; console.log(this.presearch_sample_count) },
       () => { this.presearch_sample_count = 0; }
     );
   }
