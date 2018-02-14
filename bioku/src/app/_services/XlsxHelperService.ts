@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { AlertService } from '../_services/AlertService';
+import { UploadSample, Sample } from '../_classes/Sample';
 @Injectable()
 export class XlsxHelperService {
     workbook_opts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'binary' };
@@ -53,7 +54,16 @@ export class XlsxHelperService {
         const wbout: string = XLSX.write(workbook, this.workbook_opts);
         saveAs(new Blob([this.string2ArrayBuffer(wbout)]), fileName);
     }
-
+    // save 2 local json
+    export2Json(samples: Array<UploadSample>) {
+        const array = [];
+        const filContent: string = JSON.stringify(samples);
+        array.push(filContent);
+        const file = new File(array, 'samples.json', {type: 'text/plain;charset=utf-8'});
+        saveAs(file, 'samples.json');
+        // const blob = new Blob(samples, {type: 'text/plain;charset=utf-8'});
+        // saveAs(blob, 'samples.json');
+    }
     string2ArrayBuffer(s: string): ArrayBuffer {
         const buf: ArrayBuffer = new ArrayBuffer(s.length);
         const view: Uint8Array = new Uint8Array(buf);

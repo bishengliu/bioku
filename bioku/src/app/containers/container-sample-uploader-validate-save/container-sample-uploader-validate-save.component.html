@@ -28,7 +28,10 @@
         <button *ngIf="validation_finished" class="fluid ui red bottom attached  icon button" (click)="exportXlsx()"> <i class="icon file excel outline"></i> DOUBLE-CHECK BEFORE SAVING
           <i class="icon caret right"></i>
         </button>
-      <button *ngIf="validation_finished && double_checked" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
+      <button *ngIf="validation_finished && double_checked && !allow_save_2_json" class="fluid ui blue bottom attached button" (click)="saveSamples()"> SAVE SAMPLES
+        <i class="icon caret right"></i>
+      </button>
+      <button *ngIf="validation_finished && double_checked && allow_save_2_json" class="fluid ui blue bottom attached button" (click)="save2Json()"> SAVE AS JSON
         <i class="icon caret right"></i>
       </button>
     </div>

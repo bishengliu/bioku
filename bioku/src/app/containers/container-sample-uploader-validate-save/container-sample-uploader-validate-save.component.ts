@@ -16,6 +16,7 @@ import { saveAs } from 'file-saver';
 import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { ContainerService } from '../../_services/ContainerService';
 import { AlertService } from '../../_services/AlertService';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 @Component({
   selector: 'app-container-sample-uploader-validate-save',
   templateUrl: './container-sample-uploader-validate-save.component.html',
@@ -70,9 +71,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   worksheet_name = 'sheet';
   rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
   col_offset = 0; // for get the correct col number
+  allow_save_2_json = false;
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
               private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService,
-              private router: Router, private xlsxHelperService: XlsxHelperService) {
+              private router: Router, private xlsxHelperService: XlsxHelperService, @Inject(APP_CONFIG) private appSetting: any) {
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -86,6 +88,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.sampleValidator.validator_pointer = 0;
     this.sampleValidator.validation_status = true;
     this.sampleValidator.validator_outputs = new Array<ValidatorOutput>();
+    // allow save 2 json for manually upload
+    this.allow_save_2_json = this.appSetting.ALLOW_UPLOAD_SAMPLE_2_JSON;
     // emit step
     this.valiadtionStep$
     .subscribe(
@@ -1595,6 +1599,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       this.saving_samples_failed = true;
       this.alertService.error('Failed to upload your samples!', true);
     });
+  }
+  save2Json() {
+    // convert data
+    const samples: Array<UploadSample> = this.convertData2Samples();
+    this.xlsxHelperService.export2Json(samples);
   }
   // convert to samples
   convertData2Samples() {
