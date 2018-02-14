@@ -4,7 +4,7 @@
   </div>
   <div class="ui black segment">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
-      <button *ngIf="searchForm.touched" type="submit" class="ui mini fluid primary button">
+      <button *ngIf="searchForm.touched || sample_types.length > 0" type="submit" class="ui mini fluid primary button">
               <i class="icon search"></i> SEARCH SAMPLES 
       </button>
       <div class="ui grid">
@@ -28,12 +28,20 @@
                 <td colspan="2">
                   <div class="teal-text"><em><strong>sample type</strong></em></div>
                   <div class="ui input wide-form">
-                    <select class="ui tiny tight_around dropdown" id="type" [ngModel]="''" [formControl]="searchForm.controls['type']" (change)="updateType($event)">
+                    <sui-multi-select class="selection wide-form"
+                      id="type"
+                      [ngModel]="''"
+                      [isSearchable]="searchable"
+                      [formControl]="searchForm.controls['type']" 
+                      (ngModelChange)="updateType($event)">
+                        <sui-select-option *ngFor="let option of all_sample_types" value="{{option}}"></sui-select-option>
+                    </sui-multi-select>
+                    <!-- <select class="ui tiny tight_around dropdown" id="type" [ngModel]="''" [formControl]="searchForm.controls['type']" (ngModelChange)="updateType($event)" multiple>
                       <option value=""> -- select -- </option>
                       <option [ngValue]="option"
                       *ngFor="let option of all_sample_types" value="{{option}}">{{option}}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
                   <div *ngIf="searchForm.controls['type'].hasError('required') && searchForm.controls['type'].touched" class="ui mini negative message">Sample type is required
                   </div>
@@ -62,7 +70,8 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="sample_type !='OLIGO' && sample_type !='gRNA_OLIGO'">
+              <!-- *ngIf="sample_type !='OLIGO' && sample_type !='gRNA_OLIGO'" -->
+              <tr *ngIf="sample_types.indexOf('OLIGO') === -1 && sample_types.indexOf('gRNA_OLIGO') === -1 ">
                 <td colspan="2">
                   <div class="teal-text"><em><strong>freezing date from: </strong></em></div>
                   <my-date-picker name="freezing_date_from" [options]="myDatePickerOptions" (dateChanged)="updateSampleFromDate($event)"></my-date-picker>
@@ -72,8 +81,8 @@
                   <my-date-picker name="freezing_date_to" [options]="myDatePickerOptions" (dateChanged)="updateSampleToDate($event)"></my-date-picker>
                 </td>
               </tr>
-              <!-- Oligo OR gRNA OLIGO-->
-              <tr *ngIf="sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO'">
+              <!-- Oligo OR gRNA OLIGO *ngIf="sample_type=='OLIGO'|| sample_type=='gRNA_OLIGO'"-->
+              <tr *ngIf="sample_types === ['OLIGO', 'gRNA_OLIGO'] || sample_types === ['gRNA_OLIGO'] || sample_types === ['OLIGO']">
                 <td colspan="2">
                   <div class="teal-text"><em><strong>oligo name</strong></em></div>
                   <div class="ui input wide-form">
@@ -124,15 +133,15 @@
                   <div class="teal-text"><em><strong>Occupation</strong></em></div>
                   <div class="ui input wide-form">
                     <select class="ui tiny tight_around dropdown" id="occupied" [ngModel]="0" [formControl]="searchForm.controls['occupied']">
-                                  <option value="0" selected> Occupied only </option>
-                                  <option value="1"> Taken-Out only </option>
-                                  <option value="2"> Both </option>
-                                </select>
+                      <option value="0" selected> Occupied only </option>
+                      <option value="1"> Taken-Out only </option>
+                      <option value="2"> Both </option>
+                    </select>
                   </div>
                 </td>
               </tr>
-              <!-- dates -->
-              <tr *ngIf="sample_type =='OLIGO' || sample_type =='gRNA_OLIGO'">
+              <!-- dates *ngIf="sample_type =='OLIGO' || sample_type =='gRNA_OLIGO'"-->
+              <tr *ngIf="sample_types === ['OLIGO', 'gRNA_OLIGO'] || sample_types === ['gRNA_OLIGO'] || sample_types === ['OLIGO']">
                 <td colspan="2">
                   <div class="teal-text"><em><strong>freezing date from: </strong></em></div>
                   <my-date-picker name="freezing_date_from" [options]="myDatePickerOptions" (dateChanged)="updateSampleFromDate($event)"></my-date-picker>
@@ -142,8 +151,8 @@
                   <my-date-picker name="freezing_date_to" [options]="myDatePickerOptions" (dateChanged)="updateSampleToDate($event)"></my-date-picker>
                 </td>
               </tr>
-              <!-- virus-->
-              <tr *ngIf="sample_type=='VIRUS'">
+              <!-- virus *ngIf="sample_type=='VIRUS'"-->
+              <tr *ngIf="sample_types.length === 1 && sample_types.indexOf('VIRUS') != -1">
                 <td>
                   <div class="teal-text"><em><strong>plasmid</strong></em></div>
                   <div class="ui input wide-form">
@@ -158,8 +167,8 @@
                 </td>
                 <td colspan="2"></td>
               </tr>
-              <!-- construct only -->
-              <tr *ngIf="sample_type=='CONSTRUCT'">
+              <!-- construct only *ngIf="sample_type=='CONSTRUCT'"-->
+              <tr *ngIf="sample_types.length === 1 && sample_types.indexOf('CONSTRUCT') != -1">
                 <td>
                   <div class="teal-text"><em><strong>feature</strong></em></div>
                   <div class="ui input wide-form">
@@ -185,8 +194,8 @@
                   </div>
                 </td>
               </tr>
-              <!-- pathology only -->
-              <tr *ngIf="sample_type=='TISSUE'">
+              <!-- pathology only *ngIf="sample_type=='TISSUE'" -->
+              <tr *ngIf="sample_types.length === 1 && sample_types.indexOf('TISSUE') != -1">
                 <td>
                   <div class="teal-text"><em><strong>tissue</strong></em></div>
                   <div class="ui input wide-form">

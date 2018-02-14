@@ -45,6 +45,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   };
   // SAPMPLE TYPE
   sample_type: String = '';
+  sample_types: Array<String> = new Array<String>();
   searchForm: FormGroup;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private localStorageService: LocalStorageService,
@@ -53,7 +54,6 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     this.updateState();
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     this.sample_type = '';
-
     this.show_form = true;
     // this.show_button = false;
     // formGroup
@@ -95,7 +95,9 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     this.container_to_search = value.target.value;
   }
   updateType(value: any) {
-    this.sample_type = value.target.value;
+    // console.log(value);
+    this.sample_types = value;
+    // this.sample_type = value.target.value;
   }
   updateSampleFromDate(value: any) {
     this.freezing_date_from = value.formatted;
@@ -131,6 +133,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   onSearch(values: SampleSearch) {
+    // console.log(values);
     // need to update search obj
     values.freezing_date_from = this.freezing_date_from;
     values.freezing_date_to = this.freezing_date_to;

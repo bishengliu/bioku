@@ -355,6 +355,16 @@ export class ContainerService {
     SearchSample(obj: SampleSearch) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'search_samples/';
+        // format type
+        if (Array.isArray(obj.type)) {
+            if (obj.type.length === 0) {
+                obj.type = '';
+            } else if (obj.type.length === 1) {
+                obj.type = obj.type[0];
+            } else {
+                obj.type = obj.type.join('|');
+            }
+        }
         const body: string = JSON.stringify(obj);
         return this.http.post(query_url, body, this.options)
             .map((response: Response) => response.json())
