@@ -19,6 +19,7 @@
           [attr.position]="v+'-'+h"
           [dragula]='"bag"' [dragulaOptions]="dragulaOptions"
           *ngFor="let h of hArray" (click)="toggleSelection(h,v)" 
+          (dblclick)="displaySample(h,v)"
           [ngClass]="{'sample-cell-selected': selectedCells.indexOf(v+h) !==- 1, 'search-matched-sample': searchedBoxSamples.indexOf(v+h) !==- 1 }">
           <div *ngFor="let sample of pickerSamples(h,v)">            
             <div>

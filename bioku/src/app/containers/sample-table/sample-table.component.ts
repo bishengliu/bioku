@@ -59,7 +59,10 @@ export class SampleTableComponent implements OnInit, OnChanges {
     // emit observable
     this.sampleSelected.emit(this.selectedSamples);
   }
-
+  // display sample details upon dbclick
+  displaySample(sample: Sample) {
+    console.log(sample);
+  }
   updateState() {
     const state = this.appStore.getState();
     if (state.authInfo && state.authInfo.authUser) {

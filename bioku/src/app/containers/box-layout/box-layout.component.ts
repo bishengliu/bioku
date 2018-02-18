@@ -196,7 +196,18 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     return this.samples.filter((s: Sample) => s.occupied === true &&
                                               s.position.toLowerCase() === (v + h).toLowerCase())
   }
-
+  // display sample details upon dbclick
+  displaySample(h: number, v: string) {
+    // find the sample of the position
+    let sample_clicked = new Sample();
+    const samples_picked: Array<Sample> = this.pickerSamples(h, v);
+    if (samples_picked === undefined || samples_picked === null || samples_picked.length === 0) {
+      sample_clicked = new Sample();
+    } else {
+      sample_clicked = samples_picked[0];
+    }
+    console.log(sample_clicked);
+  }
   forceRefresh() {
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
   }
