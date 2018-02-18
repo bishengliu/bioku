@@ -35,6 +35,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   selectedCells: Array<string> = []; // for box view only
   searchedBoxSamples: Array<string> = []; // cell position
   box_view: Boolean = true;
+  dbClickedSamplePK = -1; // for dbclick
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
@@ -112,13 +113,14 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   }
 
   captureDbClickedSample(pk: number) {
-    console.log('sample dbclicked', pk);
     let sample: Sample = new Sample();
     const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
     if (samples_matched !== null && samples_matched.length > 0) {
       sample = samples_matched[0];
-      console.log('sample dbclicked', sample);
       // activate the model
+      this.dbClickedSamplePK = sample.pk;
+    } else {
+      this.dbClickedSamplePK = -1;
     }
   }
 

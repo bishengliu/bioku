@@ -9,7 +9,7 @@ import { HttpModule } from '@angular/http';
 import { ColorPickerModule } from 'ng2-color-picker';
 // symantic -ui
 // https://edcarroll.github.io/ng2-semantic-ui/#/getting-started
-import {SuiModule} from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui';
 // sidebar
 // https://www.npmjs.com/package/ng-sidebar
 import { SidebarModule } from 'ng-sidebar';
@@ -99,8 +99,10 @@ import { XlsxUploadComponent } from './containers/xlsx-upload/xlsx-upload.compon
 import { FileDropDirective } from './_directives/file-drop/file-drop.directive'; // driective
 import { ContainerSampleUploadComponent } from './containers/container-sample-upload/container-sample-upload.component';
 import { ContainerSampleUploadHelperComponent } from './containers/container-sample-upload-helper/container-sample-upload-helper.component';
+// tslint:disable-next-line:max-line-length
 import { ContainerSampleUploaderStepOneComponent } from './containers/container-sample-uploader-step-one/container-sample-uploader-step-one.component';
 import { ContainerSampleUploaderStepTwoComponent } from './containers/container-sample-uploader-step-two/container-sample-uploader-step-two.component';
+// tslint:disable-next-line:max-line-length
 import { ContainerSampleUploaderStepThreeComponent } from './containers/container-sample-uploader-step-three/container-sample-uploader-step-three.component';
 import { ContainerSampleUploaderValidateSaveComponent } from './containers/container-sample-uploader-validate-save/container-sample-uploader-validate-save.component';
 import { ContainerBoxFullnessviewComponent } from './containers/container-box-fullnessview/container-box-fullnessview.component';
@@ -191,7 +193,6 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
     DragulaModule,
     // ng2-sticky
     // Ng2StickyModule,
-
     // xlsx
     // https://www.npmjs.com/package/xlsx
     // https://github.com/SheetJS/js-xlsx/tree/825830d1cd18374cf38576f274c8535c1f099ac9/demos/angular2
@@ -209,6 +210,9 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
     UtilityServiceProvider,
     LocalStorageServiceProvider,
     ],
+  entryComponents: [
+    SampleDetailModelComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
