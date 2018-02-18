@@ -22,6 +22,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
   @Input() samples: Array<Sample>;
   selectedSamples: Array<number> = [] // sample pk
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
+  @Output() sampleDbClicked: EventEmitter<number> = new EventEmitter<number> ();
   appUrl: string;
   @Input() container: Container;
   @Input() box: Box;
@@ -60,7 +61,10 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.sampleSelected.emit(this.selectedSamples);
   }
   // display sample details upon dbclick
-  displaySample(sample: Sample) {
+  dbClickSample(sample: Sample) {
+    if (sample !== undefined && sample !== null && sample.pk) {
+      this.sampleDbClicked.emit(sample.pk);
+    }
     console.log(sample);
   }
   updateState() {

@@ -40,6 +40,7 @@
       [box]="box"
       [container]="container"
       [samples]="searchedSamples" 
+      (sampleDbClicked)="captureDbClickedSample($event)"
       (sampleSelected)="captureSampleSelected($event)">
     </app-sample-table> 
     <app-box-layout *ngIf="box_view"
@@ -47,6 +48,7 @@
       [container]="container"
       [samples]="samples"
       [searchedBoxSamples]="searchedBoxSamples"
+      (sampleDbClicked)="captureDbClickedSample($event)"
       (sampleSelected)="captureSampleSelected($event)" 
       (cellSelected)="captureCellSelected($event)">
     </app-box-layout>
@@ -61,6 +63,9 @@
         [selectedCells]="selectedCells.toString()">
         </app-box-detail-action-panel>
     </div>
+  </div>
+  <div class="sixteen wide column">
+    <app-sample-detail-model></app-sample-detail-model>
   </div>
 </div>
 

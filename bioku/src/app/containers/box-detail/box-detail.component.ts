@@ -111,6 +111,17 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedCells = cells;
   }
 
+  captureDbClickedSample(pk: number) {
+    console.log('sample dbclicked', pk);
+    let sample: Sample = new Sample();
+    const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
+    if (samples_matched !== null && samples_matched.length > 0) {
+      sample = samples_matched[0];
+      console.log('sample dbclicked', sample);
+      // activate the model
+    }
+  }
+
   ngOnInit() {
     this.sub = this.route.params
       .mergeMap(params => {

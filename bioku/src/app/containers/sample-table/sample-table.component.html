@@ -17,7 +17,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" 
-        (dblclick)="displaySample(sample)"
+        (dblclick)="dbClickSample(sample)"
         [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
         <td class="collapsing">
           <div>

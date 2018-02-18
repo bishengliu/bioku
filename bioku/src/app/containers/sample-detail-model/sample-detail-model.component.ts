@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'app-sample-detail-model',
   templateUrl: './sample-detail-model.component.html',
@@ -9,7 +8,6 @@ export class SampleDetailModelComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

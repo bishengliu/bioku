@@ -27,10 +27,11 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   @Input() samples: Array<Sample>;
   @Input() searchedBoxSamples: Array<string> = []; // cell positions
-  selectedSamples: Array<number> = [] // sample pk
-  selectedCells: Array<string>= [] // cell position
+  selectedSamples: Array<number> = []; // sample pk
+  selectedCells: Array<string>= []; // cell position
   @Output() sampleSelected: EventEmitter<Array<number>> = new EventEmitter<Array<number>> ();
   @Output() cellSelected: EventEmitter<Array<string>> = new EventEmitter<Array<string>> ();
+  @Output() sampleDbClicked: EventEmitter<number> = new EventEmitter<number> ();
   appUrl: string;
   @Input() container: Container;
   @Input() box: Box;
@@ -197,16 +198,18 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
                                               s.position.toLowerCase() === (v + h).toLowerCase())
   }
   // display sample details upon dbclick
-  displaySample(h: number, v: string) {
+  dbClickSample(h: number, v: string) {
     // find the sample of the position
-    let sample_clicked = new Sample();
+    let sample_dbclicked = new Sample();
     const samples_picked: Array<Sample> = this.pickerSamples(h, v);
     if (samples_picked === undefined || samples_picked === null || samples_picked.length === 0) {
-      sample_clicked = new Sample();
+      sample_dbclicked = new Sample();
     } else {
-      sample_clicked = samples_picked[0];
+      sample_dbclicked = samples_picked[0];
     }
-    console.log(sample_clicked);
+    if (sample_dbclicked !== null && sample_dbclicked.pk) {
+      this.sampleDbClicked.emit(sample_dbclicked.pk);
+    }
   }
   forceRefresh() {
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
