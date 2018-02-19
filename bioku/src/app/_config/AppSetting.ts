@@ -9,6 +9,7 @@ export const AppSetting = {
     // dell test
     // 'URL': 'http://192.168.0.105:8000',
     // 'URL': 'http://127.0.0.1/biodataware',
+
     // APP URL FOR URL LINK TO THE FRONT-END ////////////
     // amazon testing server content server
     // 'APP_URL': 'http://34.216.52.204',
@@ -16,6 +17,7 @@ export const AppSetting = {
     'APP_URL': 'http://127.0.0.1:4200',
     // dell test
     // 'APP_URL': 'http://192.168.0.105',
+
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
     // allow upload samples newly created freezer?
