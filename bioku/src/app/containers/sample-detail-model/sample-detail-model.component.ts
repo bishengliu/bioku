@@ -1,5 +1,5 @@
-import { Component, OnInit, OnChanges, Input, Inject } from '@angular/core';
-import {SuiModal, ComponentModalConfig, ModalSize, SuiModalService, SuiModalModule} from 'ng2-semantic-ui';
+import { Component, OnInit, OnChanges, Input, Inject, OnDestroy } from '@angular/core';
+// import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService, SuiModalModule} from 'ng2-semantic-ui';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
@@ -17,15 +17,15 @@ import { ContainerService } from '../../_services/ContainerService';
 })
 export class SampleDetailModelComponent implements OnInit, OnChanges {
   @Input() samplePK: number; // pass only sample pk
-  modalSize = ModalSize.Large;
+  @Input() DbClickCount: number;
   sample: Sample = new Sample();
-  modal_initiated = false;
+  activated = false;
   // public modal: SuiModal<Sample, void, void>;
   user: User;
   container: Container = null;
   box: Box = null;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-              private containerService: ContainerService, private modelService: SuiModalService) {
+              private containerService: ContainerService ) {
     appStore.subscribe(() => this.updateState());
     this.updateState();
   }
@@ -43,15 +43,20 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges() {
+    // use DbClickCount to triger changes
     if (this.samplePK !== null && +this.samplePK > 0) {
       // get sample details from the server
       this.sample = this.findSample(+this.samplePK);
-      console.log(this.sample);
-      // could add sample relation here
-      // if (!this.modal_initiated) {
-      //   setTimeout(() => { this.modelService.open(new SampleDetailModalConfig(this.sample, this.modalSize)); this.modal_initiated = true });
-      // }
+      // retrieve sample relation here
+      this.activateModal();
     }
+  }
+  activateModal() {
+    this.activated = true;
+  }
+
+  dismissModal() {
+    this.activated = false;
   }
 
   findSample(pk: number) {
@@ -62,14 +67,5 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
     }
     return sample;
   }
-}
 
-// model settings
-export class SampleDetailModalConfig extends ComponentModalConfig<Sample, void, void> {
-  constructor(sample: Sample, size = ModalSize.Large) {
-      super(SampleDetailModelComponent, sample);
-      this.isClosable = true;
-      this.transitionDuration = 200;
-      this.size = size;
-  }
 }

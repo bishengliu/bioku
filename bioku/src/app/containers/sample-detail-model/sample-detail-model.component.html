@@ -1,14 +1,14 @@
-<div class="ui modal" #modal>
-    <div class="header">Header</div>
-    <div class="content">
-      <p>{{sample.name}}</p>
-      <p></p>
-      <p></p>
+
+<div *ngIf="activated" 
+class="ui dimmer modals page transition visible active" 
+style="display: block !important;" 
+(click)="dismissModal()">
+    <div class="ui standard test modal transition visible active" style="margin-top: -234px; display: block !important;">
+            <div class="header">Header</div>
+            <div class="content">
+              <p>{{sample.name}}</p>
+              <p></p>
+              <p></p>
+            </div>
     </div>
-  </div>
-  <!-- <div>
-      <div class="header">{{ sample.name }}</div>
-      <div class="content">
-          <p>{{ sample.pk }}</p>
-      </div>
-  </div> -->
+</div>

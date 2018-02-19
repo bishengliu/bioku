@@ -211,7 +211,7 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
     LocalStorageServiceProvider,
     ],
   entryComponents: [
-    SampleDetailModelComponent,
+    // SampleDetailModelComponent,
   ],
   bootstrap: [AppComponent]
 })

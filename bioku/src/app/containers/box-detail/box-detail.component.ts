@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
@@ -36,6 +36,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   searchedBoxSamples: Array<string> = []; // cell position
   box_view: Boolean = true;
   dbClickedSamplePK = -1; // for dbclick
+  DbClickCount = 0;
+  // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
@@ -122,6 +124,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     } else {
       this.dbClickedSamplePK = -1;
     }
+    this.DbClickCount++;
+    // this.DbClickCount.emit(this.count);
   }
 
   ngOnInit() {
