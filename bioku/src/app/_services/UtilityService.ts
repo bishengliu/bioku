@@ -30,7 +30,6 @@ export class UtilityService {
             return result;
         }
     }
-
     // generate array form a number
     genArray(num: number): Array<number> {
         const array: Array<number> = [];
@@ -80,13 +79,11 @@ export class UtilityService {
         'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return short_months;
     }
-
     getLongMonthNames() {
         const long_months: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December'];
         return long_months;
     }
-
     getMonthNumber(month: string): number {
         const short_months = this.getShortMonthNames().map( m => m.toLowerCase());
         const long_months = this.getLongMonthNames().map( m => m.toLowerCase());
@@ -201,5 +198,18 @@ export class UtilityService {
           box_position = all_containerboxes[ b_index ];
         }
         return box_position;
+    }
+    // render sample name
+    renderSampleName(sampleName: string, show_original_name: boolean,
+        min_length = 15, right_length = 10, symbol = '...') {
+        let name = sampleName;
+        if (!show_original_name && sampleName.length > min_length) {
+            if ( sampleName.length > min_length + right_length + symbol.length ) {
+                name = sampleName.substring(0, min_length - 1) + symbol + sampleName.substring(sampleName.length - right_length);
+            } else {
+                name = sampleName.substring(0, min_length - 1) + symbol;
+            }
+        }
+        return name;
     }
 }

@@ -50,6 +50,11 @@ export const AppSetting = {
     'BOX_POSITION_LETTERS': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     'SAMPLE_TYPE': ['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS'], // DO NOT CHANGE THIS *****
+    // for rendering sample name
+    'SHOW_ORIGINAL_NAME': true,
+    'NAME_MIN_LENGTH': 15,
+    'NAME_MIN_right_LENGTH': 10,
+    'NAME_SYMBOL': '...',
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

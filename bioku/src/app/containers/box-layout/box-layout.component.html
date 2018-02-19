@@ -23,7 +23,8 @@
           [ngClass]="{'sample-cell-selected': selectedCells.indexOf(v+h) !==- 1, 'search-matched-sample': searchedBoxSamples.indexOf(v+h) !==- 1 }">
           <div *ngFor="let sample of pickerSamples(h,v)">            
             <div>
-              <span [style.color]="sample.color"> {{ (sample.name.length>10)? (sample.name | slice:0:10)+'..':(sample.name) }} </span>
+              <!-- (sample.name.length > 10) ? (sample.name | slice:0:10) + '..' : (sample.name) -->
+              <span [style.color]="sample.color"> {{ renderSampleName(sample.name) }} </span>
               <span *ngIf="sample.tag" class="ui mini circular blue label">
                 {{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5): sample.tag}}
               </span>  

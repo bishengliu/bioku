@@ -170,6 +170,7 @@ export class SampleDetailComponent implements OnInit, OnChanges {
   }
 
   updateSampleDetail(value: any, sample: Sample, box_position: string, sample_position: string, data_attr: string, required: boolean) {
+    console.log('update sample details', sample);
     this.action_panel_msg = null;
     if ((value === '' || value == null) && required) {
       this.action_panel_msg = data_attr + ' is required!'

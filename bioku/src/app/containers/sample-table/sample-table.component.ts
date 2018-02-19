@@ -10,6 +10,7 @@ import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { Sample, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
+import {  UtilityService } from '../../_services/UtilityService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -38,11 +39,24 @@ export class SampleTableComponent implements OnInit, OnChanges {
     width: 25,
     height: 25,
     borderRadius: 4};
-
+  // FOR RENDERING SAMPLE NAME
+  SHOW_ORIGINAL_NAME: false;
+  NAME_MIN_LENGTH: 15;
+  NAME_MIN_right_LENGTH: 10;
+  NAME_SYMBOL: '...';
+  // sample types in the box
+  sample_types: Array<string> = [];
+  all_sample_types: Array<string> = [];
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-              private containerService: ContainerService, ) {
+              private containerService: ContainerService, private utilityService: UtilityService) {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
+    // for redering sample name
+    this.SHOW_ORIGINAL_NAME = this.appSetting.SHOW_ORIGINAL_NAME;
+    this.NAME_MIN_LENGTH = this.appSetting.NAME_MIN_LENGTH;
+    this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
+    this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
+    this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -65,7 +79,11 @@ export class SampleTableComponent implements OnInit, OnChanges {
     if (sample !== undefined && sample !== null && sample.pk) {
       this.sampleDbClicked.emit(sample.pk);
     }
-    console.log(sample);
+    // console.log(sample);
+  }
+  renderSampleName(sampleName: string) {
+    return this.utilityService.renderSampleName(sampleName, this.SHOW_ORIGINAL_NAME,
+      this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
   }
   updateState() {
     const state = this.appStore.getState();
@@ -122,7 +140,36 @@ export class SampleTableComponent implements OnInit, OnChanges {
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
     }
   }
+  getSampleTypes() {
+    this.sample_types = [];
+    this.all_sample_types.forEach((type: string) => {
+      const sample_found: Sample = this.samples.find((sample: Sample) => sample.type === type);
+      if (sample_found !== undefined && this.sample_types.indexOf(type) === -1) {
+        this.sample_types.push(type);
+      }
+    })
+  }
+  hasSample(sampleType: string) {
+    if (sampleType !== undefined && sampleType !== null && sampleType !== '') {
+      return this.sample_types.indexOf(sampleType) === -1 ? false : true;
+    }
+    return false;
+  }
+  calColspan() {
+    let colspan = 1;
+    const general_count = 10;
+    colspan += general_count;
+    this.sample_types.indexOf('CONSTRUCT') !== -1 ?  colspan += 8 : colspan += 0;
+    this.sample_types.indexOf('OLIGO') !== -1 || this.sample_types.indexOf('gRNA_OLIGO') !== -1 ?  colspan += 6 : colspan += 0;
+    this.sample_types.indexOf('CELL') !== -1 ?  colspan += 3 : colspan += 0;
+    this.sample_types.indexOf('VIRUS') !== -1 ?  colspan += 5 : colspan += 0;
+    this.sample_types.indexOf('TISSUE') !== -1 ?  colspan += 2 : colspan += 0;
+    return colspan;
+  }
   ngOnChanges() {
+    // get the sample types
+    this.getSampleTypes();
+    console.log('sample types', this.sample_types);
     this.selectedSamples = []; // clear selected samples
     this.sampleSelected.emit(null); // emit selected sample pk
   }
