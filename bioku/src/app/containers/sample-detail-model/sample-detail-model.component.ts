@@ -21,11 +21,13 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   sample: Sample = new Sample();
   activated = false;
   // public modal: SuiModal<Sample, void, void>;
+  appUrl: string;
   user: User;
   container: Container = null;
   box: Box = null;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService ) {
+    this.appUrl = this.appSetting.URL;
     appStore.subscribe(() => this.updateState());
     this.updateState();
   }
@@ -55,10 +57,13 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
     this.activated = true;
   }
 
-  dismissModal() {
+  dismissModal(event) {
     this.activated = false;
   }
 
+  cancelPropagation(event) {
+    event.stopPropagation();
+  }
   findSample(pk: number) {
     let sample: Sample = new Sample();
     if (pk != null) {
