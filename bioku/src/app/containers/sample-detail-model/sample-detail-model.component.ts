@@ -17,6 +17,7 @@ import { ContainerService } from '../../_services/ContainerService';
 })
 export class SampleDetailModelComponent implements OnInit, OnChanges {
   @Input() samplePK: number; // pass only sample pk
+  @Input() samples: Array<Sample>;
   @Input() DbClickCount: number;
   sample: Sample = new Sample();
   activated = false;
@@ -28,8 +29,8 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService ) {
     this.appUrl = this.appSetting.URL;
-    appStore.subscribe(() => this.updateState());
-    this.updateState();
+    // appStore.subscribe(() => this.updateState());
+    // this.updateState();
   }
   ngOnInit() {}
   updateState() {
@@ -67,7 +68,7 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   findSample(pk: number) {
     let sample: Sample = new Sample();
     if (pk != null) {
-      const samples = this.box.samples.filter((s: Sample) => { return +pk === s.pk; });
+      const samples = this.samples.filter((s: Sample) => { return +pk === s.pk; });
       if (samples != null && samples.length === 1) { sample = samples[0]; }
     }
     return sample;

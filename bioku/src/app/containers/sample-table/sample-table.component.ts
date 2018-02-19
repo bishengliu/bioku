@@ -169,7 +169,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
   ngOnChanges() {
     // get the sample types
     this.getSampleTypes();
-    console.log('sample types', this.sample_types);
+    // console.log('sample types', this.sample_types);
     this.selectedSamples = []; // clear selected samples
     this.sampleSelected.emit(null); // emit selected sample pk
   }

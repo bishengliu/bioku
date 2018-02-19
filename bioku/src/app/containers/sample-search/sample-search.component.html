@@ -23,6 +23,7 @@
     <app-sample-search-result 
     [searched]="searched"
     [samples]="samples" 
+    (sampleDbClicked)="captureDbClickedSample($event)"
     (sampleSelected)="captureSampleSelected($event)">
     </app-sample-search-result>
     <div *ngIf="selectedSamples.length > 0" class="sticky-search-top-left">
@@ -33,7 +34,9 @@
     </div>
   </div>
 </div>
-
+<div class="sixteen wide column">
+    <app-sample-detail-model [samples]="samples" [samplePK]="dbClickedSamplePK" [DbClickCount]="DbClickCount"></app-sample-detail-model>
+  </div>
 <!-- searching -->
 <div *ngIf="searching" class="ui loading segment center aligned">
   <br/><br/><br/><br/>

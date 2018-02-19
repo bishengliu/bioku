@@ -21,6 +21,8 @@ export class SampleSearchComponent implements OnInit {
   // clicked and selected samples
   selectedSamplePks: Array<number> = [];
   selectedSamples: Array<Sample> = new Array<Sample>();
+  dbClickedSamplePK = -1; // for dbclick
+  DbClickCount = 0;
   constructor(private containerService: ContainerService) { }
 
 ngOnInit() {}
@@ -64,7 +66,19 @@ getSampleSelected(pks: Array<number>, samples: Array<Sample>): Array<Sample> {
     return SelectedSamples;
   }
 }
-
+captureDbClickedSample(pk: number) {
+  let sample: Sample = new Sample();
+  const samples_matched = this.samples.filter(s => s.pk === pk);
+  if (samples_matched !== null && samples_matched.length > 0) {
+    sample = samples_matched[0];
+    // activate the model
+    this.dbClickedSamplePK = sample.pk;
+  } else {
+    this.dbClickedSamplePK = -1;
+  }
+  this.DbClickCount++;
+  // this.DbClickCount.emit(this.count);
+}
 showAgain() {
     this.samples = [];
     this.searchAgain = !this.searchAgain;
