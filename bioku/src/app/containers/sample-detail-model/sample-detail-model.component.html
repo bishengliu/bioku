@@ -3,11 +3,11 @@
 class="ui dimmer modals page transition visible active" 
 style="display: block !important;"
 (click)="dismissModal($event)">
-    <div class="ui standard test modal transition visible active" 
+    <div class="ui fullscreen modal transition visible active" 
     style="margin-top: -234px; display: block !important;" 
     (click)="cancelPropagation($event)">
         <div class="ui center aligned header"><span [ngStyle]="{color: sample.color}">{{sample.name}}</span> ({{sample.type}})</div>
-        <div class="content">
+        <div class="scrolling content">
             <div class="ui stackable sixteen wide column grid">
                 <div class="eight wide column">
                     <table class="ui teal small striped compact single line table">
