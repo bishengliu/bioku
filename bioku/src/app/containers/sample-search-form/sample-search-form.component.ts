@@ -64,7 +64,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     // formGroup
     this.searchForm = fb.group({
       // general
-      'container': [, Validators.required],
+      'container': [ -1, Validators.required],
       'type': [, ],
       'name': [, ],
       'tag': [, ],
@@ -74,7 +74,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       'freezing_code': [, ],
       'freezing_date_from': [, ],
       'freezing_date_to': [, ],
-      'occupied': [, Validators.required],
+      'occupied': [ 0, Validators.required],
       // construct
       'feature': [, ],
       'backbone': [, ],
@@ -97,7 +97,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       // watch form changes
     this.searchForm.valueChanges
     .mergeMap((data: SampleSearch) => {
-      if (data.occupied === null ) {
+      if (!this.searchForm.touched) {
         return Observable.of({'count': 0 });
       } else {
         return this.containerService.PreSearchSample(data);
