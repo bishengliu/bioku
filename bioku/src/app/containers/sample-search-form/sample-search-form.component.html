@@ -1,6 +1,6 @@
 <div class="ui segments" *ngIf="show_form">
   <div class="ui tertiary top attached segment">
-    <a><i class="icon filter"></i>FILTER SAMPLES</a>
+    <a><i class="icon filter"></i>SEARCH SAMPLES</a>
   </div>
   <div class="ui black attached segment">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
@@ -100,6 +100,12 @@
                   <div class="ui input wide-form">
                     <input class="" type="number" id="oligo_length_to" [formControl]="searchForm.controls['oligo_length_to']" placeholder="max length ...">
                   </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                    <div class="teal-text"><em><strong>attachments</strong></em></div>
+                    <input class="" type="text" id="attachment" [formControl]="searchForm.controls['attachment']" placeholder=" attachment ...">
                 </td>
               </tr>
             </tbody>
@@ -210,6 +216,12 @@
                 </td>
                 <td colspan="2"></td>
               </tr>
+              <tr>
+                  <td colspan="3">
+                      <div class="teal-text"><em><strong>comments</strong></em></div>
+                      <input class="" type="text" id="description" [formControl]="searchForm.controls['description']" placeholder=" sample comments ...">
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>

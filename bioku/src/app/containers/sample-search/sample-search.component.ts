@@ -91,6 +91,7 @@ captureDbClickedSample(pk: number) {
 }
 showAgain() {
     this.samples = [];
+    this.searchedSamples = [];
     this.searchAgain = !this.searchAgain;
     this.show_error = false;
     this.searching = false;

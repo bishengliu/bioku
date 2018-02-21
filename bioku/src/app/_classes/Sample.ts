@@ -215,7 +215,8 @@ export class SampleSearch {
     freezing_date_from: string;
     freezing_date_to: string;
     occupied: number; // 2==both; 0==occupied only; 1==taken-out only
-
+    attachment: string;
+    description: string;
     // construct
     feature: string;
     backbone: string;

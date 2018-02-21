@@ -75,6 +75,8 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       'freezing_date_from': [, ],
       'freezing_date_to': [, ],
       'occupied': [ 0, Validators.required],
+      'attachment': [, ],
+      'description': [, ],
       // construct
       'feature': [, ],
       'backbone': [, ],
