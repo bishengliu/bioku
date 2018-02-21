@@ -166,7 +166,13 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.sample_types.indexOf('TISSUE') !== -1 ?  colspan += 2 : colspan += 0;
     return colspan;
   }
+  // sort samples
+  sortSampleByPosition() {
+    this.samples.sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'));
+  }
   ngOnChanges() {
+    // sort samples
+    this.sortSampleByPosition();
     // get the sample types
     this.getSampleTypes();
     // console.log('sample types', this.sample_types);
