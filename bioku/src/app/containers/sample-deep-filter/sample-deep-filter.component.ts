@@ -14,7 +14,6 @@ export class SampleDeepFilterComponent implements OnInit {
   ngOnInit() {
     Observable.fromEvent(this.filterValue.nativeElement, 'keyup')
               .map((e: any) => e.target.value)
-              // .filter((val:string)=>val != null && val != "")
               .debounceTime(250)
               .subscribe((val: string) => {
                 if (val === '' || val === null) {
