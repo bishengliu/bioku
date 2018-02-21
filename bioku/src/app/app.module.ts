@@ -107,6 +107,7 @@ import { ContainerSampleUploaderStepThreeComponent } from './containers/containe
 import { ContainerSampleUploaderValidateSaveComponent } from './containers/container-sample-uploader-validate-save/container-sample-uploader-validate-save.component';
 import { ContainerBoxFullnessviewComponent } from './containers/container-box-fullnessview/container-box-fullnessview.component';
 import { SampleDetailModelComponent } from './containers/sample-detail-model/sample-detail-model.component';
+import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +171,7 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
     ContainerSampleUploaderValidateSaveComponent,
     ContainerBoxFullnessviewComponent,
     SampleDetailModelComponent,
+    SampleDeepFilterComponent,
   ],
   imports: [
     BrowserModule,
