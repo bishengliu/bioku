@@ -38,10 +38,12 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   box_view: Boolean = true;
   dbClickedSamplePK = -1; // for dbclick
   DbClickCount = 0;
+  FRONT_SAMPLE_STRIECT_FILTER = false;
   // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
+    this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -65,8 +67,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedSamples = [];
   }
   updateDeepFilteredSampleList(userInput: string) {
-    console.log(userInput);
     this.loading = true;
+    userInput = userInput.toString().toLowerCase();
     // empty all the arrays
     this.selectedCells = [];
     this.selectedSamples = [];
@@ -120,15 +122,20 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
           let result = false;
           const indexes: Array<number> = [];
           if (deepString !== '') {
-            userInputArray.forEach((c: string) => {
-              const mIndex = deepString.indexOf(c.toLowerCase());
-              indexes.push(mIndex);
-              if (mIndex !== -1) {
-                const tempString = deepString
-                deepString = tempString.substring(0, mIndex) + (mIndex === tempString.length - 1 ? '' :  tempString.substring(mIndex + 1));
-              }
-            })
-            result = indexes.indexOf(-1) !== -1 ? false : true;
+            if (this.FRONT_SAMPLE_STRIECT_FILTER) {
+              result = deepString.indexOf(userInput) !== -1 ? true : false;
+            } else {
+              userInputArray.forEach((c: string) => {
+                const mIndex = deepString.indexOf(c);
+                indexes.push(mIndex);
+                if (mIndex !== -1) {
+                  const tempString = deepString
+                  deepString = tempString.substring(0, mIndex)
+                                + (mIndex === tempString.length - 1 ? '' :  tempString.substring(mIndex + 1));
+                }
+              })
+              result = indexes.indexOf(-1) !== -1 ? false : true;
+            }
           }
           return result;
         });

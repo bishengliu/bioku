@@ -55,6 +55,8 @@ export const AppSetting = {
     'NAME_MIN_LENGTH': 15,
     'NAME_MIN_right_LENGTH': 10,
     'NAME_SYMBOL': '...',
+    // what to do for front end sample search
+    'FRONT_SAMPLE_STRIECT_FILTER': true, // otherwise highlight
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
