@@ -7,6 +7,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
 import { Sample, SampleFilter, Attachment } from '../../_classes/Sample';
+import { User } from '../../_classes/User';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
 // redux
@@ -63,7 +64,81 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedCells = [];
     this.selectedSamples = [];
   }
-
+  updateDeepFilteredSampleList(userInput: string) {
+    console.log(userInput);
+    this.loading = true;
+    // empty all the arrays
+    this.selectedCells = [];
+    this.selectedSamples = [];
+    // restore the complete samples for list view
+    // hard copy of the array
+    this.searchedSamples = this.samples.filter((e: Sample) => e.pk != null);
+    // empty searched samples for box view
+    this.searchedBoxSamples = [];
+    // filter the machted boxes
+    if (userInput !== null && userInput !== '') {
+      // split userinput into an array
+      const userInputArray = userInput.split('');
+      if (userInputArray.length > 0) {
+        // loop to the box sample and concat all the text into a string
+        this.searchedSamples = this.samples.filter((e: Sample) => {
+          let deepString = '';
+          // loop into the object keys
+          // could also use Object.keys(e).forEach()
+          for (const key in e) {
+            if ( e.hasOwnProperty(key) ) {
+              if ( key === 'researchers' ) {
+                // only the first letter of first/last name
+                e[key].forEach((r: User) => {
+                  if (r.first_name !== null && r.first_name !== '') {
+                    deepString += (r.first_name.slice(0 , 1)).toString();
+                  }
+                  if (r.last_name !== null && r.last_name !== '') {
+                    deepString += (r.last_name.slice(0 , 1)).toString();
+                  }
+                })
+              } else if ( key === 'attachments') {
+                // label, attachment and description
+                e[key].forEach((a: Attachment ) => {
+                  if (a.label !== null && a.label !== '') {
+                    deepString += (a.label).toString();
+                  }
+                  if (a.attachment !== null && a.attachment !== '') {
+                    deepString += (a.attachment).toString();
+                  }
+                  if (a.description !== null && a.description !== '') {
+                    deepString += (a.description).toString();
+                  }
+                })
+              } else {
+                e[key] !== null ? deepString += (e[key]).toString() : deepString += '';
+              }
+            }
+          }
+          deepString = deepString.toLowerCase();
+          // search
+          let result = false;
+          const indexes: Array<number> = [];
+          if (deepString !== '') {
+            userInputArray.forEach((c: string) => {
+              const mIndex = deepString.indexOf(c.toLowerCase());
+              indexes.push(mIndex);
+              if (mIndex !== -1) {
+                const tempString = deepString
+                deepString = tempString.substring(0, mIndex) + (mIndex === tempString.length - 1 ? '' :  tempString.substring(mIndex + 1));
+              }
+            })
+            result = indexes.indexOf(-1) !== -1 ? false : true;
+          }
+          return result;
+        });
+      }
+      // for box searched samples
+      const matchedBoxSamples = this.searchedSamples.filter((s: Sample) => s.occupied === true);
+       matchedBoxSamples.forEach((s: Sample) => this.searchedBoxSamples.push(s.position));
+    }
+    this.loading = false;
+  }
   // filter output
   updateSampleList(sampleFilter: SampleFilter) {
     this.loading = true;

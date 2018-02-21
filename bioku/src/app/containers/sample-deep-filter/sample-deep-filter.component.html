@@ -1,3 +1,17 @@
-<p>
-  sample-deep-filter works!
-</p>
+<div class="ui grid row">
+    <div class="twelf wide column"> 
+      <div class="ui form sidebar_menu_offset equal width">
+          <div class="fields">
+            <div class="ui blue label"><i class="filter icon"></i>SAMPLE</div>
+            <div class="field" [ngClass]="{hidden: keyIsNotSelected}">
+              <div class="ui left corner labeled input">
+                <input type="text" name="value" placeholder="search sample ..." #filterValue>
+                <div class="ui left corner label">
+                  <i class="filter icon orange-text"></i>
+                </div>
+              </div>
+            </div>   
+          </div>
+      </div>  
+    </div>
+  </div>

@@ -1,6 +1,7 @@
 <div class="ui grid row">
   <div class="eight wide column">
-    <app-sample-filter (sampleFilter)="updateSampleList($event)"></app-sample-filter>
+    <app-sample-deep-filter (deepSampleFilter)="updateDeepFilteredSampleList($event)"></app-sample-deep-filter>
+    <!-- <app-sample-filter (sampleFilter)="updateSampleList($event)"></app-sample-filter> -->
   </div>
   <div class="eight wide column">
     <app-container-box-navbar></app-container-box-navbar>
@@ -65,6 +66,7 @@
     </div>
   </div>
   <div class="sixteen wide column">
+    <!-- modal -->
     <app-sample-detail-model [samples]="samples" [samplePK]="dbClickedSamplePK" [DbClickCount]="DbClickCount"></app-sample-detail-model>
   </div>
 </div>
