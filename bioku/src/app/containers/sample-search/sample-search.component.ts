@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { SampleSearch, Sample } from '../../_classes/Sample';
+import { Component, OnInit, Inject } from '@angular/core';
+import { SampleSearch, Sample, Attachment } from '../../_classes/Sample';
 import {  ContainerService } from '../../_services/ContainerService';
+import { AppSetting} from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
+import { User } from '../../_classes/User';
+import {  UtilityService } from '../../_services/UtilityService';
 // ng2-sticky
 // import { Ng2StickyModule } from 'ng2-sticky';
 
@@ -12,6 +16,7 @@ import {  ContainerService } from '../../_services/ContainerService';
 export class SampleSearchComponent implements OnInit {
   searchObj: SampleSearch = null;
   samples: Array<Sample> = new Array<Sample>();
+  searchedSamples: Array<Sample> = new Array<Sample>();
   searching: Boolean = false;
   searched: Boolean = false;
   show_error: Boolean = false;
@@ -23,7 +28,11 @@ export class SampleSearchComponent implements OnInit {
   selectedSamples: Array<Sample> = new Array<Sample>();
   dbClickedSamplePK = -1; // for dbclick
   DbClickCount = 0;
-  constructor(private containerService: ContainerService) { }
+  FRONT_SAMPLE_STRIECT_FILTER = false;
+  constructor(private containerService: ContainerService, @Inject(APP_CONFIG) private appSetting: any,
+              private utilityService: UtilityService) {
+    this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
+   }
 
 ngOnInit() {}
 
@@ -37,6 +46,7 @@ captureSearchObj(obj: SampleSearch) {
         (samples: Array<Sample>) => {
           // console.log(samples); // sample found ...
           this.samples = [...samples];
+          this.searchedSamples = [...samples];
           this.searching = false;
           this.toogleSearch = true;
           this.searched = true;
@@ -85,5 +95,78 @@ showAgain() {
     this.show_error = false;
     this.searching = false;
     this.searched = false;
+  }
+  updateDeepFilteredSampleList(userInput: string) {
+    userInput = userInput.toString().toLowerCase();
+    // empty all the arrays
+    this.selectedSamples = [];
+    // restore the complete samples for list view
+    // hard copy of the array
+    this.searchedSamples = this.samples.filter((e: Sample) => e.pk != null);
+    // empty searched samples for box view
+    // filter the machted boxes
+    if (userInput !== null && userInput !== '') {
+      // split userinput into an array
+      const userInputArray = userInput.split('');
+      if (userInputArray.length > 0) {
+        // loop to the box sample and concat all the text into a string
+        this.searchedSamples = this.samples.filter((e: Sample) => {
+          let deepString = '';
+          // loop into the object keys
+          // could also use Object.keys(e).forEach()
+          for (const key in e) {
+            if ( e.hasOwnProperty(key) ) {
+              if ( key === 'researchers' ) {
+                // only the first letter of first/last name
+                e[key].forEach((r: User) => {
+                  if (r.first_name !== null && r.first_name !== '') {
+                    deepString += (r.first_name.slice(0 , 1)).toString();
+                  }
+                  if (r.last_name !== null && r.last_name !== '') {
+                    deepString += (r.last_name.slice(0 , 1)).toString();
+                  }
+                })
+              } else if ( key === 'attachments') {
+                // label, attachment and description
+                e[key].forEach((a: Attachment ) => {
+                  if (a.label !== null && a.label !== '') {
+                    deepString += (a.label).toString();
+                  }
+                  if (a.attachment !== null && a.attachment !== '') {
+                    deepString += (a.attachment).toString();
+                  }
+                  if (a.description !== null && a.description !== '') {
+                    deepString += (a.description).toString();
+                  }
+                })
+              } else {
+                e[key] !== null ? deepString += (e[key]).toString() : deepString += '';
+              }
+            }
+          }
+          deepString = deepString.toLowerCase();
+          // search
+          let result = false;
+          const indexes: Array<number> = [];
+          if (deepString !== '') {
+            if (this.FRONT_SAMPLE_STRIECT_FILTER) {
+              result = deepString.indexOf(userInput) !== -1 ? true : false;
+            } else {
+              userInputArray.forEach((c: string) => {
+                const mIndex = deepString.indexOf(c);
+                indexes.push(mIndex);
+                if (mIndex !== -1) {
+                  const tempString = deepString
+                  deepString = tempString.substring(0, mIndex)
+                                + (mIndex === tempString.length - 1 ? '' :  tempString.substring(mIndex + 1));
+                }
+              })
+              result = indexes.indexOf(-1) !== -1 ? false : true;
+            }
+          }
+          return result;
+        });
+      }
+    }
   }
 }

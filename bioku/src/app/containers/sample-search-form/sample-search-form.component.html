@@ -216,7 +216,7 @@
       </div>
     </form>
   </div>
-  <div *ngIf="presearch_sample_count > 0" class="ui mini button attached message">
-      <p>{{presearch_sample_count}} samples found; <span class="red-text" *ngIf="presearch_sample_count > 250">too many sample matched! It will take very long time to load all the sample details.</span></p>
+  <div *ngIf="presearch_sample_count > 0" class="ui mini button noEvent attached message">
+      <p>{{presearch_sample_count}} samples found <span *ngIf="presearch_sample_count > 250">; <span class="red-text">too many sample matched! It will take very long time to load all the sample details.</span></span></p>
   </div>
 </div>

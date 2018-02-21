@@ -19,10 +19,13 @@
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
   <div *ngIf="samples.length > 0" class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
+  <div *ngIf="samples.length > 0" class="eight wide column">
+      <app-sample-deep-filter (deepSampleFilter)="updateDeepFilteredSampleList($event)"></app-sample-deep-filter>
+  </div>
   <div class="sixteen wide column">
     <app-sample-search-result 
     [searched]="searched"
-    [samples]="samples" 
+    [samples]="searchedSamples" 
     (sampleDbClicked)="captureDbClickedSample($event)"
     (sampleSelected)="captureSampleSelected($event)">
     </app-sample-search-result>
@@ -34,6 +37,7 @@
     </div>
   </div>
 </div>
+<!-- modal -->
 <div class="sixteen wide column">
     <app-sample-detail-model [samples]="samples" [samplePK]="dbClickedSamplePK" [DbClickCount]="DbClickCount"></app-sample-detail-model>
   </div>
