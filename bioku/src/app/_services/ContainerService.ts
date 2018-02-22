@@ -358,12 +358,14 @@ export class ContainerService {
         // format type
         if (Array.isArray(obj.type)) {
             if (obj.type.length === 0) {
-                obj.type = '';
+                obj.type = null;
             } else if (obj.type.length === 1) {
                 obj.type = obj.type[0];
             } else {
                 obj.type = obj.type.join('|');
             }
+        } else {
+            obj.type = null;
         }
         const body: string = JSON.stringify(obj);
         return this.http.post(query_url, body, this.options)
@@ -377,12 +379,14 @@ export class ContainerService {
         // format type
         if (Array.isArray(obj.type)) {
             if (obj.type.length === 0) {
-                obj.type = '';
+                obj.type = null;
             } else if (obj.type.length === 1) {
                 obj.type = obj.type[0];
             } else {
                 obj.type = obj.type.join('|');
             }
+        } else {
+            obj.type = null;
         }
         const body: string = JSON.stringify(obj);
         return this.http.post(query_url, body, this.options)
