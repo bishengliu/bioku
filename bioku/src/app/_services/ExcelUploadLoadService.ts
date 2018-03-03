@@ -1,6 +1,6 @@
 import { Injectable , Inject} from '@angular/core';
 import { SampleExcelHeaders, SampleDateFormat } from '../_classes/SampleUpload'
-
+import { Sample } from '../_classes/Sample';
 @Injectable()
 export class ExcelUploadLoadService {
  constructor() {}
@@ -107,5 +107,16 @@ export class ExcelUploadLoadService {
     } else {
       return '';
     }
+  }
+  // for download
+  // save sample json to aoa
+    formatSampleJson2AOA(samples: Array<Sample>): Array<Array<any>> {
+      let data: Array<Array<any>> = [];
+      // prepare the headers
+      // validate sample types and get excel headers
+
+      // convert json to aoa
+
+      return data;
   }
 }
