@@ -28,7 +28,10 @@ export const AppSetting = {
     'VERSION': '0.0.1-beta',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
+    'APP_USER_VERIFICATION': false,
     'MAX_G': -1,
+    'APP_USER': 'INSTITUTE', // change this if need validation
+    'APP_USER_VERIFICATION_URL': 'VERIFICATION_URL', // change this if need validation
     'NAME': 'BIOKU', // ALSO USED FOR PASSWORD RESET EMAIL MESSAGE
     // APP CONSTANTS
     'CONTAINER_FULLNESS_OVERVIEW_TOWER_PER_TABLE': 10,

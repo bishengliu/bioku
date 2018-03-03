@@ -175,7 +175,14 @@ export class GroupService {
             // .do(data=>console.log(data))
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
-
+    // get allowed group count
+    getAllowedGroupCount() {
+        const query_url: string = this.appSetting.APP_USER_VERIFICATION_URL + '/';
+        const body: string = JSON.stringify({'app_user': this.appSetting.APP_USER});
+        return this.http.post(query_url, body, this.options)
+        .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // create group
     create(formData: FormData) {
         this.updateState();
