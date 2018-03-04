@@ -108,6 +108,7 @@ import { ContainerSampleUploaderValidateSaveComponent } from './containers/conta
 import { ContainerBoxFullnessviewComponent } from './containers/container-box-fullnessview/container-box-fullnessview.component';
 import { SampleDetailModelComponent } from './containers/sample-detail-model/sample-detail-model.component';
 import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
+import { ExportSampleDirective } from './_directives/export-sample/export-sample.directive';
 
 @NgModule({
   declarations: [
@@ -172,6 +173,7 @@ import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sampl
     ContainerBoxFullnessviewComponent,
     SampleDetailModelComponent,
     SampleDeepFilterComponent,
+    ExportSampleDirective,
   ],
   imports: [
     BrowserModule,
