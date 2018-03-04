@@ -8,12 +8,12 @@ export class ExcelUploadLoadService {
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
     const box_position_headers = new SampleExcelHeaders();
-    box_position_headers.headers =  ['BoxLabel', 'BoxLabel_Tower', 'BoxLabel_Shelf', 'BoxLabel_Box'];
+    box_position_headers.headers =  ['BoxPosition', 'BoxPosition_Tower', 'BoxPosition_Shelf', 'BoxPosition_Box'];
     box_position_headers.header_type = 'box_position';
     all_headers.push(box_position_headers);
 
     const sample_position_headers = new SampleExcelHeaders();
-    sample_position_headers.headers =  ['SampleLabel', 'SampleLabel_Row', 'SampleLabel_Column'];
+    sample_position_headers.headers =  ['SamplePosition', 'SamplePosition_Row', 'SamplePosition_Column'];
     sample_position_headers.header_type = 'sample_position';
     all_headers.push(sample_position_headers);
 
@@ -30,7 +30,7 @@ export class ExcelUploadLoadService {
 
     const construct_headers = new SampleExcelHeaders();
     construct_headers.headers =  ['Clone Number', '260/280', 'Feature', 'R.E. Analysis', 'Backbone', 'Insert',
-    '1st maxi', 'Marker', 'Glycerol Stock', 'Stock Strain'];
+    '1st Maxi', 'Marker', 'Glycerol Stock', 'Stock Strain'];
     construct_headers.header_type = 'construct_headers';
     all_headers.push(construct_headers);
 
@@ -110,7 +110,7 @@ export class ExcelUploadLoadService {
   }
   // for download
   // save sample json to aoa
-    formatSampleJson2AOA(samples: Array<Sample>, selected_headers: Array<string> = new Array<string>()): Array<Array<any>> {
+  formatSampleJson2AOA(samples: Array<Sample>, selected_headers: Array<string> = new Array<string>()): Array<Array<any>> {
       const data: Array<Array<any>> = [];
       // validate sample types and get excel headers
       let headers = new Array<string>();
@@ -164,7 +164,29 @@ export class ExcelUploadLoadService {
           const sampleAOA = new Array();
           headers.forEach((h: string, i: number) => {
             if (sample[h] !== undefined) {
-              sampleAOA[i + ''] = sample[h];
+              if (h === 'attachments') {
+                // deal with sample attachments
+                if (sample[h] != null && sample[h].length > 0) {
+                  let filenames = '';
+                  sample[h].forEach(a => filenames += this.getAttachmentFileName(a.attachment) + ', ');
+                  sampleAOA[i + ''] = filenames;
+                } else {
+                  sampleAOA[i + ''] = '';
+                }
+              } else if (h === 'researchers') {
+                // deal with sample user
+              // only the first user
+              sampleAOA[i + ''] = (sample[h] != null && sample[h].length > 0) ? sample[h][0].first_name + ' ' + sample[h][0].last_name : '';
+              } else if (h === 'date_out') {
+                if ( sample['occupied'] !== undefined && !sample['occupied'] && sample[h] != null) {
+                  sampleAOA[i + ''] =  'YES/' + sample[h];
+                } else {
+                  sampleAOA[i + ''] = '';
+                }
+              } else {
+                // all other keys
+                sampleAOA[i + ''] = sample[h] !== null ? sample[h] : '';
+              }
             } else {
               sampleAOA[i + ''] = '';
             }
@@ -199,17 +221,29 @@ export class ExcelUploadLoadService {
   // get the minial sample end headers for exporting to excel
   getMinimalSampleEndHeaders(): Array<string> {
     let end_headers = Array<string>();
-    end_headers = ['occupied', 'date_out', 'attachments', 'description', 'researchers'];
+    end_headers = ['date_out', 'attachments', 'description', 'researchers'];
     return end_headers;
   }
   // render sample header
   renderSampleHeader(header: string): string {
-    const sampleAllColumnHeaders: Array<string> = ['Freezer', ...this.getAllColumnHeaders()];
-    const sampleAllSampleModelAttr: Array<string> = ['container', ...this.getAllSampleModelAttrs()];
+    const sampleAllColumnHeaders: Array<string> = ['Freezer', ...this.getAllColumnHeaders(),
+                                                    'Box', 'Position', 'Taken Out', 'Attachments', 'Researcher'];
+    const sampleAllSampleModelAttr: Array<string> = ['container', ...this.getAllSampleModelAttrs(),
+                                                    'box_position', 'position', 'date_out', 'attachments', 'researchers'];
     const header_index = sampleAllSampleModelAttr.indexOf(header);
     if (header_index !== -1) {
       return sampleAllColumnHeaders[header_index];
     }
     return header;
+  }
+
+  // get attachment file name
+  getAttachmentFileName(filePath: string) {
+    if (filePath.indexOf('/') !== -1) {
+      const fArray = filePath.split('/');
+      return fArray[fArray.length - 1];
+    } else {
+      return filePath;
+    }
   }
 }

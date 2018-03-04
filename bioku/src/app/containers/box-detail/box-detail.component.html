@@ -9,17 +9,24 @@
 </div>
 
 <div class="ui grid row small_padding stackable">
-  <div class="five wide column">
+  <div class="four wide column">
     <h3 class="ui violet left aligned header"><i class="icon list layout"></i>BOX SAMPLES</h3>
   </div>
-  <div class="five wide column">
+  <div class="four wide column">
+    <a class="ui teal button" 
+    appExportSample
+    [samples]="searchedSamples">
+        <i class="icon save"></i>SAVE
+    </a>
+  </div>
+  <div class="four wide column">
       <a class="ui blue button"
       *ngIf="container != null && box != null"
        [routerLink]="['/containers', container.pk, box.box_position, 'move_samples']">
         <i class="icon retweet"></i>SAMPLES BETWEEN BOXES
       </a>
   </div>
-  <div class="six wide column">
+  <div class="four wide column">
       <div class="ui slider checkbox float-right">
         <input type="checkbox" name="" id="table_view" (change)="toggleList()">
         <label for="table_view">
