@@ -14,6 +14,7 @@
   </div>
   <div class="four wide column">
     <a class="ui teal button" 
+    *ngIf="searchedSamples.length > 0"
     appExportSample
     [samples]="searchedSamples">
         <i class="icon save"></i>SAVE
