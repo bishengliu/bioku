@@ -178,11 +178,14 @@ export class ExcelUploadLoadService {
               // only the first user
               sampleAOA[i + ''] = (sample[h] != null && sample[h].length > 0) ? sample[h][0].first_name + ' ' + sample[h][0].last_name : '';
               } else if (h === 'date_out') {
+                // sample occupation
                 if ( sample['occupied'] !== undefined && !sample['occupied'] && sample[h] != null) {
                   sampleAOA[i + ''] =  'YES/' + sample[h];
                 } else {
                   sampleAOA[i + ''] = '';
                 }
+              } else if (h === 's_or_as') {
+                sampleAOA[i + ''] = sample[h] != null  ? (sample[h] === true ? 'sense' : 'antisense') : '';
               } else {
                 // all other keys
                 sampleAOA[i + ''] = sample[h] !== null ? sample[h] : '';
@@ -227,9 +230,9 @@ export class ExcelUploadLoadService {
   // render sample header
   renderSampleHeader(header: string): string {
     const sampleAllColumnHeaders: Array<string> = ['Freezer', ...this.getAllColumnHeaders(),
-                                                    'Box', 'Position', 'Taken Out', 'Attachments', 'Researcher'];
+                                                    'Box', 'Position', 'Taken Out', 'Attachments', 'Researcher', 'Sample Type'];
     const sampleAllSampleModelAttr: Array<string> = ['container', ...this.getAllSampleModelAttrs(),
-                                                    'box_position', 'position', 'date_out', 'attachments', 'researchers'];
+                                                    'box_position', 'position', 'date_out', 'attachments', 'researchers', 'type'];
     const header_index = sampleAllSampleModelAttr.indexOf(header);
     if (header_index !== -1) {
       return sampleAllColumnHeaders[header_index];
