@@ -24,7 +24,7 @@ export class ExcelUploadLoadService {
     all_headers.push(general_headers);
 
     const cell_headers = new SampleExcelHeaders();
-    cell_headers.headers =  ['Passage Number', 'Cell Cmount', 'Project', 'Creator'];
+    cell_headers.headers =  ['Passage Number', 'Cell Amount', 'Project', 'Creator'];
     cell_headers.header_type = 'cell_headers';
     all_headers.push(cell_headers);
 
@@ -110,13 +110,106 @@ export class ExcelUploadLoadService {
   }
   // for download
   // save sample json to aoa
-    formatSampleJson2AOA(samples: Array<Sample>): Array<Array<any>> {
-      let data: Array<Array<any>> = [];
-      // prepare the headers
+    formatSampleJson2AOA(samples: Array<Sample>, selected_headers: Array<string> = new Array<string>()): Array<Array<any>> {
+      const data: Array<Array<any>> = [];
       // validate sample types and get excel headers
-
+      let headers = new Array<string>();
+      if (selected_headers === undefined || selected_headers === null || selected_headers.length === 0) {
+        // prepare the headers
+        // get the sample types
+        const sample_types = this.getSampleTypes(samples);
+        // get front headers
+        headers = [...this.getMinimalSampleFrontHeaders()];
+        // cells
+        if (sample_types.indexOf('CELL') !== -1) {
+          const cell_headers =  ['passage_number', 'cell_amount', 'project', 'creator'];
+          headers = [...headers, ...cell_headers];
+        }
+        // CONSTRUCT
+        if (sample_types.indexOf('CONSTRUCT') !== -1) {
+          const construct_headers =  ['clone_number', 'against_260_280', 'feature', 'r_e_analysis', 'backbone', 'insert',
+          'first_max', 'marker', 'has_glycerol_stock', 'strain'];
+          headers = [...headers, ...construct_headers];
+        }
+        // 'OLIGO' or 'gRNA_OLIGO',
+        if (sample_types.indexOf('OLIGO') !== -1 || sample_types.indexOf('gRNA_OLIGO') !== -1 ) {
+          const oligo_headers =  ['oligo_name', 's_or_as', 'oligo_sequence', 'oligo_length', 'oligo_GC', 'target_sequence'];
+          headers = [...headers, ...oligo_headers];
+        }
+        // tissue
+        if (sample_types.indexOf('TISSUE') !== -1) {
+          const tissue_headers =  ['pathology_code', 'tissue'];
+          headers = [...headers, ...tissue_headers];
+        }
+        // virus
+        if (sample_types.indexOf('TISSUE') !== -1) {
+          const virus_headers =  ['plasmid', 'titration_titer', 'titration_unit', 'titration_cell_type', 'titration_code'];
+          headers = [...headers, ...virus_headers];
+        }
+        // get end headers
+        headers = [...headers, ...this.getMinimalSampleEndHeaders()];
+      } else {
+        headers = [...selected_headers];
+      }
+      // set the header as the first object
+      const headerAOA = new Array();
+      headers.forEach((h: string, i: number) => {
+        headerAOA[i + ''] = this.renderSampleHeader(h);
+      })
+      data.push(headerAOA);
       // convert json to aoa
-
+      // format the sample
+      if (samples.length > 0) {
+        samples.forEach((sample: Sample) => {
+          const sampleAOA = new Array();
+          headers.forEach((h: string, i: number) => {
+            if (sample[h] !== undefined) {
+              sampleAOA[i + ''] = sample[h];
+            } else {
+              sampleAOA[i + ''] = '';
+            }
+          })
+          data.push(sampleAOA);
+        })
+      }
+      console.log(data);
       return data;
+  }
+  // get sample types from samples
+  getSampleTypes(samples: Array<Sample>): Array<string> {
+    const sample_types = new Array<string>();
+    const all_sample_types = ['GENERAL', 'CELL', 'CONSTRUCT', 'OLIGO', 'gRNA_OLIGO', 'TISSUE', 'VIRUS']; // DO NOT CHANGE THIS *****
+    all_sample_types.forEach((type: string) => {
+      const sample_found: Sample = samples.find((sample: Sample) => sample.type === type);
+      if (sample_found !== undefined && sample_types.indexOf(type) === -1) {
+        sample_types.push(type);
+      }
+    });
+    return sample_types;
+  }
+  // get the minial sample front headers for exporting to excel
+  getMinimalSampleFrontHeaders(): Array<string> {
+    let front_headers = Array<string>();
+    front_headers = [
+      'container', 'box_position', 'position', 'name', 'official_name', 'type', 'label', 'tag',
+      'freezing_date', 'freezing_code', 'registration_code', 'reference_code', 'quantity', 'quantity_unit'
+    ];
+    return front_headers;
+  }
+  // get the minial sample end headers for exporting to excel
+  getMinimalSampleEndHeaders(): Array<string> {
+    let end_headers = Array<string>();
+    end_headers = ['occupied', 'date_out', 'attachments', 'description', 'researchers'];
+    return end_headers;
+  }
+  // render sample header
+  renderSampleHeader(header: string): string {
+    const sampleAllColumnHeaders: Array<string> = ['Freezer', ...this.getAllColumnHeaders()];
+    const sampleAllSampleModelAttr: Array<string> = ['container', ...this.getAllSampleModelAttrs()];
+    const header_index = sampleAllSampleModelAttr.indexOf(header);
+    if (header_index !== -1) {
+      return sampleAllColumnHeaders[header_index];
+    }
+    return header;
   }
 }
