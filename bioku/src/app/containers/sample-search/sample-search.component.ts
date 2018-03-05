@@ -29,9 +29,11 @@ export class SampleSearchComponent implements OnInit {
   dbClickedSamplePK = -1; // for dbclick
   DbClickCount = 0;
   FRONT_SAMPLE_STRIECT_FILTER = false;
+  ALLOW_DOWNLOAD_EXPORT = true;
   constructor(private containerService: ContainerService, @Inject(APP_CONFIG) private appSetting: any,
               private utilityService: UtilityService) {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
+    this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
    }
 
 ngOnInit() {}

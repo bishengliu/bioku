@@ -22,7 +22,7 @@
   <div *ngIf="samples.length > 0" class="eight wide column">
       <app-sample-deep-filter (deepSampleFilter)="updateDeepFilteredSampleList($event)"></app-sample-deep-filter>
   </div>
-  <div *ngIf="samples.length > 0" class="eight wide column right aligned">
+  <div *ngIf="ALLOW_DOWNLOAD_EXPORT && samples.length > 0" class="eight wide column right aligned">
       <a class="ui teal button" 
       appExportSample
       [samples]="searchedSamples">

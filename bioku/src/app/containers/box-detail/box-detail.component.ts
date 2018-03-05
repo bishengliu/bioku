@@ -39,11 +39,13 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   dbClickedSamplePK = -1; // for dbclick
   DbClickCount = 0;
   FRONT_SAMPLE_STRIECT_FILTER = false;
+  ALLOW_DOWNLOAD_EXPORT = true;
   // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
+    this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
