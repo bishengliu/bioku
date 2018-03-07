@@ -6,8 +6,8 @@ export const AppSetting = {
     // 'URL': 'http://34.216.52.204:8000',
     // local development
     'URL': 'http://127.0.0.1:8000',
-    // dell test
-    // 'URL': 'http://192.168.0.105:8000',
+    // local test
+    // 'URL': 'http://192.168.0.125:8000',
     // 'URL': 'http://127.0.0.1/biodataware',
 
     // APP URL FOR URL LINK TO THE FRONT-END ////////////
@@ -15,8 +15,8 @@ export const AppSetting = {
     // 'APP_URL': 'http://34.216.52.204',
     // local development
     'APP_URL': 'http://127.0.0.1:4200',
-    // dell test
-    // 'APP_URL': 'http://192.168.0.105',
+    // local test
+    // 'APP_URL': 'http://192.168.0.125',
 
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',

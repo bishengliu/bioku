@@ -61,7 +61,7 @@
                 <div class="six wide column">
                     <span class="header">BOX LABEL: </span>
                     <div class="ui fluid icon input" [ngClass]="{'disabled': !isPIorAssist && box.researchers && user.pk !== box.researchers[0].pk }">
-                      <input class="" type="text" [(ngModel)]="box.label" placeholder="user defined box label ..." (ngModelChange)="updateLabel($event, box.box_position)">
+                      <input class="" type="text" [(ngModel)]="box.label"  [attr.maxlength]="10" placeholder="user defined box label ..." (ngModelChange)="updateLabel($event, box.box_position)">
                       <i class="refresh icon"></i>
                     </div>
                 </div>   
