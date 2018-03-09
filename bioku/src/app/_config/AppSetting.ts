@@ -20,7 +20,7 @@ export const AppSetting = {
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
     // APP VERSION
-    'VERSION': '0.0.1-beta',
+    'VERSION': '1.0.0-beta2',
     // allow upload samples newly created freezer?
     'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // if this is true, post upload samples is disabled
