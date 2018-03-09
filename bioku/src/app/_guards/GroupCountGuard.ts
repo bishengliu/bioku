@@ -31,7 +31,7 @@ export class GroupCountGuard implements CanActivate {
                 });
                 this.gCount = 0;
                 this.alertService
-                    .error('failed to check the allowed groups, please contact us for support!', true);
+                    .error('We are sorry! Something went wrong, please contact the support!!', true);
                 this.router.navigate(['/denied']);
                 return false;
             }
@@ -55,7 +55,7 @@ export class GroupCountGuard implements CanActivate {
                 }
             });
             this.alertService
-                .error('failed to check the allowed groups, please contact us for support!', true);
+                .error('We are sorry! Something went wrong, please contact the support!', true);
             this.router.navigate(['/denied']);
             return false;
         }

@@ -11,7 +11,7 @@ export class ContainerSampleUploadGuard implements CanActivate {
         if (this.appSetting.ALLOW_UPLOAD_SAMPLES_2_CONTAINER) {
             return true;
         } else {
-            this.alertService.error('Upload Samples to the container is not allowed, please contact us for support!', true);
+            this.alertService.error('Upload samples to the container is not allowed, please contact the support!', true);
             this.router.navigate(['/denied']);
         }
         return false;

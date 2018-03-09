@@ -5,6 +5,7 @@ import { FetchAuthInfoGuard } from '../_guards/FetchAuthInfoGuard';
 import { CleanLocalStorageGuard } from '../_guards/CleanLocalStorageGuard';
 import { ContainerSampleUploadGuard } from '../_guards/ContainerSampleUploadGuard';
 import { GroupCountGuard } from '../_guards/GroupCountGuard';
+import { AppActiveGuard } from '../_guards/AppActiveGuard';
 
 export const GuardProviders: Array<any> = [
         {provide: FetchAuthInfoGuard, useClass: FetchAuthInfoGuard},
@@ -14,4 +15,5 @@ export const GuardProviders: Array<any> = [
         {provide: AdminGuard, useClass: AdminGuard},
         {provide: ContainerSampleUploadGuard, useClass: ContainerSampleUploadGuard},
         {provide: GroupCountGuard, useClass: GroupCountGuard},
+        {provide: AppActiveGuard, useClass: AppActiveGuard},
     ];

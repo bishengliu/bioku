@@ -19,12 +19,12 @@ export const AppSetting = {
 
     // FOR SENDINFG RESET PASSWORD
     'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
+    // APP VERSION
+    'VERSION': '0.0.1-beta',
     // allow upload samples newly created freezer?
     'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // if this is true, post upload samples is disabled
     'ALLOW_UPLOAD_SAMPLE_2_JSON': true,
-    // APP VERSION
-    'VERSION': '0.0.1-beta',
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
     'APP_USER_VERIFICATION': false,
@@ -49,6 +49,11 @@ export const AppSetting = {
     'ALLOW_DOWNLOAD_EXPORT': false,
     // show user defined box label?
     'SHOW_BOX_LABEL': true,
+    // set deactivate time limit
+    'APP_KEEP_ACTIVE': true,
+    // APP BUILD START DATE
+    'APP_START_DATE': '2018-01-01', // YYYY-MM-DD
+    'ACTIVE_FOR_DAYS': 366,
     'APP_COLORS': ['#F44336', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
     '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B', '#000000', '#FFFFFF'],
     'BOX_POSITION_LETTERS': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
