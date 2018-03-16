@@ -53,6 +53,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   valdatorOutput$: Subject<ValidatorOutput> = new Subject<ValidatorOutput>();
   // implement auto scroll to bottom
   @ViewChild('messageBox') private messageBox: ElementRef;
+  // consts
+  SAMPLEPOSITION = 'SamplePosition';
+  BOXPOSITION = 'BoxPosition';
   // freezing_date
   FREEZING_DATE = 'Freezing Date';
   FREEZING_DATE_INDEX = -1;
@@ -232,29 +235,30 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     if (this.bLabel.box_defined_as_normal) {
       if (this.bLabel.box_tsb_one_column) {
         // one cloumn
-        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('BoxLabel') + ')';
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader(this.BOXPOSITION) + ')';
         this.emitValidationOutput(message_step, 3, message);
-        // validate the boxlabel
+        // validate the BoxPosition
         // format box label
-        message = 'validate box labels (column ' + this.getColumnByHeader('BoxLabel') + ') ...';
+        message = 'validate box labels (column ' + this.getColumnByHeader(this.BOXPOSITION) + ') ...';
         this.emitValidationOutput(message_step, 3, message);
       } else {
         // 3 columns
-        message = 'your box labels are stored in three columns (tower in column ' + this.getColumnByHeader('BoxLabel_Tower') + ', '
-        + 'shelf in column ' + this.getColumnByHeader('BoxLabel_Shelf') + ', '
-        + 'box in column ' + this.getColumnByHeader('BoxLabel_Box') + ')';
+        message = 'your box labels are stored in three columns (tower in column '
+        + this.getColumnByHeader(this.BOXPOSITION + '_Tower') + ', '
+        + 'shelf in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Shelf') + ', '
+        + 'box in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Box') + ')';
         this.emitValidationOutput(message_step, 3, message);
       }
     } else {
       // box defined abnormal
       if (this.bLabel.box_sample_separated) {
         // box label is seperated
-        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('BoxLabel')
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader(this.BOXPOSITION)
         + ') and seperated from sample labels';
         this.emitValidationOutput(message_step, 3, message);
       } else {
         // box label together with sample label
-        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader('SampleLabel')
+        message = 'your box labels are stored in one column (column ' + this.getColumnByHeader(this.SAMPLEPOSITION)
         + ') and integrated with sample labels';
         this.emitValidationOutput(message_step, 3, message);
       }
@@ -757,7 +761,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   validNormal1Col(): boolean {
     let has_warning = false;
-    const box_label_header = this.getColumnByHeader('BoxLabel');
+    const box_label_header = this.getColumnByHeader(this.BOXPOSITION);
     // format data and test
     this.data.forEach((d: Array<any>, i) => {
       let box_label = d[('' + (box_label_header - 1))];
@@ -802,9 +806,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   validNormal3Col(): boolean {
     let has_warning = false;
-    const box_label_tower = this.getColumnByHeader('BoxLabel_Tower');
-    const box_label_shelf = this.getColumnByHeader('BoxLabel_Shelf');
-    const box_label_box = this.getColumnByHeader('BoxLabel_Box');
+    const box_label_tower = this.getColumnByHeader(this.BOXPOSITION + '_Tower');
+    const box_label_shelf = this.getColumnByHeader(this.BOXPOSITION + '_Shelf');
+    const box_label_box = this.getColumnByHeader(this.BOXPOSITION + '_Box');
     this.data.forEach( (d: Array<any>, i) => {
       if ( d[( '' + (box_label_tower - 1) )] === null || d[( '' + (box_label_tower - 1) )] === undefined
         || d[( '' + (box_label_shelf - 1) )] === null || d[( '' + (box_label_shelf - 1) )] === undefined
@@ -849,7 +853,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       too_many_samples = true;
     };
     // validate max boxes
-    const box_label_header = this.getColumnByHeader('BoxLabel');
+    const box_label_header = this.getColumnByHeader(this.BOXPOSITION);
     this.data.forEach((d, i) => {
       const box_label = '' + d[( '' + (box_label_header - 1) )];
       if (box_label === '' || box_label === null || box_label === undefined
@@ -879,7 +883,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // first need to seperate box labels and sample labels
     // box and sample label must be seperated with a symbol
     // split the box label and sample label ///////////////////////////////////////////////
-    const sample_header_col = this.getColumnByHeader('SampleLabel');
+    const sample_header_col = this.getColumnByHeader(this.SAMPLEPOSITION);
     this.data.forEach( (d, i) => {
       const sample_label = '' + d[( '' + (sample_header_col - 1) )];
       // splite the sample label to get the box label
@@ -1157,7 +1161,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   validSampleLabel1Col(): boolean {
     let has_warning = false;
     // SampleLabel
-    const sample_label_col = this.getColumnByHeader('SampleLabel');
+    const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION);
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
     this.data.forEach((d, i) => {
@@ -1241,9 +1245,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   validSampleLabel2Col(): boolean {
     let has_warning = false;
-    // SampleLabel_Row and SampleLabel_Column
-    const sample_label_row = this.getColumnByHeader('SampleLabel_Row');
-    const sample_label_col = this.getColumnByHeader('SampleLabel_Column');
+    // SamplePosition_Row and SamplePosition_Column
+    const sample_label_row = this.getColumnByHeader(this.SAMPLEPOSITION + '_Row');
+    const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION + '_Column');
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
     this.data.forEach((d , i) => {
@@ -1321,7 +1325,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     // SampleLabel
     if (!has_box_label) {
       // no box label
-      const sample_label_col = this.getColumnByHeader('SampleLabel');
+      const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION);
       this.data.forEach((d, i) => {
         const sample_label = '' + d[( '' + (sample_label_col - 1) )];
         if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
@@ -1356,7 +1360,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       } else {
         if (this.bLabel.box_defined_as_normal) {
           // normal box label
-          const sample_label_col = this.getColumnByHeader('SampleLabel');
+          const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION);
           this.data.forEach((d, i) => {
             const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
             if (sample_label !== undefined && (/^[0-9]+$/.test(sample_label))
@@ -1372,8 +1376,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         } else {
           // abnormal but seperated
           // no sample_label attr yet
-          const sample_label_col = this.getColumnByHeader('SampleLabel');
-          const box_label_col = this.getColumnByHeader('BoxLabel');
+          const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION);
+          const box_label_col = this.getColumnByHeader(this.BOXPOSITION);
           this.data.forEach((d, i) => {
             const sample_label = '' + d[( '' + (sample_label_col - 1) )]; // should be in the range of [1, max_sample_count]
             const box_label = d[('' + (box_label_col - 1))];
