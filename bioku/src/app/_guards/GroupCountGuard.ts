@@ -28,12 +28,14 @@ export class GroupCountGuard implements CanActivate {
                         } else {
                             return true;
                         }
+                },
+                () => {
+                    this.gCount = 0;
+                    this.alertService
+                        .error('We are sorry! Something went wrong, please contact the support!!', true);
+                    this.router.navigate(['/denied']);
+                    return false;
                 });
-                this.gCount = 0;
-                this.alertService
-                    .error('We are sorry! Something went wrong, please contact the support!!', true);
-                this.router.navigate(['/denied']);
-                return false;
             }
         } else {
             // verify group from different source
@@ -53,11 +55,13 @@ export class GroupCountGuard implements CanActivate {
                 } else {
                     return true;
                 }
-            });
-            this.alertService
+            },
+            () => {
+                this.alertService
                 .error('We are sorry! Something went wrong, please contact the support!', true);
             this.router.navigate(['/denied']);
             return false;
+            });
         }
     }
 }

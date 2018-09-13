@@ -9,7 +9,7 @@ export const AppSetting = {
     // local test
     // 'URL': 'http://192.168.0.125:8000',
     // mcb backend +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    'URL': 'mcb-app01.lumcnet.prod.intern:8000',
+    'URL': 'http://mcb-app01.lumcnet.prod.intern:8000',
     // APP URL FOR URL LINK TO THE FRONT-END ////////////
     // amazon testing server content server
     // 'APP_URL': 'http://34.216.52.204',
@@ -18,7 +18,7 @@ export const AppSetting = {
     // local test
     // 'APP_URL': 'http://192.168.0.125',
     // mcb front-end +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    'APP_URL': 'mcb-app01.lumcnet.prod.intern',
+    'APP_URL': 'http://mcb-app01.lumcnet.prod.intern',
     // FOR SENDINFG RESET PASSWORD
     // 'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
     // mcb +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -34,7 +34,7 @@ export const AppSetting = {
     'APP_USER_VERIFICATION': false,
     // mcb +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // 'MAX_G': -1, // -1 for no restriction
-    'MAX_G': 3, // -1 for no restriction
+    'MAX_G': -1, // -1 for no restriction
     'APP_USER': 'INSTITUTE', // change this if need validation
     'APP_USER_VERIFICATION_URL': 'VERIFICATION_URL', // change this if need validation
     'NAME': 'BIOKU', // ALSO USED FOR PASSWORD RESET EMAIL MESSAGE
