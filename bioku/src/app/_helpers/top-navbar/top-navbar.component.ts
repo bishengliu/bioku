@@ -92,11 +92,16 @@ export class TopNavbarComponent implements OnInit {
 
   // add assistant to a group
   addAssistant(groupInfo: GroupInfo, email: any) {
+    this.assistEmailInput =
+    new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
     this.appStore.dispatch(addAssistantAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));
   }
 
   // add researcher to a group
   addMember(groupInfo: GroupInfo, email: any) {
+    // empty the control
+    this.memberEmailInput =
+    new FormControl('', Validators.compose([Validators.required, Validators.email]), this.cValidators.emailAsyncValidator(-1));
     this.appStore.dispatch(addMemberAsync(groupInfo.pk, email, this.groupService, this.alertService, this.logAppStateService));
   }
 

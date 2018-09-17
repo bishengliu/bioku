@@ -183,7 +183,8 @@
                                     <div *ngIf="
                                     !memberEmailInput.hasError('required') 
                                     && !memberEmailInput.hasError('email') 
-                                    && !memberEmailInput.hasError('emailAsyncInvalid') && memberEmailInput.touched" 
+                                    && !memberEmailInput.hasError('emailAsyncInvalid') 
+                                    && memberEmailInput.touched" 
                                     class="ui mini negative message nopadding">Email doesn't exist!</div>
                                 </div>
                             </div>

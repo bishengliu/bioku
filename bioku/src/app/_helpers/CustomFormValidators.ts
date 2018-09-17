@@ -132,7 +132,7 @@ export class CustomFormValidators {
         return (control: FormControl): Observable<{[key: string]: Boolean}> => {
                 // not reuired
                 if (!control.value || control.value.length === 0 || control.value === '') {
-                    return Observable.throw(null);
+                    return Observable.throw({ emailAsyncInvalid: true });
                 }
                 return new Observable(observer => {
                     const find_user_detail_url: string  = this.appSetting.URL + this.appSetting.FIND_USER_DETAILS;
@@ -140,7 +140,7 @@ export class CustomFormValidators {
                     const headers = new Headers({ 'Content-Type': 'application/json' });
                     const options = new RequestOptions({ headers: headers });
                     if (!control.dirty) {
-                        observer.next(null);
+                        observer.next({ emailAsyncInvalid: false });
                         observer.complete();
                     } else {
                         control.valueChanges
