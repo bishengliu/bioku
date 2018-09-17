@@ -12,16 +12,16 @@
   </div>
   <div *ngIf="show_panel_content" class="ui segment">
     <!-- take out -->
-    <div class="ui small labels" *ngIf="occupiedSamples.length > 0"> 
-      <div class="ui label clickable"
+    <div class="ui large labels" *ngIf="occupiedSamples.length > 0"> 
+      <div class="ui large label clickable"
       [routerLink]="['/containers', sample.container_id, sample.box_position]"
       *ngFor="let sample of occupiedSamples">
           <div>
             <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
             <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
             <br />
-            <em class="tiny-text">
-              <span class="grey-text">
+            <em class="small-text">
+              <span class="">
                 <span>{{sample.box}}/{{sample.position}}</span>
                 <sup *ngIf="sample.label">{{sample.label}}</sup>      
               </span>
@@ -34,16 +34,16 @@
     </button>
     <!-- put back -->
     <div class="ui divider" *ngIf="preoccupiedSamples.length > 0 && occupiedSamples.length > 0"></div>
-    <div class="ui small labels" *ngIf="preoccupiedSamples.length > 0">
-        <div class="ui label clickable"
+    <div class="ui large labels" *ngIf="preoccupiedSamples.length > 0">
+        <div class="ui large label clickable"
         [routerLink]="['/containers', sample.container_id, sample.box_position]"
         *ngFor="let sample of preoccupiedSamples">
             <div>
               <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
               <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
               <br />
-              <em class="tiny-text">
-                <span class="grey-text">
+              <em class="small-text">
+                <span class="">
                   <span>{{sample.box}}/{{sample.position}}</span>
                   <sup *ngIf="sample.label">{{sample.label}}</sup>      
                 </span>

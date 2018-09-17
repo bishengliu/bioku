@@ -274,6 +274,9 @@ body{
 .tiny-text{
   font-size: 9px !important;
 }
+.small-text{
+  font-size: 12px !important;
+}
 .right.menu{
   padding-top: 0 !important;
 }
