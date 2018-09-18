@@ -6,8 +6,8 @@
   <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon add circle"></i> SAVE SAMPLES 
   </button>  
-  <div class="ui grid">
-      <div class="eight wide column">
+  <div class="two fields">
+      <div class="field">
           <table class="ui sortable small striped compact padded single line table">
               <tbody>
                 <!-- general -->
@@ -185,7 +185,7 @@
               </tbody>
           </table>       
       </div>
-      <div class="eight wide column">
+      <div class="field">
           <table class="ui sortable small striped compact padded single line table" *ngIf="sample_type != '-'">
               <tbody>
                 <!-- general -->

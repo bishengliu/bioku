@@ -33,7 +33,7 @@
     <!-- single selection style="overflow-y:scroll;white-space:nowrap;"-->
     <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
         class="ui segment mini_around" >
-      <app-sample-detail       
+      <app-sample-detail   
         [box]="box"
         [container]="container"
         [samplePK]="samplePKs[0]">
@@ -43,8 +43,8 @@
   <!--multiple selection-->
   <!--current occipied sample-->
     <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui segment">
-      <div class="ui labels">
-        <div class="ui label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
+      <div class="ui large labels">
+        <div class="ui large label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
       </div>
       <div class="ui divider"></div>
       <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
@@ -57,8 +57,8 @@
   <!--multiple selection-->
   <!--previous occupied sample-->       
     <div *ngIf="samplePKs.length > 1 && preoccupiedSamples.length >= 1" class="ui grey segment">
-      <div class="ui labels">
-        <div class="ui label" *ngFor="let sample of preoccupiedSamples">
+      <div class="ui large labels">
+        <div class="ui large label" *ngFor="let sample of preoccupiedSamples">
           <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
           <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span>
         </div>
@@ -69,8 +69,8 @@
 
     <!--empty box cells: for box view only-->
     <div *ngIf="emptySelectedCells.length > 0" class="ui blue segment">
-      <div class="ui labels">
-        <div class="ui label" *ngFor="let cell of emptySelectedCells">
+      <div class="ui large labels">
+        <div class="ui large label" *ngFor="let cell of emptySelectedCells">
           <i class="circle thin icon violet-text"></i>
           <span>{{cell}}</span>
         </div>

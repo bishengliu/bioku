@@ -469,7 +469,7 @@ div [class*="right floated"] {
   bottom: inherit; */
   /* top: inherit;  */
   bottom: 25px; 
-  width: 480px; 
+  width: 560px; 
   left: auto; 
   right: 10px;
   /* background-color:rgba(255,0,0,0.5); */
@@ -563,12 +563,3 @@ div [class*="right floated"] {
 .no_border{
   border: 0px solid rgba(34,36,38,.15) !important;
 }
-/* .narrow_table{
-  width: 75% !important;
-  height: 75% !important;
-} */
-/* .narrow_imput input,
-.narrow_imput select
- {
-  width: 80% !important;
-} */
