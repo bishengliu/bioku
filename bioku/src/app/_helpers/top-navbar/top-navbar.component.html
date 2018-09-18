@@ -108,7 +108,11 @@
                             <div class="field" [class.error]="assistEmailInput.invalid && assistEmailInput.touched" >
                                 <div class="ui grey right labeled left icon mini input right floated">
                                     <i class="mail icon"></i>
-                                    <input type="email" placeholder="user's email" [formControl]="assistEmailInput" #assistInput (mouseout)="hideValidation('assistant')" (mouseenter)="showValidation('assistant')">
+                                    <input type="email" 
+                                    placeholder="user's email" 
+                                    [formControl]="assistEmailInput" #assistInput 
+                                    (mouseout)="hideValidation('assistant')" 
+                                    (mouseenter)="showValidation('assistant')">
                                     <a class="mini ui grey tag label" 
                                         (click)="assistEmailInput.touched 
                                         && !assistEmailInput.hasError('required') 
