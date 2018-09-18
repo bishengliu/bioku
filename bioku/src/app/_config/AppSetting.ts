@@ -52,7 +52,7 @@ export const AppSetting = {
     // TOKEN EXPIRATION
     'TOKEN_EXPIRATION_HOUR': 6,
     // allow user to download excel exports
-    'ALLOW_DOWNLOAD_EXPORT': false,
+    'ALLOW_DOWNLOAD_EXPORT': true,
     // show user defined box label?
     'SHOW_BOX_LABEL': true,
     // set deactivate time limit

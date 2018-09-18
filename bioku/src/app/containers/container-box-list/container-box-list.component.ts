@@ -206,7 +206,11 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
 
   isAssistofGroup(group: Group): Boolean {
     let isAssist: Boolean = false;
-    if (group !== undefined && group.assistants !== undefined && group.assistants.length > 0 ) {
+    if (group !== undefined 
+      && group !== null
+      && group.assistants !== undefined 
+      && group.assistants != null 
+      && group.assistants.length > 0 ) {
       group.assistants.forEach( assist => {
         if (assist.user.pk === this.user.pk) {
           isAssist = true; }
