@@ -10,6 +10,8 @@ import { ContainerService } from '../../_services/ContainerService';
 import { LogAppStateService } from '../../_services/LogAppStateService';
 import { UtilityService } from '../../_services/UtilityService';
 import { RefreshService } from '../../_services/RefreshService';
+import { User } from '../../_classes/User';
+import { Group, GroupInfo, Assistant, Member } from '../../_classes/Group';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
@@ -27,6 +29,8 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
   id: number;
   private sub: any; // subscribe to params observable
   private querySub: any;
+  user: User = null;
+  show_upload_button: Boolean = false;
   containers: Array<Container> = new Array<Container>();
   container: Container = null;
   currentBox: Box = null;
@@ -59,6 +63,13 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentBox) {
       this.currentBox = state.containerInfo.currentBox;
     }
+    if(state != null 
+      && state.authInfo != null 
+      && state.authInfo.authUser != null
+      && state.authInfo.authGroup.length > 0){
+        this.user = state.authInfo.authUser;
+        this.show_upload_button = this.isAssistofGroup(state.authInfo.authGroup[0]);
+      }
   }
 
   updateBoxList(boxFilter: BoxFilter) {
@@ -184,6 +195,33 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  isPIofGroup(group: Group): Boolean {
+    let isPI: Boolean = false;
+    if (this.user && this.user.email === group.email) {
+      isPI = true;
+    }
+    return isPI;
+  }
+
+  isAssistofGroup(group: Group): Boolean {
+    let isAssist: Boolean = false;
+    if (group !== undefined && group.assistants !== undefined && group.assistants.length > 0 ) {
+      group.assistants.forEach( assist => {
+        if (assist.user.pk === this.user.pk) {
+          isAssist = true; }
+      })
+    }
+    return isAssist;
+  }
+
+  // check user isPIor Assist
+  isPIorAssist(group: Group) {
+    let isPIorAssist: Boolean = false;
+    isPIorAssist = this.isPIofGroup(group) || this.isAssistofGroup(group) ? true : false;
+    return isPIorAssist;
+  }
+
   boxCardview(boxCount: number) {
     return ( boxCount > 0 && boxCount <= this.max_box_cardview_switch) ? true : false;
   }

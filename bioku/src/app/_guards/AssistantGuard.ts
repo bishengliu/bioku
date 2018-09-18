@@ -50,7 +50,7 @@ export class AssistantGuard implements CanActivate {
             && state.authInfo.authGroup[0].assistants.length > 0){
                 //find the assistant
                 const assistant: Assistant = state.authInfo.authGroup[0].assistants.find((a: Assistant, i) => {
-                    return a.user.email = email;
+                    return a.user.email === email;
                 })
                 if(assistant != undefined){
                     return true;
