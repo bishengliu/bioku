@@ -11,15 +11,13 @@ export class AssistantGuard implements CanActivate {
 
     canActivate(): boolean {
         const state = this.appStore.getState();
-        //check PI
+        // check PI
         if (this.isPI()) {
             return true;
-        } 
-        else if(this.isAssistant()) {
-            //check assistant
+        } else if (this.isAssistant()) {
+            // check assistant
             return true;
-        }
-        else {
+        } else {
             // reditrect
             this.alertService.error('You have insufficient permissions!', true);
             this.router.navigate(['/denied']);
@@ -30,7 +28,7 @@ export class AssistantGuard implements CanActivate {
     isPI(): boolean {
         const state = this.appStore.getState();
         if (state != null && state.authInfo != null && state.authInfo.authUser != null
-            && state.authInfo.authUser.roles != null 
+            && state.authInfo.authUser.roles != null
             && state.authInfo.authUser.roles.indexOf('PI') !== -1) {
             return true;
         } else {
@@ -39,22 +37,22 @@ export class AssistantGuard implements CanActivate {
     }
 
     isAssistant(): boolean {
-        let email: string = '';
+        let email = '';
         const state = this.appStore.getState();
-        if(state != null && state.authInfo != null && state.authInfo.authUser != null){
+        if (state != null && state.authInfo != null && state.authInfo.authUser != null){
             email = state.authInfo.authUser.email;
         }
-        if(state != null 
-            && state.authInfo != null 
+        if (state != null
+            && state.authInfo != null
             && state.authInfo.authGroup != null
             && state.authInfo.authGroup.length > 0
             && state.authInfo.authGroup[0].assistants != null
             && state.authInfo.authGroup[0].assistants.length > 0){
-                //find the assistant
+                // find the assistant
                 const assistant: Assistant = state.authInfo.authGroup[0].assistants.find((a: Assistant, i) => {
                     return a.user.email === email;
                 })
-                if(assistant != undefined){
+                if (assistant !== undefined) {
                     return true;
                 }
         }
