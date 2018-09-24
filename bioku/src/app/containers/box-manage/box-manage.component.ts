@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
@@ -17,7 +17,7 @@ import {  UtilityService } from '../../_services/UtilityService';
   templateUrl: './box-manage.component.html',
   styleUrls: ['./box-manage.component.css']
 })
-export class BoxManageComponent implements OnInit {
+export class BoxManageComponent implements OnInit, OnDestroy {
 
   loading: Boolean = true;
   // route param
@@ -28,22 +28,25 @@ export class BoxManageComponent implements OnInit {
   container: Container = null;
   box: Box = null;
   samples: Array<Sample> = [];
-  color: string = '#ffffff';
-  rate: number = 0;
+  color = '#ffffff';
   box_horizontal: number;
   hArray: Array<number> = new Array<number>();
   bhArray: Array<number> = new Array<number>();
   box_vertical: string;
   vArray: Array<string> = new Array<string>();
   bvArray: Array<string> = new Array<string>();
-  //previous baylauyt
+  // previous layout
   pre_box_horizontal: number;
   pre_box_vertical: string;
+  @ViewChild('verticalCtl') vposition: ElementRef;
+  @ViewChild('horizontalCtl') hposition: ElementRef;
   appUrl: string;
   // show user defined box label?
   show_user_defined_label: Boolean = false;
   // allow change the box layout
   allow_change_box_layout: Boolean = false;
+  // ignore history sample
+  ignore_history_sample = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
@@ -53,8 +56,11 @@ export class BoxManageComponent implements OnInit {
         // SET THE DEFAULT BOX LAYOUT
       this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
       this.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; // a letter
+      this.hArray = this.utilityService.genArray(this.box_horizontal);
+      this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
       this.appUrl = this.appSetting.URL;
       this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
+      this.ignore_history_sample = this.appSetting.IGNORE_HISTORY_SAMPLE;
     }
 
     updateState() {
@@ -93,38 +99,38 @@ export class BoxManageComponent implements OnInit {
       })
       .subscribe((box: Box) => {
         this.box = box;
-        // get samples
-        this.samples = this.box.samples
-          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
-          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
-          console.log(this.samples);
         if (this.box != null) {
-          this.rate =  this.box.rate == null ? 0 : this.box.rate;
+          // get samples
+          this.samples = this.box.samples
+            .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
+            .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
           this.color = this.box.color == null ? '#ffffff' : this.box.color;
+          this.bhArray = this.utilityService.genArray(this.box.box_horizontal);
+          this.bvArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.box.box_vertical);
+          this.box_horizontal = (this.box != null && this.box.box_horizontal !== null )
+            ? this.box.box_horizontal
+            : this.box_horizontal;
+        this.box_vertical = (this.box != null && this.box.box_vertical !== null)
+            ? this.appSetting.BOX_POSITION_LETTERS[this.box.box_vertical - 1]
+            : this.box_vertical;
+        // update box layout
+        this.hArray = this.utilityService.genArray(this.box_horizontal);
+        this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
+        // set orignal layout
+        this.pre_box_horizontal = this.box_horizontal;
+        this.pre_box_vertical = this.box_vertical;
         }
+        // toggle loading
         this.loading = false;
       },
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
 
-
-    this.box_horizontal = (this.box != null && this.box.box_horizontal >= this.box_horizontal )
-        ? this.box.box_horizontal 
-        : this.box_horizontal;
-    this.box_vertical = (this.box != null && this.box.box_vertical >= this.appSetting.BOX_VERTICAL)
-        ? this.appSetting.BOX_POSITION_LETTERS[this.box.box_vertical - 1]
-        : this.box_vertical;
-    // update box layout
-    this.hArray = this.utilityService.genArray(this.box_horizontal);
-    this.bhArray = this.utilityService.genArray(this.box.box_horizontal);
-    this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
-    this.bvArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.box.box_vertical);
     // // allow change the box layout
-    if(this.appSetting.ALLOW_MULTIPLE_BOX_DIMENSION === true) {
+    if (this.appSetting.ALLOW_MULTIPLE_BOX_DIMENSION === true) {
       this.allow_change_box_layout = true;
     } else {
       this.allow_change_box_layout = false;
     }
-    
   }
   // generate extra options for dropdown
   genVerticalOptions() {
@@ -135,30 +141,38 @@ export class BoxManageComponent implements OnInit {
   genHorizontalOptions() {
     return this.utilityService.genArray(this.hArray.length + this.appSetting.BOX_EXTRA_LAYOYT);
   }
-  //update the box layout
+  // update the box layout
   updateLayout(event: any, type: string, ) {
     // event is the value of changes
     if (type === 'horizontal') {
-      this.pre_box_horizontal = this.box_horizontal;
       this.box_horizontal = +event;
-      //validate new layout ////////////////////////////////////////
-
+      // validate new layout ////////////////////////////////////////
+      const is_valid = this.validateNewLayout(this.box_horizontal, this.box_vertical, this.samples, this.ignore_history_sample);
+      if (!is_valid) {
+        this.box_horizontal = this.pre_box_horizontal;
+        this.hposition.nativeElement.value = (this.box_horizontal - 1) + ': ' + this.box_horizontal;
+        this.alertService.error('Invalid layout: the new layout must include all the samples!', false);
+      } else {
+        this.pre_box_horizontal = this.box_horizontal;
+      }
       this.hArray = this.utilityService.genArray(this.box_horizontal);
       this.bhArray = this.utilityService.genArray(this.box_horizontal);
-
     }
     if (type === 'vertical') {
-      this.pre_box_vertical = this.box_vertical;
       this.box_vertical = event;
-      //validate new layout ////////////////////////////////////////////////
-
+      // validate new layout ////////////////////////////////////////////////
+      const is_valid = this.validateNewLayout(this.box_horizontal, this.box_vertical, this.samples, this.ignore_history_sample);
+      if (!is_valid) {
+        this.box_vertical = this.pre_box_vertical;
+        this.vposition.nativeElement.value = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + ': ' + this.box_vertical
+        this.alertService.error('Invalid layout: the new layout must include all the samples!', false);
+      } else {
+        this.pre_box_vertical = this.box_vertical;
+      }
       this.vArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
       this.bvArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
     }
   }
-
-  //validate new layout
-
 
   pickerSamples(h: number, v: string): Array<Sample> {
     return (this.samples != null
@@ -173,19 +187,17 @@ export class BoxManageComponent implements OnInit {
     }
     return cssValue;
   }
-
-  updateRate(rate: number, box_position: string) {
-    this.rate = rate;
-    if (this.container !== null) {
-      this.containerService.updateBoxRate(this.container.pk, box_position, rate)
-      .subscribe(() => {}, (err) => console.log(err));
-    }
-  }
-  clearRate(box_position: string) {
-    if (this.container !== null) {
-      this.containerService.updateBoxRate(this.container.pk, box_position, 0)
-      .subscribe(() => this.rate = 0, (err) => console.log(err));
-    }
+  // validate the new box layout
+  validateNewLayout(box_horizontal: number, box_vertical: string, samples: Array<Sample>, ignore_history_sample: boolean) {
+   let is_valid = false;
+   const sample: Sample = samples.find((s: Sample, i: number): boolean => {
+    return (
+      (s.hposition > box_horizontal || s.vposition > box_vertical)
+      && (!ignore_history_sample ? s.occupied === true : true)
+      );
+   });
+   is_valid = sample === undefined ? true : false;
+   return is_valid;
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

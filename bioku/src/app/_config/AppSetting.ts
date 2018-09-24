@@ -73,10 +73,12 @@ export const AppSetting = {
     'NAME_SYMBOL': '...',
     // what to do for front end sample search
     'FRONT_SAMPLE_STRIECT_FILTER': true, // otherwise highlight
-    //allow to add a different box dimension in container overview
+    // allow to add a different box dimension in container overview
     'ALLOW_MULTIPLE_BOX_DIMENSION': true,
-    //allow managing boxes
+    // allow managing boxes
     'ALLOW_MANAGE_BOX': true,
+    // ignore history sample when managing box alyout
+    'IGNORE_HISTORY_SAMPLE': false,
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

@@ -106,7 +106,10 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       }
     })
     .subscribe(
-      (res: any) => { this.presearch_sample_count = res.count; console.log(this.presearch_sample_count) },
+      (res: any) => {
+        this.presearch_sample_count = res.count;
+        // console.log(this.presearch_sample_count)
+      },
       () => { this.presearch_sample_count = 0; }
     );
   }
