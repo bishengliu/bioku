@@ -109,6 +109,10 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     // allow change box layout ?
     if (this.container.has_box === false) {
       this.allow_change_box_layout = true;
+    } else if(this.appSetting.ALLOW_MULTIPLE_BOX_DIMENSION === true) {
+      this.allow_change_box_layout = true;
+    } else {
+      this.allow_change_box_layout = false;
     }
   }
 
