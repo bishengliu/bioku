@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, OnDestroy, ElementRef, ViewChild } from '@an
 import { Observable } from 'rxjs';
 import { Container } from '../../_classes/Container';
 import { Box } from '../../_classes/Box';
+import { User } from '../../_classes/User';
 import { Sample } from '../../_classes/Sample';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../_services/AlertService';
@@ -10,6 +11,8 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { AppStore } from '../../_providers/ReduxProviders';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
+import { Group } from '../../_classes/Group';
+import { identifierModuleUrl } from '@angular/compiler';
 
 
 @Component({
@@ -47,13 +50,25 @@ export class BoxManageComponent implements OnInit, OnDestroy {
   allow_change_box_layout: Boolean = false;
   // ignore history sample
   ignore_history_sample = false;
+  // auth user
+  user: User;
+  // box owner
+  box_owner: User;
+  // all group users
+  group_all_users: Array<User> = new Array<User>();
+  // is able to change the box owner
+  is_able_2_update_owner = false;
+  // is PI of assistant
+  is_PI_or_assist = false;
+  // delete box clicked
+  delete_box_clicked = false;
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
-        // subscribe store state changes
-        appStore.subscribe(() => this.updateState());
-        this.updateState();
-        // SET THE DEFAULT BOX LAYOUT
+      // subscribe store state changes
+      appStore.subscribe(() => this.updateState());
+      this.updateState();
+      // SET THE DEFAULT BOX LAYOUT
       this.box_horizontal = this.appSetting.BOX_HORIZONTAL;
       this.box_vertical = this.appSetting.BOX_POSITION_LETTERS[this.appSetting.BOX_VERTICAL - 1]; // a letter
       this.hArray = this.utilityService.genArray(this.box_horizontal);
@@ -62,7 +77,6 @@ export class BoxManageComponent implements OnInit, OnDestroy {
       this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
       this.ignore_history_sample = this.appSetting.IGNORE_HISTORY_SAMPLE;
     }
-
     updateState() {
       const state = this.appStore.getState();
       if (state.containerInfo && state.containerInfo.currentContainer) {
@@ -70,6 +84,21 @@ export class BoxManageComponent implements OnInit, OnDestroy {
       }
       if (state.containerInfo && state.containerInfo.currentBox) {
         this.box = state.containerInfo.currentBox;
+      }
+      if (state.authInfo != null && state.authInfo.authUser != null) {
+        this.user = state.authInfo.authUser;
+      }
+      if (state.authInfo !== null && state.authInfo.authGroup !==  null ) {
+        // get all the users
+        state.authInfo.authGroup.forEach((g: Group): void => {
+          if (g.members !== null && g.members.length > 0) {
+            g.members.forEach(m => {
+              this.group_all_users.push(m.user);
+            });
+          }
+        });
+        // check the primary group
+        this.is_PI_or_assist = this.isPIorAssist(state.authInfo.authGroup[0]);
       }
     }
   ngOnInit() {
@@ -119,6 +148,15 @@ export class BoxManageComponent implements OnInit, OnDestroy {
         // set orignal layout
         this.pre_box_horizontal = this.box_horizontal;
         this.pre_box_vertical = this.box_vertical;
+
+        // box owner
+        this.box_owner =
+        this.box.researchers != null && this.box.researchers.length > 0
+        ? this. box.researchers[0]
+        : null;
+        if (this.is_PI_or_assist || this.user.pk === this.box_owner.pk) {
+          this.is_able_2_update_owner = true;
+        }
         }
         // toggle loading
         this.loading = false;
@@ -137,7 +175,6 @@ export class BoxManageComponent implements OnInit, OnDestroy {
     return [...this.vArray, ...this.appSetting.BOX_POSITION_LETTERS.slice(this.vArray.length,
             this.vArray.length + this.appSetting.BOX_EXTRA_LAYOYT)];
   }
-
   genHorizontalOptions() {
     return this.utilityService.genArray(this.hArray.length + this.appSetting.BOX_EXTRA_LAYOYT);
   }
@@ -173,7 +210,6 @@ export class BoxManageComponent implements OnInit, OnDestroy {
       this.bvArray = this.appSetting.BOX_POSITION_LETTERS.slice(0, this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1 );
     }
   }
-
   pickerSamples(h: number, v: string): Array<Sample> {
     return (this.samples != null
       ? this.samples.filter((s: Sample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
@@ -198,6 +234,54 @@ export class BoxManageComponent implements OnInit, OnDestroy {
    });
    is_valid = sample === undefined ? true : false;
    return is_valid;
+  }
+  // update box owner
+  updateOwner(event: any) {
+    this.box_owner = this.group_all_users.find((o: User) => {return o.pk === event}) ;
+  }
+  // check permissions
+  isPIofGroup(group: Group): boolean {
+    let isPI = false;
+    if (this.user && this.user.email === group.email) {
+      isPI = true;
+    }
+    return isPI;
+  }
+
+  isAssistofGroup(group: Group): boolean {
+    let isAssist = false;
+    if (group !== undefined && group.assistants !== undefined && group.assistants ) {
+      group.assistants.forEach( assist => {
+        if (assist.user.pk === this.user.pk) {
+          isAssist = true; }
+      })
+    }
+    return isAssist;
+  }
+
+  // check user isPIor Assist
+  isPIorAssist(group: Group): boolean {
+    let isPIorAssist = false;
+    isPIorAssist = this.isPIofGroup(group) || this.isAssistofGroup(group) ? true : false;
+    return isPIorAssist;
+  }
+  // save box: save layout and save owner
+  save_box() {
+    // save new layout
+    if (this.is_able_2_update_owner) {
+      // also save new owner
+    }
+    // save owner
+  }
+  // inital remove box
+  delete_box() {
+    this.delete_box_clicked = true;
+  }
+  cancel_deletion() {
+    this.delete_box_clicked = false;
+  }
+  confirm_delete_box() {
+    // delete box
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }

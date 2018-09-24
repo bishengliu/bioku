@@ -26,8 +26,8 @@
           <!-- HEAD -->
           <div class="content box_cardview" [style.background-color]="color" *ngIf="box != null">
             <div class="right floated">Box: {{box.box_position}} <span *ngIf="show_user_defined_label && box.label">/{{box.label}}</span></div>
-            <img *ngIf="box.researchers && box.researchers[0].profile && box.researchers[0].profile.photo" class="ui avatar image" src="{{appUrl + box.researchers[0].profile.photo}}">
-            <span class="meta" *ngIf="box.researchers">{{box.researchers[0].first_name.toUpperCase()+ " " + box.researchers[0].last_name.toUpperCase()}}</span>         
+            <img *ngIf="box_owner && box_owner.profile && box_owner.profile.photo" class="ui avatar image" src="{{appUrl + box_owner.profile.photo}}">
+            <span class="meta" *ngIf="box_owner">{{box_owner.first_name.toUpperCase()+ " " + box_owner.last_name.toUpperCase()}}</span>         
           </div>
           <!-- LAYOUT -->
           <div *ngIf="box != null">
@@ -55,7 +55,7 @@
     <div class="ui ten wide column segment">
       <div class="ui cards">
         <!--box layout-->
-        <div class="ui teal raised card">
+        <div class="ui violet raised card">
             <div class="content">
               <div class="header">BOX LAYOUT (<span>{{box_horizontal}}X{{vArray.length}}</span>)</div>
               <div class="meta" *ngIf="allow_change_box_layout">
@@ -87,13 +87,42 @@
             </div>
           </div>
           <!--box owner -->
-          <div class="ui teal raised card">
-            <div>test</div>
+          <div class="ui teal raised card" *ngIf="is_able_2_update_owner">
+            <div class="content">
+              <div class="header">BOX OWNER (
+                <span>
+                  <img *ngIf="box.researchers && box.researchers[0].profile && box.researchers[0].profile.photo" 
+                  class="ui avatar image" src="{{appUrl + box.researchers[0].profile.photo}}">
+                  <span class="meta" *ngIf="box_owner">{{box_owner.first_name.toUpperCase()+ " " + box_owner.last_name.toUpperCase()}}</span>
+                </span>
+                )
+              </div>
+              <div class="meta">
+                  <i class="announcement icon"></i>
+                  <span>Select the dropdowns below to change the owner of the box!</span>
+              </div>
+              <div class="description">
+                <div class="ui form tiny small_vertial_padding">
+                    <div class="field">
+                        <label>researchers: </label>
+                        <select name="boxowner" [(ngModel)]="box_owner.pk" class="ui fluid dropdown" (ngModelChange)="updateOwner($event)" #boxownerCtl>               
+                          <option *ngFor="let owner of group_all_users" [ngValue]="owner.pk">{{owner.first_name.toUpperCase()+ " " + owner.last_name.toUpperCase()}}</option>
+                        </select>
+                      </div>
+                </div>
+              </div>
+            </div>
           </div>
       </div>  
+      <div class="ui red clearing segment" *ngIf="delete_box_clicked">
+        <p class="red-text"><i class="icon announcement"></i>Are you sure to delete this box?</p>
+        <button class="ui right floated mini button" (click)="cancel_deletion()">CANCEL DELETION</button>
+      </div>
     </div>
   </div>
-  <div class="ui red inverted bottom attached button" (click)="remove_box()">
-    <p>REMOVE BOX</p>
+  <div class="three ui mini bottom attached buttons">
+    <button class="ui violet button" (click)="save_box()"><i class="icon save"></i>SAVE</button>
+    <button class="ui grey button" *ngIf="!delete_box_clicked && (samples === null || samples.length == 0) " (click)="delete_box()"><i class="icon trash"></i>DELETE BOX</button>
+    <button class="ui red button" *ngIf="delete_box_clicked" (click)="confirm_delete_box()"><i class="icon trash"></i>CONFIRM DELETION</button>
   </div>
 </div>
