@@ -22,6 +22,7 @@ import { StoreSampleComponent } from '../containers/store-sample/store-sample.co
 import { ForgetPasswordComponent } from '../account/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
 import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
+import { BoxManageComponent } from '../containers/box-manage/box-manage.component';
 // guards
 import { AuthGuard } from '../_guards/AuthGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
@@ -76,6 +77,8 @@ export const routes: Routes = [
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent,
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+  {path: 'containers/:ct_pk/:box_pos/manage', component: BoxManageComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers', component: MyContainerListComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },

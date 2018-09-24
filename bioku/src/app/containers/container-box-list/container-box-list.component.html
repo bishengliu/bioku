@@ -40,7 +40,7 @@
     </p>  
 </div>
 <!--after loading-->
-<div class="ui grid row small_padding stackable" *ngIf="!loading && !load_failed">
+<div class="ui row small_padding stackable" *ngIf="!loading && !load_failed">
   <div *ngIf="searchedBoxes.length > 0 && boxCardview(searchedBoxes.length)">
       <div class="ui link cards">
           <app-container-box-cardview *ngFor="let box of searchedBoxes" [box]="box" class="ui black raised card" (click)="displaySelectedBox(box)"></app-container-box-cardview>

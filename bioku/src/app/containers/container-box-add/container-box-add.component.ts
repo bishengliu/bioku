@@ -116,7 +116,7 @@ export class ContainerBoxAddComponent implements OnInit, OnDestroy {
     }
   }
 
-  // generate extra options for dropdow
+  // generate extra options for dropdown
   genVerticalOptions() {
     return [...this.vArray, ...this.appSetting.BOX_POSITION_LETTERS.slice(this.vArray.length,
             this.vArray.length + this.appSetting.BOX_EXTRA_LAYOYT)];

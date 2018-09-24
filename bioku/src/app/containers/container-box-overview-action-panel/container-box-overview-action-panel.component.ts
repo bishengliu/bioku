@@ -38,11 +38,14 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit, OnChang
   selectedOccupiedSlots: Array<BoxAvailability> = new Array<BoxAvailability>();
   // show panel content
   show_panel_content: Boolean = false;
-  constructor(@Inject(AppStore) private appStore, private router: Router,
+  //allow manage box
+  allow_manage_box = false;
+  constructor(@Inject(AppStore) private appStore, private router: Router, @Inject(APP_CONFIG) private appSetting: any,
               private containerService: ContainerService, private localStorageService: LocalStorageService,
               private alertService: AlertService) {
     appStore.subscribe(() => this.updateState());
     this.updateState();
+    this.allow_manage_box = this.appSetting.ALLOW_MANAGE_BOX;
    }
 
    updateState() {
@@ -164,7 +167,7 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit, OnChang
 
   //manage box
   manageBox(){
-    this.router.navigate(['containers/overview/managebox', this._container.pk]);
+    this.router.navigate(['/containers/', this.container.pk, this.selectedOccupiedSlots[0].full_position, 'manage']);
     this.localStorageService.boxAvailabilities = [];
     this.localStorageService.selectedEmptySlots = [];
     this.localStorageService.selectedOccupiedSlots = [];
