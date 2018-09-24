@@ -41,9 +41,10 @@
             <span>{{ occupied.full_position }}</span>
           </div>
         </div>
-        <div class="two ui mini buttons">
-          <button class="ui violet button" *ngIf="selectedOccupiedSlots.length == 2" (click)="switchBox()"><i class="icon refresh"></i>SWITCH</button>
-          <button class="ui red button" (click)="moveBox()"><i class="icon move"></i>MOVE</button>
+        <div class="three ui mini buttons">
+          <button class="ui violet button" *ngIf="selectedOccupiedSlots.length === 2" (click)="switchBox()"><i class="icon refresh"></i>SWITCH</button>
+          <button class="ui gray button" *ngIf="selectedOccupiedSlots.length === 1" (click)="manageBox()"><i class="sun outline icon"></i>MANAGE</button>
+          <button class="ui green button" (click)="moveBox()"><i class="icon move"></i>MOVE</button>
         </div>
       </div>
     </div>

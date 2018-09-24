@@ -109,6 +109,7 @@ import { ContainerBoxFullnessviewComponent } from './containers/container-box-fu
 import { SampleDetailModelComponent } from './containers/sample-detail-model/sample-detail-model.component';
 import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
 import { ExportSampleDirective } from './_directives/export-sample/export-sample.directive';
+import { BoxManageComponent } from './containers/box-manage/box-manage.component';
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { ExportSampleDirective } from './_directives/export-sample/export-sample
     SampleDetailModelComponent,
     SampleDeepFilterComponent,
     ExportSampleDirective,
+    BoxManageComponent,
   ],
   imports: [
     BrowserModule,

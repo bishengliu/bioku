@@ -162,6 +162,17 @@ export class ContainerBoxOverviewActionPanelComponent implements OnInit, OnChang
     console.log(this.selectedOccupiedSlots);
   }
 
+  //manage box
+  manageBox(){
+    this.router.navigate(['containers/overview/managebox', this._container.pk]);
+    this.localStorageService.boxAvailabilities = [];
+    this.localStorageService.selectedEmptySlots = [];
+    this.localStorageService.selectedOccupiedSlots = [];
+    this.localStorageService.boxAvailabilities = [...this._selectedBoxes];
+    this.localStorageService.selectedEmptySlots = [...this.selectedEmptySlots];
+    this.localStorageService.selectedOccupiedSlots = [...this.selectedOccupiedSlots];
+    this.localStorageService.lastSelectedOccupiedBox = this.lastSelectedOccupiedBox;
+  }
   hidePanelContent() {
     this.show_panel_content = false;
   }

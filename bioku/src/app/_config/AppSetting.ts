@@ -75,6 +75,8 @@ export const AppSetting = {
     'FRONT_SAMPLE_STRIECT_FILTER': true, // otherwise highlight
     //allow to add a different box dimension in container overview
     'ALLOW_MULTIPLE_BOX_DIMENSION': true,
+    //allow managing boxes
+    'ALLOW_MANAGE_BOX': true,
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
