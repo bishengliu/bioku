@@ -79,6 +79,8 @@ export const AppSetting = {
     'ALLOW_MANAGE_BOX': true,
     // ignore history sample when managing box alyout
     'IGNORE_HISTORY_SAMPLE': false,
+    // sample code customized name
+    'CUSTOM_SAMPLE_CODE_NAME': 'LabJournal Code',
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

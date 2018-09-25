@@ -26,9 +26,12 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   user: User;
   container: Container = null;
   box: Box = null;
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService ) {
     this.appUrl = this.appSetting.URL;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
     // appStore.subscribe(() => this.updateState());
     // this.updateState();
   }

@@ -13,7 +13,7 @@ import { AppState } from '../../_redux/root/state';
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 // mydatepicker
 import {IMyOptions} from 'mydatepicker';
-//rxjs
+// rxjs
 import { Observable } from 'rxjs';
 
 @Component({
@@ -52,6 +52,8 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   // sample presearch count
   presearch_sample_count: Number = -1;
   searchForm: FormGroup;
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private localStorageService: LocalStorageService, private containerService: ContainerService,
               private cValidators: CustomFormValidators, private fb: FormBuilder) {
@@ -61,6 +63,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     this.sample_type = '';
     this.show_form = true;
     // this.show_button = false;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
     // formGroup
     this.searchForm = fb.group({
       // general

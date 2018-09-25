@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SampleFilter } from '../../_classes/Sample';
+import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 
 @Component({
   selector: 'app-sample-filter',
@@ -17,9 +18,11 @@ export class SampleFilterComponent implements OnInit {
   @Output() sampleFilter: EventEmitter<SampleFilter> = new EventEmitter<SampleFilter> ();
   @ViewChild('filterkey') filterkey: ElementRef;
   @ViewChild('filterValue') filterValue: ElementRef;
-
-  constructor() {
-    this.keywords = [ 'by sample type', 'by sample name', 'by sample code', 'by sample tag', 'by sample comments'];
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
+  constructor(@Inject(APP_CONFIG) private appSetting: any, ) {
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
+    this.keywords = [ 'by sample type', 'by sample name', 'by ' + this.custom_sample_code_name, 'by sample tag', 'by sample comments'];
     this.parsedKeys = [ 'type', 'name', 'registration_code', 'tag', 'description'];
   }
 

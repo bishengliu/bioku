@@ -60,12 +60,15 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   form_valid: Boolean = true;
   sampleForm: FormGroup;
   saving: Boolean = false;
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService,
               private cValidators: CustomFormValidators, private alertService: AlertService, private router: Router,
               private route: ActivatedRoute, fb: FormBuilder, private localStorageService: LocalStorageService) {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
     this.sample_type = '-';
     // formGroup
     this.sampleForm = fb.group({

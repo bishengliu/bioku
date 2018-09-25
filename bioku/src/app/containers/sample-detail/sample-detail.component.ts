@@ -81,6 +81,8 @@ export class SampleDetailComponent implements OnInit, OnChanges {
   attchment_name: string;
   attchament_is2large: Boolean = false;
   attchament_error: Boolean = false;
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService, private alertService: AlertService,
               private router: Router, private route: ActivatedRoute) {
@@ -88,6 +90,7 @@ export class SampleDetailComponent implements OnInit, OnChanges {
     this.availableColors = this.appSetting.APP_COLORS;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();

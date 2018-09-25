@@ -32,7 +32,8 @@ export class SampleTableComponent implements OnInit, OnChanges {
   user: User;
   rate = 0;
   color = '#ffffff'; // box color
-
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   // color picker
   availableColors: Array<string> = [];
   pickerOptions: IColorPickerConfiguration = {
@@ -57,6 +58,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
     this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();

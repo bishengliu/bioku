@@ -24,6 +24,8 @@ export class SampleSearchResultComponent implements OnInit, OnChanges {
   // sample types in the box
   sample_types: Array<string> = [];
   all_sample_types: Array<string> = [];
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService) {
     this.appUrl = this.appSetting.URL;
     // for redering sample name
@@ -32,6 +34,7 @@ export class SampleSearchResultComponent implements OnInit, OnChanges {
     this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
     this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
   }
 
   ngOnInit() {

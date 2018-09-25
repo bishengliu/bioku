@@ -1,9 +1,16 @@
 import { Injectable , Inject} from '@angular/core';
 import { SampleExcelHeaders, SampleDateFormat } from '../_classes/SampleUpload'
 import { Sample } from '../_classes/Sample';
+import { AppSetting} from '../_config/AppSetting';
+import {APP_CONFIG} from '../_providers/AppSettingProvider';
 @Injectable()
 export class ExcelUploadLoadService {
- constructor() {}
+  attchament_error: Boolean = false;
+  // CUSTOM SAMPEL CODE NAME
+  custom_sample_code_name = 'sample code';
+ constructor(@Inject(APP_CONFIG) private appSetting: any, ) {
+  this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
+ }
     ///////////// DONOT CHANGE THIS: the order of each item must not be changed /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
@@ -18,7 +25,7 @@ export class ExcelUploadLoadService {
     all_headers.push(sample_position_headers);
 
     const general_headers = new SampleExcelHeaders();
-    general_headers.headers =  ['Name', 'Tag', 'Offical Name', 'Sample Code', 'External Reference', 'Quantity',
+    general_headers.headers =  ['Name', 'Tag', 'Offical Name', this.custom_sample_code_name, 'External Reference', 'Quantity',
     'Quantity Unit', 'Freezing Code', 'Freezing Date', 'Description', 'Label'];
     general_headers.header_type = 'general_headers';
     all_headers.push(general_headers);
@@ -197,7 +204,7 @@ export class ExcelUploadLoadService {
           data.push(sampleAOA);
         })
       }
-      console.log(data);
+      // console.log(data);
       return data;
   }
   // get sample types from samples
