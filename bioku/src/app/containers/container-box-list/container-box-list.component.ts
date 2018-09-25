@@ -63,10 +63,11 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
     if (state.containerInfo && state.containerInfo.currentBox) {
       this.currentBox = state.containerInfo.currentBox;
     }
-    if(state != null 
-      && state.authInfo != null 
+    if (state != null
+      && state.authInfo != null
       && state.authInfo.authUser != null
-      && state.authInfo.authGroup.length > 0){
+      && state.authInfo.authGroup != null
+      && state.authInfo.authGroup.length > 0) {
         this.user = state.authInfo.authUser;
         this.show_upload_button = this.isAssistofGroup(state.authInfo.authGroup[0]);
       }
@@ -207,10 +208,10 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
 
   isAssistofGroup(group: Group): Boolean {
     let isAssist: Boolean = false;
-    if (group !== undefined 
+    if (group !== undefined
       && group !== null
-      && group.assistants !== undefined 
-      && group.assistants != null 
+      && group.assistants !== undefined
+      && group.assistants != null
       && group.assistants.length > 0 ) {
       group.assistants.forEach( assist => {
         if (assist.user.pk === this.user.pk) {
