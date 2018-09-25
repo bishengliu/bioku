@@ -142,7 +142,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
           // is not an array, force jumping to the box
           this.displaySelectedBox(<Box>data); }
           this.loading = false;
-          console.log(this.myBoxes);
+          // console.log(this.myBoxes);
       },
       (err) => {
         console.log(err);

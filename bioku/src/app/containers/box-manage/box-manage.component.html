@@ -26,8 +26,8 @@
           <!-- HEAD -->
           <div class="content box_cardview" [style.background-color]="color" *ngIf="box != null">
             <div class="right floated">Box: {{box.box_position}} <span *ngIf="show_user_defined_label && box.label">/{{box.label}}</span></div>
-            <img *ngIf="box_owner && box_owner.profile && box_owner.profile.photo" class="ui avatar image" src="{{appUrl + box_owner.profile.photo}}">
-            <span class="meta" *ngIf="box_owner">{{box_owner.first_name.toUpperCase()+ " " + box_owner.last_name.toUpperCase()}}</span>         
+            <img *ngIf="box_owner != undefined && box_owner.profile && box_owner.profile.photo" class="ui avatar image" src="{{appUrl + box_owner.profile.photo}}">
+            <span class="meta" *ngIf="box_owner != undefined">{{box_owner.first_name.toUpperCase()+ " " + box_owner.last_name.toUpperCase()}}</span>         
           </div>
           <!-- LAYOUT -->
           <div *ngIf="box != null">
@@ -91,7 +91,7 @@
             <div class="content">
               <div class="header">BOX OWNER (
                 <span>
-                  <img *ngIf="box.researchers && box.researchers[0].profile && box.researchers[0].profile.photo" 
+                  <img *ngIf="box.researchers != undefined && box.researchers.length > 0 && box.researchers[0].profile && box.researchers[0].profile.photo" 
                   class="ui avatar image" src="{{appUrl + box.researchers[0].profile.photo}}">
                   <span class="meta" *ngIf="box_owner">{{box_owner.first_name.toUpperCase()+ " " + box_owner.last_name.toUpperCase()}}</span>
                 </span>
