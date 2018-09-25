@@ -53,7 +53,7 @@ export class BoxManageComponent implements OnInit, OnDestroy {
   // auth user
   user: User;
   // box owner
-  box_owner: User;
+  box_owner: User = new User();
   // all group users
   group_all_users: Array<User> = new Array<User>();
   // is able to change the box owner
@@ -87,6 +87,7 @@ export class BoxManageComponent implements OnInit, OnDestroy {
       }
       if (state.authInfo != null && state.authInfo.authUser != null) {
         this.user = state.authInfo.authUser;
+        this.box_owner = this.user;
       }
       if (state.authInfo !== null && state.authInfo.authGroup !==  null ) {
         // get all the users
@@ -153,7 +154,7 @@ export class BoxManageComponent implements OnInit, OnDestroy {
         this.box_owner =
         this.box.researchers != null && this.box.researchers.length > 0
         ? this. box.researchers[0]
-        : null;
+        : this.user;
         if (this.is_PI_or_assist || this.user.pk === this.box_owner.pk) {
           this.is_able_2_update_owner = true;
         }
@@ -266,12 +267,29 @@ export class BoxManageComponent implements OnInit, OnDestroy {
     return isPIorAssist;
   }
   // save box: save layout and save owner
-  save_box() {
-    // save new layout
+  save_box() { 
     if (this.is_able_2_update_owner) {
-      // also save new owner
+      //owner name
+      const owner_name = this.box_owner.first_name.toUpperCase()+ " " + this.box_owner.last_name.toUpperCase();
+      //box vertical conversion
+      const box_vertical_number = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1;
+      //save the dimension
+      this.containerService
+      .updateBoxDimension(this.container.pk, this.box.box_position, box_vertical_number, this.box_horizontal)
+      .mergeMap(() => {
+        // also save new owner
+        return this.containerService.updateBoxOwner(this.container.pk, this.box.box_position, this.box_owner.pk)
+      })
+      .subscribe(
+        () => {this.alertService.success('box dimension saved and box assigned to ' + owner_name + '!', false);}, 
+        (err) => {this.alertService.error('Something went wrong, not all data were saved!', false);});
+    } else {
+      //save the dimension only
+      const box_vertical_number = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1;
+      this.containerService.updateBoxDimension(this.container.pk, this.box.box_position, box_vertical_number, this.box_horizontal)
+      .subscribe(() => {this.alertService.success('box dimenstion saved!', false);}, 
+                (err) => {this.alertService.error('Something went wrong, box dimenstion NOT saved!', false);});
     }
-    // save owner
   }
   // inital remove box
   delete_box() {
@@ -282,6 +300,7 @@ export class BoxManageComponent implements OnInit, OnDestroy {
   }
   confirm_delete_box() {
     // delete box
+    this.alertService.error('deletion failed: under development!', false);
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
