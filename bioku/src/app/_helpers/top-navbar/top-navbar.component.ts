@@ -197,7 +197,16 @@ export class TopNavbarComponent implements OnInit {
     }
     return isAssist;
   }
-
+  isMemberAlsoAssist(group: Group, user: User) {
+    let isAlsoAssist: Boolean = false;
+    if (group !== undefined && group.assistants !== undefined && group.assistants ) {
+      group.assistants.forEach( assist => {
+        if (assist.user.pk === user.pk) {
+          isAlsoAssist = true; }
+      })
+    }
+    return isAlsoAssist;
+  }
   // check user isPIor Assist
   isPIorAssist(group: Group) {
     let isPIorAssist: Boolean = false;
@@ -210,7 +219,10 @@ export class TopNavbarComponent implements OnInit {
       const isPIorAssist = this.isPIorAssist(group);
       if (isPIorAssist) {
         if ( member.user.email !== group.email && member.user.email !== this.user.email) {
-          return true;
+          // also make sure the target member is not one of the assistant
+          if (!this.isMemberAlsoAssist(group, member.user)) {
+            return true;
+          }
         }
       }
     }
