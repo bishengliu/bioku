@@ -267,13 +267,13 @@ export class BoxManageComponent implements OnInit, OnDestroy {
     return isPIorAssist;
   }
   // save box: save layout and save owner
-  save_box() { 
+  save_box() {
     if (this.is_able_2_update_owner) {
-      //owner name
-      const owner_name = this.box_owner.first_name.toUpperCase()+ " " + this.box_owner.last_name.toUpperCase();
-      //box vertical conversion
+      // owner name
+      const owner_name = this.box_owner.first_name.toUpperCase() + ' ' + this.box_owner.last_name.toUpperCase();
+      // box vertical conversion
       const box_vertical_number = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1;
-      //save the dimension
+      // save the dimension
       this.containerService
       .updateBoxDimension(this.container.pk, this.box.box_position, box_vertical_number, this.box_horizontal)
       .mergeMap(() => {
@@ -281,14 +281,14 @@ export class BoxManageComponent implements OnInit, OnDestroy {
         return this.containerService.updateBoxOwner(this.container.pk, this.box.box_position, this.box_owner.pk)
       })
       .subscribe(
-        () => {this.alertService.success('box dimension saved and box assigned to ' + owner_name + '!', false);}, 
-        (err) => {this.alertService.error('Something went wrong, not all data were saved!', false);});
+        () => {this.alertService.success('box dimension saved and box assigned to ' + owner_name + '!', false); },
+        (err) => {this.alertService.error('Something went wrong, not all data were saved!', false); });
     } else {
-      //save the dimension only
+      // save the dimension only
       const box_vertical_number = this.appSetting.BOX_POSITION_LETTERS.indexOf(this.box_vertical) + 1;
       this.containerService.updateBoxDimension(this.container.pk, this.box.box_position, box_vertical_number, this.box_horizontal)
-      .subscribe(() => {this.alertService.success('box dimenstion saved!', false);}, 
-                (err) => {this.alertService.error('Something went wrong, box dimenstion NOT saved!', false);});
+      .subscribe(() => {this.alertService.success('box dimenstion saved!', false); },
+                (err) => {this.alertService.error('Something went wrong, box dimenstion NOT saved!', false); });
     }
   }
   // inital remove box
@@ -300,7 +300,15 @@ export class BoxManageComponent implements OnInit, OnDestroy {
   }
   confirm_delete_box() {
     // delete box
-    this.alertService.error('deletion failed: under development!', false);
+    this.containerService.removeBox(this.container.pk, this.box.box_position)
+    .subscribe(
+      () => {
+      this.alertService.success('box deleted!', true);
+      this.router.navigate(['/containers/overview/', this.container.pk]);
+    },
+    (err) => {
+      this.alertService.error('Something went wrong, box not deleted!', false);
+    });
   }
   ngOnDestroy() { this.sub.unsubscribe(); }
 }
