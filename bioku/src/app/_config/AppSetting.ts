@@ -5,26 +5,26 @@ export const AppSetting = {
     // amazon testing server backend server
     // 'URL': 'http://34.216.52.204:8000',
     // local development
-    'URL': 'http://127.0.0.1:8000',
+    // 'URL': 'http://127.0.0.1:8000',
     // local test
     // 'URL': 'http://192.168.0.125:8000',
     // mcb backend +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // 'URL': 'http://mcb-app01.lumcnet.prod.intern:8000',
+    'URL': 'http://mcb-app01.lumcnet.prod.intern:8000',
     // APP URL FOR URL LINK TO THE FRONT-END ////////////
     // amazon testing server content server
     // 'APP_URL': 'http://34.216.52.204',
     // local development
-    'APP_URL': 'http://127.0.0.1:4200',
+    // 'APP_URL': 'http://127.0.0.1:4200',
     // local test
     // 'APP_URL': 'http://192.168.0.125',
     // mcb front-end +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // 'APP_URL': 'http://mcb-app01.lumcnet.prod.intern',
+    'APP_URL': 'http://mcb-app01.lumcnet.prod.intern',
     // FOR SENDINFG RESET PASSWORD
     // 'APP_DEFAULT_EMAIL': 'admin@bioku.nl',
     // mcb +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     'APP_DEFAULT_EMAIL': 'bliu@lumc.nl',
     // APP VERSION
-    'VERSION': '1.0.1',
+    'VERSION': '1.0.3',
     // allow upload samples newly created freezer?
     'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // if this is true, post upload samples is disabled
