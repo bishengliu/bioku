@@ -114,4 +114,5 @@ export const AppSetting = {
     'ALL_CONTAINERS': '/api/containers/',
     // FIND CONTAINER
     'FIND_CONTAINER_DETAILS': '/api/containers/search/',
+    //////////////////////////////////////// CUSTOMIZED SAMPLES ///////////////////////
 }

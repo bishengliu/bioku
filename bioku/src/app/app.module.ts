@@ -110,6 +110,7 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
 import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
 import { ExportSampleDirective } from './_directives/export-sample/export-sample.directive';
 import { BoxManageComponent } from './containers/box-manage/box-manage.component';
+import { CtypeComponent } from './ctype/ctype.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { BoxManageComponent } from './containers/box-manage/box-manage.component
     SampleDeepFilterComponent,
     ExportSampleDirective,
     BoxManageComponent,
+    CtypeComponent,
   ],
   imports: [
     BrowserModule,

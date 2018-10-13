@@ -65,7 +65,7 @@ export const routes: Routes = [
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
   {path: 'containers/edit/:id', component: EditContainerComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, AssistantGuard, ] },
-  {path: 'containers/delete/:id', component: DeleteContainerComponent, 
+  {path: 'containers/delete/:id', component: DeleteContainerComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, AssistantGuard, ] },
   {path: 'containers/:id', component: ContainerBoxListComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },

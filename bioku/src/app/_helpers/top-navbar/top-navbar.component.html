@@ -10,17 +10,26 @@
         <a class="item topnav_vertical_padding" [routerLink]="['/containers/add/']" *ngIf="!hasContainers">
             <i class="large icon blue add circle"></i>
         </a>       
-        <div class="right item"><span class="white-text">A user-friendly container system for biomaterials</span></div>
-        <a (click)="_toggleSidebar()" class="right item topnav_vertical_padding">
-            <i class="user large circle outline icon blue" *ngIf="!user.profile || !user.profile.photo"></i>
-            <img *ngIf="user.profile && user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
-        </a>
+        <div class="right item">
+            <span class="grey-text">
+                A USER-FRIENDLY CONTAINER SYSTEM FOR BIOMATERIALS
+            </span>
+        </div>
+        <div class="right item topnav_vertical_padding">
+            <a class="" [routerLink]="['/ctype/']">
+                <i class="large icon grey setting"></i>
+            </a>
+            <a (click)="_toggleSidebar()" class="">
+                <i class="user large circle outline icon blue" *ngIf="!user.profile || !user.profile.photo"></i>
+                <img *ngIf="user.profile && user.profile.photo" class="ui avatar image fixed_avatar_height" src="{{appUrl+user.profile.photo}}">
+            </a>
+        </div>
     </div>
     <!-- before login navbar-font -->
     <div *ngIf="!isLogin" class="ui icon secondary inverted pointing menu small borderless">
         <div class="left item topnav_narrow_vertical_padding clickable" (click)="goHome()">
             <img class="ui image logo_image" src="assets/logo/bk tiny.png" height="16">
-            <!-- <em class="grey-text app_name_position_fix">{{ appName.toUpperCase() }}</em>            -->
+            <!-- <em class="grey-text app_name_position_fix">{{ appName.toUpperCase() }}</em>  -->
         </div>
         <!-- <div class="centered item"><span class="white-text">A user-friendly container system for biomaterials</span></div> -->
         <div class="right item tiny_vertical">
