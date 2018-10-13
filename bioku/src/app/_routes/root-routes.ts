@@ -23,6 +23,7 @@ import { ForgetPasswordComponent } from '../account/forget-password/forget-passw
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
 import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
 import { BoxManageComponent } from '../containers/box-manage/box-manage.component';
+import { CtypeListComponent } from '../ctype/ctype-list/ctype-list.component';
 // guards
 import { AuthGuard } from '../_guards/AuthGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
@@ -60,9 +61,9 @@ export const routes: Routes = [
   {path: 'containers/overview/:id', component: ContainerOverviewComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/overview/addbox/:id', component: ContainerBoxAddComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/overview/movebox/:id', component: ContainerBoxMoveComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/edit/:id', component: EditContainerComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, AssistantGuard, ] },
   {path: 'containers/delete/:id', component: DeleteContainerComponent,
@@ -75,13 +76,15 @@ export const routes: Routes = [
   {path: 'containers/:ct_pk/:box_pos', component: BoxDetailComponent, canActivate: [AppActiveGuard, GroupCountGuard,
                           FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/manage', component: BoxManageComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers', component: MyContainerListComponent,
-                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard,  ] },
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
+  // {path: 'ctype', component: CtypeComponent,
+  //                       canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

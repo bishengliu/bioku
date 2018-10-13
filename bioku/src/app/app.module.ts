@@ -110,7 +110,18 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
 import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
 import { ExportSampleDirective } from './_directives/export-sample/export-sample.directive';
 import { BoxManageComponent } from './containers/box-manage/box-manage.component';
-import { CtypeComponent } from './ctype/ctype.component';
+import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
+import { CtypeAddComponent } from './ctype/ctype-add/ctype-add.component';
+import { CtypeDeleteComponent } from './ctype/ctype-delete/ctype-delete.component';
+import { CtypeAttrListComponent } from './ctype/ctype-attr-list/ctype-attr-list.component';
+import { CtypeAttrAddComponent } from './ctype/ctype-attr-add/ctype-attr-add.component';
+import { CtypeAttrEditComponent } from './ctype/ctype-attr-edit/ctype-attr-edit.component';
+import { CtypeAttrDeleteComponent } from './ctype/ctype-attr-delete/ctype-attr-delete.component';
+import { CtypeEditComponent } from './ctype/ctype-edit/ctype-edit.component';
+import { CtypeSubattrListComponent } from './ctype/ctype-subattr-list/ctype-subattr-list.component';
+import { CtypeSubattrAddComponent } from './ctype/ctype-subattr-add/ctype-subattr-add.component';
+import { CtypeSubattrEditComponent } from './ctype/ctype-subattr-edit/ctype-subattr-edit.component';
+import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-subattr-delete.component';
 
 @NgModule({
   declarations: [
@@ -177,7 +188,18 @@ import { CtypeComponent } from './ctype/ctype.component';
     SampleDeepFilterComponent,
     ExportSampleDirective,
     BoxManageComponent,
-    CtypeComponent,
+    CtypeListComponent,
+    CtypeAddComponent,
+    CtypeDeleteComponent,
+    CtypeAttrListComponent,
+    CtypeAttrAddComponent,
+    CtypeAttrEditComponent,
+    CtypeAttrDeleteComponent,
+    CtypeEditComponent,
+    CtypeSubattrListComponent,
+    CtypeSubattrAddComponent,
+    CtypeSubattrEditComponent,
+    CtypeSubattrDeleteComponent,
   ],
   imports: [
     BrowserModule,

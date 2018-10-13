@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CtypeComponent } from './ctype.component';
+import { CtypeDeleteComponent } from './ctype-delete.component';
 
-describe('CtypeComponent', () => {
-  let component: CtypeComponent;
-  let fixture: ComponentFixture<CtypeComponent>;
+describe('CtypeDeleteComponent', () => {
+  let component: CtypeDeleteComponent;
+  let fixture: ComponentFixture<CtypeDeleteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CtypeComponent ]
+      declarations: [ CtypeDeleteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CtypeComponent);
+    fixture = TestBed.createComponent(CtypeDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
