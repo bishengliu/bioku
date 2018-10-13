@@ -23,7 +23,7 @@ import { ForgetPasswordComponent } from '../account/forget-password/forget-passw
 import { ResetPasswordComponent } from '../account/reset-password/reset-password.component';
 import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
 import { BoxManageComponent } from '../containers/box-manage/box-manage.component';
-import { CtypeListComponent } from '../ctype/ctype-list/ctype-list.component';
+import { CtypeComponent } from '../ctype/ctype.component';
 // guards
 import { AuthGuard } from '../_guards/AuthGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
@@ -38,6 +38,7 @@ import { AppActiveGuard } from '../_guards/AppActiveGuard';
 import { Routes } from '@angular/router';
 import { accountRoutes } from '../account/_routes/account-routes';
 import { adminRoutes } from '../admin/_routes/admin-routes';
+import { ctypeRoutes } from '../ctype/_routes/ctype_routes';
 // import { containersRoutes } from '../containers/_routes/containers-routes';
 // app root routes
 export const routes: Routes = [
@@ -83,8 +84,8 @@ export const routes: Routes = [
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers', component: MyContainerListComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
-  // {path: 'ctype', component: CtypeComponent,
-  //                       canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'ctype', component: CtypeComponent,
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard ], children: ctypeRoutes},
   {path: 'denied', component: PermissionDeniedComponent},
   {path: '**', component: PageNotFoundComponent}
 ]

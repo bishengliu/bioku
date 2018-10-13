@@ -110,7 +110,6 @@ import { SampleDetailModelComponent } from './containers/sample-detail-model/sam
 import { SampleDeepFilterComponent } from './containers/sample-deep-filter/sample-deep-filter.component';
 import { ExportSampleDirective } from './_directives/export-sample/export-sample.directive';
 import { BoxManageComponent } from './containers/box-manage/box-manage.component';
-import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
 import { CtypeAddComponent } from './ctype/ctype-add/ctype-add.component';
 import { CtypeDeleteComponent } from './ctype/ctype-delete/ctype-delete.component';
 import { CtypeAttrListComponent } from './ctype/ctype-attr-list/ctype-attr-list.component';
@@ -122,6 +121,8 @@ import { CtypeSubattrListComponent } from './ctype/ctype-subattr-list/ctype-suba
 import { CtypeSubattrAddComponent } from './ctype/ctype-subattr-add/ctype-subattr-add.component';
 import { CtypeSubattrEditComponent } from './ctype/ctype-subattr-edit/ctype-subattr-edit.component';
 import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-subattr-delete.component';
+import { CtypeComponent } from './ctype/ctype.component';
+import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
 
 @NgModule({
   declarations: [
@@ -188,7 +189,6 @@ import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-
     SampleDeepFilterComponent,
     ExportSampleDirective,
     BoxManageComponent,
-    CtypeListComponent,
     CtypeAddComponent,
     CtypeDeleteComponent,
     CtypeAttrListComponent,
@@ -200,6 +200,8 @@ import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-
     CtypeSubattrAddComponent,
     CtypeSubattrEditComponent,
     CtypeSubattrDeleteComponent,
+    CtypeComponent,
+    CtypeListComponent,
   ],
   imports: [
     BrowserModule,
