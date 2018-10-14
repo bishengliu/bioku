@@ -71,7 +71,7 @@ export class ContainerService {
         //     return Observable.throw('Please login as Admin');
         // }
         const create_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS;
-        return this.http.post(create_container_url, formData, this.options_NoContentType) // do provide header accorrding to django
+        return this.http.post(create_container_url, formData, this.options_NoContentType) // do not provide header accorrding to django
                 // .map((response: Response) =>response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
@@ -93,7 +93,7 @@ export class ContainerService {
         //     return Observable.throw('Please login as Admin');
         // }
         const update_container_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + pk + '/';
-        return this.http.put(update_container_url, formData, this.options_NoContentType) // do provide header accorrding to django
+        return this.http.put(update_container_url, formData, this.options_NoContentType) // do not provide header accorrding to django
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }

@@ -9,6 +9,7 @@ import { GroupService } from '../_services/GroupService';
 import { UserService } from '../_services/UserService';
 import { ContainerService } from '../_services/ContainerService';
 import { RefreshService } from '../_services/RefreshService';
+import { CTypeService } from '../_services/CTypeService';
 
 export const APIServiceProviders: Array<any> = [
         {provide: LoginService, useClass: LoginService},
@@ -22,4 +23,5 @@ export const APIServiceProviders: Array<any> = [
         {provide: GroupService, useClass: GroupService},
         {provide: UserService, useClass: UserService},
         {provide: ContainerService, useClass: ContainerService},
+        {provide: CTypeService, useClass: CTypeService},
     ];

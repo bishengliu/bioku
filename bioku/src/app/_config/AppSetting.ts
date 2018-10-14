@@ -115,4 +115,7 @@ export const AppSetting = {
     // FIND CONTAINER
     'FIND_CONTAINER_DETAILS': '/api/containers/search/',
     //////////////////////////////////////// CUSTOMIZED SAMPLES ///////////////////////
+    // get all the material types
+    'ALL_CTYPE': '/api/ctypes/',
+
 }
