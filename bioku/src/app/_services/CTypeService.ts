@@ -37,7 +37,7 @@ export class CTypeService {
     // get all the material types
     getCTypes() {
         this.updateState();
-        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CTYPE + 'group_ctypes/';
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CTYPES;
         return this.http.get(query_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -45,7 +45,7 @@ export class CTypeService {
     // add new ctype
     addCType(ctype: CType) {
         this.updateState();
-        const add_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE;
+        const add_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES;
         const body: string = JSON.stringify(ctype);
         return this.http.post(add_ctype_url, body, this.options)
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -53,7 +53,7 @@ export class CTypeService {
     // update ctype
     updateCType(ctype: CType, ctype_pk: number) {
         this.updateState();
-        const update_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/';
+        const update_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/';
         const body: string = JSON.stringify(ctype);
         return this.http.put(update_ctype_url, body, this.options)
                         .map((response: Response) => response.json())
@@ -63,7 +63,7 @@ export class CTypeService {
     // delete ctype
     deleteCType(ctype_pk: number) {
         this.updateState();
-        const delete_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/';
+        const delete_ctype_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/';
         return this.http.delete(delete_ctype_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -72,7 +72,7 @@ export class CTypeService {
     // load ctype attrs
     getCTypeAttrs(ctype_pk: number) {
         this.updateState();
-        const get_ctype_attrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/';
+        const get_ctype_attrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/attrs/';
         return this.http.get(get_ctype_attrs_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -81,7 +81,7 @@ export class CTypeService {
     // add new attr
     addCTypeAttr(ctype_attr: CTypeAttr, ctype_pk: number) {
         this.updateState();
-        const add_ctype_attrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/';
+        const add_ctype_attrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/attrs/';
         const body: string = JSON.stringify(ctype_attr);
         return this.http.post(add_ctype_attrs_url, body, this.options)
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -90,7 +90,7 @@ export class CTypeService {
     // update ctype attr
     updateCTypeAttr(ctype_attr: CTypeAttr, ctype_pk: number, attr_pk: number) {
         this.updateState();
-        const update_ctype_attr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/' + attr_pk + '/';
+        const update_ctype_attr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/attrs/' + attr_pk + '/';
         const body: string = JSON.stringify(ctype_attr);
         return this.http.put(update_ctype_attr_url, body, this.options)
                         .map((response: Response) => response.json())
@@ -100,7 +100,7 @@ export class CTypeService {
     // delete ctype attr
     deleteCTypeAttr(ctype_pk: number, attr_pk: number) {
         this.updateState();
-        const delete_ctype_attr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/' + attr_pk + '/';
+        const delete_ctype_attr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/attrs/' + attr_pk + '/';
         return this.http.delete(delete_ctype_attr_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -110,7 +110,8 @@ export class CTypeService {
     // load ctype sub attrs
     getCTypeSubAttrs(ctype_pk: number, attr_pk: number) {
         this.updateState();
-        const get_ctype_attr_subattrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/' + attr_pk + '/';
+        const get_ctype_attr_subattrs_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                    + ctype_pk + '/attrs/' + attr_pk + '/subattrs/';
         return this.http.get(get_ctype_attr_subattrs_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -119,7 +120,8 @@ export class CTypeService {
     // add subattr
     addCTypeSubAttr(ctype_subattr: CtypeSubAttr, ctype_pk: number, attr_pk: number) {
         this.updateState();
-        const add_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE + ctype_pk + '/' + attr_pk + '/';
+        const add_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                   + ctype_pk + '/attrs/' + attr_pk + '/subattrs/';
         const body: string = JSON.stringify(ctype_subattr);
         return this.http.post(add_ctype_attr_subattr_url, body, this.options)
                 .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -128,8 +130,8 @@ export class CTypeService {
     // update subattr
     updateCTypeSubAttr(ctype_subattr: CtypeSubAttr, ctype_pk: number, attr_pk: number, subattr_pk: number) {
         this.updateState();
-        const update_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE
-                                                      + ctype_pk + '/' + attr_pk + '/' + subattr_pk + '/';
+        const update_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                      + ctype_pk + '/attrs/' + attr_pk + '/subattrs/' + subattr_pk + '/';
         const body: string = JSON.stringify(ctype_subattr);
         return this.http.put(update_ctype_attr_subattr_url, body, this.options)
                         .map((response: Response) => response.json())
@@ -139,8 +141,8 @@ export class CTypeService {
     // delete subattr
     deleteCTypeSubAttr(ctype_pk: number, attr_pk: number, subattr_pk: number) {
         this.updateState();
-        const delete_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPE
-                                                      + ctype_pk + '/' + attr_pk + '/' + subattr_pk + '/';
+        const delete_ctype_attr_subattr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                      + ctype_pk + '/attrs/' + attr_pk + '/subattrs/' + subattr_pk + '/';
         return this.http.delete(delete_ctype_attr_subattr_url, this.options)
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
