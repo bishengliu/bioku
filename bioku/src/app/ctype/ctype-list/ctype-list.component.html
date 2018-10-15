@@ -8,3 +8,14 @@
       NEW TYPE</a>
   </div>
 </div>
+<div class="ui row small_padding stackable">
+  <div class="ui teal cards">
+    <div class="card" *ngFor="let ctype of ctypes">
+      <div class="content">
+        <div class="header">{{ctype.type}}</div>
+        <div class="meta">{{ ctype.is_public ? 'Public': 'Private' }}</div>
+        <div class="description">{{ctype.description}}</div>
+      </div>
+    </div>
+  </div>
+</div>

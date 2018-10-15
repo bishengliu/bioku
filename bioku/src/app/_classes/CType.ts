@@ -3,7 +3,8 @@ export class CType {
     pk: number;
     group_id: number;
     is_public: boolean;
-    description: string
+    description: string;
+    attrs: Array<CTypeAttr>;
 }
 
 export class CTypeAttr {
@@ -18,10 +19,10 @@ export class CTypeAttr {
     attr_required: boolean;
     attr_order: number;
     has_sub_attr: boolean;
-    sub_attrs: Array<CtypeSubAttr>;
+    sub_attrs: Array<CTypeSubAttr>;
 }
 
-export class CtypeSubAttr {
+export class CTypeSubAttr {
     pk: number;
     ctype_id: number;
     attr_id: number;
