@@ -8,7 +8,7 @@
       NEW TYPE</a>
   </div>
 </div>
-<div class="ui row grid small_padding stackable">
+<div class="ui row grid small_padding stackable" *ngIf="ctypes.length > 0">
   <div class="six wide column" *ngFor="let ctype of ctypes">
     <div class="ui top attached inverted secondary segment" 
     [ngClass]="ctype.is_public ? 'orange': 'blue'">
@@ -32,4 +32,8 @@
       </div>
     </div>
   </div>
+</div>
+<div class="ui tertiary segment container center aligned" 
+  *ngIf="ctypes === undefined || ctypes === null|| ctypes.length === 0">
+  <p class="">there is no material type defined in BIOKU, click the "NEW TYPE" above to add a material type.</p>
 </div>
