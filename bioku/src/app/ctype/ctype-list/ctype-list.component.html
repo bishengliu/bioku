@@ -9,7 +9,7 @@
   </div>
 </div>
 <div class="ui row grid small_padding stackable" *ngIf="ctypes.length > 0">
-  <a class="six wide column" *ngFor="let ctype of ctypes" [routerLink]="['./edit/', ctype.pk]">
+  <a class="six wide column" *ngFor="let ctype of ctypes" [routerLink]="['./', ctype.pk]">
     <div class="ui top attached inverted secondary center aligned segment" 
     [ngClass]="ctype.is_public ? 'orange': 'blue'">
         <div class="">{{ctype.type.toUpperCase()}}</div>

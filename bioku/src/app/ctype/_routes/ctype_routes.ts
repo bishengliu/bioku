@@ -12,6 +12,7 @@ import { CtypeSubattrListComponent } from '../ctype-subattr-list/ctype-subattr-l
 import { CtypeSubattrAddComponent } from '../ctype-subattr-add/ctype-subattr-add.component';
 import { CtypeSubattrEditComponent } from '../ctype-subattr-edit/ctype-subattr-edit.component';
 import { CtypeSubattrDeleteComponent } from '../ctype-subattr-delete/ctype-subattr-delete.component';
+import { CtypeDetailComponent } from '../ctype-detail/ctype-detail.component';
 // guards
 import { AssistantGuard } from '../../_guards/AssistantGuard';
 
@@ -19,6 +20,7 @@ export const ctypeRoutes: Routes = [
     // ctype
     {path: '', component: CtypeListComponent, canActivate: [AssistantGuard, ] },
     {path: 'add', component: CtypeAddComponent, canActivate: [AssistantGuard, ] },
+    {path: ':pk', component: CtypeDetailComponent, canActivate: [AssistantGuard, ] },
     {path: 'edit/:pk', component: CtypeEditComponent, canActivate: [AssistantGuard, ] },
     {path: 'delete/:pk', component: CtypeDeleteComponent, canActivate: [AssistantGuard, ] },
     // attr
