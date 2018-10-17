@@ -1,3 +1,54 @@
-<p>
-  ctype-detail works!
-</p>
+<div class="ui grid row medium_padding">
+    <div class="eight wide column">
+      <h3 class="ui violet left aligned header"><i class="icon list ul"></i>TYPE DETAIL</h3>
+    </div>
+    <div class="eight wide column"> 
+      <a class="ui blue button float-right" [routerLink]="['../']">
+        <i class="icon caret left"></i>ALL TYPES
+      </a>
+    </div>
+  </div>
+<div class="ui row grid small_padding stackable" *ngIf="ctype !== null">
+    <div class="six wide column">
+      <div class="ui top attached inverted secondary center aligned segment" 
+      [ngClass]="ctype.is_public ? 'orange': 'blue'">
+          <div class="">{{ctype.type}}</div>
+      </div>
+      <div class="ui attached secondary segment" 
+      *ngIf="ctype.description !== null && ctype.description !== undefined">
+          <div class="">{{ctype.description}}</div>
+      </div>
+      <div class="ui attached segment">
+        <div class="ui divided list">
+          <!--minimal attrs-->
+          <div class="item" *ngFor="let mattr of ctype_minimal_attrs">
+              <div class="ui horizontal label" [ngClass]="mattr.attr_required ? 'red': 'teal'">
+                {{mattr.attr_label.toUpperCase()}}
+              </div>
+              <span *ngIf="mattr.has_sub_attr" class="grey-text small-text">
+                <span *ngFor="let msubattr of mattr.sub_attrs" 
+                class="ui horizontal mini basic label" [ngClass]="msubattr.attr_required ? 'red': ''">
+                  {{msubattr.attr_label.toUpperCase()}}
+                </span>
+              </span>
+          </div>
+          <!--customized attrs-->
+          <div class="item" *ngFor="let attr of ctype.attrs">
+              <div class="ui horizontal label" [ngClass]="attr.attr_required ? 'red': 'teal'">
+                {{attr.attr_label.toUpperCase()}}
+              </div>
+              <span *ngIf="attr.has_sub_attr" class="grey-text small-text">
+                <span *ngFor="let subattr of attr.subattrs" 
+                class="ui horizontal mini basic label" [ngClass]="subattr.attr_required ? 'red': ''">
+                  {{subattr.attr_label.toUpperCase()}}
+                </span>
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="ui tertiary segment container center aligned" 
+    *ngIf="ctype === null">
+  <p class="">fail to load the material type. please try again later.</p>
+</div>

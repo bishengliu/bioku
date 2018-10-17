@@ -149,6 +149,14 @@ export class CTypeService {
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
     }
+    // get a type detail
+    getCTypeDetail(ctype_pk: number) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk + '/';
+        return this.http.get(query_url, this.options)
+                        .map((response: Response) => response.json())
+                        .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // add new ctype
     addCType(ctype: CType) {
         this.updateState();
