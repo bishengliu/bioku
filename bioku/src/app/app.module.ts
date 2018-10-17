@@ -123,6 +123,7 @@ import { CtypeSubattrEditComponent } from './ctype/ctype-subattr-edit/ctype-suba
 import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-subattr-delete.component';
 import { CtypeComponent } from './ctype/ctype.component';
 import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
+import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.component';
 
 @NgModule({
   declarations: [
@@ -202,6 +203,7 @@ import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
     CtypeSubattrDeleteComponent,
     CtypeComponent,
     CtypeListComponent,
+    CtypeDetailComponent,
   ],
   imports: [
     BrowserModule,
