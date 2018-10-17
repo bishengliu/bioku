@@ -34,6 +34,113 @@ export class CTypeService {
         // this.options_NoContentType = new RequestOptions({ headers: this.headers_NoContentType });
     }
     // ctype ////////////////////////////
+    // BIOKU minimal sample attrs
+    getMinimalCTypeAttrs(): Array<CTypeAttr> {
+        const attrs: Array<CTypeAttr> = new Array<CTypeAttr>();
+        // name
+        let name_attr: CTypeAttr = new CTypeAttr();
+        name_attr = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_name: 'name',
+            attr_label: 'NAME',
+            attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: true,
+            attr_order: 0,
+            has_sub_attr: false,
+            sub_attrs: new Array<CTypeSubAttr>()
+        }
+        attrs.push(name_attr);
+        // storage_date
+        let storage_date_attr: CTypeAttr = new CTypeAttr();
+        storage_date_attr = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_name: 'storage_date',
+            attr_label: 'STORAGE_DATE',
+            attr_value_type: 4, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: false,
+            attr_order: 1,
+            has_sub_attr: false,
+            sub_attrs: new Array<CTypeSubAttr>()
+        }
+        attrs.push(storage_date_attr);
+        // attachments
+        let attachment_attr: CTypeAttr = new CTypeAttr();
+        attachment_attr = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_name: 'attachments',
+            attr_label: 'ATTACHMENTS',
+            attr_value_type: 3, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: false,
+            attr_order: -1, // last
+            has_sub_attr: true,
+            sub_attrs: new Array<CTypeSubAttr>()
+        }
+        // attachment subattr
+        const attachment_subattrs: Array<CTypeSubAttr> = new Array<CTypeSubAttr>();
+        // label
+        let attachment_subattr_label: CTypeSubAttr = new CTypeSubAttr();
+        attachment_subattr_label = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_id: null,
+            attr_name: 'label',
+            attr_label: 'FILE_LABEL',
+            attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: true,
+            attr_order: 1, // last
+        }
+        attachment_subattrs.push(attachment_subattr_label);
+        // filename
+        let attachment_subattr_attachment: CTypeSubAttr = new CTypeSubAttr();
+        attachment_subattr_attachment = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_id: null,
+            attr_name: 'attachment',
+            attr_label: 'FILE',
+            attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: true,
+            attr_order: 0, // last
+        }
+        attachment_subattrs.push(attachment_subattr_attachment);
+        // description
+        let attachment_subattr_description: CTypeSubAttr = new CTypeSubAttr();
+        attachment_subattr_description = {
+            pk: null, // no pk
+            ctype_id: null, // no ctype
+            attr_id: null,
+            attr_name: 'description',
+            attr_label: 'DESCRIPTION',
+            attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+            attr_value_text_max_length: null,
+            attr_value_decimal_total_digit: null,
+            attr_value_decimal_point: null,
+            attr_required: false,
+            attr_order: 3, // last
+        }
+        attachment_subattrs.push(attachment_subattr_description);
+        attachment_attr.sub_attrs = attachment_subattrs;
+        attrs.push(attachment_attr);
+        return attrs;
+    }
     // get all the material types
     getCTypes() {
         this.updateState();

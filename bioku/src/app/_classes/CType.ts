@@ -12,7 +12,7 @@ export class CTypeAttr {
     ctype_id: number;
     attr_name: string;
     attr_label: string;
-    attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr
+    attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
     attr_value_text_max_length: number;
     attr_value_decimal_total_digit: number;
     attr_value_decimal_point: number;
@@ -28,7 +28,7 @@ export class CTypeSubAttr {
     attr_id: number;
     attr_name: string;
     attr_label: string;
-    attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr
+    attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
     attr_value_text_max_length: number;
     attr_value_decimal_total_digit: number;
     attr_value_decimal_point: number;

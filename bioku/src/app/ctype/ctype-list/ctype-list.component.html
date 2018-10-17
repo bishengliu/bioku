@@ -10,9 +10,9 @@
 </div>
 <div class="ui row grid small_padding stackable" *ngIf="ctypes.length > 0">
   <div class="six wide column" *ngFor="let ctype of ctypes">
-    <div class="ui top attached inverted secondary segment" 
+    <div class="ui top attached inverted secondary center aligned segment" 
     [ngClass]="ctype.is_public ? 'orange': 'blue'">
-        <div class="">{{ctype.type}}</div>
+        <div class="">{{ctype.type.toUpperCase()}}</div>
     </div>
     <div class="ui attached secondary segment" 
     *ngIf="ctype.description !== null && ctype.description !== undefined">
@@ -20,12 +20,27 @@
     </div>
     <div class="ui attached segment">
       <div class="ui divided list">
+        <!--minimal attrs-->
+        <div class="item" *ngFor="let mattr of ctype_minimal_attrs">
+            <div class="ui horizontal label" [ngClass]="mattr.attr_required ? 'red': 'teal'">
+              {{mattr.attr_label.toUpperCase()}}
+            </div>
+            <span *ngIf="mattr.has_sub_attr" class="grey-text small-text">
+              <span *ngFor="let msubattr of mattr.sub_attrs" 
+              class="ui horizontal mini basic label" [ngClass]="msubattr.attr_required ? 'red': ''">
+                {{msubattr.attr_label.toUpperCase()}}
+              </span>
+            </span>
+        </div>
+        <!--customized attrs-->
         <div class="item" *ngFor="let attr of ctype.attrs">
-            <div class="ui teal horizontal label">{{attr.attr_label}}</div>
+            <div class="ui horizontal label" [ngClass]="attr.attr_required ? 'red': 'teal'">
+              {{attr.attr_label.toUpperCase()}}
+            </div>
             <span *ngIf="attr.has_sub_attr" class="grey-text small-text">
               <span *ngFor="let subattr of attr.subattrs" 
-              class="ui horizontal mini label">
-                {{subattr.attr_label}}
+              class="ui horizontal mini basic label" [ngClass]="subattr.attr_required ? 'red': ''">
+                {{subattr.attr_label.toUpperCase()}}
               </span>
             </span>
         </div>
