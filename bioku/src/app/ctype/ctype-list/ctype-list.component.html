@@ -8,13 +8,27 @@
       NEW TYPE</a>
   </div>
 </div>
-<div class="ui row small_padding stackable">
-  <div class="ui teal cards">
-    <div class="card" *ngFor="let ctype of ctypes">
-      <div class="content">
-        <div class="header">{{ctype.type}}</div>
-        <div class="meta">{{ ctype.is_public ? 'Public': 'Private' }}</div>
-        <div class="description">{{ctype.description}}</div>
+<div class="ui row grid small_padding stackable">
+  <div class="six wide column" *ngFor="let ctype of ctypes">
+    <div class="ui top attached inverted secondary segment" 
+    [ngClass]="ctype.is_public ? 'orange': 'blue'">
+        <div class="">{{ctype.type}}</div>
+    </div>
+    <div class="ui attached secondary segment" 
+    *ngIf="ctype.description !== null && ctype.description !== undefined">
+        <div class="">{{ctype.description}}</div>
+    </div>
+    <div class="ui attached segment">
+      <div class="ui divided list">
+        <div class="item" *ngFor="let attr of ctype.attrs">
+            <div class="ui teal horizontal label">{{attr.attr_label}}</div>
+            <span *ngIf="attr.has_sub_attr" class="grey-text small-text">
+              <span *ngFor="let subattr of attr.subattrs" 
+              class="ui horizontal mini label">
+                {{subattr.attr_label}}
+              </span>
+            </span>
+        </div>
       </div>
     </div>
   </div>
