@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CtypeSubattrListComponent } from './ctype-subattr-list.component';
+import { CtypeSubattrDetailComponent } from './ctype-subattr-detail.component';
 
-describe('CtypeSubattrListComponent', () => {
-  let component: CtypeSubattrListComponent;
-  let fixture: ComponentFixture<CtypeSubattrListComponent>;
+describe('CtypeSubattrDetailComponent', () => {
+  let component: CtypeSubattrDetailComponent;
+  let fixture: ComponentFixture<CtypeSubattrDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CtypeSubattrListComponent ]
+      declarations: [ CtypeSubattrDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CtypeSubattrListComponent);
+    fixture = TestBed.createComponent(CtypeSubattrDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

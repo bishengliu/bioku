@@ -116,7 +116,6 @@ import { CtypeAttrAddComponent } from './ctype/ctype-attr-add/ctype-attr-add.com
 import { CtypeAttrEditComponent } from './ctype/ctype-attr-edit/ctype-attr-edit.component';
 import { CtypeAttrDeleteComponent } from './ctype/ctype-attr-delete/ctype-attr-delete.component';
 import { CtypeEditComponent } from './ctype/ctype-edit/ctype-edit.component';
-import { CtypeSubattrListComponent } from './ctype/ctype-subattr-list/ctype-subattr-list.component';
 import { CtypeSubattrAddComponent } from './ctype/ctype-subattr-add/ctype-subattr-add.component';
 import { CtypeSubattrEditComponent } from './ctype/ctype-subattr-edit/ctype-subattr-edit.component';
 import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-subattr-delete.component';
@@ -124,6 +123,7 @@ import { CtypeComponent } from './ctype/ctype.component';
 import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
 import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.component';
 import { CtypeAttrDetailComponent } from './ctype/ctype-attr-detail/ctype-attr-detail.component';
+import { CtypeSubattrDetailComponent } from './ctype/ctype-subattr-detail/ctype-subattr-detail.component';
 
 @NgModule({
   declarations: [
@@ -196,7 +196,6 @@ import { CtypeAttrDetailComponent } from './ctype/ctype-attr-detail/ctype-attr-d
     CtypeAttrEditComponent,
     CtypeAttrDeleteComponent,
     CtypeEditComponent,
-    CtypeSubattrListComponent,
     CtypeSubattrAddComponent,
     CtypeSubattrEditComponent,
     CtypeSubattrDeleteComponent,
@@ -204,6 +203,7 @@ import { CtypeAttrDetailComponent } from './ctype/ctype-attr-detail/ctype-attr-d
     CtypeListComponent,
     CtypeDetailComponent,
     CtypeAttrDetailComponent,
+    CtypeSubattrDetailComponent,
   ],
   imports: [
     BrowserModule,
