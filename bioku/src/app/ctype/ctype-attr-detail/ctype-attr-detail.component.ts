@@ -58,7 +58,7 @@ export class CtypeAttrDetailComponent implements OnInit {
         if (this.ctype_attr !== null && this.ctype_attr.ctype_id === null ) {
           this.ctype_attr.ctype_id = this.pk;
         }
-        console.log(this.ctype_attr);
+        // console.log(this.ctype_attr);
       },
       (err) => {
         this.alertService.error('fail to load the attribute of the material type, please try again later!', false);
