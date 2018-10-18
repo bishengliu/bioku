@@ -112,7 +112,6 @@ import { ExportSampleDirective } from './_directives/export-sample/export-sample
 import { BoxManageComponent } from './containers/box-manage/box-manage.component';
 import { CtypeAddComponent } from './ctype/ctype-add/ctype-add.component';
 import { CtypeDeleteComponent } from './ctype/ctype-delete/ctype-delete.component';
-import { CtypeAttrListComponent } from './ctype/ctype-attr-list/ctype-attr-list.component';
 import { CtypeAttrAddComponent } from './ctype/ctype-attr-add/ctype-attr-add.component';
 import { CtypeAttrEditComponent } from './ctype/ctype-attr-edit/ctype-attr-edit.component';
 import { CtypeAttrDeleteComponent } from './ctype/ctype-attr-delete/ctype-attr-delete.component';
@@ -124,6 +123,7 @@ import { CtypeSubattrDeleteComponent } from './ctype/ctype-subattr-delete/ctype-
 import { CtypeComponent } from './ctype/ctype.component';
 import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
 import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.component';
+import { CtypeAttrDetailComponent } from './ctype/ctype-attr-detail/ctype-attr-detail.component';
 
 @NgModule({
   declarations: [
@@ -192,7 +192,6 @@ import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.componen
     BoxManageComponent,
     CtypeAddComponent,
     CtypeDeleteComponent,
-    CtypeAttrListComponent,
     CtypeAttrAddComponent,
     CtypeAttrEditComponent,
     CtypeAttrDeleteComponent,
@@ -204,6 +203,7 @@ import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.componen
     CtypeComponent,
     CtypeListComponent,
     CtypeDetailComponent,
+    CtypeAttrDetailComponent,
   ],
   imports: [
     BrowserModule,

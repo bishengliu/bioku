@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CtypeAttrListComponent } from './ctype-attr-list.component';
+import { CtypeAttrDetailComponent } from './ctype-attr-detail.component';
 
-describe('CtypeAttrListComponent', () => {
-  let component: CtypeAttrListComponent;
-  let fixture: ComponentFixture<CtypeAttrListComponent>;
+describe('CtypeAttrDetailComponent', () => {
+  let component: CtypeAttrDetailComponent;
+  let fixture: ComponentFixture<CtypeAttrDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CtypeAttrListComponent ]
+      declarations: [ CtypeAttrDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CtypeAttrListComponent);
+    fixture = TestBed.createComponent(CtypeAttrDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

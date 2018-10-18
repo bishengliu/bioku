@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { CtypeListComponent } from '../ctype-list/ctype-list.component';
 import { CtypeAddComponent } from '../ctype-add/ctype-add.component';
 import { CtypeDeleteComponent } from '../ctype-delete/ctype-delete.component';
-import { CtypeAttrListComponent } from '../ctype-attr-list/ctype-attr-list.component';
+import { CtypeAttrDetailComponent } from '../ctype-attr-detail/ctype-attr-detail.component';
 import { CtypeAttrAddComponent } from '../ctype-attr-add/ctype-attr-add.component';
 import { CtypeAttrEditComponent } from '../ctype-attr-edit/ctype-attr-edit.component';
 import { CtypeAttrDeleteComponent } from '../ctype-attr-delete/ctype-attr-delete.component';
@@ -22,7 +22,7 @@ export const ctypeChildRoutes: Routes = [
     {path: 'delete', component: CtypeDeleteComponent, canActivate: [AssistantGuard, ] },
     // attr
     {path: 'add_attr', component: CtypeAttrAddComponent, canActivate: [AssistantGuard, ] },
-    {path: 'attr/:attr_pk', component: CtypeAttrListComponent, canActivate: [AssistantGuard, ] },
+    {path: 'attr/:attr_pk', component: CtypeAttrDetailComponent, canActivate: [AssistantGuard, ] },
 ];
 
 export const ctypeRoutes: Routes = [
