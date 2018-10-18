@@ -1,3 +1,71 @@
-<p>
-  ctype-attr-detail works!
-</p>
+<div class="ui row" *ngIf="ctype_attr === null">
+    <div class="ui tertiary segment container center aligned">
+      <p class="">fail to load the type attribute. please try again later.</p>
+    </div>
+</div>
+
+<div class="ui row" *ngIf="ctype_attr !== null">
+  <div class="ui top attached inverted tertiary center aligned segment"
+  [ngClass]="ctype_attr.attr_required ? 'red': 'teal'">
+      <div class="">{{ctype_attr.attr_label}}</div>
+  </div>
+  <div class="ui three attached buttons" *ngIf="ctype_attr.pk >= 0">
+    <a class="ui button" [routerLink]="['../../1/delete']"><i class="icon trash alternate outline"></i>REMOVE</a>
+    <a class="ui button" [routerLink]="['../../1/edit']"><i class="icon edit outline"></i>EDIT</a>
+    <a class="ui button" [routerLink]="['./add_subattr']"><i class="icon plus square outline"></i>SUBATTR</a>
+  </div>
+  <div class="ui attached secondary segment">
+      <a class="ui black ribbon label">attr</a>
+    <table class="ui small padded celled table">
+        <thead>
+          <tr class="center aligned">
+            <th>attr name</th>
+            <th>attr label</th>
+            <th>value type </th>
+            <th>is required</th>
+            <th>has subattrs</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr class="center aligned">
+              <td [ngClass]="ctype_attr.attr_required ? 'negative': ''">{{ctype_attr.attr_name}}</td>
+              <td>{{ctype_attr.attr_label}}</td>
+              <td>{{parseAttrValueType(ctype_attr)}}</td>
+              <td>{{ctype_attr.attr_required ? "yes": "no"}}</td>
+              <td>{{ctype_attr.has_sub_attr ? "yes": "no"}}</td>
+            </tr>
+          </tbody>
+    </table>
+  </div>
+  <div class="ui attached secondary segment" 
+  *ngIf="ctype_attr.has_sub_attr !== null && ctype_attr.has_sub_attr && ctype_attr.subattrs.length > 0">
+  <a class="ui black ribbon label">sub attrs</a>
+  <table class="ui small padded celled table">
+      <thead>
+        <tr class="center aligned">
+          <th>subattr name</th>
+          <th>subattr label</th>
+          <th>value type </th>
+          <th>is required</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="center aligned" *ngFor="let subattr of ctype_attr.subattrs">
+            <td [ngClass]="subattr.attr_required ? 'negative': ''">
+              {{subattr.attr_name}}
+              <span>
+                  <a [routerLink]="['./', subattr.pk, 'delete']"><i class="icon trash alternate outline"></i></a>
+                  <a [routerLink]="['./', subattr.pk, 'edit']"><i class="icon edit outline"></i></a>
+              </span>
+            </td>
+            <td>{{subattr.attr_label}}</td>
+            <td>{{parseAttrValueType(subattr)}}</td>
+            <td>{{subattr.attr_required ? "yes": "no"}}</td>
+          </tr>
+        </tbody>
+  </table>
+  </div>
+</div>
+<div class="ui row">
+  <router-outlet></router-outlet>
+</div>

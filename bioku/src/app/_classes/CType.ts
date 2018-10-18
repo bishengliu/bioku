@@ -19,7 +19,7 @@ export class CTypeAttr {
     attr_required: boolean;
     attr_order: number;
     has_sub_attr: boolean;
-    sub_attrs: Array<CTypeSubAttr>;
+    subattrs: Array<CTypeSubAttr>;
 }
 
 export class CTypeSubAttr {

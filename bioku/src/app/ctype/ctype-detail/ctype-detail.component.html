@@ -9,7 +9,7 @@
     </div>
   </div>
 <div class="ui row grid small_padding stackable" *ngIf="ctype !== null">
-    <div class="six wide column">
+    <div class="eight wide column">
       <div class="ui top attached inverted secondary center aligned segment" 
       [ngClass]="ctype.is_public ? 'orange': 'blue'">
           <div class="">{{ctype.type}}</div>
@@ -17,7 +17,7 @@
       <div class="ui three attached buttons">
         <a class="ui button" [routerLink]="['./delete']"><i class="icon trash alternate outline"></i>REMOVE</a>
         <a class="ui button" [routerLink]="['./edit']"><i class="icon edit outline"></i>EDIT</a>
-        <a class="ui brown button" [routerLink]="['./add_attr']"><i class="icon plus square outline"></i>ATTR</a>
+        <a class="ui button" [routerLink]="['./add_attr']"><i class="icon plus square outline"></i>ATTR</a>
       </div>
       <div class="ui attached secondary segment" 
       *ngIf="ctype.description !== null && ctype.description !== undefined">
@@ -26,7 +26,7 @@
       <div class="ui attached segment">
         <div class="ui divided list">
           <!--minimal attrs-->
-          <div class="item" *ngFor="let mattr of ctype_minimal_attrs">
+          <a class="item" *ngFor="let mattr of ctype_minimal_attrs" [routerLink]="['./', mattr.pk]">
               <div class="ui horizontal label" [ngClass]="mattr.attr_required ? 'red': 'teal'">
                 {{mattr.attr_label.toUpperCase()}}
               </div>
@@ -36,24 +36,31 @@
                   {{msubattr.attr_label.toUpperCase()}}
                 </span>
               </span>
-          </div>
+              <span>
+                  <a [routerLink]="['./', mattr.pk]"><i class="icon sun outline float-right"></i></a>
+              </span>  
+            </a>
           <!--customized attrs-->
-          <a class="item" *ngFor="let attr of ctype.attrs" [routerLink]="['./attr', attr.pk]">
-              <div class="ui horizontal label" [ngClass]="attr.attr_required ? 'red': 'teal'">
+          <a class="item" *ngFor="let attr of ctype.attrs" [routerLink]="['./', attr.pk]">
+              <a class="ui horizontal label" 
+              [ngClass]="attr.attr_required ? 'red': 'teal'" 
+              [routerLink]="['./', attr.pk]">
                 {{attr.attr_label.toUpperCase()}}
-              </div>
+              </a>
               <span *ngIf="attr.has_sub_attr" class="grey-text small-text">
                 <span *ngFor="let subattr of attr.subattrs" 
                 class="ui horizontal mini basic label" [ngClass]="subattr.attr_required ? 'red': ''">
                   {{subattr.attr_label.toUpperCase()}}
                 </span>
               </span>
-              <i class="icon sun outline float-right"></i>
-            </a>
+              <span>
+                <a [routerLink]="['./', attr.pk]"><i class="icon sun outline float-right"></i></a>
+              </span>              
+          </a>
         </div>
       </div>
     </div>
-    <div class="six wide column">
+    <div class="eight wide column">
       <router-outlet></router-outlet>
     </div>
 </div>
