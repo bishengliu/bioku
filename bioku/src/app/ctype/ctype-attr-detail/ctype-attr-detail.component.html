@@ -9,11 +9,6 @@
   [ngClass]="ctype_attr.attr_required ? 'red': 'teal'">
       <div class="">{{ctype_attr.attr_label}}</div>
   </div>
-  <div class="ui three attached buttons" *ngIf="ctype_attr.pk >= 0">
-    <a class="ui button" [routerLink]="['../../1/delete']"><i class="icon trash alternate outline"></i>REMOVE</a>
-    <a class="ui button" [routerLink]="['../../1/edit']"><i class="icon edit outline"></i>EDIT</a>
-    <a class="ui button" [routerLink]="['./add_subattr']"><i class="icon plus square outline"></i>SUBATTR</a>
-  </div>
   <div class="ui attached secondary segment">
       <a class="ui black ribbon label">attr</a>
     <table class="ui small padded celled table">
@@ -28,11 +23,22 @@
         </thead>
         <tbody>
             <tr class="center aligned">
-              <td [ngClass]="ctype_attr.attr_required ? 'negative': ''">{{ctype_attr.attr_name}}</td>
+              <td [ngClass]="ctype_attr.attr_required ? 'negative': ''">
+                {{ctype_attr.attr_name}}
+                <span *ngIf="ctype_attr.pk >= 0">
+                    <a [routerLink]="['../../1/delete']"><i class="icon trash alternate outline"></i></a>
+                    <a [routerLink]="['../../1/edit']"><i class="icon edit outline"></i></a>
+                </span>
+              </td>
               <td>{{ctype_attr.attr_label}}</td>
               <td>{{parseAttrValueType(ctype_attr)}}</td>
               <td>{{ctype_attr.attr_required ? "yes": "no"}}</td>
-              <td>{{ctype_attr.has_sub_attr ? "yes": "no"}}</td>
+              <td>
+                {{ctype_attr.has_sub_attr ? "yes": "no"}}
+                <span *ngIf="ctype_attr.pk >= 0 && ctype_attr.has_sub_attr">
+                    <a [routerLink]="['./add_subattr']"><i class="icon plus circle"></i>subattr</a>
+                </span>
+              </td>
             </tr>
           </tbody>
     </table>
@@ -53,7 +59,7 @@
           <tr class="center aligned" *ngFor="let subattr of ctype_attr.subattrs">
             <td [ngClass]="subattr.attr_required ? 'negative': ''">
               {{subattr.attr_name}}
-              <span>
+              <span *ngIf="ctype_attr.pk >= 0">
                   <a [routerLink]="['./', subattr.pk, 'delete']"><i class="icon trash alternate outline"></i></a>
                   <a [routerLink]="['./', subattr.pk, 'edit']"><i class="icon edit outline"></i></a>
               </span>

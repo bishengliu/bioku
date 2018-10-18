@@ -31,7 +31,7 @@
                 {{mattr.attr_label.toUpperCase()}}
               </div>
               <span *ngIf="mattr.has_sub_attr" class="grey-text small-text">
-                <span *ngFor="let msubattr of mattr.sub_attrs" 
+                <span *ngFor="let msubattr of mattr.subattrs" 
                 class="ui horizontal mini basic label" [ngClass]="msubattr.attr_required ? 'red': ''">
                   {{msubattr.attr_label.toUpperCase()}}
                 </span>
