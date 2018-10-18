@@ -16,16 +16,21 @@ import { CtypeDetailComponent } from '../ctype-detail/ctype-detail.component';
 // guards
 import { AssistantGuard } from '../../_guards/AssistantGuard';
 
+export const ctypeChildRoutes: Routes = [
+    // ctype
+    {path: 'edit', component: CtypeEditComponent, canActivate: [AssistantGuard, ] },
+    {path: 'delete', component: CtypeDeleteComponent, canActivate: [AssistantGuard, ] },
+    // attr
+    {path: 'add_attr', component: CtypeAttrAddComponent, canActivate: [AssistantGuard, ] },
+    {path: 'attr/:attr_pk', component: CtypeAttrListComponent, canActivate: [AssistantGuard, ] },
+];
+
 export const ctypeRoutes: Routes = [
     // ctype
     {path: '', component: CtypeListComponent, canActivate: [AssistantGuard, ] },
     {path: 'add', component: CtypeAddComponent, canActivate: [AssistantGuard, ] },
-    {path: ':pk', component: CtypeDetailComponent, canActivate: [AssistantGuard, ] },
-    {path: 'edit/:pk', component: CtypeEditComponent, canActivate: [AssistantGuard, ] },
-    {path: 'delete/:pk', component: CtypeDeleteComponent, canActivate: [AssistantGuard, ] },
+    {path: ':pk', component: CtypeDetailComponent, canActivate: [AssistantGuard, ], children: ctypeChildRoutes },
     // attr
-    {path: 'attr/:type_pk', component: CtypeAttrListComponent, canActivate: [AssistantGuard, ] },
-    {path: 'attr/:type_pk/add', component: CtypeAttrAddComponent, canActivate: [AssistantGuard, ] },
     {path: 'attr/:type_pk/edit/:attr_pk', component: CtypeAttrEditComponent, canActivate: [AssistantGuard, ] },
     {path: 'attr/:type_pk/delete/:attr_pk', component: CtypeAttrDeleteComponent, canActivate: [AssistantGuard, ] },
     // subattr
@@ -34,3 +39,4 @@ export const ctypeRoutes: Routes = [
     {path: 'subattr/:type_pk/:attr_pk/edit/:subattr_pk', component: CtypeSubattrEditComponent, canActivate: [AssistantGuard, ] },
     {path: 'subattr/:type_pk/:attr_pk/delete/:subattr_pk', component: CtypeSubattrDeleteComponent, canActivate: [AssistantGuard, ] },
 ];
+

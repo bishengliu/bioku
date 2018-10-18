@@ -3,7 +3,7 @@
       <h3 class="ui violet left aligned header"><i class="icon list ul"></i>TYPE DETAIL</h3>
     </div>
     <div class="eight wide column"> 
-      <a class="ui blue button float-right" [routerLink]="['../']">
+      <a class="ui button float-right" [routerLink]="['../']">
         <i class="icon caret left"></i>ALL TYPES
       </a>
     </div>
@@ -13,6 +13,11 @@
       <div class="ui top attached inverted secondary center aligned segment" 
       [ngClass]="ctype.is_public ? 'orange': 'blue'">
           <div class="">{{ctype.type}}</div>
+      </div>
+      <div class="ui three attached buttons">
+        <a class="ui button" [routerLink]="['./delete']"><i class="icon trash alternate outline"></i>REMOVE</a>
+        <a class="ui button" [routerLink]="['./edit']"><i class="icon edit outline"></i>EDIT</a>
+        <a class="ui brown button" [routerLink]="['./add_attr']"><i class="icon plus square outline"></i>ATTR</a>
       </div>
       <div class="ui attached secondary segment" 
       *ngIf="ctype.description !== null && ctype.description !== undefined">
@@ -33,7 +38,7 @@
               </span>
           </div>
           <!--customized attrs-->
-          <div class="item" *ngFor="let attr of ctype.attrs">
+          <a class="item" *ngFor="let attr of ctype.attrs" [routerLink]="['./attr', attr.pk]">
               <div class="ui horizontal label" [ngClass]="attr.attr_required ? 'red': 'teal'">
                 {{attr.attr_label.toUpperCase()}}
               </div>
@@ -43,9 +48,13 @@
                   {{subattr.attr_label.toUpperCase()}}
                 </span>
               </span>
-          </div>
+              <i class="icon sun outline float-right"></i>
+            </a>
         </div>
       </div>
+    </div>
+    <div class="six wide column">
+      <router-outlet></router-outlet>
     </div>
 </div>
 <div class="ui tertiary segment container center aligned" 
