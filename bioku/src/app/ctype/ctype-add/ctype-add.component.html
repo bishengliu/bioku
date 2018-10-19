@@ -15,13 +15,13 @@
               The type name is required!
           </div>
           <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
-          && ctypeForm.controls['type'].hasError('usernameInvalid') 
+          && ctypeForm.controls['type'].hasError('ctypeInvalid') 
           && ctypeForm.controls['type'].touched" 
           class="ui mini negative message">
               The type name is invalid. The type name must contain only letters, numbers (not at the beginning), "-" or "_"!
           </div>
           <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
-          && !ctypeForm.controls['type'].hasError('usernameInvalid') 
+          && !ctypeForm.controls['type'].hasError('ctypeInvalid') 
           &&ctypeForm.controls['type'].hasError('ctypeAsyncInvalid') 
           && ctypeForm.controls['type'].touched" 
           class="ui mini negative message">
@@ -32,7 +32,7 @@
           <label class="left floated">DESCRIPTION</label>
           <textarea rows="2" [formControl]="ctypeForm.controls['description']"></textarea>
         </div>
-        <button type="submit" class="ui fluid button" [ngClass]="ctypeForm.valid? 'primary': 'noEvent'">
+        <button type="submit" class="ui fluid button" [ngClass]="ctypeForm.valid ? 'primary': 'noEvent'">
           <i class="icon add circle"></i> SAVE TYPE 
         </button>
       </form>

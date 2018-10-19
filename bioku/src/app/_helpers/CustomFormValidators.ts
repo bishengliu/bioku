@@ -18,11 +18,9 @@ export class CustomFormValidators {
             if (!control.value || control.value.length === 0 || control.value === '') {
                 return null
             }
-            // let username_pattern = new RegExp("^([a-zA-Z]+[0-9_-]*){6,}$");
-            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*)$/)) {
-                return {usernameInvalid: true}
+            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*){1,}$/)) {
+                return {ctypeInvalid: true}
             }
-            return { usernameInvalid: false }
         }
     }
     // sync validators, 2nd parameter
