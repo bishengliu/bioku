@@ -1,6 +1,7 @@
 
 export class CType {
     pk: number;
+    type: string;
     group_id: number;
     is_public: boolean;
     description: string;

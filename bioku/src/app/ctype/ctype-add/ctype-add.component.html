@@ -1,3 +1,35 @@
-<p>
-  ctype-add works!
-</p>
+
+<div class="ui one column stackable center aligned page grid huge-padding">
+  <div class="column eight wide">
+    <div class="center floated column">
+      <form [formGroup]="ctypeForm" class="ui large form" (ngSubmit)="ctypeForm.valid && onCreate(ctypeForm.value)">
+        <h4 class="ui dividing header teal-text">CREATE A NEW TYPE</h4>
+        <div class="field" [class.error]="ctypeForm.controls['type'].invalid && ctypeForm.controls['type'].touched">
+          <label>TYPE NAME</label>
+          <div class="ui input">
+              <input type="text" id="type" [formControl]="ctypeForm.controls['type']" placeholder="TYPE NAME">
+          </div>
+          <div *ngIf="ctypeForm.controls['type'].hasError('required') && ctypeForm.controls['type'].touched" 
+          class="ui mini negative message">
+              type name is required
+          </div>
+          <div *ngIf="ctypeForm.controls['type'].hasError('usernameInvalid') && ctypeForm.controls['type'].touched" 
+          class="ui mini negative message">
+              type name is invalid. The type name must only contain only letters, numbers (not at the beginning), "-" or "_".
+          </div>
+          <div *ngIf="ctypeForm.controls['type'].hasError('ctypeAsyncInvalid') && ctypeForm.controls['type'].touched" 
+          class="ui mini negative message">
+              the type name alreay exists, please choose a different name.
+          </div>
+        </div>
+        <div class="field">
+          <label>DESCRIPTION</label>
+          <textarea rows="2" [formControl]="ctypeForm.controls['description']"></textarea>
+        </div>
+        <button *ngIf="ctypeForm.touched && ctypeForm.valid" type="submit" class="ui fluid primary button">
+          <i class="icon add circle"></i> SAVE TYPE 
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
