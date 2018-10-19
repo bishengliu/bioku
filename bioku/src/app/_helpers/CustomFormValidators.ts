@@ -19,7 +19,7 @@ export class CustomFormValidators {
                 return null
             }
             // let username_pattern = new RegExp("^([a-zA-Z]+[0-9_-]*){6,}$");
-            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*){1,}$/)) {
+            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*)$/)) {
                 return {usernameInvalid: true}
             }
             return { usernameInvalid: false }
@@ -342,7 +342,7 @@ export class CustomFormValidators {
     };
 
     // async ctype name unique validation
-    ctypeNameAsyncValidator(group_pk: Number = -1) {
+    ctypeNameAsyncValidator(group_pk: Number = -1, excluded_pk: Number = -1) {
         return (control: FormControl): Observable<{[key: string]: Boolean}> => {
             // not reuired
             if (!control.value || control.value.length === 0 || control.value === '') {
@@ -350,7 +350,7 @@ export class CustomFormValidators {
             }
             return new Observable(observer => {
                 const check_ctype_name_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + 'validate_name/';
-                const body: string = JSON.stringify({'name': control.value, 'group_pk': group_pk});
+                const body: string = JSON.stringify({'name': control.value, 'group_pk': group_pk, 'excluded_pk': excluded_pk});
                 const headers = new Headers({ 'Content-Type': 'application/json' });
                 const options = new RequestOptions({ headers: headers });
                 if (!control.dirty) {

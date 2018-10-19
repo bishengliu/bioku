@@ -29,8 +29,8 @@ export class CtypeAddComponent implements OnInit {
     // formGroup
     this.ctypeForm = fb.group({
       // customized type
-      'type': [ , Validators.compose([Validators.required, this.cValidators.ctypeNameRegexValidator]),
-                                                          this.cValidators.ctypeNameAsyncValidator(this.group_id)],
+      'type': [ , Validators.compose([Validators.required, this.cValidators.ctypeNameRegexValidator()]),
+                                                          this.cValidators.ctypeNameAsyncValidator(this.group_id, -1)],
       'description': [, ]
       });
    }

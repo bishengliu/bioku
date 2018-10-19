@@ -12,20 +12,20 @@
           <div *ngIf="ctypeForm.controls['type'].hasError('required') 
           && ctypeForm.controls['type'].touched" 
           class="ui mini negative message">
-              type name is required!
+              The type name is required!
           </div>
           <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
           && ctypeForm.controls['type'].hasError('usernameInvalid') 
           && ctypeForm.controls['type'].touched" 
           class="ui mini negative message">
-              type name is invalid. The type name must only contain only letters, numbers (not at the beginning), "-" or "_"!
+              The type name is invalid. The type name must contain only letters, numbers (not at the beginning), "-" or "_"!
           </div>
           <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
           && !ctypeForm.controls['type'].hasError('usernameInvalid') 
           &&ctypeForm.controls['type'].hasError('ctypeAsyncInvalid') 
           && ctypeForm.controls['type'].touched" 
           class="ui mini negative message">
-              the type name alreay exists, please choose a different name!
+              The type name alreay exists, please choose a different name!
           </div>
         </div>
         <div class="field">
