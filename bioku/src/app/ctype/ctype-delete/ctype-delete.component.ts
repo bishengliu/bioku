@@ -21,7 +21,7 @@ export class CtypeDeleteComponent implements OnInit {
     },
     () => {
       this.alertService.error('SOMETHING WENT WRONG, FAILED TO DELETE THE TYPE!', true);
-        this.router.navigate(['../ctypes']);
+      this.router.navigate(['../ctypes']);
     });
   }
   ngOnInit() {

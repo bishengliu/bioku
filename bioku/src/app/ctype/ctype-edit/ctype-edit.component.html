@@ -1,3 +1,38 @@
-<p>
-  ctype-edit works!
-</p>
+<div class="ui top attached center aligned teal segment">
+  <span class="teal-text">MODIFY {{ctype.type}}</span>
+</div>
+<div class="ui attached segment">
+    <form [formGroup]="ctypeForm" class="ui large form" (ngSubmit)="ctypeForm.valid && onUpdate(ctypeForm.value)">
+      <div class="field" [class.error]="ctypeForm.controls['type'].invalid && ctypeForm.controls['type'].touched">
+        <label class="required left floated">TYPE NAME</label>
+        <div class="ui teal input">
+            <input type="text" id="type" [formControl]="ctypeForm.controls['type']" placeholder="required">
+        </div>
+        <div *ngIf="ctypeForm.controls['type'].hasError('required') 
+        && ctypeForm.controls['type'].touched" 
+        class="ui mini negative message">
+            The type name is required!
+        </div>
+        <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
+        && ctypeForm.controls['type'].hasError('ctypeInvalid') 
+        && ctypeForm.controls['type'].touched" 
+        class="ui mini negative message">
+            The type name is invalid. The type name must contain only letters, numbers (not at the beginning), "-" or "_"!
+        </div>
+        <div *ngIf="!ctypeForm.controls['type'].hasError('required') 
+        && !ctypeForm.controls['type'].hasError('ctypeInvalid') 
+        &&ctypeForm.controls['type'].hasError('ctypeAsyncInvalid') 
+        && ctypeForm.controls['type'].touched" 
+        class="ui mini negative message">
+            The type name alreay exists, please choose a different name!
+        </div>
+      </div>
+      <div class="field">
+        <label class="left floated">DESCRIPTION</label>
+        <textarea rows="2" [formControl]="ctypeForm.controls['description']"></textarea>
+      </div>
+      <button type="submit" class="ui fluid button" [ngClass]="ctypeForm.touched && ctypeForm.valid ? 'primary': 'noEvent'">
+        <i class="icon add circle"></i> UPDATE TYPE 
+      </button>
+    </form>
+</div>

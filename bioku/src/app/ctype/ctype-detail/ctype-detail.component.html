@@ -20,7 +20,7 @@
         <a class="ui button" [routerLink]="['./add_attr']"><i class="icon plus square outline"></i>ATTR</a>
       </div>
       <div class="ui attached secondary segment" 
-      *ngIf="ctype.description !== null && ctype.description !== undefined">
+      *ngIf="ctype.description !== null && ctype.description !== undefined && ctype.description !== 'None'">
           <div class="">{{ctype.description}}</div>
       </div>
       <div class="ui attached segment">
