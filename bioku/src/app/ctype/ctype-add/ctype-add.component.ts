@@ -20,7 +20,9 @@ export class CtypeAddComponent implements OnInit {
               private cValidators: CustomFormValidators, private fb: FormBuilder, @Inject(AppStore) private appStore,
               private ctypeService: CTypeService, private alertService: AlertService) {
     const state = this.appStore.getState();
-    if (state.authInfo != null && state.authInfo.authGroup != null) {
+    if (state.authInfo != null
+      && state.authInfo.authGroup !== undefined
+      && state.authInfo.authGroup != null) {
       this.group_id = state.authInfo.authGroup[0].pk;
     }
 
@@ -34,7 +36,7 @@ export class CtypeAddComponent implements OnInit {
    }
    onCreate(values: any) {
      const ctype: CType = new CType();
-     ctype.type = values.type;
+     ctype.type = values.type.toUpperCase();
      ctype.group_id = this.group_id;
      ctype.is_public = false;
      ctype.description = values.description;

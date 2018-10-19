@@ -248,7 +248,7 @@ body{
   color: rgb(158, 158, 158) !important;
 }
 .teal-text{
-  color: #00B5AD;
+  color: #00B5AD !important;
 }
 .green-text {
   color: green;

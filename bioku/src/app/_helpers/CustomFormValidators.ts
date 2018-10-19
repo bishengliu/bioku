@@ -19,9 +19,10 @@ export class CustomFormValidators {
                 return null
             }
             // let username_pattern = new RegExp("^([a-zA-Z]+[0-9_-]*){6,}$");
-            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*)$/)) {
+            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*){1,}$/)) {
                 return {usernameInvalid: true}
             }
+            return { usernameInvalid: false }
         }
     }
     // sync validators, 2nd parameter
@@ -34,7 +35,7 @@ export class CustomFormValidators {
             }
             // let username_pattern = new RegExp("^([a-zA-Z]+[0-9_-]*){6,}$");
             if (!control.value.match(/^([a-zA-Z]+[0-9_-]*){6,}$/)) {
-                return {usernameInvalid: true}
+                return { usernameInvalid: true }
             }
         }
     }
@@ -348,7 +349,7 @@ export class CustomFormValidators {
                 return Observable.throw(null);
             }
             return new Observable(observer => {
-                const check_ctype_name_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + '/validate_name/';
+                const check_ctype_name_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + 'validate_name/';
                 const body: string = JSON.stringify({'name': control.value, 'group_pk': group_pk});
                 const headers = new Headers({ 'Content-Type': 'application/json' });
                 const options = new RequestOptions({ headers: headers });
