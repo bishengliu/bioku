@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, NgZone } from '@angular/core';
 import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
 import { AlertService } from '../../_services/AlertService';
@@ -7,21 +7,21 @@ import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '
 import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
-import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-ctype-edit',
   templateUrl: './ctype-edit.component.html',
   styleUrls: ['./ctype-edit.component.css']
 })
-export class CtypeEditComponent implements OnInit {
+export class CtypeEditComponent implements OnInit, OnDestroy {
   pk: number;
   private sub: any; // subscribe to params observable
   ctypeForm: FormGroup;
   ctype: CType = new CType();
   constructor(private ctypeService: CTypeService, private alertService: AlertService,
     private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any,
-    private cValidators: CustomFormValidators, private fb: FormBuilder, private location: Location) {
-      this.route.parent.params
+    private cValidators: CustomFormValidators, private fb: FormBuilder) {
+    this.sub = this.route.parent.params
     .subscribe((params) => {
       this.pk = +params['pk'];
     })
@@ -43,7 +43,7 @@ export class CtypeEditComponent implements OnInit {
      this.ctypeService.updateCType(ctype, this.pk).subscribe(
       () => {
         this.alertService.success('THE TYPE MODIFUED!', true);
-        this.router.navigate(['../ctypes']);
+        this.router.navigate(['../ctypes', this.pk], { queryParams: { 'refresh': true } });
       },
       () => {
         this.alertService.error('SOMETHING WENT WRONG, FAILED TO MODIFY THE TYPE!', true);
@@ -52,7 +52,7 @@ export class CtypeEditComponent implements OnInit {
      );
   }
   ngOnInit() {
-    console.log(this.pk);
+    // console.log(this.pk);
     this.ctypeService.getCTypeDetail(this.pk).subscribe(
       (ctype: CType) => {
         this.ctype = ctype;
@@ -70,5 +70,7 @@ export class CtypeEditComponent implements OnInit {
       }
     );
   }
-
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 }
