@@ -23,6 +23,7 @@ export class CustomFormValidators {
             }
         }
     }
+
     ctypeAttrNameRegexValidator() {
         return (control: FormControl): {[s: string]: Boolean} => {
             // not reuired
@@ -30,21 +31,11 @@ export class CustomFormValidators {
                 return null
             }
             if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*){1,}$/)) {
-                return {nameInvalid: true}
+                return { nameInvalid: true }
             }
         }
     }
-    numberValidator() {
-        return (control: FormControl): {[s: string]: Boolean} => {
-            // not reuired
-            if (!control.value || control.value.length === 0 || control.value === '') {
-                return null
-            }
-            if (!control.value.match(/^([1-9][0-9_-]*){1,}$/)) {
-                return {numberInvalid: true}
-            }
-        }
-    }
+
     // sync validators, 2nd parameter
     // validator username
     usernameValidator() {

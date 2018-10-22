@@ -26,20 +26,23 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     .subscribe((params) => {
       this.pk = +params['pk'];
     });
-    }
+    this.cAttrForm = this.fb.group({});
 
-  ngOnInit() {
     // formGroup
     this.cAttrForm = this.fb.group({
       // customized type
       'attr_name': [, Validators.compose([Validators.required, this.cValidators.ctypeAttrNameRegexValidator()])],
       'attr_value_type': [, Validators.required],
-      'attr_value_text_max_length': [50 , Validators.compose([this.cValidators.numberValidator()])],
-      'attr_value_decimal_total_digit': [5, Validators.compose([this.cValidators.numberValidator()])],
-      'attr_value_decimal_point': [2, Validators.compose([this.cValidators.numberValidator()])],
-      'attr_required': [false, ],
-      'has_sub_attr': [false, ]
+      'attr_value_text_max_length': [false, ],
+      'attr_value_decimal_total_digit': [5, ],
+      'attr_value_decimal_point': [2, ],
+      'attr_required': [false, ]
       });
+    }
+
+  ngOnInit() {}
+  onCreate(values: any) {
+    console.log(values);
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
