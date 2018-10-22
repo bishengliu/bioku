@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
 import { AlertService } from '../../_services/AlertService';

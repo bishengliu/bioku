@@ -1,3 +1,82 @@
-<p>
-  ctype-attr-add works!
-</p>
+<div class="ui row">
+  <form [formGroup]="cAttrForm" class="ui large form" (ngSubmit)="cAttrForm.valid && onCreate(cAttrForm.value)">
+    <h4 class="ui dividing header teal-text">ADD A NEW ATTRIBUTE</h4>
+    <div class="field" [class.error]="cAttrForm.controls['attr_name'].invalid && cAttrForm.controls['attr_name'].touched">
+      <label class="required left floated">attr name</label>
+      <div class="ui teal input">
+          <input type="text" id="attr_name" [formControl]="cAttrForm.controls['attr_name']" placeholder="required">
+      </div>
+      <div *ngIf="cAttrForm.controls['attr_name'].hasError('required') 
+      && cAttrForm.controls['attr_name'].touched" 
+      class="ui mini negative message">
+          The attr name is required!
+      </div>
+      <div *ngIf="!cAttrForm.controls['attr_name'].hasError('required') 
+      && cAttrForm.controls['attr_name'].hasError('nameInvalid') 
+      && cAttrForm.controls['attr_name'].touched" 
+      class="ui mini negative message">
+          The attr name is invalid. The attr name must contain only letters, numbers (not at the beginning), "-" or "_"!
+      </div>
+      <div *ngIf="!cAttrForm.controls['type'].hasError('required') 
+      && !cAttrForm.controls['attr_name'].hasError('nameInvalid') 
+      &&cAttrForm.controls['attr_name'].hasError('ctypeAttrAsyncInvalid') 
+      && cAttrForm.controls['attr_name'].touched" 
+      class="ui mini negative message">
+          The attr name alreay exists, please choose a different name!
+      </div>
+    </div>
+    <div class="inline field">
+      <label class="left floated">value type</label>
+      <div class="ui input wide-form">                        
+        <select class="ui tiny tight_around dropdown" id="type" 
+        [formControl]="cAttrForm.controls['attr_value_type']">
+            <option value="-"> -- select -- </option>
+            <option value="3">the attr has sub attrs</option>
+            <option value="0">textile value</option>
+            <option value="1">Digital value</option>
+            <option value="2">Decimal value</option>
+            <option value="4">Date</option>
+        </select>
+      </div>
+    </div>
+    <div class="inline field">
+      <label class="left floated">is required?</label>
+      <div class="ui toggle checkbox">
+        <input type="checkbox">
+        <label>Toggle</label>
+      </div>
+    </div>
+    <div class="inline field">
+      <label class="left floated">text type: </label>
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" checked="">
+        <label>short text</label>
+      </div>
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" checked="">
+        <label>long text</label>
+      </div>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label class="left floated">max digit length</label>
+        <div class="ui input">
+          <input class="" type="number" value="5" maxlength="10" id="" 
+          [formControl]="cAttrForm.controls['attr_value_decimal_total_digit']" 
+          placeholder="max digit length">
+        </div> 
+      </div>
+      <div class="field">
+        <label class="left floated">decimal points</label>
+        <div class="ui input">
+          <input class="" type="numner" value="2" maxlength="9" id="" 
+          [formControl]="cAttrForm.controls['attr_value_decimal_point']" 
+          placeholder="decimal points">
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="ui fluid button" [ngClass]="cAttrForm.valid ? 'primary': 'noEvent'">
+      <i class="icon add circle"></i> ADD ATTR 
+    </button>
+  </form>
+</div>

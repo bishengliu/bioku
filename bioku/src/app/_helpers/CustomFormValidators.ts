@@ -23,6 +23,28 @@ export class CustomFormValidators {
             }
         }
     }
+    ctypeAttrNameRegexValidator() {
+        return (control: FormControl): {[s: string]: Boolean} => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return null
+            }
+            if (!control.value.match(/^([a-zA-Z_-][a-zA-Z0-9_-]*){1,}$/)) {
+                return {nameInvalid: true}
+            }
+        }
+    }
+    numberValidator() {
+        return (control: FormControl): {[s: string]: Boolean} => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return null
+            }
+            if (!control.value.match(/^([1-9][0-9_-]*){1,}$/)) {
+                return {numberInvalid: true}
+            }
+        }
+    }
     // sync validators, 2nd parameter
     // validator username
     usernameValidator() {
@@ -374,6 +396,49 @@ export class CustomFormValidators {
                         }
                       },
                       () => {observer.next({ ctypeAsyncInvalid: true });
+                            observer.complete();
+                      });   // end subscribe
+                }
+            })
+        }
+    }
+
+    // attr name
+    ctypeAttrNameAsyncValidator(ctype_pk: Number = -1, excluded_pk: Number = -1) {
+        return (control: FormControl): Observable<{[key: string]: Boolean}> => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return Observable.throw(null);
+            }
+            return new Observable(observer => {
+                const check_ctype_attr_name_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                        + ctype_pk + '/validate_attr_name/';
+                const body: string = JSON.stringify({'name': control.value, 'ctype_pk': ctype_pk, 'excluded_pk': excluded_pk});
+                const headers = new Headers({ 'Content-Type': 'application/json' });
+                const options = new RequestOptions({ headers: headers });
+                if (!control.dirty) {
+                    observer.next(null);
+                    observer.complete();
+                } else {
+                    control.valueChanges
+                    .debounceTime(1000)
+                    .flatMap(value => this.http.post(check_ctype_attr_name_url, body, options))
+                    .map((response: Response) => response.json())
+                    .catch((error: any) => {
+                        observer.next({ ctypeAttrAsyncInvalid: true });
+                        observer.complete();
+                        return Observable.throw({ ctypeAttrAsyncInvalid: true });
+                    })
+                    .subscribe(data => {
+                        if (data && <Boolean>data.matched) {
+                            observer.next({ ctypeAttrAsyncInvalid: true });
+                            observer.complete();
+                        } else {
+                            observer.next(null);
+                            observer.complete();
+                        }
+                      },
+                      () => {observer.next({ ctypeAttrAsyncInvalid: true });
                             observer.complete();
                       });   // end subscribe
                 }
