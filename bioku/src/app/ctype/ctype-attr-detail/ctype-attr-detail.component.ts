@@ -20,21 +20,22 @@ export class CtypeAttrDetailComponent implements OnInit {
   // parse attr value type
   parseAttrValueType(ctype_attr): string {
     let value_type = 'short text';
-    if (ctype_attr.attr_value_type !== null
-      && !isNaN(+(ctype_attr.attr_value_type))) {
-        if (+(ctype_attr.attr_value_type === 0)) {
-        ctype_attr.attr_value_text_max_length === null || ctype_attr.attr_value_text_max_length <= 50
-        ? value_type = 'short text'
-        : value_type = 'long text';
-      } else if (+(ctype_attr.attr_value_type === 1)) {
-        value_type = 'integer number';
-      } else if (+(ctype_attr.attr_value_type === 2)) {
-        value_type = 'decimal number';
-      } else if (+(ctype_attr.attr_value_type === 4)) {
-        value_type = 'date';
-      } else {
-        value_type = 'n/a';
-      }
+    if (ctype_attr !== null
+      && ctype_attr.attr_value_type !== null
+      && ctype_attr.attr_value_type !== '') {
+        if (+(ctype_attr.attr_value_type) === 0) {
+          ctype_attr.attr_value_text_max_length <= 50
+            ? value_type = 'short text'
+            : value_type = 'long text';
+        } else if (+(ctype_attr.attr_value_type) === 1) {
+          value_type = 'integer number';
+        } else if (+(ctype_attr.attr_value_type) === 2) {
+          value_type = 'decimal number';
+        } else if (+(ctype_attr.attr_value_type) === 4) {
+          value_type = 'date';
+        } else {
+          value_type = 'n/a';
+        }
     }
     return value_type;
   }
