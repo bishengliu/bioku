@@ -35,7 +35,17 @@ export class CustomFormValidators {
             }
         }
     }
-
+    numberPostiveValidator() {
+        return (control: FormControl): {[s: string]: Boolean} => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return null
+            }
+            if (isNaN(+control.value) || +control.value <= 0) {
+                return { numberInvalid: true }
+            }
+        }
+    }
     // sync validators, 2nd parameter
     // validator username
     usernameValidator() {

@@ -251,25 +251,25 @@ body{
   color: #00B5AD !important;
 }
 .green-text {
-  color: green;
+  color: green !important;
 }
 .blue-text{
-  color: #2185d0;
+  color: #2185d0 !important;
 }
 .red-text{
-  color: #d01919;
+  color: #d01919 !important;
 }
 .brown-text{
-  color: brown;
+  color: brown !important;
 }
 .orange-text{
-  color: #F2711C;
+  color: #F2711C !important;
 }
 .black-text{
-  color: #1b1c1d;
+  color: #1b1c1d !important;
 }
 .violet-text{
-  color:#6435C9;
+  color:#6435C9 !important;
 }
 .tiny-text{
   font-size: 9px !important;

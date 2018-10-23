@@ -19,6 +19,7 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
   cAttrForm: FormGroup;
   ctype: CType = new CType();
   cAttr: CTypeAttr = new CTypeAttr();
+  value_type: number;
   constructor(private ctypeService: CTypeService, private alertService: AlertService,
     private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any,
     private cValidators: CustomFormValidators, private fb: FormBuilder) {
@@ -27,19 +28,23 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
       this.pk = +params['pk'];
     });
     this.cAttrForm = this.fb.group({});
-
+    this.value_type = 0;
     // formGroup
     this.cAttrForm = this.fb.group({
       // customized type
-      'attr_name': [, Validators.compose([Validators.required, this.cValidators.ctypeAttrNameRegexValidator()])],
-      'attr_value_type': [, Validators.required],
+      'attr_name': [, Validators.compose([Validators.required, this.cValidators.ctypeAttrNameRegexValidator()]),
+                                                this.cValidators.ctypeAttrNameAsyncValidator(this.ctype.pk, -1)],
+      'attr_value_type': [this.value_type, Validators.required],
       'attr_value_text_max_length': [false, ],
       'attr_value_decimal_total_digit': [5, ],
       'attr_value_decimal_point': [2, ],
       'attr_required': [false, ]
       });
     }
-
+    changeValueType(elm: any) {
+      console.log(elm.target.value);
+      this.value_type = +(elm.target.value);
+    }
   ngOnInit() {}
   onCreate(values: any) {
     console.log(values);
