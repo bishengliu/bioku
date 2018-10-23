@@ -47,7 +47,6 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     }
   ngOnInit() {}
   onCreate(values: any) {
-    console.log(values);
     const cAttr = new CTypeAttr();
     cAttr.ctype_id = this.pk;
     cAttr.attr_name = values.attr_name.toLowerCase().replace(' ', '_');
@@ -61,8 +60,6 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     ? 2 : +values.attr_value_decimal_point;
     cAttr.attr_required = values.attr_required;
     cAttr.has_sub_attr = !isNaN(+values.attr_value_type) && +values.attr_value_type === 3 ? true : false;
-    console.log(cAttr);
-
     this.ctypeService.addCTypeAttr(cAttr, this.pk).subscribe(
       () => {
         this.alertService.success('THE TYPE ATTR ADDED!', true);

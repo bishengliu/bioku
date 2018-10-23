@@ -26,8 +26,8 @@
               <td [ngClass]="ctype_attr.attr_required ? 'negative': ''">
                 {{ctype_attr.attr_name}}
                 <span *ngIf="ctype_attr.pk >= 0">
-                    <a [routerLink]="['../../1/delete']"><i class="icon trash alternate outline"></i></a>
-                    <a [routerLink]="['../../1/edit']"><i class="icon edit outline"></i></a>
+                    <a [routerLink]="['../', ctype_attr.pk, 'delete']"><i class="icon trash alternate outline"></i></a>
+                    <a [routerLink]="['../', ctype_attr.pk, 'edit']"><i class="icon edit outline"></i></a>
                 </span>
               </td>
               <td>{{ctype_attr.attr_label}}</td>
