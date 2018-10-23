@@ -245,7 +245,15 @@ export class CTypeService {
                         .map((response: Response) => response.json())
                         .catch((error: any) => Observable.throw(error || 'Server error'));
     }
-
+    // sub attr detail
+    getCTypeSubAttrDetail(ctype_pk: number, attr_pk: number, subattr_pk: number) {
+        this.updateState();
+        const get_ctype_attr_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES + ctype_pk
+                                                + '/attrs/' + attr_pk + '/subattrs/' + subattr_pk + '/';
+        return this.http.get(get_ctype_attr_url, this.options)
+                        .map((response: Response) => response.json())
+                        .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // add subattr
     addCTypeSubAttr(ctype_subattr: CTypeSubAttr, ctype_pk: number, attr_pk: number) {
         this.updateState();

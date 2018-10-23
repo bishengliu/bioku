@@ -3,7 +3,11 @@
   <div class="content">
     <div class="header">
       ARE YOU SURE TO REMOVE THIS ATTR: {{cAttr.attr_label}}?
-      <div class="ui right floated tiny buttons">        
+      <div class="ui right floated tiny buttons">   
+          <a class="ui button" [routerLink]="['../']">
+            <i class="caret left icon"></i>
+            CANCEL
+          </a>     
           <div class="or"></div>
           <button class="ui negative button" (click)="delete()">
               <i class="icon trash alternate outline"></i>

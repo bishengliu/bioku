@@ -1,3 +1,21 @@
-<p>
-  ctype-subattr-delete works!
-</p>
+<div><br /></div>
+<div class="ui negative icon message">
+  <i class="exclamation triangle icon"></i>
+  <div class="content">
+    <div class="header">
+      ARE YOU SURE TO REMOVE THIS ATTR: {{cSubAttr.attr_label}}?
+      <div class="ui right floated tiny buttons">
+          <a class="ui button" [routerLink]="['../../../', attr_pk]">
+            <i class="caret left icon"></i>
+            CANCEL
+          </a>   
+          <div class="or"></div>
+          <button class="ui negative button" (click)="delete()">
+              <i class="icon trash alternate outline"></i>
+            CONFIRM DELETION
+          </button>
+        </div>
+    </div>
+    <p class="grey-text">Deletion is only possible if this attr is not used yet.</p>
+  </div>
+</div>

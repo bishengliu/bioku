@@ -69,7 +69,6 @@ export class CtypeSubattrAddComponent implements OnInit, OnDestroy {
     cSubAttr.attr_value_decimal_point = isNaN(+values.attr_value_decimal_point) || +values.attr_value_decimal_point <= 0
     ? 2 : +values.attr_value_decimal_point;
     cSubAttr.attr_required = values.attr_required;
-    console.log(cSubAttr);
     this.ctypeService.addCTypeSubAttr(cSubAttr, this.pk, this.attr_pk)
     .subscribe(
       () => {
