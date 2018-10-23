@@ -50,7 +50,7 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     cAttr.ctype_id = this.pk;
     cAttr.attr_name = values.attr_name.toLowerCase().replace(' ', '_');
     cAttr.attr_order = 0;
-    cAttr.attr_label = values.attr_name;
+    cAttr.attr_label = values.attr_name.toUpperCase().replace(' ', '_');
     cAttr.attr_value_type = isNaN(+values.attr_value_type) ? 0 : +values.attr_value_type;
     cAttr.attr_value_text_max_length = values.attr_value_text_max_length ? 0 : 50;
     cAttr.attr_value_decimal_total_digit = isNaN(+values.attr_value_decimal_total_digit) || +values.attr_value_decimal_total_digit <= 0

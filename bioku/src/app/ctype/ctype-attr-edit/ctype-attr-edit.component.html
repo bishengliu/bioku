@@ -1,5 +1,8 @@
 <div class="ui top attached center aligned teal segment">
   <span class="teal-text">MODIFY ATTRIBUTE</span>
+  <a class="ui tiny basic button right floated" [routerLink]="['../']">
+    <i class="caret left icon"></i>CANCEL
+  </a>
 </div>
 <div class="ui attached segment">
   <form [formGroup]="cAttrForm" class="ui large form" (ngSubmit)="cAttrForm.valid && onUpdate(cAttrForm.value)">

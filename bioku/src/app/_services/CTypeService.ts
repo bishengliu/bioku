@@ -79,7 +79,7 @@ export class CTypeService {
                     attachment_subattr_label = {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
-                        attr_id: null,
+                        parent_attr_id: null,
                         attr_name: 'label',
                         attr_label: 'FILE_LABEL',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -95,7 +95,7 @@ export class CTypeService {
                     attachment_subattr_attachment = {
                         pk: -2, // no pk
                         ctype_id: null, // no ctype
-                        attr_id: null,
+                        parent_attr_id: null,
                         attr_name: 'attachment',
                         attr_label: 'FILE',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -111,7 +111,7 @@ export class CTypeService {
                     attachment_subattr_description = {
                         pk: -3, // no pk
                         ctype_id: null, // no ctype
-                        attr_id: null,
+                        parent_attr_id: null,
                         attr_name: 'description',
                         attr_label: 'DESCRIPTION',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date

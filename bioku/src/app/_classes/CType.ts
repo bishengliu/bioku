@@ -26,7 +26,7 @@ export class CTypeAttr {
 export class CTypeSubAttr {
     pk: number;
     ctype_id: number;
-    attr_id: number;
+    parent_attr_id: number;
     attr_name: string;
     attr_label: string;
     attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date

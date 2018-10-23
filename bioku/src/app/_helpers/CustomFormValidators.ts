@@ -141,7 +141,7 @@ export class CustomFormValidators {
                     const options = new RequestOptions({ headers: headers });
 
                     control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(find_user_detail_url, body, options))
                         .map((response: Response) => response.json())
                         .catch((error: any) => {
@@ -179,7 +179,7 @@ export class CustomFormValidators {
                         observer.complete();
                     } else {
                         control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(find_user_detail_url, body, options))
                         .map((response: Response) => response.json())
                         .catch((error: any) => {
@@ -260,7 +260,7 @@ export class CustomFormValidators {
                         observer.complete();
                 } else {
                     control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(find_group_detail_url, body, options))
                         .map((response: Response) => response.json())
                         .catch((error: any) => {
@@ -299,7 +299,7 @@ export class CustomFormValidators {
                         observer.complete();
                 } else {
                     control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(find_container_detail_url, body, options))
                         .map((response: Response) => response.json())
                         .catch((error: any) => {
@@ -339,7 +339,7 @@ export class CustomFormValidators {
                         observer.complete();
                     } else {
                         control.valueChanges
-                        .debounceTime(1000)
+                        .debounceTime(2000)
                         .flatMap(value => this.http.post(find_group_detail_url, body, options))
                         .map((response: Response) => response.json())
                         .catch((error: any) => {
@@ -379,7 +379,7 @@ export class CustomFormValidators {
                     observer.complete();
                 } else {
                     control.valueChanges
-                    .debounceTime(1000)
+                    .debounceTime(2000)
                     .flatMap(value => this.http.post(check_ctype_name_url, body, options))
                     .map((response: Response) => response.json())
                     .catch((error: any) => {
@@ -440,6 +440,49 @@ export class CustomFormValidators {
                         }
                       },
                       () => {observer.next({ ctypeAttrAsyncInvalid: true });
+                            observer.complete();
+                      });   // end subscribe
+                }
+            })
+        }
+    }
+    // sub attr async
+    ctypeSubAttrNameAsyncValidator(ctype_pk: Number = -1, attr_pk: Number = -1, excluded_pk: Number = -1) {
+        return (control: FormControl): Observable<{[key: string]: Boolean}> => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return Observable.throw(null);
+            }
+            return new Observable(observer => {
+                const check_ctype_subttr_name_url: string  = this.appSetting.URL + this.appSetting.ALL_CTYPES
+                                                        + ctype_pk + '/attrs/' + attr_pk + '/validate_subattr_name/';
+                const body: string = JSON.stringify({'name': control.value, 'ctype_pk': ctype_pk,
+                'attr_pk': attr_pk, 'excluded_pk': excluded_pk});
+                const headers = new Headers({ 'Content-Type': 'application/json' });
+                const options = new RequestOptions({ headers: headers });
+                if (!control.dirty) {
+                    observer.next(null);
+                    observer.complete();
+                } else {
+                    control.valueChanges
+                    .debounceTime(2000)
+                    .flatMap(value => this.http.post(check_ctype_subttr_name_url, body, options))
+                    .map((response: Response) => response.json())
+                    .catch((error: any) => {
+                        observer.next({ ctypeSubAttrAsyncInvalid: true });
+                        observer.complete();
+                        return Observable.throw({ ctypeSubAttrAsyncInvalid: true });
+                    })
+                    .subscribe(data => {
+                        if (data && <Boolean>data.matched) {
+                            observer.next({ ctypeSubAttrAsyncInvalid: true });
+                            observer.complete();
+                        } else {
+                            observer.next(null);
+                            observer.complete();
+                        }
+                      },
+                      () => {observer.next({ ctypeSubAttrAsyncInvalid: true });
                             observer.complete();
                       });   // end subscribe
                 }
