@@ -43,7 +43,7 @@ export class CtypeEditComponent implements OnInit, OnDestroy {
      this.ctypeService.updateCType(ctype, this.pk).subscribe(
       () => {
         this.alertService.success('THE TYPE MODIFUED!', true);
-        this.router.navigate(['../ctypes', this.pk], { queryParams: { 'refresh': true } });
+        this.router.navigate(['../ctypes', this.pk], { queryParams: { 'refresh': 'EDIT_CTYPE' } });
       },
       () => {
         this.alertService.error('SOMETHING WENT WRONG, FAILED TO MODIFY THE TYPE!', true);

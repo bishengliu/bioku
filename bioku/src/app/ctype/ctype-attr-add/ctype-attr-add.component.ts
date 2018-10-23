@@ -33,7 +33,7 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     this.cAttrForm = this.fb.group({
       // customized type
       'attr_name': [, Validators.compose([Validators.required, this.cValidators.ctypeAttrNameRegexValidator()]),
-                                                this.cValidators.ctypeAttrNameAsyncValidator(this.ctype.pk, -1)],
+                                                this.cValidators.ctypeAttrNameAsyncValidator(this.pk, -1)],
       'attr_value_type': [this.value_type, Validators.required],
       'attr_value_text_max_length': [false, ],
       'attr_value_decimal_total_digit': [5, ],
@@ -48,6 +48,31 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
   ngOnInit() {}
   onCreate(values: any) {
     console.log(values);
+    const cAttr = new CTypeAttr();
+    cAttr.ctype_id = this.pk;
+    cAttr.attr_name = values.attr_name.toLowerCase().replace(' ', '_');
+    cAttr.attr_order = 0;
+    cAttr.attr_label = values.attr_name;
+    cAttr.attr_value_type = isNaN(+values.attr_value_type) ? 0 : +values.attr_value_type;
+    cAttr.attr_value_text_max_length = values.attr_value_text_max_length ? 0 : 50;
+    cAttr.attr_value_decimal_total_digit = isNaN(+values.attr_value_decimal_total_digit) || +values.attr_value_decimal_total_digit <= 0
+    ? 5 : +values.attr_value_decimal_total_digit;
+    cAttr.attr_value_decimal_point = isNaN(+values.attr_value_decimal_point) || +values.attr_value_decimal_point <= 0
+    ? 2 : +values.attr_value_decimal_point;
+    cAttr.attr_required = values.attr_required;
+    cAttr.has_sub_attr = !isNaN(+values.attr_value_type) && +values.attr_value_type === 3 ? true : false;
+    console.log(cAttr);
+
+    this.ctypeService.addCTypeAttr(cAttr, this.pk).subscribe(
+      () => {
+        this.alertService.success('THE TYPE ATTR ADDED!', true);
+        this.router.navigate(['../ctypes', this.pk], { queryParams: { 'refresh': 'ADD_ATTR' } });
+      },
+      () => {
+        this.alertService.error('SOMETHING WENT WRONG, FAILED TO ADD THE TYPE ATTR!', true);
+        this.router.navigate(['../ctypes', this.pk]);
+      }
+    );
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
