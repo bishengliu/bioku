@@ -21,12 +21,10 @@ export class CtypeAttrDeleteComponent implements OnInit, OnDestroy {
     this.sub = this.route.parent.params
     .switchMap(params => {
       this.ctype_pk = +params['pk'];
-      console.log(this.ctype_pk);
       return this.route.params;
     })
     .mergeMap((params) => {
       this.attr_pk = +params['attr_pk'];
-      console.log(this.attr_pk);
       return this.ctypeService.getCTypeAttrDetail(this.ctype_pk, this.attr_pk)
     })
     .subscribe((cAttr: CTypeAttr) => { this.cAttr = cAttr })

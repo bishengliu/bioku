@@ -41,10 +41,9 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
       'attr_required': [false, ]
       });
     }
-    changeValueType(elm: any) {
-      console.log(elm.target.value);
-      this.value_type = +(elm.target.value);
-    }
+  changeValueType(elm: any) {
+    this.value_type = +(elm.target.value);
+  }
   ngOnInit() {}
   onCreate(values: any) {
     const cAttr = new CTypeAttr();
@@ -60,7 +59,8 @@ export class CtypeAttrAddComponent implements OnInit, OnDestroy {
     ? 2 : +values.attr_value_decimal_point;
     cAttr.attr_required = values.attr_required;
     cAttr.has_sub_attr = !isNaN(+values.attr_value_type) && +values.attr_value_type === 3 ? true : false;
-    this.ctypeService.addCTypeAttr(cAttr, this.pk).subscribe(
+    this.ctypeService.addCTypeAttr(cAttr, this.pk)
+    .subscribe(
       () => {
         this.alertService.success('THE TYPE ATTR ADDED!', true);
         this.router.navigate(['../ctypes', this.pk], { queryParams: { 'refresh': 'ADD_ATTR' } });
