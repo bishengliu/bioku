@@ -7,6 +7,7 @@ import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Container } from '../../_classes/Container';
 import { Box, BoxFilter } from '../../_classes/Box';
 import { Sample, SampleFilter, Attachment } from '../../_classes/Sample';
+import { CSample, CAttachment } from '../../_classes/CType';
 import { User } from '../../_classes/User';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
@@ -30,8 +31,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   private querySub: any;
   container: Container = null;
   box: Box = new Box();
-  samples: Array<Sample> = [];
-  searchedSamples: Array<Sample> = []; // for list view only
+  samples = [];
+  searchedSamples = []; // for list view only
   selectedSamples: Array<number> = []; // for list view and box view
   selectedCells: Array<string> = []; // for box view only
   searchedBoxSamples: Array<string> = []; // cell position
@@ -78,7 +79,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedSamples = [];
     // restore the complete samples for list view
     // hard copy of the array
-    this.searchedSamples = this.samples.filter((e: Sample) => e.pk != null);
+    this.searchedSamples = this.samples.filter((e) => e.pk != null);
     // empty searched samples for box view
     this.searchedBoxSamples = [];
     // filter the machted boxes
@@ -87,7 +88,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       const userInputArray = userInput.split('');
       if (userInputArray.length > 0) {
         // loop to the box sample and concat all the text into a string
-        this.searchedSamples = this.samples.filter((e: Sample) => {
+        this.searchedSamples = this.samples.filter((e) => {
           let deepString = '';
           // loop into the object keys
           // could also use Object.keys(e).forEach()
@@ -105,7 +106,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
                 })
               } else if ( key === 'attachments') {
                 // label, attachment and description
-                e[key].forEach((a: Attachment ) => {
+                e[key].forEach((a) => {
                   if (a.label !== null && a.label !== '') {
                     deepString += (a.label).toString();
                   }
@@ -145,8 +146,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         });
       }
       // for box searched samples
-      const matchedBoxSamples = this.searchedSamples.filter((s: Sample) => s.occupied === true);
-       matchedBoxSamples.forEach((s: Sample) => this.searchedBoxSamples.push(s.position));
+      const matchedBoxSamples = this.searchedSamples.filter((s: Sample | CSample) => s.occupied === true);
+       matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
     }
     this.loading = false;
   }
@@ -158,12 +159,12 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedSamples = [];
     // restore the complete samples for list view
     // hard copy of the array
-    this.searchedSamples = this.samples.filter((e: Sample) => e.pk != null);
+    this.searchedSamples = this.samples.filter((e) => e.pk != null);
     // empty searched samples for box view
     this.searchedBoxSamples = [];
     // filter the machted boxes
     if (sampleFilter.value != null) {
-        this.searchedSamples = this.samples.filter((e: Sample) => {
+        this.searchedSamples = this.samples.filter((e) => {
         if (sampleFilter.key === 'label') {
           // get the attachment label
           if (e.attachments != null && e.attachments.length > 0) {
@@ -185,8 +186,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         return false;
       });
       // for box searched samples
-      const matchedBoxSamples = this.searchedSamples.filter((s: Sample) => s.occupied === true);
-       matchedBoxSamples.forEach((s: Sample) => this.searchedBoxSamples.push(s.position));
+      const matchedBoxSamples = this.searchedSamples.filter((s: Sample | CSample) => s.occupied === true);
+       matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
     };
     this.loading = false;
   }
@@ -201,7 +202,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   }
 
   captureDbClickedSample(pk: number) {
-    let sample: Sample = new Sample();
+    let sample;
     const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
     if (samples_matched !== null && samples_matched.length > 0) {
       sample = samples_matched[0];
@@ -258,9 +259,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
           .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
           .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
         }
-        this.samples = this.box.samples
-          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
-          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
         this.searchedSamples = this.samples;
         this.loading = false;
       },

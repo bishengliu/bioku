@@ -18,7 +18,7 @@ export class Box {
     description: string;
     researchers: Array<User>;
     samples: Array<Sample>;
-    csample: Array<CSample>;
+    csamples: Array<CSample>;
     sample_count: number;
 }
 

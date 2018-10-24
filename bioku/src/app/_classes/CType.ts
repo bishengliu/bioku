@@ -51,7 +51,7 @@ export class CSample {
     date_out: Date;
     occupied: Boolean;
     color: string;
-    attachments: Attachment;
+    attachments: Array<CAttachment>;
     ctype: CType;
     csample_data: Array<CSampleData>;
     cample_subdata: Array<CSampleSubData>;
@@ -80,7 +80,7 @@ export class CSampleSubData {
     ctype_attr_value_part2: string;
 }
 
-export class Attachment {
+export class CAttachment {
     pk: number;
     csample_id: number;
     label: string;
