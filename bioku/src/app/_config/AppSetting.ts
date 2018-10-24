@@ -81,6 +81,8 @@ export const AppSetting = {
     'IGNORE_HISTORY_SAMPLE': false,
     // sample code customized name
     'CUSTOM_SAMPLE_CODE_NAME': 'LabJournal Code',
+    // use csample
+    'USE_CSAMPLE': true,
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

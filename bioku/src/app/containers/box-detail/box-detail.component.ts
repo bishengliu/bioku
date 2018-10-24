@@ -29,7 +29,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   private sub: any; // subscribe to params observable
   private querySub: any;
   container: Container = null;
-  box: Box = null;
+  box: Box = new Box();
   samples: Array<Sample> = [];
   searchedSamples: Array<Sample> = []; // for list view only
   selectedSamples: Array<number> = []; // for list view and box view
@@ -40,12 +40,14 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   DbClickCount = 0;
   FRONT_SAMPLE_STRIECT_FILTER = false;
   ALLOW_DOWNLOAD_EXPORT = true;
+  USE_CSAMPLE = true;
   // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
               private utilityService: UtilityService) {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -247,6 +249,15 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       .subscribe((box: Box) => {
         this.box = box;
         // get samples
+        if (this.USE_CSAMPLE) {
+          this.samples = this.box.csamples
+          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
+          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+        } else {
+          this.samples = this.box.samples
+          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
+          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+        }
         this.samples = this.box.samples
           .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
           .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));

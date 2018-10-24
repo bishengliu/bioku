@@ -1,5 +1,6 @@
 import { User } from './User';
 import { Sample } from './Sample';
+import { CSample } from './CType';
 
 export class Box {
     pk: number;
@@ -17,6 +18,7 @@ export class Box {
     description: string;
     researchers: Array<User>;
     samples: Array<Sample>;
+    csample: Array<CSample>;
     sample_count: number;
 }
 
