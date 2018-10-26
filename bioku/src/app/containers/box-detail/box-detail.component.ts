@@ -49,7 +49,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
-
     this.samples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>(); // sample of csample
     this.searchedSamples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>();
     // subscribe store state changes
@@ -271,6 +270,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         this.searchedSamples = this.samples;
         this.loading = false;
+        console.log(this.searchedSamples);
       },
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }

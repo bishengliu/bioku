@@ -83,6 +83,8 @@ export const AppSetting = {
     'CUSTOM_SAMPLE_CODE_NAME': 'LabJournal Code',
     // use csample
     'USE_CSAMPLE': true,
+    // default box layout color
+    'DEFAULT_SAMPLE_COLOR': '#61666b',
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
