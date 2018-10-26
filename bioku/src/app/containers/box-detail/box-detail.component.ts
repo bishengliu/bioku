@@ -31,11 +31,11 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   private querySub: any;
   container: Container = null;
   box: Box = new Box();
-  samples = [];
-  searchedSamples = []; // for list view only
-  selectedSamples: Array<number> = []; // for list view and box view
-  selectedCells: Array<string> = []; // for box view only
-  searchedBoxSamples: Array<string> = []; // cell position
+  samples = []; // sample of csample
+  searchedSamples = []; // for list view only, sample of csample
+  selectedSamples: Array<number> = new Array<number>(); // for list view and box view
+  selectedCells: Array<string> = new Array<string>() // for box view only
+  searchedBoxSamples: Array<string> = new Array<string>(); // cell position
   box_view: Boolean = true;
   dbClickedSamplePK = -1; // for dbclick
   DbClickCount = 0;
@@ -49,6 +49,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+
+    this.samples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>(); // sample of csample
+    this.searchedSamples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>();
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -68,20 +71,22 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   toggleList() {
     this.box_view = !this.box_view;
     // empty all the arrays
-    this.selectedCells = [];
-    this.selectedSamples = [];
+    this.selectedCells = new Array<string>();
+    this.selectedSamples = new Array<number>();
   }
   updateDeepFilteredSampleList(userInput: string) {
     this.loading = true;
     userInput = userInput.toString().toLowerCase();
     // empty all the arrays
-    this.selectedCells = [];
-    this.selectedSamples = [];
+    this.selectedCells = new Array<string>();
+    this.selectedSamples = new Array<number>();
     // restore the complete samples for list view
     // hard copy of the array
-    this.searchedSamples = this.samples.filter((e) => e.pk != null);
+    if(this.samples != null) {
+      this.searchedSamples = this.samples.filter((e: Sample | CSample) => e.pk != null);
+    }  
     // empty searched samples for box view
-    this.searchedBoxSamples = [];
+    this.searchedBoxSamples = new Array<string>();
     // filter the machted boxes
     if (userInput !== null && userInput !== '') {
       // split userinput into an array
@@ -168,8 +173,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         if (sampleFilter.key === 'label') {
           // get the attachment label
           if (e.attachments != null && e.attachments.length > 0) {
-            let attachments: Array<Attachment> = [];
-            attachments = e.attachments.filter((a: Attachment) => a.label.toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1);
+            let attachments = this.USE_CSAMPLE ? new Array<Attachment>() : new Array<CAttachment>();
+            attachments = e.attachments.filter((a) => a.label.toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1);
             if (attachments != null && attachments.length > 0) {
               return true; }
           }
@@ -203,16 +208,19 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
 
   captureDbClickedSample(pk: number) {
     let sample;
-    const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
-    if (samples_matched !== null && samples_matched.length > 0) {
-      sample = samples_matched[0];
-      // activate the model
-      this.dbClickedSamplePK = sample.pk;
+    if(this.searchedSamples != null) {
+      const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
+      if (samples_matched !== null && samples_matched.length > 0) {
+        sample = samples_matched[0];
+        // activate the model
+        this.dbClickedSamplePK = sample.pk;
+      } else {
+        this.dbClickedSamplePK = -1;
+      }
     } else {
       this.dbClickedSamplePK = -1;
     }
     this.DbClickCount++;
-    // this.DbClickCount.emit(this.count);
   }
 
   ngOnInit() {
@@ -250,14 +258,16 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       .subscribe((box: Box) => {
         this.box = box;
         // get samples
-        if (this.USE_CSAMPLE) {
+        if (this.USE_CSAMPLE && this.box.csamples) {
           this.samples = this.box.csamples
           .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
           .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
         } else {
-          this.samples = this.box.samples
-          .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
-          .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+          if(this.box.samples) {
+            this.samples = this.box.samples
+            .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
+            .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
+          }
         }
         this.searchedSamples = this.samples;
         this.loading = false;

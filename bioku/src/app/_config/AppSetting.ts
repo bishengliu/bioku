@@ -119,5 +119,4 @@ export const AppSetting = {
     //////////////////////////////////////// CUSTOMIZED SAMPLES ///////////////////////
     // get all the material types
     'ALL_CTYPES': '/api/ctypes/',
-
 }

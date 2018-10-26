@@ -10,6 +10,7 @@ import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { Sample, Attachment } from '../../_classes/Sample';
+import { CSample, CAttachment } from '../../_classes/CType';
 import {  ContainerService } from '../../_services/ContainerService';
 import {  UtilityService } from '../../_services/UtilityService';
 import {  AlertService } from '../../_services/AlertService';
@@ -25,7 +26,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
   styleUrls: ['./box-layout.component.css']
 })
 export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() samples: Array<Sample>;
+  @Input() samples = []; // sample of csample
   @Input() searchedBoxSamples: Array<string> = []; // cell positions
   selectedSamples: Array<number> = []; // sample pk
   selectedCells: Array<string>= []; // cell position
@@ -67,6 +68,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   NAME_SYMBOL: '...';
   // droping
   dropped: Boolean = false;
+  USE_CSAMPLE = true;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private alertService: AlertService, private containerService: ContainerService,
               private utilityService: UtilityService, private dragulaService: DragulaService) {
@@ -78,6 +80,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     this.NAME_MIN_LENGTH = this.appSetting.NAME_MIN_LENGTH;
     this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
     this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -111,7 +114,7 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleSelection(h: number, v: string) {
     // all samples selected
-    const filterSamples = this.samples.filter((s: Sample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
+    const filterSamples = this.samples.filter((s: Sample | CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
     if (filterSamples.length  > 0 ) {
       const index = this.selectedSamples.indexOf(filterSamples[0].pk);
       if (index === -1) {
@@ -203,17 +206,17 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     .subscribe(() => {}, (err) => console.log(err));
   }
 
-  pickerSamples(h: number, v: string) {
-    return this.samples.filter((s: Sample) => s.occupied === true &&
+  pickerSamples(h: number, v: string):  Array<Sample> | Array<CSample> {
+    return this.samples.filter((s) => s.occupied === true &&
                                               s.position.toLowerCase() === (v + h).toLowerCase())
   }
   // display sample details upon dbclick
   dbClickSample(h: number, v: string) {
     // find the sample of the position
-    let sample_dbclicked = new Sample();
-    const samples_picked: Array<Sample> = this.pickerSamples(h, v);
+    let sample_dbclicked = this.USE_CSAMPLE? new CSample() : new Sample();
+    const samples_picked = this.pickerSamples(h, v);
     if (samples_picked === undefined || samples_picked === null || samples_picked.length === 0) {
-      sample_dbclicked = new Sample();
+      sample_dbclicked = this.USE_CSAMPLE? new CSample() : new Sample();
     } else {
       sample_dbclicked = samples_picked[0];
     }
@@ -236,7 +239,9 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     if (this.box != null) {
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? '#000000' : this.box.color;
-      this.currentSampleCount = this.box.samples.filter((s: Sample) => s.occupied === true).length;
+      this.currentSampleCount = this.box.samples != null 
+                                ? this.box.samples.filter((s: Sample | CSample) => s.occupied === true).length
+                                : 0;
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
       this.hArray = this.utilityService.genArray(this.box.box_horizontal);
       this.vArray = this.genLetterArray(this.box.box_vertical);
