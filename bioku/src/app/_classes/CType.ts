@@ -27,6 +27,7 @@ export class CTypeSubAttr {
     pk: number;
     ctype_id: number;
     parent_attr_id: number;
+    parent_attr: string;
     attr_name: string;
     attr_label: string;
     attr_value_type: number; // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -54,7 +55,7 @@ export class CSample {
     attachments: Array<CAttachment>;
     ctype: CType;
     csample_data: Array<CSampleData>;
-    cample_subdata: Array<CSampleSubData>;
+    csample_subdata: Array<CSampleSubData>;
     researchers: Array<User>;
     container_id: string;
     container: string;
@@ -65,7 +66,7 @@ export class CSampleData {
     pk: number;
     csample_id: number;
     ctype_attr_id: number;
-    ctype_attr: Array<CTypeAttr>;
+    ctype_attr: CTypeAttr;
     ctype_attr_value_part1: string;
     ctype_attr_value_part2: string;
 
@@ -75,9 +76,9 @@ export class CSampleSubData {
     pk: number;
     csample_id: number;
     ctype_sub_attr_id: number;
-    ctype_sub_attr: Array<CTypeSubAttr>;
-    ctype_attr_value_part1: string;
-    ctype_attr_value_part2: string;
+    ctype_sub_attr: CTypeSubAttr;
+    ctype_sub_attr_value_part1: string;
+    ctype_sub_attr_value_part2: string;
 }
 
 export class CAttachment {

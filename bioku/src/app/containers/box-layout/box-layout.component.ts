@@ -114,7 +114,8 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleSelection(h: number, v: string) {
     // all samples selected
-    const filterSamples = this.samples.filter((s: Sample | CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
+    const filterSamples = this.samples.filter(
+      (s: Sample | CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
     if (filterSamples.length  > 0 ) {
       const index = this.selectedSamples.indexOf(filterSamples[0].pk);
       if (index === -1) {
@@ -213,10 +214,10 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   // display sample details upon dbclick
   dbClickSample(h: number, v: string) {
     // find the sample of the position
-    let sample_dbclicked = this.USE_CSAMPLE? new CSample() : new Sample();
+    let sample_dbclicked = this.USE_CSAMPLE ? new CSample() : new Sample();
     const samples_picked = this.pickerSamples(h, v);
     if (samples_picked === undefined || samples_picked === null || samples_picked.length === 0) {
-      sample_dbclicked = this.USE_CSAMPLE? new CSample() : new Sample();
+      sample_dbclicked = this.USE_CSAMPLE ? new CSample() : new Sample();
     } else {
       sample_dbclicked = samples_picked[0];
     }

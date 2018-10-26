@@ -19,6 +19,7 @@ export class CTypeService {
     private headers_NoContentType: Headers;
     private options_NoContentType: RequestOptions;
     private mattrs: Array<CTypeAttr> = new Array<CTypeAttr>()
+    private battrs: Array<CTypeAttr> = new Array<CTypeAttr>()
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
                 private router: Router, private alertService: AlertService) {
                     // minimal attrs
@@ -80,6 +81,7 @@ export class CTypeService {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
                         parent_attr_id: null,
+                        parent_attr: 'attachments',
                         attr_name: 'label',
                         attr_label: 'FILE_LABEL',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -96,6 +98,7 @@ export class CTypeService {
                         pk: -2, // no pk
                         ctype_id: null, // no ctype
                         parent_attr_id: null,
+                        parent_attr: 'attachments',
                         attr_name: 'attachment',
                         attr_label: 'FILE',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -112,6 +115,7 @@ export class CTypeService {
                         pk: -3, // no pk
                         ctype_id: null, // no ctype
                         parent_attr_id: null,
+                        parent_attr: 'attachments',
                         attr_name: 'description',
                         attr_label: 'DESCRIPTION',
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
@@ -125,7 +129,60 @@ export class CTypeService {
                     attachment_attr.subattrs = attachment_subattrs;
                     this.mattrs.push(attachment_attr);
                     // end minimal attrs
-
+                    // basic attrs
+                    // container
+                    let container_attr: CTypeAttr = new CTypeAttr();
+                    container_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'container',
+                        attr_label: 'CONTAINER',
+                        attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: true,
+                        attr_order: 4,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.battrs.push(container_attr);
+                    // box
+                    let box_attr: CTypeAttr = new CTypeAttr();
+                    box_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'box_position',
+                        attr_label: 'BOX',
+                        attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: true,
+                        attr_order: 5,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.battrs.push(box_attr);
+                    // sample position
+                    let pos_attr: CTypeAttr = new CTypeAttr();
+                    pos_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'position',
+                        attr_label: 'POSITION',
+                        attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: true,
+                        attr_order: 6,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.battrs.push(pos_attr);
+                    // add minimal attrs
+                    this.battrs = [...this.battrs, ...this.mattrs];
                 }
     updateState() {
         this.state = this.appStore.getState();
@@ -147,6 +204,12 @@ export class CTypeService {
     }
     getMinimalCtypeAttr(pk: number): CTypeAttr {
         return this.mattrs.find(a => a.pk === pk) || new CTypeAttr();
+    }
+    getBasicCTypeAttrs(): Array<CTypeAttr> {
+        return this.battrs;
+    }
+    getBasicCtypeAttr(pk: number): CTypeAttr {
+        return this.battrs.find(a => a.pk === pk) || new CTypeAttr();
     }
     // get all the material types
     getCTypes() {
