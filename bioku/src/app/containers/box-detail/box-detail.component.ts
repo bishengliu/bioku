@@ -42,6 +42,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   FRONT_SAMPLE_STRIECT_FILTER = false;
   ALLOW_DOWNLOAD_EXPORT = true;
   USE_CSAMPLE = true;
+  ALLOW_MOVE_SAMPLE_BETWEEN_BOXES = true;
   // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
@@ -49,6 +50,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    this.ALLOW_MOVE_SAMPLE_BETWEEN_BOXES = this.appSetting.ALLOW_MOVE_SAMPLE_BETWEEN_BOXES;
     this.samples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>(); // sample of csample
     this.searchedSamples = this.USE_CSAMPLE ? new Array<CSample>() : new Array<Sample>();
     // subscribe store state changes
@@ -123,46 +125,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
       }
     }
-    this.loading = false;
-  }
-  // filter output
-  updateSampleList(sampleFilter: SampleFilter) {
-    this.loading = true;
-    // empty all the arrays
-    this.selectedCells = [];
-    this.selectedSamples = [];
-    // restore the complete samples for list view
-    // hard copy of the array
-    this.searchedSamples = this.samples.filter((e) => e.pk != null);
-    // empty searched samples for box view
-    this.searchedBoxSamples = [];
-    // filter the machted boxes
-    if (sampleFilter.value != null) {
-        this.searchedSamples = this.samples.filter((e) => {
-        if (sampleFilter.key === 'label') {
-          // get the attachment label
-          if (e.attachments != null && e.attachments.length > 0) {
-            let attachments = this.USE_CSAMPLE ? new Array<Attachment>() : new Array<CAttachment>();
-            attachments = e.attachments.filter((a) => a.label.toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1);
-            if (attachments != null && attachments.length > 0) {
-              return true; }
-          }
-        } else if (sampleFilter.key === 'quantity') {
-          if (e.quantity === +sampleFilter.value) {
-            return true; }
-        } else {
-          if (e[sampleFilter.key] == null) {
-            return false;
-          } else {
-            if (e[sampleFilter.key].toLowerCase().indexOf(sampleFilter.value.toLowerCase()) !== -1) { return true; }
-          }
-        }
-        return false;
-      });
-      // for box searched samples
-      const matchedBoxSamples = this.searchedSamples.filter((s: Sample | CSample) => s.occupied === true);
-       matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
-    };
     this.loading = false;
   }
 

@@ -21,7 +21,7 @@
   </div>
   <div class="four wide column">
       <a class="ui button"
-      *ngIf="container != null && box != null"
+      *ngIf="ALLOW_MOVE_SAMPLE_BETWEEN_BOXES && container != null && box != null"
        [routerLink]="['/containers', container.pk, box.box_position, 'move_samples']">
         <i class="icon retweet"></i>SAMPLES BETWEEN BOXES
       </a>
