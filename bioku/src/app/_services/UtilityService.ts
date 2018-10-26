@@ -212,4 +212,20 @@ export class UtilityService {
         }
         return name;
     }
+
+    // print all the values of an object
+    convertObj2String(obj: any): string {
+        let res = ''
+        const keys = Object.keys(obj);
+        for (const key of keys) {
+            if (obj[key] != null) {
+                if ( typeof obj[key] === 'object' ) {
+                    res += this.convertObj2String(obj[key]);
+                } else {
+                    res += obj[key].toString();
+                }
+            }
+        }
+        return res;
+    }
 }

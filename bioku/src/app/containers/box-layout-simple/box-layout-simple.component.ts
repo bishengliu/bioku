@@ -25,7 +25,7 @@ export class BoxLayoutSimpleComponent implements OnInit {
   hArray: Array<number> = [];
   vArray: Array<string> = [];
   USE_CSAMPLE = true;
-  DEFAULT_SAMPLE_COLOR: string = '#61666b';
+  DEFAULT_SAMPLE_COLOR: String = '#61666b';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService, private utilityService: UtilityService) {
     this.appUrl = this.appSetting.URL;
@@ -37,7 +37,7 @@ export class BoxLayoutSimpleComponent implements OnInit {
     return this.box_letters.slice(0, num);
   }
   pickerSamples(h: number, v: string): Array<Sample> | Array<CSample> {
-    if(this.USE_CSAMPLE) {
+    if (this.USE_CSAMPLE) {
       return (this.box.csamples != null
         ? this.box.csamples.filter((s: CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
         : new Array<CSample>());
@@ -49,8 +49,8 @@ export class BoxLayoutSimpleComponent implements OnInit {
   }
   genBackgroundColor(color: string) {
     // tslint:disable-next-line:no-inferrable-types
-    let cssValue: string = this.DEFAULT_SAMPLE_COLOR;
-    if (color != null) {
+    let cssValue: String = this.DEFAULT_SAMPLE_COLOR;
+    if (color !== null && color !== '') {
       cssValue = color;
     }
     return cssValue;

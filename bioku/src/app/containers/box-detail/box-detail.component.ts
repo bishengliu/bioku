@@ -81,9 +81,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedSamples = new Array<number>();
     // restore the complete samples for list view
     // hard copy of the array
-    if(this.samples != null) {
+    if (this.samples != null) {
       this.searchedSamples = this.samples.filter((e: Sample | CSample) => e.pk != null);
-    } 
+    }
     // empty searched samples for box view
     this.searchedBoxSamples = new Array<string>();
     // filter the machted boxes
@@ -93,90 +93,8 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       if (userInputArray.length > 0 && this.samples != null) {
         // loop to the box sample and concat all the text into a string
         this.searchedSamples = this.samples.filter((e) => {
-          let deepString = '';
-          // loop into the object keys
-          // could also use Object.keys(e).forEach()
-          for (const key in e) {
-            if (e.hasOwnProperty(key) && e[key] !== null) {
-              if ( key === 'researchers') {
-                // only the first letter of first/last name
-                e[key].forEach((r: User) => {
-                  if (r.first_name !== null && r.first_name !== '') {
-                    deepString += (r.first_name.slice(0 , 1)).toString();
-                  }
-                  if (r.last_name !== null && r.last_name !== '') {
-                    deepString += (r.last_name.slice(0 , 1)).toString();
-                  }
-                })
-              } else if (key === 'attachments') {
-                // label, attachment and description
-                e[key].forEach((a) => {
-                  if (a.label !== null && a.label !== '') {
-                    deepString += (a.label).toString();
-                  }
-                  if (a.attachment !== null && a.attachment !== '') {
-                    deepString += (a.attachment).toString();
-                  }
-                  if (a.description !== null && a.description !== '') {
-                    deepString += (a.description).toString();
-                  }
-                })
-              } else {
-                if(typeof(e[key]) !== 'object') {
-                  e[key] !== null ? deepString += (e[key]).toString() : deepString += '';
-                } else {
-                  // array
-                  if(Array.isArray(e[key])) {
-                    if(e[key].length > 0){
-                      // data level
-                      for (const subkey in e[key]){
-                        if(e[key].hasOwnProperty(subkey)) {
-                          if(e[key][subkey] != null) {
-                            if(typeof(e[key][subkey]) !== 'object') {
-                              deepString += (e[key][subkey]).toString();
-                            }
-                          }
-                        } 
-                      }
-                    }
-                  } else {
-                    // object, ctype level
-                    for (const subkey in e[key]){
-                      if(e[key].hasOwnProperty(subkey)) {
-                        if(e[key][subkey] != null) {
-
-                          if(typeof(e[key][subkey]) !== 'object') {
-                            deepString += (e[key][subkey]).toString();
-                          } else {
-                            // array or object
-                            // attrs level
-                            if(Array.isArray(e[key][subkey])) {
-                              if(e[key][subkey].length > 0) {
-                                for(const bkey in e[key][subkey]) {
-                                  if(typeof(e[key][subkey][bkey]) !== 'object') {
-                                    deepString += (e[key][subkey][bkey]).toString();
-                                  }
-                                }
-                              }
-                            } else {
-                              //object
-                              if(e[key][subkey] != null) {
-                                if(typeof(e[key][subkey]) !== 'object') {
-                                  deepString += (e[key][subkey]).toString();
-                                }
-                              }
-                            }
-                          }
-                        }
-                      } 
-                    }
-                  }
-                }                
-              }
-            }
-          }
+          let deepString = this.utilityService.convertObj2String(e);
           deepString = deepString.toLowerCase();
-          console.log(deepString);
           // search
           let result = false;
           const indexes: Array<number> = [];
@@ -188,7 +106,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
                 const mIndex = deepString.indexOf(c);
                 indexes.push(mIndex);
                 if (mIndex !== -1) {
-                  const tempString = deepString
+                  const tempString = deepString;
                   deepString = tempString.substring(0, mIndex)
                                 + (mIndex === tempString.length - 1 ? '' :  tempString.substring(mIndex + 1));
                 }
@@ -201,9 +119,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       }
       // for box searched samples
       const matchedBoxSamples = this.searchedSamples.filter((s: Sample | CSample) => s.occupied === true);
-      if(matchedBoxSamples != null) {
+      if (matchedBoxSamples != null) {
         matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
-      }    
+      }
     }
     this.loading = false;
   }
@@ -259,7 +177,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
 
   captureDbClickedSample(pk: number) {
     let sample;
-    if(this.searchedSamples != null) {
+    if (this.searchedSamples != null) {
       const samples_matched = this.searchedSamples.filter(s => s.pk === pk);
       if (samples_matched !== null && samples_matched.length > 0) {
         sample = samples_matched[0];
@@ -314,7 +232,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
           .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
           .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
         } else {
-          if(this.box.samples) {
+          if (this.box.samples) {
             this.samples = this.box.samples
             .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
             .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));

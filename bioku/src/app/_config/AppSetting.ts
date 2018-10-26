@@ -72,7 +72,7 @@ export const AppSetting = {
     'NAME_MIN_right_LENGTH': 10,
     'NAME_SYMBOL': '...',
     // what to do for front end sample search
-    'FRONT_SAMPLE_STRIECT_FILTER': true, // otherwise highlight
+    'FRONT_SAMPLE_STRIECT_FILTER': false, // otherwise highlight
     // allow to add a different box dimension in container overview
     'ALLOW_MULTIPLE_BOX_DIMENSION': true,
     // allow managing boxes
