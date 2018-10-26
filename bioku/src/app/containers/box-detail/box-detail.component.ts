@@ -83,22 +83,22 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     // hard copy of the array
     if(this.samples != null) {
       this.searchedSamples = this.samples.filter((e: Sample | CSample) => e.pk != null);
-    }  
+    } 
     // empty searched samples for box view
     this.searchedBoxSamples = new Array<string>();
     // filter the machted boxes
     if (userInput !== null && userInput !== '') {
       // split userinput into an array
       const userInputArray = userInput.split('');
-      if (userInputArray.length > 0) {
+      if (userInputArray.length > 0 && this.samples != null) {
         // loop to the box sample and concat all the text into a string
         this.searchedSamples = this.samples.filter((e) => {
           let deepString = '';
           // loop into the object keys
           // could also use Object.keys(e).forEach()
           for (const key in e) {
-            if ( e.hasOwnProperty(key) ) {
-              if ( key === 'researchers' ) {
+            if (e.hasOwnProperty(key) && e[key] !== null) {
+              if ( key === 'researchers') {
                 // only the first letter of first/last name
                 e[key].forEach((r: User) => {
                   if (r.first_name !== null && r.first_name !== '') {
@@ -108,7 +108,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
                     deepString += (r.last_name.slice(0 , 1)).toString();
                   }
                 })
-              } else if ( key === 'attachments') {
+              } else if (key === 'attachments') {
                 // label, attachment and description
                 e[key].forEach((a) => {
                   if (a.label !== null && a.label !== '') {
@@ -122,11 +122,61 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
                   }
                 })
               } else {
-                e[key] !== null ? deepString += (e[key]).toString() : deepString += '';
+                if(typeof(e[key]) !== 'object') {
+                  e[key] !== null ? deepString += (e[key]).toString() : deepString += '';
+                } else {
+                  // array
+                  if(Array.isArray(e[key])) {
+                    if(e[key].length > 0){
+                      // data level
+                      for (const subkey in e[key]){
+                        if(e[key].hasOwnProperty(subkey)) {
+                          if(e[key][subkey] != null) {
+                            if(typeof(e[key][subkey]) !== 'object') {
+                              deepString += (e[key][subkey]).toString();
+                            }
+                          }
+                        } 
+                      }
+                    }
+                  } else {
+                    // object, ctype level
+                    for (const subkey in e[key]){
+                      if(e[key].hasOwnProperty(subkey)) {
+                        if(e[key][subkey] != null) {
+
+                          if(typeof(e[key][subkey]) !== 'object') {
+                            deepString += (e[key][subkey]).toString();
+                          } else {
+                            // array or object
+                            // attrs level
+                            if(Array.isArray(e[key][subkey])) {
+                              if(e[key][subkey].length > 0) {
+                                for(const bkey in e[key][subkey]) {
+                                  if(typeof(e[key][subkey][bkey]) !== 'object') {
+                                    deepString += (e[key][subkey][bkey]).toString();
+                                  }
+                                }
+                              }
+                            } else {
+                              //object
+                              if(e[key][subkey] != null) {
+                                if(typeof(e[key][subkey]) !== 'object') {
+                                  deepString += (e[key][subkey]).toString();
+                                }
+                              }
+                            }
+                          }
+                        }
+                      } 
+                    }
+                  }
+                }                
               }
             }
           }
           deepString = deepString.toLowerCase();
+          console.log(deepString);
           // search
           let result = false;
           const indexes: Array<number> = [];
@@ -151,7 +201,9 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
       }
       // for box searched samples
       const matchedBoxSamples = this.searchedSamples.filter((s: Sample | CSample) => s.occupied === true);
-       matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
+      if(matchedBoxSamples != null) {
+        matchedBoxSamples.forEach((s: Sample | CSample) => this.searchedBoxSamples.push(s.position));
+      }    
     }
     this.loading = false;
   }
