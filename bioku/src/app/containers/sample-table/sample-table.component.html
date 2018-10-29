@@ -43,188 +43,136 @@
       </tbody>
     </table>
   </div>
-  
-  
-  
-  <div *ngIf="!USE_CSAMPLE">
+
+  <div *ngIf="!USE_CSAMPLE && samples!= null && samples.length > 0">
     <table class="ui unstackable small collapsing striped compact teal table">
-        <!-- [style.border-top]="genBorderStyle(color)" -->
-      <thead>
-        <tr>
-          <!-- general -->
-          <th class="">Name</th>
-          <th class="">{{custom_sample_code_name}}</th>
-          <th class="">Position</th>
-          <th class="">Quantity</th>
-          <th class="">Freezing Date</th>
-          <th class="">Freezing Code</th>
-          <!-- <th class="">Taken Out</th>  -->
-          <th class="">External Code</th>
-          
-          <!-- construct -->
-          <th *ngIf="hasSample('CONSTRUCT')">Clone#</th>
-          <th *ngIf="hasSample('CONSTRUCT')">260/280</th>
-          <th *ngIf="hasSample('CONSTRUCT')">R.E. Analysis</th>
-          <th *ngIf="hasSample('CONSTRUCT')">Backbone</th>
-          <th *ngIf="hasSample('CONSTRUCT')">Insert</th>
-          <th *ngIf="hasSample('CONSTRUCT')">1st Maxi</th>
-          <th *ngIf="hasSample('CONSTRUCT')">Marker</th>
-          <th *ngIf="hasSample('CONSTRUCT')">Glycerol Stock</th>
+        <thead>
+            <tr>
+                <!-- general -->
+                <th class="">Name</th>
+                <th class="">{{custom_sample_code_name}}</th>
+                <th class="">Position</th>
+                <th class="">Quantity</th>
+                <th class="">Freezing Date</th>
+                <th class="">Freezing Code</th>
+                <!-- <th class="">Taken Out</th>  -->
+                <th class="">External Code</th>
+                
+                <!-- construct -->
+                <th *ngIf="hasSample('CONSTRUCT')">Clone#</th>
+                <th *ngIf="hasSample('CONSTRUCT')">260/280</th>
+                <th *ngIf="hasSample('CONSTRUCT')">R.E. Analysis</th>
+                <th *ngIf="hasSample('CONSTRUCT')">Backbone</th>
+                <th *ngIf="hasSample('CONSTRUCT')">Insert</th>
+                <th *ngIf="hasSample('CONSTRUCT')">1st Maxi</th>
+                <th *ngIf="hasSample('CONSTRUCT')">Marker</th>
+                <th *ngIf="hasSample('CONSTRUCT')">Glycerol Stock</th>
 
-          <!-- OLIGO -->
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Name</th>
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Direction</th>
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Sequence</th>
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Length</th>
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo GC</th>
-          <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Target Sequence</th>
-          <!-- cell -->
-          <th *ngIf="hasSample('CELL')">Passage#</th>
-          <th *ngIf="hasSample('CELL')">Project</th>
-          <th *ngIf="hasSample('CELL')">Creator</th>
-          <!-- VIRUS -->
-          <th *ngIf="hasSample('VIRUS')">Plasmid</th>
-          <th *ngIf="hasSample('VIRUS')">Titration Titer</th>
-          <th *ngIf="hasSample('VIRUS')">Titration Unit</th>
-          <th *ngIf="hasSample('VIRUS')">Titration Cell</th>
-          <th *ngIf="hasSample('VIRUS')">Titration Code</th>
-          <!-- tissue -->
-          <th *ngIf="hasSample('TISSUE')">Pathology Code</th>
-          <th *ngIf="hasSample('TISSUE')">Tissue</th>
+                <!-- OLIGO -->
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Name</th>
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Direction</th>
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Sequence</th>
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo Length</th>
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Oligo GC</th>
+                <th *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')">Target Sequence</th>
+                <!-- cell -->
+                <th *ngIf="hasSample('CELL')">Passage#</th>
+                <th *ngIf="hasSample('CELL')">Project</th>
+                <th *ngIf="hasSample('CELL')">Creator</th>
+                <!-- VIRUS -->
+                <th *ngIf="hasSample('VIRUS')">Plasmid</th>
+                <th *ngIf="hasSample('VIRUS')">Titration Titer</th>
+                <th *ngIf="hasSample('VIRUS')">Titration Unit</th>
+                <th *ngIf="hasSample('VIRUS')">Titration Cell</th>
+                <th *ngIf="hasSample('VIRUS')">Titration Code</th>
+                <!-- tissue -->
+                <th *ngIf="hasSample('TISSUE')">Pathology Code</th>
+                <th *ngIf="hasSample('TISSUE')">Tissue</th>
 
 
-          <!-- general -->
-          <th class="">Attachment</th> 
-          <th class="">Researcher</th>
-          <th class="">Comments</th>
-          
-        </tr>      
-      </thead>
-      <tbody>
-        <tr *ngFor="let sample of samples" class="clickable" (click)="toggleSelection(sample.pk)" 
-          (dblclick)="dbClickSample(sample)"
-          [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
-          <!-- general -->
-          <td class="collapsing">
-            <div>
-              <span [style.color]="sample.color">{{ renderSampleName(sample.name) }}</span>
-              <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>
-              <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
-            </div>        
-          </td>
-          <td class="collapsing">{{sample.registration_code}}</td>
-          <td class="collapsing">
-            <span>{{sample.position}}</span>
-            <sup *ngIf="sample.label">{{sample.label}}</sup>
-          </td>
-          <td class="collapsing">
-              <span *ngIf="sample.type ==='CELL'">{{sample.amount}}</span>
-              <span *ngIf="sample.type ==='VIRUS'">{{sample.titration_titer? sample.titration_titer:''}}{{sample.titration_unit? sample.titration_unit:''}}</span>
-              <span *ngIf="sample.type !=='CELL' && sample.type !=='VIRUS'">{{sample.quantity? sample.quantity:'' }}{{ sample.quantity_unit ? sample.quantity_unit:''}}</span>          
-          </td>
-          <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td> 
-          <td class="collapsing">{{sample.freezing_code }}</td> 
-          <!-- <td class="collapsing">{{ sample.date_out === null ? 'No' : 'Yes'}}{{ sample.date_out === null ? '' : '/'}}{{ sample.date_out | date: 'yyyy-MM-dd' }}</td>             -->
-          <td class="collapsing">{{sample.reference_code}}</td>
-
-          <!-- construct -->
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.clone_number}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.against_260_280}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.r_e_analysis}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.backbone}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.insert}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.first_max}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.marker}}</td>
-          <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.has_glycerol_stock}} {{sample.has_glycerol_stock != null ? '/' : ''}} {{sample.strain}}</td>
-          <!-- oligo -->
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_name}}</td>
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.s_or_as ? 'Sense': 'Antisense'}}</td>
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_sequence}}</td>
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_length}}</td>
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_GC}}</td>
-          <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.target_sequence}}</td>
-          <!-- cell -->
-          <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.passage_number}}</td>
-          <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.project}}</td>
-          <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.creator}}</td>
-          
-          <!-- VIRUS -->
-          <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.plasmid}}</td>
-          <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_titer}}</td>
-          <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_unit}}</td>
-          <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_cell_type}}</td>
-          <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_code}}</td>
-          <!-- tissue -->
-          <td *ngIf="hasSample('TISSUE')" class="collapsing">{{sample.pathology_code}}</td>
-          <td *ngIf="hasSample('TISSUE')" class="collapsing">{{sample.tissue}}</td>
-
-          <!-- general -->
-          <td class="collapsing">
-            <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
-              <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
-                <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
-              </p>
-            </div>   
-          </td>
-          <td class="collapsing">
-            <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
-              <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
-                {{researcher.first_name != null ? (researcher.first_name.toUpperCase() | slice:0:1) : ''}}{{researcher.last_name != null ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1): ' '}}
-              </span>
-            </div> 
-          </td>              
-          <td class="collapsing">
-              {{ (sample.description != null && sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
-          </td>  
-        </tr>
-      </tbody>
-      <!-- <tfoot class="full-width">
-          <tr>
-            <th class="no_side_padding no_side_margin" [attr.colspan]="calColspan()">
-              <sui-progress class="indicating tiny" [value]="currentSampleCount" [maximum]="totalBoxCapacity" [autoSuccess]="true" [precision]="0">
-                <div [style.color]="color">
-                  <span class="header">Box: {{box.box_position}}</span>
-                  <span class="">(<i class="icon pie chart"></i>{{currentSampleCount}} Samples)</span>
-                </div>
-              </sui-progress>            
-            </th>
-          </tr>
-          <tr>
-            <th [attr.colspan]="calColspan()">
-              <div class="ui grid">
-                  <div class="ten wide column">
-                      <span class="header">BOX DESCRIPTION: </span>
-                      <div class="ui fluid icon input">
-                        <input class="" type="text" [(ngModel)]="box.description" placeholder="update box description ..." (ngModelChange)="updateDescription($event, box.box_position)">
-                        <i class="refresh icon"></i>
-                      </div>
-                  </div>
-                  <div class="six wide column">
-                      <span class="header">BOX LABEL: </span>
-                      <div class="ui fluid icon input">
-                        <input class="" type="text" [(ngModel)]="box.label" placeholder="user defined box label ..." (ngModelChange)="updateLabel($event, box.box_position)">
-                        <i class="refresh icon"></i>
-                      </div>
-                  </div> 
-              </div>
+                <!-- general -->
+                <th class="">Attachment</th> 
+                <th class="">Researcher</th>
+                <th class="">Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sample of samples" class="clickable"
+            (click)="toggleSelection(sample.pk)"  (dblclick)="dbClickSample(sample)"
+            [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied, 'grey-text': !sample.occupied }">
+                <!-- general -->
+              <td class="collapsing">
+                <div>
+                  <span [style.color]="sample.color">{{ renderSampleName(sample.name) }}</span>
+                  <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>
+                  <span class="ui mini label">{{ sample.type | slice:0:2 }}</span>
+                </div>        
+              </td>
+              <td class="collapsing">{{sample.registration_code}}</td>
+              <td class="collapsing">
+                <span>{{sample.container}}/{{sample.box_position}}/{{sample.position}}</span>
+                <sup *ngIf="sample.label">{{sample.label}}</sup>
+              </td>
+              <td class="collapsing">
+                  <span *ngIf="sample.type ==='CELL'">{{sample.amount}}</span>
+                  <span *ngIf="sample.type ==='VIRUS'">{{sample.titration_titer? sample.titration_titer:''}}{{sample.titration_unit? sample.titration_unit:''}}</span>
+                  <span *ngIf="sample.type !=='CELL' && sample.type !=='VIRUS'">{{sample.quantity? sample.quantity:'' }}{{ sample.quantity_unit ? sample.quantity_unit:''}}</span>          
+              </td>
+              <td class="collapsing">{{sample.freezing_date | date: 'yyyy-MM-dd'}}</td> 
+              <td class="collapsing">{{sample.freezing_code }}</td> 
+              <!-- <td class="collapsing">{{ sample.date_out === null ? 'No' : 'Yes'}}{{ sample.date_out === null ? '' : '/'}}{{ sample.date_out | date: 'yyyy-MM-dd' }}</td>             -->
+              <td class="collapsing">{{sample.reference_code}}</td>
+      
+              <!-- construct -->
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.clone_number}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.against_260_280}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.r_e_analysis}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.backbone}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.insert}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.first_max}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.marker}}</td>
+              <td *ngIf="hasSample('CONSTRUCT')" class="collapsing">{{sample.has_glycerol_stock}} {{sample.has_glycerol_stock != null ? '/' : ''}} {{sample.strain}}</td>
+              <!-- oligo -->
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_name}}</td>
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.s_or_as ? 'Sense': 'Antisense'}}</td>
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_sequence}}</td>
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_length}}</td>
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.oligo_GC}}</td>
+              <td *ngIf="hasSample('OLIGO') || hasSample('gRNA_OLIGO')" class="collapsing">{{sample.target_sequence}}</td>
+              <!-- cell -->
+              <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.passage_number}}</td>
+              <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.project}}</td>
+              <td *ngIf="hasSample('CELL')" class="collapsing">{{sample.creator}}</td>
               
-            </th>
-          </tr>      
-          <tr>        
-            <th [attr.colspan]="calColspan()">                      
-              <div class="ui right floated">
-                <h5 class="header">Box Rating</h5>
-                <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
-                <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating>
-              </div>
-              <div [style.color]="color">
-                <span class="header">Box ({{box.box_position}}) Color: </span>
-              </div>
-              <div>
-                  <color-picker [(ngModel)]="color" (ngModelChange)="updateColor($event, box.box_position)" [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
-              </div>
-            </th>
-          </tr>
-      </tfoot> -->
+              <!-- VIRUS -->
+              <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.plasmid}}</td>
+              <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_titer}}</td>
+              <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_unit}}</td>
+              <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_cell_type}}</td>
+              <td *ngIf="hasSample('VIRUS')" class="collapsing">{{sample.titration_code}}</td>
+              <!-- tissue -->
+              <td *ngIf="hasSample('TISSUE')" class="collapsing">{{sample.pathology_code}}</td>
+              <td *ngIf="hasSample('TISSUE')" class="collapsing">{{sample.tissue}}</td>
+      
+              <!-- general -->
+              <td class="collapsing">
+                <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
+                  <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
+                    <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
+                  </p>
+                </div>   
+              </td>
+              <td class="collapsing">
+                <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
+                  <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
+                    {{researcher.first_name != null ? (researcher.first_name.toUpperCase() | slice:0:1) : ''}}{{researcher.last_name != null ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1): ' '}}
+                  </span>
+                </div> 
+              </td>              
+              <td class="collapsing">
+                  {{ (sample.description != null && sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
+              </td> 
+            </tr>
+        </tbody>
     </table>
 </div>

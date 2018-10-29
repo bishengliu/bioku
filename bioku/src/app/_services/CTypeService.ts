@@ -238,7 +238,7 @@ export class CTypeService {
         // loop into the ctypes
         sampel_ctypes.forEach((c: CType) => {
             // loop into its attrs
-            sample_attrs = [...sample_attrs, ...c.attrs.map(( a: CTypeAttr) => { return a.attr_label })]
+            sample_attrs = Object.assign(sample_attrs, c.attrs.map(( a: CTypeAttr) => { return a.attr_label }));
         })
         return sample_attrs;
     }

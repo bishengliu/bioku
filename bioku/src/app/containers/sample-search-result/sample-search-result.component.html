@@ -55,7 +55,7 @@
             (click)="toggleSelection(sample.pk)"  (dblclick)="dbClickSample(sample)"
             [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied, 'grey-text': !sample.occupied }">
                 <!-- general -->
-        <td class="collapsing">
+              <td class="collapsing">
                 <div>
                   <span [style.color]="sample.color">{{ renderSampleName(sample.name) }}</span>
                   <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>

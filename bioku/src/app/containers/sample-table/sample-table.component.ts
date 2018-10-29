@@ -111,39 +111,18 @@ export class SampleTableComponent implements OnInit, OnChanges {
       this.box = state.containerInfo.currentBox;
     }
   }
-
+  hasSample(sampleType: string) {
+    if (sampleType !== undefined && sampleType !== null && sampleType !== '') {
+      return this.sample_types.indexOf(sampleType) === -1 ? false : true;
+    }
+    return false;
+  }
   genBorderStyle(color: string) {
     let cssValue = '1px solid rgba(34,36,38,.15)';
     if (color !== null && color !== '') {
       cssValue = '3px solid ' + color;
     }
     return cssValue;
-  }
-  // rate box
-  updateRate(rate: number, box_position: string) {
-    this.rate = rate;
-    this.containerService.updateBoxRate(this.container.pk, box_position, rate)
-    .subscribe(() => {}, (err) => console.log(err));
-  }
-  clearRate(box_position: string) {
-    this.containerService.updateBoxRate(this.container.pk, box_position, 0)
-    .subscribe(() => this.rate = 0, (err) => console.log(err));
-  }
-  // update box color
-  updateColor(color: string, box_position: string) {
-    this.color = color;
-    this.containerService.updateBoxColor(this.container.pk, box_position, color)
-    .subscribe(() => {}, (err) => console.log(err));
-  }
-  // update description
-  updateDescription(text: string, box_position: string) {
-    this.containerService.updateBoxDescription(this.container.pk, box_position, text)
-    .subscribe(() => {}, (err) => console.log(err));
-  }
-  // update box label
-  updateLabel(text: string, box_position: string) {
-    this.containerService.updateBoxLabel(this.container.pk, box_position, text)
-    .subscribe(() => {}, (err) => console.log(err));
   }
   ngOnInit() {
     this.sampleSelected.emit([]); // emit empty sample selected
@@ -177,10 +156,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
       }
     }
   }
-  hasSample(sampleType: string) {
-    return this.sample_types.indexOf(sampleType) === -1 ? false : true;
-  }
-
   // sort samples
   sortSampleByPosition() {
     if (this.samples != null) {
@@ -188,97 +163,86 @@ export class SampleTableComponent implements OnInit, OnChanges {
     }
   }
   // get sample top level attrs
+  // only for USE_CSAMPLE
   genTableHeaders() {
-    if (this.samples !== undefined && this.samples !== null) {
-      if (this.USE_CSAMPLE) {
-        // get basic attrs
-        const ctype_basic_attrs: Array<CTypeAttr> = this.ctypeService.getBasicCTypeAttrs();
-        ctype_basic_attrs.forEach((a: CTypeAttr) => {
-          if (this.sample_attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
-            this.sample_attrs.push(a.attr_label);
-          }
-        })
-        // get only relavant ctypes
-        let box_sample_ctypes: Array<CType> = new Array<CType>();
-        if (this.all_ctypes !== null) {
-          box_sample_ctypes = this.all_ctypes.filter((c: CType) => {
-            return this.sample_types.indexOf(c.type) !== -1;
-          })
+    if (this.samples !== undefined && this.samples !== null && this.USE_CSAMPLE) {
+      // get basic attrs
+      const ctype_basic_attrs: Array<CTypeAttr> = this.ctypeService.getBasicCTypeAttrs();
+      ctype_basic_attrs.forEach((a: CTypeAttr) => {
+        if (this.sample_attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
+          this.sample_attrs.push(a.attr_label);
         }
-        if (box_sample_ctypes != null) {
-          if (this.DISPLAY_COMMON_ATTRS) {
-            // only display common sample attrs
-            this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getCommonAttrs(box_sample_ctypes)];
-          } else {
-            // display max sample attr
-            this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getMaxAttrs(box_sample_ctypes)];
-          }
+      })
+      // get only relavant ctypes
+      let box_sample_ctypes: Array<CType> = new Array<CType>();
+      if (this.all_ctypes !== null) {
+        box_sample_ctypes = this.all_ctypes.filter((c: CType) => {
+          return this.sample_types.indexOf(c.type) !== -1;
+        })
+      }
+      if (box_sample_ctypes != null) {
+        if (this.DISPLAY_COMMON_ATTRS) {
+          // only display common sample attrs
+          this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getCommonAttrs(box_sample_ctypes)];
         } else {
-          // loop into samples to get the attrs
-          this.samples.forEach((s: CSample) => {
-            if (s.ctype != null && s.ctype.attrs != null) {
-              this.sample_attrs = [...this.sample_attrs,
-                ...s.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
-            }
-          });
+          // display max sample attr
+          this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getMaxAttrs(box_sample_ctypes)];
         }
       } else {
-        // need to work on this ////////////
-        this.samples.forEach((s: Sample) => {
-          const attrs = Object.keys(s);
-          this.sample_attrs = [...this.sample_attrs, ...attrs]
+        // loop into samples to get the attrs
+        this.samples.forEach((s: CSample) => {
+          if (s.ctype != null && s.ctype.attrs != null) {
+            this.sample_attrs = [...this.sample_attrs,
+              ...s.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
+          }
         });
       }
     }
   }
-
   // gen displayed_samples
   genDisplaySamples() {
-    if (this.samples != null && this.sample_attrs != null) {
-      if (this.USE_CSAMPLE) {
-        this.samples.forEach((s: CSample) => {
-          const displayed_sample = {};
-          // add some pks
-          const keys: Array<string> = [
-            'pk', 'box_id', 'container_id', 'color', 'occupied', 'researchers',
-            'ctype_id', 'type', 'date_in', 'date_out', 'hposition', 'vposition'
+    if (this.samples != null && this.sample_attrs != null && this.USE_CSAMPLE) {
+      this.displayed_samples = [];
+      this.samples.forEach((s: CSample) => {
+        const displayed_sample = {};
+        // add some pks
+        const keys: Array<string> = [
+          'pk', 'box_id', 'container_id', 'color', 'occupied', 'researchers',
+          'ctype_id', 'type', 'date_in', 'date_out', 'hposition', 'vposition'
         ];
-          keys.forEach((key: string) => {
-            displayed_sample[key] = s[key];
-          });
-          // get the basic attrs
-          displayed_sample['CONTAINER'] = s.container;
-          displayed_sample['BOX'] = s.box_position;
-          displayed_sample['POSITION'] = s.position;
-          displayed_sample['NAME'] = s.name;
-          displayed_sample['STORAGE_DATE'] = s.storage_date;
-          displayed_sample['ATTACHMENTS'] = s.attachments;
-          // loop into sample attrs
-          this.sample_attrs.forEach((key: string) => {
-            if (displayed_sample[key] === undefined) {
-              const found_data: CSampleData = s.csample_data.find( (d: CSampleData) => {
-                return d.ctype_attr.attr_label === key;
+        keys.forEach((key: string) => {
+          displayed_sample[key] = s[key];
+        });
+        // get the basic attrs
+        displayed_sample['CONTAINER'] = s.container;
+        displayed_sample['BOX'] = s.box_position;
+        displayed_sample['POSITION'] = s.position;
+        displayed_sample['NAME'] = s.name;
+        displayed_sample['STORAGE_DATE'] = s.storage_date;
+        displayed_sample['ATTACHMENTS'] = s.attachments;
+        // loop into sample attrs
+        this.sample_attrs.forEach((key: string) => {
+          if (displayed_sample[key] === undefined) {
+            const found_data: CSampleData = s.csample_data.find( (d: CSampleData) => {
+              return d.ctype_attr.attr_label === key;
+            })
+            if (found_data !== undefined) {
+              displayed_sample[key] = found_data.ctype_attr_value_part1 + found_data.ctype_attr_value_part2;
+            } else {
+              // check subdata
+              const found_subdata: CSampleSubData = s.csample_subdata.find( (d: CSampleSubData) => {
+                return d.ctype_sub_attr.parent_attr === key.toLowerCase();
               })
-              if (found_data !== undefined) {
-                displayed_sample[key] = found_data.ctype_attr_value_part1 + found_data.ctype_attr_value_part2;
+              if (found_subdata !== undefined) {
+                displayed_sample[key] = found_subdata.ctype_sub_attr_value_part1 + found_subdata.ctype_sub_attr_value_part2;
               } else {
-                // check subdata
-                const found_subdata: CSampleSubData = s.csample_subdata.find( (d: CSampleSubData) => {
-                  return d.ctype_sub_attr.parent_attr === key.toLowerCase();
-                })
-                if (found_subdata !== undefined) {
-                  displayed_sample[key] = found_subdata.ctype_sub_attr_value_part1 + found_subdata.ctype_sub_attr_value_part2;
-                } else {
-                  displayed_sample[key] = '';
-                }
+                displayed_sample[key] = '';
               }
             }
-          })
-          this.displayed_samples.push(displayed_sample);
+          }
         })
-      } else {
-        /////////////////////////////////////
-      }
+        this.displayed_samples.push(displayed_sample);
+      })
     }
   }
   ngOnChanges() {
@@ -289,23 +253,26 @@ export class SampleTableComponent implements OnInit, OnChanges {
     // process sample for display
     this.displayed_samples = [];
     // get all the ctypes
-    this.ctypeService.getCTypes()
-        .subscribe(
-        (ctypes: Array<CType>) => {
-          this.all_ctypes = [...ctypes];
-          // get table headers
-          this.genTableHeaders();
-          // process sample according to the table headers
-          this.genDisplaySamples();
-         },
-        () => {
-          this.DISPLAY_COMMON_ATTRS = false;
-          // get table headers
+    if (this.USE_CSAMPLE) {
+      this.ctypeService.getCTypes()
+      .subscribe(
+      (ctypes: Array<CType>) => {
+        this.all_ctypes = [...ctypes];
+        // get table headers
         this.genTableHeaders();
         // process sample according to the table headers
         this.genDisplaySamples();
-        })
-    // console.log(this.displayed_samples);
+       },
+      () => {
+        this.DISPLAY_COMMON_ATTRS = false;
+        // get table headers
+      this.genTableHeaders();
+      // process sample according to the table headers
+      this.genDisplaySamples();
+      })
+    } else {
+      this.displayed_samples = this.samples;
+    }
     // console.log('sample types', this.sample_types);
     this.selectedSamples = []; // clear selected samples
     this.sampleSelected.emit(null); // emit selected sample pk

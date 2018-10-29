@@ -82,7 +82,7 @@ export const AppSetting = {
     // sample code customized name
     'CUSTOM_SAMPLE_CODE_NAME': 'LabJournal Code',
     // use csample
-    'USE_CSAMPLE': true,
+    'USE_CSAMPLE': false,
     // default box layout color
     'DEFAULT_SAMPLE_COLOR': '#61666b',
     // allow move sample between box
