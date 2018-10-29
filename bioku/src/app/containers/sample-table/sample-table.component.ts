@@ -29,6 +29,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
   appUrl: string;
   @Input() container: Container;
   @Input() box: Box;
+  loading: Boolean = true;
   currentSampleCount = 0; // active samples in the box
   totalBoxCapacity: number;
   user: User;
@@ -211,7 +212,11 @@ export class SampleTableComponent implements OnInit, OnChanges {
           'ctype_id', 'type', 'date_in', 'date_out', 'hposition', 'vposition'
         ];
         keys.forEach((key: string) => {
-          displayed_sample[key] = s[key];
+          if (key === 'type') {
+            displayed_sample[key] = s.ctype && s.ctype.type ? s.ctype.type : null;
+          } else {
+            displayed_sample[key] = s[key];
+          }
         });
         // get the basic attrs
         displayed_sample['CONTAINER'] = s.container;
@@ -246,6 +251,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges() {
+    this.loading = true;
     // sort samples
     this.sortSampleByPosition();
     // get the sample types
@@ -262,6 +268,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
         this.genTableHeaders();
         // process sample according to the table headers
         this.genDisplaySamples();
+        this.loading = false;
        },
       () => {
         this.DISPLAY_COMMON_ATTRS = false;
@@ -269,9 +276,11 @@ export class SampleTableComponent implements OnInit, OnChanges {
       this.genTableHeaders();
       // process sample according to the table headers
       this.genDisplaySamples();
+      this.loading = false;
       })
     } else {
       this.displayed_samples = this.samples;
+      this.loading = false;
     }
     // console.log('sample types', this.sample_types);
     this.selectedSamples = []; // clear selected samples

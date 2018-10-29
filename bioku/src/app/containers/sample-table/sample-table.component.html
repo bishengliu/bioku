@@ -1,4 +1,10 @@
-  <div *ngIf="USE_CSAMPLE">
+  <!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">loading box samples ... </p>
+</div>
+
+  <div *ngIf="loading == false && USE_CSAMPLE">
     <table class="ui unstackable small collapsing striped compact teal table">
       <thead>
         <tr>
@@ -15,7 +21,7 @@
           <td class="collapsing" *ngFor="let attr of sample_attrs">
             <span *ngIf="attr == 'NAME'">
               <span [style.color]="sample.color">{{ renderSampleName(sample[attr]) }}</span>
-              <span class="ui mini circular label">{{ sample.type | slice:0:3 }}</span>
+              <span *ngIf="sample.type" class="ui mini circular label">{{ sample.type | slice:0:3 }}</span>
             </span>
             <span *ngIf="attr == 'STORAGE_DATE'">{{sample[attr] | date: 'yyyy-MM-dd'}}</span>
             <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{sample[attr]}}</span>
@@ -44,7 +50,7 @@
     </table>
   </div>
 
-  <div *ngIf="!USE_CSAMPLE && samples!= null && samples.length > 0">
+  <div *ngIf="loading == false && !USE_CSAMPLE && samples!= null && samples.length > 0">
     <table class="ui unstackable small collapsing striped compact teal table">
         <thead>
             <tr>
@@ -170,7 +176,7 @@
                 </div> 
               </td>              
               <td class="collapsing">
-                  {{ (sample.description != null && sample.description.length>100)? (sample.description | slice:0:100)+'..':(sample.description) }}
+                  {{ (sample.description != null && sample.description.length>100) ? (sample.description | slice:0:100)+'..':(sample.description) }}
               </td> 
             </tr>
         </tbody>
