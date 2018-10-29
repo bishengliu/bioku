@@ -225,25 +225,31 @@ export class SampleTableComponent implements OnInit, OnChanges {
         if(this.DISPLAY_COMMON_ATTRS) {
           // only display common samples
           sampel_ctypes.forEach((c: CType) => {
-            c.attrs.forEach((a: CTypeAttr) => {
+            c.attrs.forEach( (a: CTypeAttr) => {
+              let is_common = true;
               sampel_ctypes.forEach((ct: CType) => {
-                ct.attrs.forEach((ca:CTypeAttr) => {
-                  if(ca.attr_label === a.attr_label) {
-                    this.sample_attrs.push(a.attr_label); }
-                })
-              })
+                if(ct.attrs.findIndex((ca: CTypeAttr) => {
+                  return ca.attr_label == a.attr_label
+                }) === -1) {is_common = false; }
+              });
+              if(is_common) {
+                this.sample_attrs.push(a.attr_label)
+              }
             })
           })
         } else {
           // get all the possible attrs from different types
-          sampel_ctypes.forEach((c: CType) => {
-            c.attrs.forEach( (a: CTypeAttr) => {
-              if (this.sample_attrs.indexOf(a.attr_label) === -1 ) {
-                this.sample_attrs.push(a.attr_label);
-              }
-            })
+          this.samples.forEach((s: CSample) => {
+            if (s.ctype != null && s.ctype.attrs != null) {
+              s.ctype.attrs.forEach( (a: CTypeAttr) => {
+                if (this.sample_attrs.indexOf(a.attr_label) === -1 ) {
+                  this.sample_attrs.push(a.attr_label);
+                }
+              })
+            }
           });
         }
+
       } else {
         this.samples.forEach((s: Sample) => {
           const attrs = Object.keys(s);
@@ -251,7 +257,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
         });
       }
     }
-    console.log(this.sample_attrs);
   }
 
   // gen displayed_samples
