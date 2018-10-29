@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Input, Inject, OnDestroy } from '@angular
 // import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService, SuiModalModule} from 'ng2-semantic-ui';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { AppSetting} from '../../_config/AppSetting';
@@ -17,42 +18,33 @@ import { ContainerService } from '../../_services/ContainerService';
 })
 export class SampleDetailModelComponent implements OnInit, OnChanges {
   @Input() samplePK: number; // pass only sample pk
-  @Input() samples: Array<Sample>;
+  @Input() samples = []; // sample of csample;
   @Input() DbClickCount: number;
-  sample: Sample = new Sample();
+  sample;
   activated = false;
   // public modal: SuiModal<Sample, void, void>;
   appUrl: string;
-  user: User;
-  container: Container = null;
-  box: Box = null;
   // CUSTOM SAMPEL CODE NAME
   custom_sample_code_name = 'sample code';
+  USE_CSAMPLE = true;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private containerService: ContainerService ) {
     this.appUrl = this.appSetting.URL;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
-    // appStore.subscribe(() => this.updateState());
-    // this.updateState();
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    if (this.USE_CSAMPLE) {
+      this.sample = new Sample();
+    } else {
+      this.sample = new CSample();
+    }
   }
   ngOnInit() {}
-  updateState() {
-    const state = this.appStore.getState();
-    if (state.authInfo && state.authInfo.authUser) {
-      this.user = state.authInfo.authUser;
-    }
-    if (state.containerInfo && state.containerInfo.currentContainer) {
-      this.container = state.containerInfo.currentContainer;
-    }
-    if (state.containerInfo && state.containerInfo.currentBox) {
-      this.box = state.containerInfo.currentBox;
-    }
-  }
   ngOnChanges() {
     // use DbClickCount to triger changes
     if (this.samplePK !== null && +this.samplePK > 0) {
       // get sample details from the server
       this.sample = this.findSample(+this.samplePK);
+      console.log(this.sample);
       // retrieve sample relation here
       this.activateModal();
     }
@@ -60,21 +52,28 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   activateModal() {
     this.activated = true;
   }
-
   dismissModal(event) {
     this.activated = false;
   }
-
   cancelPropagation(event) {
     event.stopPropagation();
   }
   findSample(pk: number) {
-    let sample: Sample = new Sample();
-    if (pk != null) {
-      const samples = this.samples.filter((s: Sample) => { return +pk === s.pk; });
-      if (samples != null && samples.length === 1) { sample = samples[0]; }
+    if (this.USE_CSAMPLE) {
+      let sample: CSample = new CSample();
+      if (pk != null) {
+        const samples = this.samples.filter((s: CSample) => { return +pk === s.pk; });
+        if (samples != null && samples.length === 1) { sample = samples[0]; }
+      }
+      return sample;
+    } else {
+      let sample: Sample = new Sample();
+      if (pk != null) {
+        const samples = this.samples.filter((s: Sample) => { return +pk === s.pk; });
+        if (samples != null && samples.length === 1) { sample = samples[0]; }
+      }
+      return sample;
     }
-    return sample;
   }
 
 }

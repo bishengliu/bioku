@@ -72,9 +72,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     this.DISPLAY_COMMON_ATTRS = this.appSetting.DISPLAY_COMMON_ATTRS;
-    // subscribe store state changes
-    appStore.subscribe(() => this.updateState());
-    this.updateState();
   }
 
   toggleSelection(pk: number) {
@@ -100,18 +97,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
     return this.utilityService.renderSampleName(sampleName, this.SHOW_ORIGINAL_NAME,
       this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
   }
-  updateState() {
-    const state = this.appStore.getState();
-    if (state.authInfo && state.authInfo.authUser) {
-      this.user = state.authInfo.authUser;
-    }
-    if (state.containerInfo && state.containerInfo.currentContainer) {
-      this.container = state.containerInfo.currentContainer;
-    }
-    if (state.containerInfo && state.containerInfo.currentBox) {
-      this.box = state.containerInfo.currentBox;
-    }
-  }
   hasSample(sampleType: string) {
     if (sampleType !== undefined && sampleType !== null && sampleType !== '') {
       return this.sample_types.indexOf(sampleType) === -1 ? false : true;
@@ -127,15 +112,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.sampleSelected.emit([]); // emit empty sample selected
-    if (this.box != null) {
-      this.rate =  this.box.rate == null ? 0 : this.box.rate;
-      this.color = this.box.color == null ? '#ffffff' : this.box.color;
-      this.currentSampleCount =
-      this.USE_CSAMPLE
-      ? (this.box.csamples != null ? this.box.csamples.filter((s: CSample) => s.occupied === true).length : 0)
-      : (this.box.samples != null ? this.box.samples.filter((s: Sample) => s.occupied === true).length : 0)
-      this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
-    }
   }
   getSampleTypes() {
     this.sample_types = [];

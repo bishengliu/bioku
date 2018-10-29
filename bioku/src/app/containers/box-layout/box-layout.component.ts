@@ -240,9 +240,10 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
     if (this.box != null) {
       this.rate =  this.box.rate == null ? 0 : this.box.rate;
       this.color = this.box.color == null ? '#000000' : this.box.color;
-      this.currentSampleCount = this.box.samples != null 
-                                ? this.box.samples.filter((s: Sample | CSample) => s.occupied === true).length
-                                : 0;
+      this.currentSampleCount =
+      this.USE_CSAMPLE
+      ? (this.box.csamples != null ? this.box.csamples.filter((s: CSample) => s.occupied === true).length : 0)
+      : (this.box.samples != null ? this.box.samples.filter((s: Sample) => s.occupied === true).length : 0)
       this.totalBoxCapacity = this.box.box_vertical * this.box.box_horizontal;
       this.hArray = this.utilityService.genArray(this.box.box_horizontal);
       this.vArray = this.genLetterArray(this.box.box_vertical);
