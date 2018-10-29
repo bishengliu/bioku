@@ -211,6 +211,37 @@ export class CTypeService {
     getBasicCtypeAttr(pk: number): CTypeAttr {
         return this.battrs.find(a => a.pk === pk) || new CTypeAttr();
     }
+    // get common sample attrs
+    // if only one ctype return all the attrs
+    getCommonAttrs(sampel_ctypes: Array<CType>): Array<string> {
+        const sample_attrs: Array<string> = new Array<string>();
+        // loop into the ctypes
+        sampel_ctypes.forEach((c: CType) => {
+            // loop into its attrs
+            c.attrs.forEach( (a: CTypeAttr) => {
+              let is_common = true;
+              // check whether all the ctypes have the label
+              sampel_ctypes.forEach((ct: CType) => {
+                if (ct.attrs.findIndex((ca: CTypeAttr) => {
+                  return ca.attr_label === a.attr_label
+                }) === -1) {is_common = false; }
+              });
+              if (is_common) {
+                sample_attrs.push(a.attr_label)
+              }
+            })
+        })
+        return sample_attrs;
+    }
+    getMaxAttrs(sampel_ctypes: Array<CType>): Array<string> {
+        let sample_attrs: Array<string> = new Array<string>();
+        // loop into the ctypes
+        sampel_ctypes.forEach((c: CType) => {
+            // loop into its attrs
+            sample_attrs = [...sample_attrs, ...c.attrs.map(( a: CTypeAttr) => { return a.attr_label })]
+        })
+        return sample_attrs;
+    }
     // get all the material types
     getCTypes() {
         this.updateState();
