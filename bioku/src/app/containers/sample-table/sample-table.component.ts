@@ -9,7 +9,7 @@ import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { Sample, Attachment } from '../../_classes/Sample';
-import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData } from '../../_classes/CType';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
 import {  ContainerService } from '../../_services/ContainerService';
 import { CTypeService } from '../../_services/CTypeService';
 import {  UtilityService } from '../../_services/UtilityService';
@@ -47,11 +47,20 @@ export class SampleTableComponent implements OnInit, OnChanges {
   NAME_MIN_LENGTH: 15;
   NAME_MIN_right_LENGTH: 10;
   NAME_SYMBOL: '...';
+  //all ctypes
+  all_ctypes: Array<CType> = new Array<CType>();
   // sample types in the box
   sample_types: Array<string> = [];
+  // sample common attrs 
+  sample_common_attrs: Array<string> = [];
+  // sample all attrs 
+  sample_all_attrs: Array<string> = [];
+  // displayed attrs
   sample_attrs: Array<string> = [];
   // all_sample_types: Array<string> = [];
   USE_CSAMPLE = true;
+  //SHOW COMMON ATTRS
+  DISPLAY_COMMON_ATTRS = true;
   // samples for display
   displayed_samples: Array<any> = [];
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private ctypeService: CTypeService,
@@ -65,6 +74,11 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    this.DISPLAY_COMMON_ATTRS = this.appSetting.DISPLAY_COMMON_ATTRS;
+    //get all the ctypes
+    this.ctypeService.getCTypes().subscribe(
+      (ctypes: Array<CType>) => { this.all_ctypes = ctypes; },
+      () => { this.DISPLAY_COMMON_ATTRS = false;})
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -204,15 +218,32 @@ export class SampleTableComponent implements OnInit, OnChanges {
             this.sample_attrs.push(a.attr_label);
           }
         })
-        this.samples.forEach((s: CSample) => {
-          if (s.ctype != null && s.ctype.attrs != null) {
-            s.ctype.attrs.forEach( (a: CTypeAttr) => {
+        const sampel_ctypes: Array<CType> = this.all_ctypes.filter((c: CType) => {
+          return this.sample_types.indexOf(c.type) !== -1;
+        })
+
+        if(this.DISPLAY_COMMON_ATTRS) {
+          // only display common samples
+          sampel_ctypes.forEach((c: CType) => {
+            c.attrs.forEach((a: CTypeAttr) => {
+              sampel_ctypes.forEach((ct: CType) => {
+                ct.attrs.forEach((ca:CTypeAttr) => {
+                  if(ca.attr_label === a.attr_label) {
+                    this.sample_attrs.push(a.attr_label); }
+                })
+              })
+            })
+          })
+        } else {
+          // get all the possible attrs from different types
+          sampel_ctypes.forEach((c: CType) => {
+            c.attrs.forEach( (a: CTypeAttr) => {
               if (this.sample_attrs.indexOf(a.attr_label) === -1 ) {
-                  this.sample_attrs.push(a.attr_label);
+                this.sample_attrs.push(a.attr_label);
               }
             })
-          }
-        });
+          });
+        }
       } else {
         this.samples.forEach((s: Sample) => {
           const attrs = Object.keys(s);
@@ -220,6 +251,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
         });
       }
     }
+    console.log(this.sample_attrs);
   }
 
   // gen displayed_samples

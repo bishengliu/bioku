@@ -87,6 +87,8 @@ export const AppSetting = {
     'DEFAULT_SAMPLE_COLOR': '#61666b',
     // allow move sample between box
     'ALLOW_MOVE_SAMPLE_BETWEEN_BOXES': true,
+    // show common sample attrs amonong different ctypes
+    'DISPLAY_COMMON_ATTRS': true,
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
