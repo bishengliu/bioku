@@ -24,7 +24,7 @@ export class CsampleViewDetailComponent implements OnInit, OnChanges {
   NAME_MIN_right_LENGTH: 10;
   NAME_SYMBOL: '...';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-  private ctypeService: CTypeService, private utilityService: UtilityService) { 
+  private ctypeService: CTypeService, private utilityService: UtilityService) {
     this.appUrl = this.appSetting.URL;
     // for redering sample name
     this.SHOW_ORIGINAL_NAME = this.appSetting.SHOW_ORIGINAL_NAME;
@@ -38,10 +38,9 @@ export class CsampleViewDetailComponent implements OnInit, OnChanges {
       this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
   }
   ngOnChanges() {
-    this.attrs= this.ctypeService.genSampleAttrs(this.sample);
+    this.attrs = this.ctypeService.genSampleAttrs(this.sample);
     this.display_sample = this.ctypeService.genDisplaySample(this.sample, this.attrs);
     this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
     // console.log(this.display_sample);
-    console.log(this.subattr_data);
   }
 }
