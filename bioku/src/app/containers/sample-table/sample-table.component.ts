@@ -73,7 +73,6 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     this.DISPLAY_COMMON_ATTRS = this.appSetting.DISPLAY_COMMON_ATTRS;
   }
-
   toggleSelection(pk: number) {
     if (pk != null) {
       const index = this.selectedSamples.indexOf(pk);
@@ -115,23 +114,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
   }
   getSampleTypes() {
     this.sample_types = [];
-    if (this.samples != null && this.samples.length > 0) {
-      if (this.USE_CSAMPLE) {
-        this.samples.forEach((s: CSample) => {
-          if (s.ctype != null && s.ctype !== undefined
-            && this.sample_types.indexOf(s.ctype.type) === -1) {
-            this.sample_types.push(s.ctype.type);
-          }
-        })
-      } else {
-        this.samples.forEach((s: Sample) => {
-          if (s.type != null && s.type !== undefined
-            && this.sample_types.indexOf(s.type) === -1) {
-            this.sample_types.push(s.type);
-          }
-        })
-      }
-    }
+    this.sample_types = Object.assign([], this.ctypeService.getSampleTypes(this.USE_CSAMPLE, this.samples));
   }
   // sort samples
   sortSampleByPosition() {
@@ -142,86 +125,14 @@ export class SampleTableComponent implements OnInit, OnChanges {
   // get sample top level attrs
   // only for USE_CSAMPLE
   genTableHeaders() {
-    if (this.samples !== undefined && this.samples !== null && this.USE_CSAMPLE) {
-      // get basic attrs
-      const ctype_basic_attrs: Array<CTypeAttr> = this.ctypeService.getBasicCTypeAttrs();
-      ctype_basic_attrs.forEach((a: CTypeAttr) => {
-        if (this.sample_attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
-          this.sample_attrs.push(a.attr_label);
-        }
-      })
-      // get only relavant ctypes
-      let box_sample_ctypes: Array<CType> = new Array<CType>();
-      if (this.all_ctypes !== null) {
-        box_sample_ctypes = this.all_ctypes.filter((c: CType) => {
-          return this.sample_types.indexOf(c.type) !== -1;
-        })
-      }
-      if (box_sample_ctypes != null) {
-        if (this.DISPLAY_COMMON_ATTRS) {
-          // only display common sample attrs
-          this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getCommonAttrs(box_sample_ctypes)];
-        } else {
-          // display max sample attr
-          this.sample_attrs = [...this.sample_attrs, ...this.ctypeService.getMaxAttrs(box_sample_ctypes)];
-        }
-      } else {
-        // loop into samples to get the attrs
-        this.samples.forEach((s: CSample) => {
-          if (s.ctype != null && s.ctype.attrs != null) {
-            this.sample_attrs = [...this.sample_attrs,
-              ...s.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
-          }
-        });
-      }
-    }
+    this.sample_attrs = this.ctypeService.genSamplesAttrs(this.samples, this.USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, this.all_ctypes, this.sample_types);
   }
   // gen displayed_samples
   genDisplaySamples() {
     if (this.samples != null && this.sample_attrs != null && this.USE_CSAMPLE) {
       this.displayed_samples = [];
       this.samples.forEach((s: CSample) => {
-        const displayed_sample = {};
-        // add some pks
-        const keys: Array<string> = [
-          'pk', 'box_id', 'container_id', 'color', 'occupied', 'researchers',
-          'ctype_id', 'type', 'date_in', 'date_out', 'hposition', 'vposition'
-        ];
-        keys.forEach((key: string) => {
-          if (key === 'type') {
-            displayed_sample[key] = s.ctype && s.ctype.type ? s.ctype.type : null;
-          } else {
-            displayed_sample[key] = s[key];
-          }
-        });
-        // get the basic attrs
-        displayed_sample['CONTAINER'] = s.container;
-        displayed_sample['BOX'] = s.box_position;
-        displayed_sample['POSITION'] = s.position;
-        displayed_sample['NAME'] = s.name;
-        displayed_sample['STORAGE_DATE'] = s.storage_date;
-        displayed_sample['ATTACHMENTS'] = s.attachments;
-        // loop into sample attrs
-        this.sample_attrs.forEach((key: string) => {
-          if (displayed_sample[key] === undefined) {
-            const found_data: CSampleData = s.csample_data.find( (d: CSampleData) => {
-              return d.ctype_attr.attr_label === key;
-            })
-            if (found_data !== undefined) {
-              displayed_sample[key] = found_data.ctype_attr_value_part1 + found_data.ctype_attr_value_part2;
-            } else {
-              // check subdata
-              const found_subdata: CSampleSubData = s.csample_subdata.find( (d: CSampleSubData) => {
-                return d.ctype_sub_attr.parent_attr === key.toLowerCase();
-              })
-              if (found_subdata !== undefined) {
-                displayed_sample[key] = found_subdata.ctype_sub_attr_value_part1 + found_subdata.ctype_sub_attr_value_part2;
-              } else {
-                displayed_sample[key] = '';
-              }
-            }
-          }
-        })
+        const displayed_sample = this.ctypeService.genDisplaySample(s, this.sample_attrs);
         this.displayed_samples.push(displayed_sample);
       })
     }

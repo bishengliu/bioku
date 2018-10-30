@@ -5,7 +5,7 @@
 </div>
 
   <div *ngIf="loading == false && USE_CSAMPLE">
-    <table class="ui unstackable small collapsing striped compact teal table">
+    <table class="ui unstackable small striped compact teal table">
       <thead>
         <tr>
           <th *ngFor="let attr of sample_attrs">{{attr}}</th>
@@ -18,7 +18,7 @@
         class="clickable" (click)="toggleSelection(sample.pk)" 
           (dblclick)="dbClickSample(sample)"
           [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
-          <td class="collapsing" *ngFor="let attr of sample_attrs">
+          <td class="" *ngFor="let attr of sample_attrs">
             <span *ngIf="attr == 'NAME'">
               <span [style.color]="sample.color">{{ renderSampleName(sample[attr]) }}</span>
               <span *ngIf="sample.type" class="ui mini circular label">{{ sample.type | slice:0:3 }}</span>
@@ -26,14 +26,14 @@
             <span *ngIf="attr == 'STORAGE_DATE'">{{sample[attr] | date: 'yyyy-MM-dd'}}</span>
             <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{sample[attr]}}</span>
           </td>
-          <td class="collapsing">
+          <td class="">
             <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
               <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
                 <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
               </p>
             </div>   
           </td>
-          <td class="collapsing">
+          <td class="">
             <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
               <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
                 {{researcher.first_name != null 

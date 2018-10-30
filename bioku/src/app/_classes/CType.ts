@@ -88,3 +88,8 @@ export class CAttachment {
     attachment: string;
     description: string;
 }
+
+export class CSubAttrData {
+    sub_attr: CTypeSubAttr;
+    csample_subdata: Array<CSampleSubData>;
+}

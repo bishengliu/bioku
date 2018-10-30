@@ -8,8 +8,8 @@ import { AlertService } from '../_services/AlertService';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 // CType class
-import { CType, CTypeAttr, CTypeSubAttr} from '../_classes/CType';
-
+import { CType, CTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, CSubAttrData} from '../_classes/CType';
+import { Sample, Attachment } from '../_classes/Sample';
 @Injectable()
 export class CTypeService {
     private state: any;
@@ -241,6 +241,210 @@ export class CTypeService {
             sample_attrs = Object.assign(sample_attrs, c.attrs.map(( a: CTypeAttr) => { return a.attr_label }));
         })
         return sample_attrs;
+    }
+    getSampleTypes(USE_CSAMPLE: boolean, samples: Array<any>): Array<string>{
+        let types = new Array<string>();
+        if (samples != null && samples.length > 0) {
+            if (USE_CSAMPLE) {
+              samples.forEach((s: CSample) => {
+                if (s.ctype != null && s.ctype !== undefined
+                  && types.indexOf(s.ctype.type) === -1) {
+                  types.push(s.ctype.type);
+                }
+              })
+            } else {
+              samples.forEach((s: Sample) => {
+                if (s.type != null && s.type !== undefined
+                  && types.indexOf(s.type) === -1) {
+                  types.push(s.type);
+                }
+              })
+            }
+          }
+        return types;
+    }
+    genSamplesAttrs(samples: Array<CSample>, USE_CSAMPLE: boolean, DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>, sample_types: Array<string>): Array<string> {
+        let attrs = new Array<string>();
+        if (samples !== undefined && samples !== null && USE_CSAMPLE) {
+            // get basic attrs
+            const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
+            ctype_basic_attrs.forEach((a: CTypeAttr) => {
+              if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
+                attrs.push(a.attr_label);
+              }
+            })
+            // get only relavant ctypes
+            let box_sample_ctypes: Array<CType> = new Array<CType>();
+            if (all_ctypes !== null) {
+              box_sample_ctypes = all_ctypes.filter((c: CType) => {
+                return sample_types.indexOf(c.type) !== -1;
+              })
+            }
+            if (box_sample_ctypes != null) {
+              if (DISPLAY_COMMON_ATTRS) {
+                // only display common sample attrs
+                attrs = [...attrs, ...this.getCommonAttrs(box_sample_ctypes)];
+              } else {
+                // display max sample attr
+                attrs = [...attrs, ...this.getMaxAttrs(box_sample_ctypes)];
+              }
+            } else {
+              // loop into samples to get the attrs
+              samples.forEach((s: CSample) => {
+                if (s.ctype != null && s.ctype.attrs != null) {
+                  attrs = [...attrs,
+                    ...s.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
+                }
+              });
+            }
+          }
+          return attrs;
+    }
+    genSampleAttrs(sample: CSample): Array<string> {
+        const attrs = new Array<string>();
+        // get the basic attrs
+        const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
+          ctype_basic_attrs.forEach((a: CTypeAttr) => {
+            if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
+              attrs.push(a.attr_label);
+            }
+          })
+        // get extra attrs
+        if(sample != null 
+          && sample.ctype !== undefined && sample.ctype !== null 
+          && sample.ctype.type !== undefined && sample.ctype.type !== null) {
+            sample.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })
+        }
+        return attrs;
+      }
+    // gen csample displayed view
+    genDisplaySample(sample: CSample, attrs: Array<string>) {
+        const displayed_sample = {};
+        // add some pks
+        const keys: Array<string> = [
+          'pk', 'box_id', 'container_id', 'color', 'occupied', 'researchers',
+          'ctype_id', 'type', 'date_in', 'date_out', 'hposition', 'vposition'
+        ];
+        keys.forEach((key: string) => {
+          if (key === 'type') {
+            displayed_sample[key] = sample.ctype && sample.ctype.type ? sample.ctype.type : null;
+          } else {
+            displayed_sample[key] = sample[key];
+          }
+        });
+        // get the basic attrs
+        displayed_sample['CONTAINER'] = sample.container;
+        displayed_sample['BOX'] = sample.box_position;
+        displayed_sample['POSITION'] = sample.position;
+        displayed_sample['NAME'] = sample.name;
+        displayed_sample['STORAGE_DATE'] = sample.storage_date;
+        displayed_sample['ATTACHMENTS'] = sample.attachments;
+        // loop into sample attrs
+        attrs.forEach((key: string) => {
+          if (displayed_sample[key] === undefined) {
+            const found_data: CSampleData = sample.csample_data.find( (d: CSampleData) => {
+              return d.ctype_attr.attr_label === key;
+            })
+            if (found_data !== undefined) {
+              displayed_sample[key] = found_data.ctype_attr_value_part1 + found_data.ctype_attr_value_part2;
+            } else {
+              // check subdata
+              const found_subdata: CSampleSubData = sample.csample_subdata.find( (d: CSampleSubData) => {
+                return d.ctype_sub_attr.parent_attr === key.toLowerCase();
+              })
+              if (found_subdata !== undefined) {
+                displayed_sample[key] = found_subdata.ctype_sub_attr_value_part1 + found_subdata.ctype_sub_attr_value_part2;
+              } else {
+                displayed_sample[key] = '';
+              }
+            }
+          }
+        })
+        return displayed_sample;
+    }
+    // get all the subattrs and data
+    genSubAttrData(sample: CSample): Array<Array<CSubAttrData>> {
+        const subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
+
+        if (sample !== undefined && sample !== null
+            && sample.ctype !== undefined && sample.ctype !== null
+            && sample.ctype.type !== undefined && sample.ctype.type !== null
+            && sample.csample_subdata !== undefined && sample.csample_subdata !== null) {
+                sample.csample_subdata.forEach((sd: CSampleSubData) => {
+                    const data_index = subattr_data.findIndex((data: Array<CSubAttrData>) => {
+                        return data[0] !== null && data[0] !== undefined && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id);
+                    })
+                    if ( data_index === -1) {
+                        const subattr_data_item : Array<CSubAttrData> = Array<CSubAttrData>();
+                        const subdata: CSubAttrData = new CSubAttrData();
+                        const sub_attr: CTypeSubAttr = new CTypeSubAttr();
+                        sub_attr.attr_label = sd.ctype_sub_attr.attr_label;
+                        sub_attr.attr_name = sd.ctype_sub_attr.attr_name;
+                        sub_attr.attr_order = sd.ctype_sub_attr.attr_order;
+                        sub_attr.attr_required = sd.ctype_sub_attr.attr_required;
+                        sub_attr.attr_value_decimal_point = sd.ctype_sub_attr.attr_value_decimal_point;
+                        sub_attr.attr_value_decimal_total_digit = sd.ctype_sub_attr.attr_value_decimal_total_digit;
+                        sub_attr.attr_value_text_max_length = sd.ctype_sub_attr.attr_value_text_max_length;
+                        sub_attr.attr_value_type = sd.ctype_sub_attr.attr_value_type;
+                        sub_attr.ctype_id = sd.ctype_sub_attr.ctype_id;
+                        sub_attr.parent_attr = sd.ctype_sub_attr.parent_attr;
+                        sub_attr.parent_attr_id = sd.ctype_sub_attr.parent_attr_id;
+                        sub_attr.pk = sd.ctype_sub_attr.pk;
+                        const csample_subdata: Array<CSampleSubData> = new Array<CSampleSubData>();
+                        const csample_subdata_item: CSampleSubData = new CSampleSubData();
+                        csample_subdata_item.csample_id = sd.csample_id;
+                        csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                        csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
+                        csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
+                        csample_subdata_item.pk = sd.pk;
+                        csample_subdata.push(csample_subdata_item);
+                        subdata.sub_attr = Object.assign({}, sub_attr);
+                        subdata.csample_subdata = Object.assign([], csample_subdata);
+                        subattr_data_item.push(subdata);
+                        subattr_data.push(subattr_data_item);
+                    } else {
+                        const subdata_index = subattr_data[data_index].findIndex((data: CSubAttrData) => {
+                            return data.sub_attr.pk === sd.pk && data.sub_attr.parent_attr_id == sd.ctype_sub_attr.parent_attr_id;
+                        })
+                        if (subdata_index !== -1) {
+                            const csample_subdata_item: CSampleSubData = new CSampleSubData();
+                            csample_subdata_item.csample_id = sd.csample_id;
+                            csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                            csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
+                            csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
+                            csample_subdata_item.pk = sd.pk;
+                            subattr_data[data_index][subdata_index].csample_subdata.push(csample_subdata_item);
+                        } else {
+                            const subdata: CSubAttrData = new CSubAttrData();
+                            const sub_attr: CTypeSubAttr = new CTypeSubAttr();
+                            sub_attr.attr_label = sd.ctype_sub_attr.attr_label;
+                            sub_attr.attr_name = sd.ctype_sub_attr.attr_name;
+                            sub_attr.attr_order = sd.ctype_sub_attr.attr_order;
+                            sub_attr.attr_required = sd.ctype_sub_attr.attr_required;
+                            sub_attr.attr_value_decimal_point = sd.ctype_sub_attr.attr_value_decimal_point;
+                            sub_attr.attr_value_decimal_total_digit = sd.ctype_sub_attr.attr_value_decimal_total_digit;
+                            sub_attr.attr_value_text_max_length = sd.ctype_sub_attr.attr_value_text_max_length;
+                            sub_attr.attr_value_type = sd.ctype_sub_attr.attr_value_type;
+                            sub_attr.ctype_id = sd.ctype_sub_attr.ctype_id;
+                            sub_attr.parent_attr = sd.ctype_sub_attr.parent_attr;
+                            sub_attr.parent_attr_id = sd.ctype_sub_attr.parent_attr_id;
+                            sub_attr.pk = sd.ctype_sub_attr.pk;
+                            const csample_subdata: Array<CSampleSubData> = new Array<CSampleSubData>();
+                            const csample_subdata_item: CSampleSubData = new CSampleSubData();
+                            csample_subdata_item.csample_id = sd.csample_id;
+                            csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                            csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
+                            csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
+                            csample_subdata_item.pk = sd.pk;
+                            csample_subdata.push(csample_subdata_item);
+                            subdata.sub_attr = Object.assign({}, sub_attr);
+                            subdata.csample_subdata = Object.assign([], csample_subdata);
+                            subattr_data[data_index].push(subdata)
+                        }
+                    }       
+                });
+        }
+        return subattr_data;
     }
     // get all the material types
     getCTypes() {

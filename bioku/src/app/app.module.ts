@@ -206,7 +206,6 @@ import { SampleViewDetailComponent } from './containers/sample-view-detail/sampl
     CtypeDetailComponent,
     CtypeAttrDetailComponent,
     CtypeSubattrDetailComponent,
-    CsampleDetailComponent,
     CsampleViewDetailComponent,
     SampleViewDetailComponent,
   ],
