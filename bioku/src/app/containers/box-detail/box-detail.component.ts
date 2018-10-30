@@ -202,7 +202,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         this.searchedSamples = this.samples;
         this.loading = false;
-        // console.log(this.searchedSamples);
       },
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }
