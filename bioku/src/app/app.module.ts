@@ -124,6 +124,8 @@ import { CtypeListComponent } from './ctype/ctype-list/ctype-list.component';
 import { CtypeDetailComponent } from './ctype/ctype-detail/ctype-detail.component';
 import { CtypeAttrDetailComponent } from './ctype/ctype-attr-detail/ctype-attr-detail.component';
 import { CtypeSubattrDetailComponent } from './ctype/ctype-subattr-detail/ctype-subattr-detail.component';
+import { CsampleViewDetailComponent } from './containers/csample-view-detail/csample-view-detail.component';
+import { SampleViewDetailComponent } from './containers/sample-view-detail/sample-view-detail.component';
 
 @NgModule({
   declarations: [
@@ -204,6 +206,9 @@ import { CtypeSubattrDetailComponent } from './ctype/ctype-subattr-detail/ctype-
     CtypeDetailComponent,
     CtypeAttrDetailComponent,
     CtypeSubattrDetailComponent,
+    CsampleDetailComponent,
+    CsampleViewDetailComponent,
+    SampleViewDetailComponent,
   ],
   imports: [
     BrowserModule,
