@@ -4,11 +4,14 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { ContainerService } from '../../_services/ContainerService';
-import {  AlertService } from '../../_services/AlertService';
-import {  LocalStorageService } from '../../_services/LocalStorageService';
+import { AlertService } from '../../_services/AlertService';
+import { LocalStorageService } from '../../_services/LocalStorageService';
+import { CTypeService } from '../../_services/CTypeService';
+import { UtilityService } from '../../_services/UtilityService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -30,14 +33,16 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
   @Input() container: Container = null;
   @Input() box: Box = null;
   action_panel_msg: string= null;
-  occupiedSamples: Array<Sample> = []; // occupied samples
-  preoccupiedSamples: Array<Sample> = []; // previous occupied samples
+  occupiedSamples = []; // occupied samples: Array<Sample> or Array<CSample>
+  preoccupiedSamples= []; // previous occupied samples, Array<Sample> or Array<CSample>
   emptySelectedCells: Array<string> = []; // selected cells that are empty
   show_panel_content: Boolean = false;
+  USE_CSAMPLE = true;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private localStorageService: LocalStorageService, private containerService: ContainerService,
               private alertService: AlertService, private router: Router, private route: ActivatedRoute) {
     this.appUrl = this.appSetting.URL;
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -61,14 +66,19 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
   findSamples(pks: Array<number>) {
     let samples = [];
     if (pks != null && pks.length > 0) {
-      samples = this.box.samples.filter((s: Sample) => pks.indexOf(+s.pk) !== -1);
+      samples = this.USE_CSAMPLE
+      ? this.box.csamples.filter((s: CSample) => pks.indexOf(+s.pk) !== -1)
+      : this.box.samples.filter((s: Sample) => pks.indexOf(+s.pk) !== -1);
     }
     return samples;
   }
 
   // check whether a cell has a sample
   checkSamplebyCell(cell: string) {
-    const findSamples = this.occupiedSamples.filter((s: Sample) => s.position.toLowerCase() === cell.toLowerCase());
+    const findSamples =
+    this.USE_CSAMPLE
+    ? this.occupiedSamples.filter((s: CSample) => s.position.toLowerCase() === cell.toLowerCase())
+    : this.occupiedSamples.filter((s: Sample) => s.position.toLowerCase() === cell.toLowerCase());
     return (findSamples != null && findSamples.length > 0) ? true : false;
   }
 
@@ -175,12 +185,16 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
         if (!isNaN(+sArray[i])) {
           this.samplePKs.push(+sArray[i]); }
         }
-
       // more sample selects
       if (this.samplePKs != null && this.samplePKs.length >= 1) {
         const samples = this.findSamples(this.samplePKs);
-        this.occupiedSamples = samples.filter((s: Sample) => s.occupied === true && s.date_out == null);
-        this.preoccupiedSamples = samples.filter((s: Sample) => s.occupied !== true && s.date_out != null);
+        console.log(samples);
+        this.occupiedSamples = this.USE_CSAMPLE
+      ? samples.filter((s: CSample) => s.occupied === true && s.date_out == null)
+      : samples.filter((s: Sample) => s.occupied === true && s.date_out == null);
+        this.preoccupiedSamples = this.USE_CSAMPLE
+      ? samples.filter((s: CSample) => s.occupied !== true && s.date_out != null)
+      : samples.filter((s: Sample) => s.occupied !== true && s.date_out != null);
       }
     }
     // positions

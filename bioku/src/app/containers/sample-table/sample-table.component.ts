@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { IColorPickerConfiguration } from 'ng2-color-picker';
 
 import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { Sample, Attachment } from '../../_classes/Sample';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
-import {  ContainerService } from '../../_services/ContainerService';
+import { ContainerService } from '../../_services/ContainerService';
 import { CTypeService } from '../../_services/CTypeService';
-import {  UtilityService } from '../../_services/UtilityService';
+import { UtilityService } from '../../_services/UtilityService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';

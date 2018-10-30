@@ -3,7 +3,7 @@ import { BoxAvailability } from '../_classes/ContainerTower';
 import { Sample } from '../_classes/Sample';
 import { Container } from '../_classes/Container';
 import { Box } from '../_classes/Box';
-
+import { CSample } from '../_classes/CType';
 @Injectable()
 export class LocalStorageService {
     // boxes
@@ -13,9 +13,9 @@ export class LocalStorageService {
     selectedEmptySlots: Array<BoxAvailability>;
 
     // samples
-    singleSample: Sample;
-    occupiedSamples: Array<Sample>;
-    preoccupiedSamples: Array<Sample>;
+    singleSample: Sample | CSample;
+    occupiedSamples: Array<Sample> | Array<CSample>;
+    preoccupiedSamples: Array<Sample> | Array<CSample>;
     allCellsSelected: Array<string>;
     emptySelectedCells: Array<string>;
     curContainer: Container; // current container

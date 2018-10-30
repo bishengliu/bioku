@@ -14,8 +14,14 @@
       <span *ngIf="samplePKs.length > 0 || emptySelectedCells.length > 0">selected</span>
     </div>
     <div class="no_margin nopadding two wide column">
-      <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="togglePanelContent()"><i class="icon chevron circle down white-text"></i></a>
-      <a *ngIf="!show_panel_content" class="clickable ui right floated" (click)="togglePanelContent()"><i class="icon chevron circle up white-text"></i></a>
+      <a *ngIf="show_panel_content" 
+      class="clickable ui right floated" (click)="togglePanelContent()">
+      <i class="icon chevron circle down white-text"></i>
+    </a>
+      <a *ngIf="!show_panel_content" 
+      class="clickable ui right floated" (click)="togglePanelContent()">
+      <i class="icon chevron circle up white-text"></i>
+    </a>
     </div>
   </div>
   
@@ -33,7 +39,8 @@
     <!-- single selection style="overflow-y:scroll;white-space:nowrap;"-->
     <div *ngIf="samplePKs.length == 1 && (occupiedSamples.length == 1 || preoccupiedSamples.length == 1)" 
         class="ui segment mini_around" >
-      <app-sample-detail   
+      <app-sample-detail
+        *ngIf="!USE_CSAMPLE"
         [box]="box"
         [container]="container"
         [samplePK]="samplePKs[0]">
@@ -44,12 +51,23 @@
   <!--current occipied sample-->
     <div *ngIf="samplePKs.length > 1 && occupiedSamples.length >= 1" class="ui segment">
       <div class="ui large labels">
-        <div class="ui large label" *ngFor="let sample of occupiedSamples"><i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i><span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span></div>
+        <div class="ui large label" *ngFor="let sample of occupiedSamples">
+          <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
+          <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">
+            {{sample.name +" ("+ sample.position +")"}}
+          </span>
+        </div>
       </div>
       <div class="ui divider"></div>
       <div class="two ui mini buttons" *ngIf="occupiedSamples.length >= 1">
-        <button class="ui mini primary button" (click)="takeMultipleSampleout()"><i class="icon external share"></i>TAKE OUT</button>
-        <button class="ui mini violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()"><i class="icon refresh"></i>SWITCH</button>
+        <button class="ui mini primary button" (click)="takeMultipleSampleout()">
+          <i class="icon external share"></i>
+          TAKE OUT
+        </button>
+        <button class="ui mini violet button" *ngIf="occupiedSamples.length == 2" (click)="switch2Samples()">
+          <i class="icon refresh"></i>
+          SWITCH
+        </button>
         <!-- <button class="ui compact mini inverted violet button right floated" (click)="moveSamples()"><i class="icon move"></i>MOVE</button> -->
       </div>
     </div>
@@ -64,9 +82,11 @@
         </div>
       </div>
       <div class="ui divider"></div>
-      <button class="ui fluid mini inverted brown button" (click)="putMultipleSampleBack()"><i class="icon reply"></i>PUT BACK</button>
+      <button class="ui fluid mini inverted brown button" (click)="putMultipleSampleBack()">
+        <i class="icon reply"></i>
+        PUT BACK
+      </button>
     </div>  
-
     <!--empty box cells: for box view only-->
     <div *ngIf="emptySelectedCells.length > 0" class="ui blue segment">
       <div class="ui large labels">
@@ -77,7 +97,10 @@
       </div>
       <div >
         <div class="ui divider"></div>
-        <button class="ui mini fluid inverted primary button" (click)="storeSamples()"><i class="icon add circle"></i>STORE SAMPLES</button>
+        <button class="ui mini fluid inverted primary button" (click)="storeSamples()">
+          <i class="icon add circle"></i>
+          STORE SAMPLES
+        </button>
       </div> 
     </div> 
   </div>
