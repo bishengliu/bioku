@@ -14,7 +14,8 @@ style="display: block !important;"
             <div class="ui stackable sixteen wide column grid">
                 <div class="eight wide column">
                     <table class="ui teal small striped compact single line table">
-                        <tr><th class="grey-text">Name</th>
+                        <tr>
+                            <th class="grey-text">Name</th>
                             <td>
                                 {{sample.name}}
                                 <sup *ngIf="sample.tag" class="ui mini blue circular label">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</sup>

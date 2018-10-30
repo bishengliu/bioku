@@ -1,69 +1,72 @@
-<div class="ui grid">
-    <div class="eight wide column">
-        <table class="ui unstackable small striped compact teal table">
-            <thead>
-                <tr>
-                  <th *ngFor="let attr of attrs">{{attr}}</th>
-                  <th>ATTACHMENTS</th>
-                  <th>RESEARCHER</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                    <td class="" *ngFor="let attr of attrs">
-                        <span *ngIf="attr == 'NAME'">
-                          <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr]) }}</span>
-                          <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
-                        </span>
-                        <span *ngIf="attr == 'STORAGE_DATE'">{{display_sample[attr] | date: 'yyyy-MM-dd'}}</span>
-                        <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{display_sample[attr]}}</span>
-                      </td>
-                      <td class="">
-                        <div *ngIf="display_sample.attachments != null && display_sample.attachments.length > 0">
-                          <p class="nopadding no_margin" *ngFor="let attachment of display_sample.attachments">
-                            <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
-                          </p>
-                        </div>   
-                      </td>
-                      <td class="">
-                        <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
-                          <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
-                            {{researcher.first_name != null 
-                              ? (researcher.first_name.toUpperCase() | slice:0:1) 
-                              : ''}}
-                            {{researcher.last_name != null 
-                              ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1)
-                              : ' '}}
-                          </span>
-                        </div> 
-                      </td> 
-                </tr>
-              </tbody>
-        </table>
-    </div>
-    
-    <div *ngFor="let sd of subattr_data" class="four wide column">
-        <table class="ui unstackable small striped compact grey table">
-            <thead>
-              <tr class="center aligned">
-                <th class="tight_around" [attr.colspan]="sd.length">
-                  {{sd[0].sub_attr.parent_attr.toUpperCase()}}
-                </th>
+<div class="ui stackable grid">
+  <div *ngIf="subattr_data === null || subattr_data.length === 0" class="six wide column"></div>
+  <div *ngIf="subattr_data !== null && subattr_data.length === 1" class="four wide column"></div>
+  <div class="four wide column">
+    <table class="ui unstackable small striped compact teal table">
+      <tbody>
+        <tr *ngFor="let attr of attrs">
+          <th>{{attr}}</th>
+          <td>
+            <span *ngIf="attr == 'NAME'">
+              <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr]) }}</span>
+              <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
+            </span>
+            <span *ngIf="attr == 'STORAGE_DATE'">{{display_sample[attr] | date: 'yyyy-MM-dd'}}</span>
+            <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{display_sample[attr]}}</span>
+          </td>
+        </tr>
+        <tr>
+          <th>ATTACHMENTS</th>
+          <td>
+            <div *ngIf="display_sample.attachments != null && display_sample.attachments.length > 0">
+              <p class="nopadding no_margin" *ngFor="let attachment of display_sample.attachments">
+                <a target="_blank" href="{{appUrl + attachment.attachment}}">
+                  {{attachment.label != null ? attachment.label : null}}
+                </a>
+              </p>
+            </div>  
+          </td>
+        </tr>
+        <tr>
+          <th>RESEARCHER</th>
+          <td class="">
+            <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
+                <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
+                  {{researcher.first_name != null 
+                    ? (researcher.first_name.toUpperCase() | slice:0:1) 
+                    : ''}}
+                  {{researcher.last_name != null 
+                    ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1)
+                    : ' '}}
+                </span>
+            </div> 
+          </td> 
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngFor="let sd of subattr_data" class="four wide column">
+      <table class="ui unstackable small striped compact grey table">
+          <thead>
+            <tr class="center aligned warning">
+              <th class="tight_around" [attr.colspan]="sd.length">
+                {{sd[0].sub_attr.parent_attr.toUpperCase()}}
+              </th>
+            </tr>
+          </thead>
+          <thead>
+              <tr>
+                <th *ngFor="let item of sd">{{item.sub_attr.attr_label}}</th>
               </tr>
-            </thead>
-            <thead>
-                <tr>
-                  <th *ngFor="let item of sd">{{item.sub_attr.attr_label}}</th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data_item of sd[0].csample_subdata; let data_index = index">
-                <td *ngFor="let attr_item of sd; let attr_index = index">
-                  {{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
-                </td>
-              </tr>
-            </tbody>
-        </table>           
-    </div>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data_item of sd[0].csample_subdata; let data_index = index">
+              <td *ngFor="let attr_item of sd; let attr_index = index">
+                {{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
+              </td>
+            </tr>
+          </tbody>
+      </table>           
+  </div>
 </div>
 
