@@ -301,7 +301,7 @@ export class CTypeService {
           return attrs;
     }
     genSampleAttrs(sample: CSample): Array<string> {
-        const attrs = new Array<string>();
+        let attrs = new Array<string>();
         // get the basic attrs
         const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
           ctype_basic_attrs.forEach((a: CTypeAttr) => {
@@ -313,7 +313,7 @@ export class CTypeService {
         if(sample != null 
           && sample.ctype !== undefined && sample.ctype !== null 
           && sample.ctype.type !== undefined && sample.ctype.type !== null) {
-            sample.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })
+            attrs = [...attrs, ...sample.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
         }
         return attrs;
       }
