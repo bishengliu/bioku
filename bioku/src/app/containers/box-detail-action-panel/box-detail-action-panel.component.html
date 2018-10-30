@@ -4,8 +4,8 @@
     <div class="no_margin nopadding fourteen wide column white-text clickable" (click)="togglePanelContent()">
       <!-- sample selected-->
       <span *ngIf="samplePKs.length > 0" class="brown-text">{{samplePKs.length}}</span> 
-      <span *ngIf="samplePKs.length==1">sample</span>
-      <span *ngIf="samplePKs.length > 1">samples</span>
+      <span *ngIf="samplePKs.length==1">occupied cell</span>
+      <span *ngIf="samplePKs.length > 1">occupied cells</span>
       <!-- emptySelectedCells selected-->
       <span *ngIf="samplePKs.length > 0 && emptySelectedCells.length > 0">, </span> 
       <span *ngIf="emptySelectedCells.length > 0" class="brown-text">{{emptySelectedCells.length}}</span> 

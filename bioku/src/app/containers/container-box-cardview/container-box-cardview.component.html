@@ -13,6 +13,6 @@
     <a (click)="clearRate(box.box_position)" *ngIf="rate===1"><i class="icon caret left"></i></a>
     <sui-rating class="heart" [ngModel]="rate" max="5" (ngModelChange)="updateRate($event, box.box_position)"></sui-rating> 
   </span>
-  <i class="icon pie chart"></i>{{currentSampleCount}} Samples
+  <i class="icon small grey hashtag"></i>{{currentSampleCount}}
 </div>
 <!-- end one card -->
