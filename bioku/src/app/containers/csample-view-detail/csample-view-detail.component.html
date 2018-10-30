@@ -45,8 +45,8 @@
     <div *ngFor="let sd of subattr_data" class="four wide column">
         <table class="ui unstackable small striped compact grey table">
             <thead>
-              <tr>
-                <th class="tight_around center" [attr.colspan]="sd.length">
+              <tr class="center aligned">
+                <th class="tight_around" [attr.colspan]="sd.length">
                   {{sd[0].sub_attr.parent_attr.toUpperCase()}}
                 </th>
               </tr>
