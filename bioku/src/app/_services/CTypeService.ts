@@ -365,7 +365,6 @@ export class CTypeService {
     // get all the subattrs and data
     genSubAttrData(sample: CSample): Array<Array<CSubAttrData>> {
         const subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
-
         if (sample !== undefined && sample !== null
             && sample.ctype !== undefined && sample.ctype !== null
             && sample.ctype.type !== undefined && sample.ctype.type !== null

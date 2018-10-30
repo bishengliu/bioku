@@ -50,7 +50,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr></tr>
+                <tr *ngFor="let data_item of sd[0].subattr_data; let data_index = index">
+                  <th *ngFor="let attr_item of sd; let attr_index = index">{{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}</th>
+                </tr>
             </tbody>
         </table>
     </div>
