@@ -6,7 +6,10 @@ style="display: block !important;"
     <div class="ui fullscreen modal transition visible active" 
     style="margin-top: -234px; display: block !important;" 
     (click)="cancelPropagation($event)">
-        <div class="ui center aligned header"><span [ngStyle]="{color: sample.color}">{{sample.name}}</span> ({{sample.type}})</div>
+        <div class="ui center aligned header">
+            <span [ngStyle]="{color: sample.color}">{{sample.name}}</span>
+            ({{ USE_CSAMPLE? sample.ctype.type : sample.type }})
+        </div>
         <div class="scrolling content" *ngIf="!USE_CSAMPLE">
             <div class="ui stackable sixteen wide column grid">
                 <div class="eight wide column">
@@ -96,8 +99,10 @@ style="display: block !important;"
                         <tr *ngIf="sample.type === 'TISSUE'"><th class="grey-text">Tissue</th><td>{{sample.tissue}}</td></tr>
                     </table>
                 </div>
-            </div>
-                     
+            </div>                     
+        </div>
+        <div  class="scrolling content" *ngIf="USE_CSAMPLE">
+
         </div>
     </div>
 </div>

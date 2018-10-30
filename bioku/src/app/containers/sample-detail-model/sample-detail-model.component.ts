@@ -75,5 +75,6 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
       return sample;
     }
   }
-
+  // for csample 
+  
 }
