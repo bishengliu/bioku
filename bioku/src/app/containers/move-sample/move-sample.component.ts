@@ -5,6 +5,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import {APP_CONFIG} from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
+import { CSample, CAttachment } from '../../_classes/CType';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
 import { MoveSample } from '../../_classes/MoveSample';
@@ -30,17 +31,17 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
 
   // all my group containers
   my_containers: Array<Container> = new Array<Container>();
-
   moving: Boolean = false;
   user: User;
   appUrl: string;
   container: Container = null;
   loading: Boolean = true;
+  USE_CSAMPLE = true;
   // Box position letters
   box_letters: Array<string> = [];
   // first box
   firstBox: Box = null;
-  firstBoxSamples: Array<Sample> = new Array<Sample>();
+  firstBoxSamples = []; // sample of csample
   firstColor = '#ffffff'; // box color
   // box hArray and vArray
   firstHArray: Array<number> = [];
@@ -48,7 +49,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
   // second box and container
   secondContainer: Container = null;
   secondBox: Box = null;
-  secondBoxSamples: Array<Sample> = new Array<Sample>();
+  secondBoxSamples = []; // sample of csample
   secondColor = '#ffffff'; // box color
   // box hArray and vArray
   secondHArray: Array<number> = [];
@@ -73,6 +74,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
     this.appUrl = this.appSetting.URL;
     this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -111,9 +113,11 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
 
   pickerSamples(h: number, v: string, current_box: boolean) {
     if (current_box) {
-      return this.firstBoxSamples.filter((s: Sample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
+      return this.firstBoxSamples
+      .filter((s: Sample | CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
     } else {
-      return this.secondBoxSamples.filter((s: Sample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
+      return this.secondBoxSamples
+      .filter((s: Sample | CSample) => s.occupied === true && s.position.toLowerCase() === (v + h).toLowerCase())
     }
   }
 
@@ -142,8 +146,9 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
     if (type === 'target_box' && !isNaN(+val)) {
       this.secondBoxBox = +val;
     }
-    if (this.secondBoxTower != null && this.secondBoxTower >0
-       && this.secondBoxShelf != null && this.secondBoxShelf > 0 && this.secondBoxBox != null && this.secondBoxBox > 0) {
+    if (this.secondBoxTower != null && this.secondBoxTower > 0
+       && this.secondBoxShelf != null && this.secondBoxShelf > 0
+       && this.secondBoxBox != null && this.secondBoxBox > 0) {
       // box 2
       this.box2_not_found = false;
       // second box positon
@@ -153,7 +158,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
       this.containerService.getContainerBox(this.secondContainer.pk, second_box_position)
       .subscribe((box: Box) => {
         this.secondBox = box;
-        this.secondBoxSamples = [...this.secondBox.samples];
+        this.secondBoxSamples = this.USE_CSAMPLE ? [...this.secondBox.csamples] : [...this.secondBox.samples];
         this.secondColor = this.secondBox.color == null ? '#ffffff' : this.secondBox.color;
         this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
         this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);
@@ -221,7 +226,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
     .subscribe((second_box: any) => {
       if (second_box != null) {
         this.secondBox = second_box;
-        this.secondBoxSamples = [...this.secondBox.samples];
+        this.secondBoxSamples = this.USE_CSAMPLE ? [...this.secondBox.csamples] : [...this.secondBox.samples];
         this.secondColor = this.secondBox.color == null ? '#ffffff' : this.secondBox.color;
         this.secondHArray = this.utilityService.genArray(this.secondBox.box_horizontal);
         this.secondVArray = this.genLetterArray(this.secondBox.box_vertical);
@@ -231,7 +236,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
       }
 
       if (this.firstBox != null) {
-        this.firstBoxSamples = [...this.firstBox.samples];
+        this.firstBoxSamples = this.USE_CSAMPLE ? [...this.firstBox.csamples] : [...this.firstBox.samples];
         this.firstColor = this.firstBox.color == null ? '#ffffff' : this.firstBox.color;
         this.firstHArray = this.utilityService.genArray(this.firstBox.box_horizontal);
         this.firstVArray = this.genLetterArray(this.firstBox.box_vertical);
@@ -274,7 +279,7 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
       // save to database
       this.containerService.switchSample2Boxes(moveSample)
       .subscribe(() => {
-        // this.alertService.success('Sample positon updated!', true);
+        this.alertService.success('Sample positons updated!', true);
         this.forceRefresh();
       }, () => {
         this.alertService.error('Something went wrong, fail to move/switch samples!', true);

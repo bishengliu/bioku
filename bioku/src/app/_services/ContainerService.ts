@@ -303,7 +303,7 @@ export class ContainerService {
     updateSamplePosition(container_pk: number, box_position: string, sample_position: string,
                          new_vposition: string, new_hposition: number) {
         this.updateState();
-                            const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                          container_pk + '/' + box_position + '/' + sample_position + '/update_position/';
         const body: string = JSON.stringify({'new_vposition': new_vposition, 'new_hposition': new_hposition });
         return this.http.put(query_url, body, this.options)
