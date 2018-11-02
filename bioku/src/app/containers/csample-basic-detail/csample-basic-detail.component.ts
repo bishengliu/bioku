@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Inject, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Inject, Input, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppSetting } from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
@@ -43,6 +43,21 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
     width: 8,
     height: 8,
     borderRadius: 2};
+  // attachment upload
+  attachment_upload: Boolean = false;
+  // attchment to delete
+  // tslint:disable-next-line:no-inferrable-types
+  attachment_to_delete: string = '';
+  attachment_delete: Boolean = false;
+  attachment_pk_to_delete: number = null;
+  // upload
+  // for attchment upload
+  @ViewChild('attachmentLabel') attachmentLabelInput: ElementRef;
+  @ViewChild('attachmentDescription') attachmentDescriptionInput: ElementRef;
+  file: File;
+  attchment_name: string;
+  attchament_is2large: Boolean = false;
+  attchament_error: Boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private ctypeService: CTypeService,
   private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService,
   private router: Router, private route: ActivatedRoute) {
@@ -148,6 +163,109 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
       this.containerService
       .updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
       .subscribe(() => {}, (err) => console.log(this.action_panel_msg = 'fail to update sample detail!'));
+    }
+  }
+  displayAttachmentUpload() {
+    this.attachment_upload = true;
+    this.cancelAttachmentDelete();
+  }
+
+  hideAttachmentUpload() {
+    this.attachment_upload = false;
+    this.file = null;
+    this.attchment_name = null;
+    this.attchament_is2large = false;
+  }
+
+  attachment2Delete(attachment_pk: number, attachment_name: string) {
+    this.attachment_delete = true;
+    this.attachment_pk_to_delete = attachment_pk;
+    this.attachment_to_delete = attachment_name;
+    // clear the attachment upload
+    this.hideAttachmentUpload();
+  }
+
+  cancelAttachmentDelete() {
+    this.attachment_delete = false;
+    this.attachment_pk_to_delete = null;
+    this.attachment_to_delete = '';
+  }
+
+  performAttachmentDelete() {
+    this.containerService.deleteAttachment(this.sample.pk, this.attachment_pk_to_delete)
+        .subscribe(() => {
+          // update sample view
+          this.updateSampleAttchmentDeletion(this.attachment_pk_to_delete);
+          this.cancelAttachmentDelete();
+          this.hideAttachmentUpload();
+        }, () => {
+          // tslint:disable-next-line:quotemark
+          this.alertService.error("failed to delete sample attachments!", true);
+        });
+  }
+
+  // remove attachments of the sample after ajax call
+  updateSampleAttchmentDeletion(attachment_pk_to_delete: number) {
+    if (attachment_pk_to_delete != null) {
+      this.sample.attachments = [...this.sample.attachments.filter(a => { return a.pk !== attachment_pk_to_delete})];
+    }
+  }
+  // uploaded after ajax call
+  updateSampleAttchmentUpload(attachment: CAttachment) {
+    if (attachment != null) {
+      this.sample.attachments = [...this.sample.attachments, attachment];
+    }
+  }
+  // check upload attachment
+  validateAttachmentUpload(event: EventTarget) {
+    const eventObj: MSInputMethodContext = <MSInputMethodContext> event;
+    const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
+    this.attchament_is2large = false;
+    this.attchament_error = false;
+    const files: FileList = target.files;
+    this.file = files[0];
+    // console.log(this.file);
+    this.attchment_name = this.file.name;
+    // check file size
+    const size = this.file.size / 1024 / 1024
+    if (parseInt(size.toFixed(2), 10) > 10) {
+        this.attchament_is2large = true;
+    } else {
+      this.attchament_is2large = false;
+    }
+  }
+
+  // perform upload
+  performAttachmentUpload() {
+    // attachment info
+    const label = this.attachmentLabelInput.nativeElement.value
+    const description = this.attachmentDescriptionInput.nativeElement.value;
+    if (!this.file || label === '') {
+      // if attachment or lable is null
+      this.attchament_error = true;
+    } else {
+      const obj = {
+        'label': label,
+        'description': description
+      }
+      const formData: FormData = new FormData();
+      formData.append('obj', JSON.stringify(obj));
+      if (this.file) {
+        formData.append('file', this.file, this.file.name);
+      }
+      // post call
+      this.containerService.uploadSampleAttachment(formData, this.sample.pk)
+      .map(data => data.json())
+      .subscribe(
+        (data: CAttachment) => {
+          // console.log(data);
+          // update sample attachment//need to return the sample object
+          this.updateSampleAttchmentUpload(data);
+          this.hideAttachmentUpload();
+          this.alertService.success('The attchament uploaded!', true);
+        },
+        () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
+      );
     }
   }
 }

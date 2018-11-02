@@ -125,7 +125,8 @@ export class SampleTableComponent implements OnInit, OnChanges {
   // get sample top level attrs
   // only for USE_CSAMPLE
   genTableHeaders() {
-    this.sample_attrs = this.ctypeService.genSamplesAttrs(this.samples, this.USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, this.all_ctypes, this.sample_types);
+    this.sample_attrs = this.ctypeService
+    .genSamplesAttrs(this.samples, this.USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, this.all_ctypes, this.sample_types);
   }
   // gen displayed_samples
   genDisplaySamples() {
@@ -136,6 +137,7 @@ export class SampleTableComponent implements OnInit, OnChanges {
         this.displayed_samples.push(displayed_sample);
       })
     }
+    // console.log(this.displayed_samples);
   }
   ngOnChanges() {
     this.loading = true;

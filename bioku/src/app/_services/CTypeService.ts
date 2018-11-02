@@ -310,8 +310,8 @@ export class CTypeService {
             }
           })
         // get extra attrs
-        if(sample != null 
-          && sample.ctype !== undefined && sample.ctype !== null 
+        if (sample != null
+          && sample.ctype !== undefined && sample.ctype !== null
           && sample.ctype.type !== undefined && sample.ctype.type !== null) {
             attrs = [...attrs, ...sample.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
         }
@@ -371,10 +371,12 @@ export class CTypeService {
             && sample.csample_subdata !== undefined && sample.csample_subdata !== null) {
                 sample.csample_subdata.forEach((sd: CSampleSubData) => {
                     const data_index = subattr_data.findIndex((data: Array<CSubAttrData>) => {
-                        return data[0] !== null && data[0] !== undefined && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id);
+                        return data[0] !== null
+                        && data[0] !== undefined
+                        && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id);
                     })
                     if ( data_index === -1) {
-                        const subattr_data_item : Array<CSubAttrData> = Array<CSubAttrData>();
+                        const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();
                         const subdata: CSubAttrData = new CSubAttrData();
                         const sub_attr: CTypeSubAttr = new CTypeSubAttr();
                         sub_attr.attr_label = sd.ctype_sub_attr.attr_label;
@@ -403,7 +405,7 @@ export class CTypeService {
                         subattr_data.push(subattr_data_item);
                     } else {
                         const subdata_index = subattr_data[data_index].findIndex((data: CSubAttrData) => {
-                            return data.sub_attr.pk === sd.pk && data.sub_attr.parent_attr_id == sd.ctype_sub_attr.parent_attr_id;
+                            return data.sub_attr.pk === sd.pk && data.sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id;
                         })
                         if (subdata_index !== -1) {
                             const csample_subdata_item: CSampleSubData = new CSampleSubData();
@@ -440,7 +442,7 @@ export class CTypeService {
                             subdata.csample_subdata = Object.assign([], csample_subdata);
                             subattr_data[data_index].push(subdata)
                         }
-                    }       
+                    }
                 });
         }
         return subattr_data;

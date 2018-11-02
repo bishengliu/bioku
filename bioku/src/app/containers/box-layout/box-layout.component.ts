@@ -208,8 +208,12 @@ export class BoxLayoutComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   pickerSamples(h: number, v: string):  Array<Sample> | Array<CSample> {
-    return this.samples.filter((s) => s.occupied === true &&
-                                              s.position.toLowerCase() === (v + h).toLowerCase())
+    return (
+      this.samples.filter(
+        (s) =>
+        s.occupied === true
+        && s.position.toLowerCase() === (v + h).toLowerCase())
+    )
   }
   // display sample details upon dbclick
   dbClickSample(h: number, v: string) {

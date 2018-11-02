@@ -17,7 +17,7 @@
         <tr *ngFor="let sample of displayed_samples"
         class="clickable" (click)="toggleSelection(sample.pk)" 
           (dblclick)="dbClickSample(sample)"
-          [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied }">
+          [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied, 'grey-text': !sample.occupied }">
           <td class="" *ngFor="let attr of sample_attrs">
             <span *ngIf="attr == 'NAME'">
               <span [style.color]="sample.color">{{ renderSampleName(sample[attr]) }}</span>
@@ -27,8 +27,8 @@
             <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{sample[attr]}}</span>
           </td>
           <td class="">
-            <div *ngIf="sample.attachments != null && sample.attachments.length > 0">
-              <p class="nopadding no_margin" *ngFor="let attachment of sample.attachments">
+            <div *ngIf="sample.ATTACHMENTS != null && sample.ATTACHMENTS.length > 0">
+              <p class="nopadding no_margin" *ngFor="let attachment of sample.ATTACHMENTS">
                 <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
               </p>
             </div>   

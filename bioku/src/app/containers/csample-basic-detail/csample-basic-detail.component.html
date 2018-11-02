@@ -28,13 +28,67 @@
       <tr>
         <th>ATTACHMENTS</th>
         <td>
-          <div *ngIf="display_sample.attachments != null && display_sample.attachments.length > 0">
-            <p class="nopadding no_margin" *ngFor="let attachment of display_sample.attachments">
-              <a target="_blank" href="{{appUrl + attachment.attachment}}">
-                {{attachment.label != null ? attachment.label : null}}
-              </a>
-            </p>
-          </div>  
+          <a *ngIf="attachment_upload== false" 
+            class="ui right floated grey mini compact icon button" 
+            (click)="displayAttachmentUpload()">
+            <i class="cloud upload icon"></i>
+          </a>
+          <div *ngIf="display_sample.ATTACHMENTS != null && display_sample.ATTACHMENTS.length > 0">
+            <div class="nopadding no_margin" *ngFor="let attachment of display_sample.ATTACHMENTS">
+              <div class="ui mini icon buttons">
+                <a class="ui red button" (click)="attachment2Delete(attachment.pk, attachment.label)">
+                  <i class="delete icon" suiPopup popupText="remove this attachment" ></i>
+                </a>
+                <a class="ui basic button" target="_blank" href="{{appUrl + attachment.attachment}}">
+                  <span class="teal-text" suiPopup popupText="{{attachment.description ? attachment.description : 'no description found!'}}">
+                  {{ attachment.label != null
+                    ? attachment.label > 20 
+                      ? (attachment.label | slice:0:20) + '..'
+                      : attachment.label
+                    : null }}
+                  </span>                        
+                </a>                                     
+              </div>
+            </div>
+          </div>
+          <div>
+              <div class="ui divider" *ngIf="attachment_upload==true||attachment_delete==true"></div>
+              <!-- upload -->
+              <div class="field" *ngIf="attachment_upload==true">
+                <div class="ui mini input right action wide-form">
+                  <input type="text" id="attachment_name" readonly 
+                  placeholder="click browse to find the attachment" 
+                  value="{{attchment_name}}" #attachmentName>
+                  <label class="ui mini secondary button">Browse
+                    <input type="file" id="attachment" placeholder="new attachment" 
+                        class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
+                  </label>
+                  <button class="ui primary mini icon button" (click)="performAttachmentUpload()"><i class="icon check"></i></button>
+                  <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
+                </div>
+                <div *ngIf="attchament_is2large" class="ui mini negative message">maximum upload size is 10MB!</div>
+                <div *ngIf="attchament_error" class="ui mini negative message">both attachment and label are required!</div>
+              </div>
+              <div class="field" *ngIf="attachment_upload==true">
+                <div class="ui mini input wide-form">
+                  <input type="text" id="attchament_label" value="{{attchment_name}}" placeholder="attchament label" #attachmentLabel>
+                  <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
+                </div>
+              </div>
+              <!-- remove attchment -->
+              <div *ngIf="attachment_delete==true">                
+                <div class="ui mini right floated icon buttons">
+                  <button class="ui primary icon button" (click)="performAttachmentDelete()"><i class="icon check"></i></button>
+                  <button class="ui basic icon button" (click)="cancelAttachmentDelete()"><i class="icon delete"></i></button>
+                </div>
+                <p class="small red-text">delete {{ attachment_to_delete != null 
+                  ? 
+                    attachment_to_delete > 20 
+                    ? (attachment_to_delete | slice:0:20) + '..'
+                    : attachment_to_delete
+                  : null}}?</p>              
+              </div>
+          </div>        
         </td>
       </tr>
       <tr>
@@ -43,10 +97,10 @@
           <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
               <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
                 {{researcher.first_name != null 
-                  ? (researcher.first_name.toUpperCase() | slice:0:1) 
-                  : ''}}
+                  ? (researcher.first_name.toUpperCase() + ' ') 
+                  : ' '}}
                 {{researcher.last_name != null 
-                  ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1)
+                  ? (researcher.last_name.toUpperCase() + ' ')
                   : ' '}}
               </span>
           </div> 
