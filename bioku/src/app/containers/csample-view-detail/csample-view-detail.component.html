@@ -16,8 +16,8 @@
         <tr>
           <th>ATTACHMENTS</th>
           <td>
-            <div *ngIf="display_sample.attachments != null && display_sample.attachments.length > 0">
-              <p class="nopadding no_margin" *ngFor="let attachment of display_sample.attachments">
+            <div *ngIf="display_sample.ATTACHMENTS != null && display_sample.ATTACHMENTS.length > 0">
+              <p class="nopadding no_margin" *ngFor="let attachment of display_sample.ATTACHMENTS">
                 <a target="_blank" href="{{appUrl + attachment.attachment}}">
                   {{attachment.label != null ? attachment.label : null}}
                 </a>

@@ -198,6 +198,7 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
           this.updateSampleAttchmentDeletion(this.attachment_pk_to_delete);
           this.cancelAttachmentDelete();
           this.hideAttachmentUpload();
+          this.alertService.success('the attchament removed!', true);
         }, () => {
           // tslint:disable-next-line:quotemark
           this.alertService.error("failed to delete sample attachments!", true);
@@ -207,13 +208,13 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
   // remove attachments of the sample after ajax call
   updateSampleAttchmentDeletion(attachment_pk_to_delete: number) {
     if (attachment_pk_to_delete != null) {
-      this.sample.attachments = [...this.sample.attachments.filter(a => { return a.pk !== attachment_pk_to_delete})];
+      this.display_sample.ATTACHMENTS = [...this.display_sample.ATTACHMENTS.filter(a => { return a.pk !== attachment_pk_to_delete})];
     }
   }
   // uploaded after ajax call
   updateSampleAttchmentUpload(attachment: CAttachment) {
     if (attachment != null) {
-      this.sample.attachments = [...this.sample.attachments, attachment];
+      this.display_sample.ATTACHMENTS = [...this.display_sample.ATTACHMENTS, attachment];
     }
   }
   // check upload attachment
@@ -262,9 +263,9 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
           // update sample attachment//need to return the sample object
           this.updateSampleAttchmentUpload(data);
           this.hideAttachmentUpload();
-          this.alertService.success('The attchament uploaded!', true);
+          this.alertService.success('the attchament uploaded!', true);
         },
-        () => this.alertService.error('Something went wrong, the attchament not uploaded!', true)
+        () => this.alertService.error('something went wrong, the attchament not uploaded!', true)
       );
     }
   }
