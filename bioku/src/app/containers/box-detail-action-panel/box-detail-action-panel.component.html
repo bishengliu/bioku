@@ -45,6 +45,12 @@
         [container]="container"
         [samplePK]="samplePKs[0]">
       </app-sample-detail>
+      <app-csample-basic-detail
+        *ngIf="USE_CSAMPLE"
+        [box]="box"
+        [container]="container"
+        [samplePK]="samplePKs[0]">
+      </app-csample-basic-detail>
     </div>
 
   <!--multiple selection-->
@@ -78,7 +84,9 @@
       <div class="ui large labels">
         <div class="ui large label" *ngFor="let sample of preoccupiedSamples">
           <i class="circle icon" [style.color]="sample.occupied? sample.color: '#BDBDBD'"></i>
-          <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">{{sample.name +" ("+ sample.position +")"}}</span>
+          <span [style.color]="sample.occupied? sample.color: '#BDBDBD'">
+            {{sample.name +" ("+ sample.position +")"}}
+          </span>
         </div>
       </div>
       <div class="ui divider"></div>

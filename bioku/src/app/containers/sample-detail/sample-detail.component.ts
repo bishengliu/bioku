@@ -1,20 +1,19 @@
 import { Component, OnInit, OnChanges, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
-import { Attachment} from '../../_classes/Sample';
+import { Attachment } from '../../_classes/Sample';
 import { ContainerService } from '../../_services/ContainerService';
-import {  AlertService } from '../../_services/AlertService';
-import {  LocalStorageService } from '../../_services/LocalStorageService';
+import { AlertService } from '../../_services/AlertService';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 // mydatepicker
 import {IMyOptions} from 'mydatepicker';
 // color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
-
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';

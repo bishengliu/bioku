@@ -1,0 +1,70 @@
+<table class="ui unstackable small striped compact teal table">
+    <tbody>
+      <tr>
+          <td colspan="2">
+            <button *ngIf="sample.occupied" class="fluid ui mini blue button" 
+               (click)="takeSingleSampleOut(box.box_position, sample, sample.position)">
+                <i class="icon external share"></i>
+                TAKE OUT
+            </button>
+            <button *ngIf="sample.date_out != null || !sample.occupied" class="fluid ui mini grey button" 
+              (click)="putSingleSampleBack(box.box_position, sample, sample.position)">
+                <i class="icon reply"></i>
+                PUT BACK
+            </button>
+          </td>
+      </tr>
+      <tr *ngFor="let attr of attrs">
+        <th>{{attr}}</th>
+        <td>
+          <span *ngIf="attr == 'NAME'">
+            <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr]) }}</span>
+            <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
+          </span>
+          <span *ngIf="attr == 'STORAGE_DATE'">{{display_sample[attr] | date: 'yyyy-MM-dd'}}</span>
+          <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{display_sample[attr]}}</span>
+        </td>
+      </tr>
+      <tr>
+        <th>ATTACHMENTS</th>
+        <td>
+          <div *ngIf="display_sample.attachments != null && display_sample.attachments.length > 0">
+            <p class="nopadding no_margin" *ngFor="let attachment of display_sample.attachments">
+              <a target="_blank" href="{{appUrl + attachment.attachment}}">
+                {{attachment.label != null ? attachment.label : null}}
+              </a>
+            </p>
+          </div>  
+        </td>
+      </tr>
+      <tr>
+        <th>RESEARCHER</th>
+        <td class="">
+          <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
+              <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
+                {{researcher.first_name != null 
+                  ? (researcher.first_name.toUpperCase() | slice:0:1) 
+                  : ''}}
+                {{researcher.last_name != null 
+                  ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1)
+                  : ' '}}
+              </span>
+          </div> 
+        </td> 
+      </tr>
+      <tr>
+          <td colspan="2">
+            <div >
+              <span [style.color]="sample.color" class="header">
+                Sample {{sample.box_position}} Color: 
+              </span>
+            </div>
+            <color-picker 
+            [(ngModel)]="sample.color" 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" 
+            [availableColors]="availableColors" [pickerConfig]="pickerOptions">
+            </color-picker>                                            
+          </td>
+        </tr>  
+    </tbody>
+  </table>
