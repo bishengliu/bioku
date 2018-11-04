@@ -165,6 +165,7 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
       .subscribe(() => {}, (err) => console.log(this.action_panel_msg = 'fail to update sample detail!'));
     }
   }
+
   displayAttachmentUpload() {
     this.attachment_upload = true;
     this.cancelAttachmentDelete();

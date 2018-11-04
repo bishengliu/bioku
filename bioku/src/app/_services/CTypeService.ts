@@ -213,15 +213,15 @@ export class CTypeService {
     }
     // get common sample attrs
     // if only one ctype return all the attrs
-    getCommonAttrs(sampel_ctypes: Array<CType>): Array<string> {
+    getCommonAttrs(sample_ctypes: Array<CType>): Array<string> {
         const sample_attrs: Array<string> = new Array<string>();
         // loop into the ctypes
-        sampel_ctypes.forEach((c: CType) => {
+        sample_ctypes.forEach((c: CType) => {
             // loop into its attrs
             c.attrs.forEach( (a: CTypeAttr) => {
               let is_common = true;
               // check whether all the ctypes have the label
-              sampel_ctypes.forEach((ct: CType) => {
+              sample_ctypes.forEach((ct: CType) => {
                 if (ct.attrs.findIndex((ca: CTypeAttr) => {
                   return ca.attr_label === a.attr_label
                 }) === -1) {is_common = false; }
@@ -233,17 +233,27 @@ export class CTypeService {
         })
         return sample_attrs;
     }
-    getMaxAttrs(sampel_ctypes: Array<CType>): Array<string> {
+    getMaxAttrs(sample_ctypes: Array<CType>): Array<string> {
         let sample_attrs: Array<string> = new Array<string>();
         // loop into the ctypes
-        sampel_ctypes.forEach((c: CType) => {
+        sample_ctypes.forEach((c: CType) => {
             // loop into its attrs
             sample_attrs = Object.assign(sample_attrs, c.attrs.map(( a: CTypeAttr) => { return a.attr_label }));
         })
         return sample_attrs;
     }
-    getSampleTypes(USE_CSAMPLE: boolean, samples: Array<any>): Array<string>{
-        let types = new Array<string>();
+    getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {
+        const ctypes: Array<CType> = new Array<CType>();
+        for (let i = 0; i < ctype_names.length; i++) {
+           const ctype = all_ctypes.find((ct: CType) => { return ct.type === ctype_names[i]; })
+            if (ctype !== undefined) {
+                ctypes.push(ctype);
+            }
+        }
+        return ctypes;
+    }
+    getSampleTypes(USE_CSAMPLE: boolean, samples: Array<any>): Array<string> {
+        const types = new Array<string>();
         if (samples != null && samples.length > 0) {
             if (USE_CSAMPLE) {
               samples.forEach((s: CSample) => {
@@ -263,7 +273,8 @@ export class CTypeService {
           }
         return types;
     }
-    genSamplesAttrs(samples: Array<CSample>, USE_CSAMPLE: boolean, DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>, sample_types: Array<string>): Array<string> {
+    genSamplesAttrs(samples: Array<CSample>, USE_CSAMPLE: boolean,
+        DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>, sample_types: Array<string>): Array<string> {
         let attrs = new Array<string>();
         if (samples !== undefined && samples !== null && USE_CSAMPLE) {
             // get basic attrs

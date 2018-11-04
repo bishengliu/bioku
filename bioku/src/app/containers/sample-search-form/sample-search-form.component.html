@@ -5,9 +5,9 @@
   <div class="ui black attached segment">
     <form [formGroup]="searchForm" class="ui large form" (ngSubmit)="onSearch(searchForm.value)">
       <button *ngIf="searchForm.touched || sample_types.length > 0" type="submit" class="ui mini fluid primary button">
-              <i class="icon search"></i> SEARCH SAMPLES 
+        <i class="icon search"></i> SEARCH SAMPLES 
       </button>
-      <div class="two fields">
+      <div *ngIf="!USE_CSAMPLE" class="two fields">
         <div class="field">
           <table class="ui sortable small striped compact padded single line table">
             <tbody>
@@ -16,7 +16,8 @@
                 <td colspan="2">
                   <div class="teal-text"><em><strong>container</strong></em></div>
                   <div class="ui input wide-form">
-                    <select class="ui tiny tight_around dropdown" id="container" [ngModel]="default_container_to_search" [formControl]="searchForm.controls['container']"
+                    <select class="ui tiny tight_around dropdown" id="container" [ngModel]="default_container_to_search" 
+                    [formControl]="searchForm.controls['container']"
                       (change)="updateContainer($event)">
                       <option value="-1"> ALL CONTAINERS </option>
                       <option [ngValue]="option.pk"
@@ -26,7 +27,7 @@
                   </div>
                 </td>
                 <td colspan="2">
-                  <div class="teal-text"><em><strong>sample type</strong></em></div>
+                  <div class="teal-text"><em><strong>type(s)</strong></em></div>
                   <div class="ui input wide-form">
                     <sui-multi-select class="selection wide-form"
                       id="type"
@@ -36,12 +37,6 @@
                       (ngModelChange)="updateType($event)">
                         <sui-select-option *ngFor="let option of all_sample_types" value="{{option}}"></sui-select-option>
                     </sui-multi-select>
-                    <!-- <select class="ui tiny tight_around dropdown" id="type" [ngModel]="''" [formControl]="searchForm.controls['type']" (ngModelChange)="updateType($event)" multiple>
-                      <option value=""> -- select -- </option>
-                      <option [ngValue]="option"
-                      *ngFor="let option of all_sample_types" value="{{option}}">{{option}}
-                      </option>
-                    </select> -->
                   </div>
                   <div *ngIf="searchForm.controls['type'].hasError('required') && searchForm.controls['type'].touched" class="ui mini negative message">Sample type is required
                   </div>
@@ -49,7 +44,7 @@
               </tr>
               <tr>
                 <td>
-                  <div class="teal-text"><em><strong>sample name</strong></em></div>
+                  <div class="teal-text"><em><strong>name</strong></em></div>
                   <div class="ui input wide-form">
                     <input class="" type="text" id="name" [formControl]="searchForm.controls['name']" placeholder=" sample name ...">
                   </div>
@@ -223,6 +218,86 @@
                   </td>
                 </tr>
             </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="USE_CSAMPLE" class="two fields">
+        <div class="field">
+          <table class="ui sortable small striped compact padded single line table">
+            <tr>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>CONTAINER(S)</strong></em></div>
+                <div class="ui input wide-form">
+                  <select class="ui tiny tight_around dropdown" id="container" [ngModel]="default_container_to_search" 
+                  [formControl]="searchForm.controls['container']"
+                    (change)="updateContainer($event)">
+                    <option value="-1"> ALL CONTAINERS </option>
+                    <option [ngValue]="option.pk"
+                      *ngFor="let option of container_name_pks" value="{{option.pk}}">{{option.name}}
+                    </option>
+                  </select>
+                </div>
+              </td>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>TYPE(S)</strong></em></div>
+                <div class="ui input wide-form">
+                  <sui-multi-select class="selection wide-form"
+                    id="type"
+                    [ngModel]="typeControl"
+                    [ngModelOptions]="{standalone: true}"
+                    [options]="all_sample_types"
+                    (ngModelChange)="updateType($event)">
+                      <sui-select-option *ngFor="let option of all_sample_types" value="{{option}}"></sui-select-option>
+                  </sui-multi-select>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>STORAGE DATE FROM: </strong></em></div>
+                <my-date-picker name="freezing_date_from" [options]="myDatePickerOptions" (dateChanged)="updateSampleFromDate($event)"></my-date-picker>
+              </td>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>STORAGE DATE TO: </strong></em></div>
+                <my-date-picker name="freezing_date_to" [options]="myDatePickerOptions" (dateChanged)="updateSampleToDate($event)"></my-date-picker>
+              </td>
+            </tr>
+            <tr *ngFor="let attrs of left_extra_attrs">
+              <td colspan="2" *ngFor="let attr of attrs">
+                  <div class="teal-text"><em><strong>{{attr}}</strong></em></div>
+                  <input class="" type="text" id="{{attr}}" [formControl]="searchForm.controls[attr]" placeholder="">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="field">
+          <table class="ui sortable small striped compact padded single line table">
+            <tr>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>NAME</strong></em></div>
+                <input class="" type="text" id="name" [formControl]="searchForm.controls['name']" placeholder=" sample name ...">
+              </td>
+              <td colspan="2">
+                <div class="teal-text"><em><strong>OCCUPATION</strong></em></div>
+                <select class="ui tiny tight_around dropdown" id="occupied" [ngModel]="0" [formControl]="searchForm.controls['occupied']">
+                  <option value="0" selected> occupied only </option>
+                  <option value="1"> taken-out only </option>
+                  <option value="2"> both </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                  <div class="teal-text"><em><strong>ATTACHMENTS</strong></em></div>
+                  <input class="" type="text" id="attachment" [formControl]="searchForm.controls['attachment']" placeholder=" attachment ...">
+              </td>
+            </tr>
+            <tr *ngFor="let attrs of right_extra_attrs">
+                <td colspan="2" *ngFor="let attr of attrs">
+                    <div class="teal-text"><em><strong>{{attr}}</strong></em></div>
+                    <input class="" type="text" id="{{attr}}" [formControl]="searchForm.controls[attr]" placeholder="">
+                </td>
+              </tr>      
           </table>
         </div>
       </div>
