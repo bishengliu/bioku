@@ -378,7 +378,7 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // search samples
-    SearchSample(obj: SampleSearch) {
+    SearchSample(obj: any) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'search_samples/';
         // format type
@@ -399,7 +399,7 @@ export class ContainerService {
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // sample presearch return the sample count
-    PreSearchSample(obj: SampleSearch) {
+    PreSearchSample(obj: any) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS + 'presearch_samples/';
         // format type

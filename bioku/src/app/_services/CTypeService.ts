@@ -211,37 +211,53 @@ export class CTypeService {
     getBasicCtypeAttr(pk: number): CTypeAttr {
         return this.battrs.find(a => a.pk === pk) || new CTypeAttr();
     }
-    // get common sample attrs
+    // get common sample attrs: label only
     // if only one ctype return all the attrs
-    getCommonAttrs(sample_ctypes: Array<CType>): Array<string> {
+    getCommonAttrs(sample_ctypes: Array<CType>, exclude_date = false): Array<string> {
         const sample_attrs: Array<string> = new Array<string>();
         // loop into the ctypes
         sample_ctypes.forEach((c: CType) => {
             // loop into its attrs
             c.attrs.forEach( (a: CTypeAttr) => {
               let is_common = true;
-              // check whether all the ctypes have the label
-              sample_ctypes.forEach((ct: CType) => {
-                if (ct.attrs.findIndex((ca: CTypeAttr) => {
-                  return ca.attr_label === a.attr_label
-                }) === -1) {is_common = false; }
-              });
+              is_common = a.attr_value_type !== null &&  a.attr_value_type === 4 // date
+              ? (exclude_date ? false : true)
+              : true;
               if (is_common) {
-                sample_attrs.push(a.attr_label)
+                // check whether all the ctypes have the label
+                sample_ctypes.forEach((ct: CType) => {
+                    if (ct.attrs.findIndex((ca: CTypeAttr) => {
+                    return ca.attr_label.toUpperCase() === a.attr_label.toUpperCase();
+                    }) === -1) { is_common = false; }
+                });
+                if (is_common && sample_attrs.indexOf(a.attr_label.toUpperCase()) === -1) {
+                    sample_attrs.push(a.attr_label)
+                }
               }
             })
         })
         return sample_attrs;
     }
-    getMaxAttrs(sample_ctypes: Array<CType>): Array<string> {
-        let sample_attrs: Array<string> = new Array<string>();
+    getMaxAttrs(sample_ctypes: Array<CType>, exclude_date = false): Array<string> {
+        const sample_attrs: Array<string> = new Array<string>();
         // loop into the ctypes
         sample_ctypes.forEach((c: CType) => {
             // loop into its attrs
-            sample_attrs = Object.assign(sample_attrs, c.attrs.map(( a: CTypeAttr) => { return a.attr_label }));
+            c.attrs.forEach((a: CTypeAttr) => {
+                if (sample_attrs.indexOf(a.attr_label.toUpperCase()) === -1) {
+                    if (a.attr_value_type === 4) {
+                        if (!exclude_date) {
+                            sample_attrs.push(a.attr_label.toUpperCase());
+                        }
+                    } else {
+                        sample_attrs.push(a.attr_label.toUpperCase());
+                    }
+                }
+            });
         })
         return sample_attrs;
     }
+    // get common full sample attrs
     getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {
         const ctypes: Array<CType> = new Array<CType>();
         for (let i = 0; i < ctype_names.length; i++) {

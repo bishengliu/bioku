@@ -137,19 +137,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
       'tissue': [, ]
       });
     // watch form changes
-    this.searchForm.valueChanges
-    .mergeMap((data: any) => {
-      if (!this.searchForm.touched) {
-        return Observable.of({'count': 0 });
-      } else {
-        return this.containerService.PreSearchSample(data);
-      }
-    })
-    .subscribe((res: any) => {
-        this.presearch_sample_count = res.count;
-        // console.log(this.presearch_sample_count)
-      },
-      () => { this.presearch_sample_count = 0; });
+    this.preSearch();
   }
 
   updateContainer(value: any) {
@@ -166,8 +154,24 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     const fb_values = this.searchForm.value;
     // update fromgroup
     this.searchForm = this.updateFormGroup(this.fb, fb_values, this.extra_attrs, this.fb_group_controlsConfig);
+    // watch form changes
+    this.preSearch();
     // format left and right extra attrs
     [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
+  }
+  // pre sample search
+  preSearch() {
+    // watch form changes
+    this.searchForm.valueChanges
+    .mergeMap((data: any) => {
+      if (!this.searchForm.touched) {
+        return Observable.of({'count': 0 });
+      } else {
+        return this.containerService.PreSearchSample(data);
+      }
+    })
+    .subscribe((res: any) => { this.presearch_sample_count = res.count; },
+      () => { this.presearch_sample_count = 0; });
   }
   // update left and right extra attrs
   updateLeftRightExtraAttrs(extra_attrs: Array<String>) {
@@ -240,11 +244,13 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
 
   getExtraAttrs(sample_types: Array<string>, all_ctypes: Array<CType>) {
     // get the relavent ctypes
+    // excldue dates
+    const exclude_date = true;
     const ctypes: Array<CType> = this.ctypeService.getCTypesByNames(sample_types, all_ctypes);
     if (this.DISPLAY_COMMON_ATTRS) {
-      return this.ctypeService.getCommonAttrs(ctypes)
+      return this.ctypeService.getMaxAttrs(ctypes, exclude_date);
     } else {
-      return this.ctypeService.getMaxAttrs(ctypes)
+      return this.ctypeService.getMaxAttrs(ctypes, exclude_date);
     }
   }
 
