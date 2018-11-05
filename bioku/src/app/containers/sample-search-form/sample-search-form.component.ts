@@ -199,13 +199,13 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
           }
         }
         // right
-        for (let r = middel + 1; r < len; r++ ) {
-          if (r % 2 === 0 || right_extra_attrs[((r - middel - 2 ) / 2)] === undefined) {
+        for (let r = 0; r < len - (middel + 1); r++ ) {
+          if (r % 2 === 0 || right_extra_attrs[((r - 1 ) / 2)] === undefined) {
             const rattrs = new Array<String>();
-            rattrs.push(extra_attrs[r])
+            rattrs.push(extra_attrs[r + middel + 1])
             right_extra_attrs.push(rattrs);
           } else {
-            right_extra_attrs[((r - middel - 2 ) / 2)].push(extra_attrs[r]);
+            right_extra_attrs[((r - 1 ) / 2)].push(extra_attrs[r + middel + 1]);
           }
         }
       }
