@@ -163,10 +163,16 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   preSearch() {
     // watch form changes
     this.searchForm.valueChanges
+    .do(() => {
+      this.presearch_sample_count = 0;
+    })
     .mergeMap((data: any) => {
       if (!this.searchForm.touched) {
         return Observable.of({'count': 0 });
       } else {
+        // update dates
+        data.freezing_date_from = this.freezing_date_from;
+        data.freezing_date_to = this.freezing_date_to;
         return this.containerService.PreSearchSample(data);
       }
     })
