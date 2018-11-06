@@ -1,37 +1,58 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Sample } from '../../_classes/Sample';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
 import { ContainerService } from '../../_services/ContainerService';
-import {  AlertService } from '../../_services/AlertService';
+import { AlertService } from '../../_services/AlertService';
+import { CTypeService } from '../../_services/CTypeService';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
+import { UtilityService } from '../../_services/UtilityService';
 @Component({
   selector: 'app-sample-search-action-panel',
   templateUrl: './sample-search-action-panel.component.html',
   styleUrls: ['./sample-search-action-panel.component.css']
 })
 export class SampleSearchActionPanelComponent implements OnInit, OnChanges {
-  @Input() selectedSamples: Array<Sample>;
+  @Input() selectedSamples = []; // Array<Sample> or Array<CSample>
   @Input() selectedSamplePks: Array<number>;
-
-  occupiedSamples: Array<Sample> = new Array<Sample>();
-  preoccupiedSamples: Array<Sample> = new Array<Sample>();
+  // FOR RENDERING SAMPLE NAME
+  SHOW_ORIGINAL_NAME: false;
+  NAME_MIN_LENGTH: 15;
+  NAME_MIN_right_LENGTH: 10;
+  NAME_SYMBOL: '...';
+  occupiedSamples= []; // Array<Sample> or Array<CSample>
+  preoccupiedSamples = []; // Array<Sample> or Array<CSample>
   // show panel content
   show_panel_content: Boolean = false;
-  constructor(private router: Router, private containerService: ContainerService, private alertService: AlertService) { }
+  USE_CSAMPLE = true;
+  constructor(private router: Router, private containerService: ContainerService, private alertService: AlertService,
+    @Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService) {
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    this.SHOW_ORIGINAL_NAME = this.appSetting.SHOW_ORIGINAL_NAME;
+    this.NAME_MIN_LENGTH = this.appSetting.NAME_MIN_LENGTH;
+    this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
+    this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
+   }
 
   ngOnInit() {
   }
 
   splitSample() {
     if (this.selectedSamples != null && this.selectedSamplePks != null) {
-      this.occupiedSamples = this.selectedSamples.filter((s: Sample) => s.occupied === true && s.date_out == null);
-      this.preoccupiedSamples = this.selectedSamples.filter((s: Sample) => s.occupied !== true && s.date_out != null);
+      this.occupiedSamples = this.selectedSamples
+      .filter((s: Sample | CSample) => s.occupied === true && s.date_out == null);
+      this.preoccupiedSamples = this.selectedSamples
+      .filter((s: Sample | CSample) => s.occupied !== true && s.date_out !== null);
     }
   }
+
   ngOnChanges() {
     this.splitSample();
     // console.log(this.selectedSamples);
     // console.log(this.selectedSamplePks);
   }
+
   hidePanelContent() {
     this.show_panel_content = false;
   }
@@ -39,9 +60,11 @@ export class SampleSearchActionPanelComponent implements OnInit, OnChanges {
   showPanelContent() {
     this.show_panel_content = true;
   }
+
   togglePanelContent() {
     this.show_panel_content = !this.show_panel_content;
   }
+
   // take multiple sample out
   takeMultipleSampleout() {
     const today = new Date()
@@ -74,8 +97,9 @@ export class SampleSearchActionPanelComponent implements OnInit, OnChanges {
     }
   }
 
-  updateTakeoutSample(sample: Sample) {
-    this.occupiedSamples = [...this.occupiedSamples.filter((s: Sample) => { return s.pk !== sample.pk })];
+  updateTakeoutSample(sample: Sample | CSample) {
+    this.occupiedSamples = [...this.occupiedSamples
+      .filter((s: Sample | CSample) => { return s.pk !== sample.pk })];
     this.preoccupiedSamples = [...this.preoccupiedSamples, sample];
   }
 
@@ -110,8 +134,20 @@ export class SampleSearchActionPanelComponent implements OnInit, OnChanges {
     }
   }
 
-  updatePutBackSample(sample: Sample) {
-    this.preoccupiedSamples = [...this.preoccupiedSamples.filter((s: Sample) => { return s.pk !== sample.pk })];
+  updatePutBackSample(sample: Sample | CSample) {
+    this.preoccupiedSamples = [...this.preoccupiedSamples
+      .filter((s: Sample | CSample) => { return s.pk !== sample.pk })];
     this.occupiedSamples = [...this.occupiedSamples, sample];
+  }
+
+  // render sample name
+  renderSampleName(samplename: string) {
+    return this.utilityService.renderSampleName(samplename, this.SHOW_ORIGINAL_NAME,
+      this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
+  }
+
+  // gen query param for box layout
+  getQueryParams(name: string) {
+    return {'query': name.toLowerCase() }
   }
 }

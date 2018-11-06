@@ -2,8 +2,8 @@
   <div class="ui grid inverted segment no_margin nopadding">
     <div class="no_margin nopadding fourteen wide column white-text clickable" (click)="togglePanelContent()">
       <span class="brown-text">{{selectedSamplePks.length}}</span>
-      <span *ngIf="selectedSamplePks.length==1">sample</span>
-      <span *ngIf="selectedSamplePks.length > 1">samples</span> selected
+      <span *ngIf="selectedSamplePks.length==1"> record</span>
+      <span *ngIf="selectedSamplePks.length > 1"> records</span> selected
     </div>
     <div class="no_margin nopadding two wide column">
       <a *ngIf="show_panel_content" class="clickable ui right floated" (click)="hidePanelContent()"><i class="icon chevron circle down white-text"></i></a>
@@ -15,10 +15,17 @@
     <div class="ui large labels" *ngIf="occupiedSamples.length > 0"> 
       <div class="ui large label clickable"
       [routerLink]="['/containers', sample.container_id, sample.box_position]"
+      [queryParams]=getQueryParams(sample.name)
       *ngFor="let sample of occupiedSamples">
           <div>
-            <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
-            <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
+            <span [style.color]="sample.color">
+              {{renderSampleName(sample.name)}}
+            </span>
+            <sup>             
+              <span *ngIf="!USE_CSAMPLE && sample.type">{{ sample.type | slice:0:3 }}</span>
+              <span *ngIf="USE_CSAMPLE && sample.ctype">{{ sample.ctype.type | slice:0:3 }}</span>
+              <span *ngIf="sample.tag">/{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}} </span>           
+            </sup>
             <br />
             <em class="small-text">
               <span class="">
@@ -37,10 +44,17 @@
     <div class="ui large labels" *ngIf="preoccupiedSamples.length > 0">
         <div class="ui large label clickable"
         [routerLink]="['/containers', sample.container_id, sample.box_position]"
+        [queryParams]=getQueryParams(sample.name)
         *ngFor="let sample of preoccupiedSamples">
             <div>
-              <span [style.color]="sample.color">{{ (sample.name != null && sample.name.length>15) ? (sample.name | slice:0:15) + '..' :(sample.name) }}</span>
-              <sup *ngIf="sample.tag">{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}<span *ngIf="sample.tag">/</span>{{ sample.type | slice:0:2 }}</sup>
+              <span [style.color]="sample.color">
+                  {{renderSampleName(sample.name)}}
+              </span>
+              <sup>
+                  <span *ngIf="!USE_CSAMPLE && sample.type">{{ sample.type | slice:0:3 }}</span>
+                  <span *ngIf="USE_CSAMPLE && sample.ctype">{{ sample.ctype.type | slice:0:3 }}</span>
+                  <span *ngIf="sample.tag">/{{sample.tag != null && sample.tag.length >= 5 ? (sample.tag | slice:0:5) : sample.tag}}</span>
+              </sup>
               <br />
               <em class="small-text">
                 <span class="">
@@ -56,7 +70,3 @@
     </button>
   </div>
 </div>
-
-<!--
-  (click)="go2Box(sample.container_id, sample.box_position)"
--->

@@ -18,7 +18,7 @@
 </div>
 
 <div *ngIf="!searching && !show_error" class="ui grid row small_padding">
-  <div *ngIf="samples.length > 0" class="ui horizontal divider header grey-text"><i class="bar chart icon"></i>matched samples</div>
+  <div *ngIf="samples.length > 0" class="ui horizontal divider header grey-text sixteen wide column"><i class="bar chart icon"></i>matched samples</div>
   <div *ngIf="samples.length > 0" class="eight wide column">
       <app-sample-deep-filter (deepSampleFilter)="updateDeepFilteredSampleList($event)"></app-sample-deep-filter>
   </div>
@@ -26,7 +26,7 @@
       <a class="ui teal button" 
       appExportSample
       [samples]="searchedSamples">
-          <i class="icon save"></i>EXPORT RESULTS
+          <i class="icon cloud download"></i>EXPORT
       </a>
   </div>
   <div class="sixteen wide column">

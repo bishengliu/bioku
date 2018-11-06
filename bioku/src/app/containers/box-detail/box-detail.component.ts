@@ -29,6 +29,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   box_pos: string;
   private sub: any; // subscribe to params observable
   private querySub: any;
+  filter = '';
   container: Container = null;
   box: Box = new Box();
   samples = []; // sample of csample
@@ -75,6 +76,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     this.selectedCells = new Array<string>();
     this.selectedSamples = new Array<number>();
   }
+
   updateDeepFilteredSampleList(userInput: string) {
     this.loading = true;
     userInput = userInput.toString().toLowerCase();
@@ -155,7 +157,15 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sub = this.route.params
+    this.sub = this.route.queryParams
+      .mergeMap((params) => {
+        if (params['query'] !== undefined) {
+          this.filter = params['query'];
+        } else {
+          this.filter = '';
+        }
+        return this.route.params
+      })
       .mergeMap(params => {
         this.ct_pk = +params['ct_pk'];
         this.box_pos = params['box_pos'];
@@ -202,6 +212,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
         }
         this.searchedSamples = this.samples;
         this.loading = false;
+        this.updateDeepFilteredSampleList(this.filter);
       },
       () => this.alertService.error('Something went wrong, fail to load the box from the server!', true));
   }

@@ -4,7 +4,7 @@
   <p class="brown-text">loading box samples ... </p>
 </div>
 
-<div *ngIf="loading == false && USE_CSAMPLE">
+<div *ngIf="loading == false && USE_CSAMPLE && samples!= null && samples.length > 0">
   <table class="ui unstackable small striped compact teal table">
     <thead>
       <tr>

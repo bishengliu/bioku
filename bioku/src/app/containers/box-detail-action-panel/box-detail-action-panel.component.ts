@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
@@ -125,6 +125,7 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
       });
     }
   }
+
   // take multiple sample out
   takeMultipleSampleout() {
     const today = new Date()
@@ -156,6 +157,7 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
       });
     }
   }
+
   // switch samples
   switch2Samples() {
     if (this.occupiedSamples.length === 2) {
@@ -218,6 +220,7 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
   showPanelContent() {
     this.show_panel_content = true;
   }
+
   togglePanelContent() {
     this.show_panel_content = !this.show_panel_content;
   }
