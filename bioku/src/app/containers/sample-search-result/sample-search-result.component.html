@@ -1,4 +1,57 @@
-<div class="" *ngIf="samples!= null && samples.length > 0">
+<!--loading info-->
+<div *ngIf="loading==true" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="brown-text">loading box samples ... </p>
+</div>
+
+<div *ngIf="loading == false && USE_CSAMPLE">
+  <table class="ui unstackable small striped compact teal table">
+    <thead>
+      <tr>
+        <th *ngFor="let attr of sample_attrs">{{attr}}</th>
+        <th>ATTACHMENTS</th>
+        <th>RESEARCHER</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sample of displayed_samples"
+      class="clickable" (click)="toggleSelection(sample.pk)" 
+        (dblclick)="dbClickSample(sample)"
+        [ngClass]="{'table-td-selected': selectedSamples.indexOf(sample.pk) !==- 1, 'table-td-no-sample': !sample.occupied, 'grey-text': !sample.occupied }">
+        <td class="" *ngFor="let attr of sample_attrs">
+          <span *ngIf="attr == 'NAME'">
+            <span [style.color]="sample.color">{{ renderSampleName(sample[attr]) }}</span>
+            <span *ngIf="sample.type" class="ui mini circular label">{{ sample.type | slice:0:3 }}</span>
+          </span>
+          <span *ngIf="attr == 'STORAGE_DATE'">{{sample[attr] | date: 'yyyy-MM-dd'}}</span>
+          <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{sample[attr]}}</span>
+        </td>
+        <td class="">
+          <div *ngIf="sample.ATTACHMENTS != null && sample.ATTACHMENTS.length > 0">
+            <p class="nopadding no_margin" *ngFor="let attachment of sample.ATTACHMENTS">
+              <a target="_blank" href="{{appUrl + attachment.attachment}}">{{attachment.label != null ? attachment.label : null}}</a>
+            </p>
+          </div>   
+        </td>
+        <td class="">
+          <div *ngIf="sample.researchers != null && sample.researchers.length > 0">
+            <span class="nopadding no_margin" *ngFor="let researcher of sample.researchers">
+              {{researcher.first_name != null 
+                ? (researcher.first_name.toUpperCase() | slice:0:1) 
+                : ''}}
+              {{researcher.last_name != null 
+                ? (researcher.last_name.toUpperCase() + ' ' | slice:0:1)
+                : ' '}}
+            </span>
+          </div> 
+        </td> 
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--old fixed types-->
+<div class="" *ngIf="loading == false && !USE_CSAMPLE && samples!= null && samples.length > 0">
     <table class="ui unstackable small collapsing striped compact teal table">
         <thead>
             <tr>

@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 // color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
 
-import { AppSetting} from '../../_config/AppSetting';
-import { APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
