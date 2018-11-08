@@ -190,7 +190,7 @@ export class BoxDetailActionPanelComponent implements OnInit, OnChanges {
       // more sample selects
       if (this.samplePKs != null && this.samplePKs.length >= 1) {
         const samples = this.findSamples(this.samplePKs);
-        console.log(samples);
+        // console.log(samples);
         this.occupiedSamples = this.USE_CSAMPLE
       ? samples.filter((s: CSample) => s.occupied === true && s.date_out == null)
       : samples.filter((s: Sample) => s.occupied === true && s.date_out == null);

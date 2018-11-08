@@ -1,15 +1,24 @@
 import { Injectable , Inject} from '@angular/core';
 import { SampleExcelHeaders, SampleDateFormat } from '../_classes/SampleUpload'
 import { Sample } from '../_classes/Sample';
-import { AppSetting} from '../_config/AppSetting';
-import {APP_CONFIG} from '../_providers/AppSettingProvider';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData } from '../_classes/CType';
+import { AppSetting } from '../_config/AppSetting';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
+import { UtilityService } from '../_services/UtilityService';
+import { CTypeService } from '../_services/CTypeService';
+import { Observable } from 'rxjs';
+
 @Injectable()
 export class ExcelUploadLoadService {
   attchament_error: Boolean = false;
   // CUSTOM SAMPEL CODE NAME
   custom_sample_code_name = 'sample code';
- constructor(@Inject(APP_CONFIG) private appSetting: any, ) {
-  this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
+  DISPLAY_COMMON_ATTRS = true;
+  private customized_attrs: Array<any> = new Array<any> ();
+ constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, private ctypeService: CTypeService, ) {
+    this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
+    this.DISPLAY_COMMON_ATTRS = this.appSetting.DISPLAY_COMMON_ATTRS;
+    this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
  }
     ///////////// DONOT CHANGE THIS: the order of each item must not be changed /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
@@ -116,6 +125,106 @@ export class ExcelUploadLoadService {
     }
   }
   // for download
+  formatCSampleJson2AOA(csamples: Array<CSample>): Observable<Array<Array<any>>> {
+    let data: Array<Array<any>> = [];
+    let all_ctypes: Array<CType> = new Array<CType>();
+    const csample_types: Array<string> = this.getCSampleTypes(csamples);
+    const USE_CSAMPLE = true;
+    let sample_attrs: Array<string> = new Array<string>();
+    let displayed_samples = [];
+    return this.ctypeService.getCTypes()
+    .mergeMap((ctypes: Array<CType>) => {
+      all_ctypes = [...ctypes];
+      // get table headers
+      sample_attrs = this.genTableHeaders(csamples, USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, all_ctypes, csample_types);
+      // process sample according to the table headers
+      displayed_samples = this.genDisplaySamples(csamples, sample_attrs, USE_CSAMPLE);
+      data = this.formatCSample2AOA(displayed_samples, sample_attrs);
+      return Observable.of(data);
+    })
+    .catch(() => {
+      this.DISPLAY_COMMON_ATTRS = false;
+      // get table headers
+      sample_attrs = this.genTableHeaders(csamples, USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, all_ctypes, csample_types);
+      // process sample according to the table headers
+      displayed_samples = this.genDisplaySamples(csamples, sample_attrs, USE_CSAMPLE);
+      data = this.formatCSample2AOA(displayed_samples, sample_attrs);
+      return Observable.of(data);
+    })
+  }
+  genTableHeaders(csamples: Array<CSample>, USE_CSAMPLE: boolean,
+    DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>, sample_types: Array<string>) {
+      const exclude_date = false;
+      const full_load = true;
+    return this.ctypeService
+    .genSamplesAttrs(csamples, USE_CSAMPLE, DISPLAY_COMMON_ATTRS, all_ctypes, sample_types, exclude_date, full_load);
+  }
+  // gen displayed_samples
+  genDisplaySamples(csamples: Array<CSample>, sample_attrs: Array<string>, USE_CSAMPLE: boolean) {
+    const displayed_samples = [];
+    if (csamples != null && sample_attrs != null && USE_CSAMPLE) {
+      csamples.forEach((s: CSample) => {
+        const displayed_sample = this.ctypeService.genDisplaySample(s, sample_attrs);
+        displayed_samples.push(displayed_sample);
+      })
+    }
+    return displayed_samples;
+  }
+  formatCSample2AOA(displayed_samples: Array<any>, sample_attrs: Array<string>) {
+    const data: Array<Array<any>> = [];
+    // set the header as the first object
+    console.log(displayed_samples);
+    // headers
+    const headerAOA = new Array();
+    sample_attrs.forEach((h: string, i: number) => {
+      headerAOA[i + ''] = h;
+    })
+    data.push(headerAOA);
+    // convert json to aoa
+    // format the displayed_samples
+    if (displayed_samples.length > 0) {
+      displayed_samples.forEach((sample: any) => {
+        const sampleAOA = new Array();
+        sample_attrs.forEach((h: string, i: number) => {
+          if (sample[h] !== undefined) {
+            if (h === this.utilityService.getCustomizedSampleAttrLabel('attachments', this.customized_attrs)) {
+              // deal with sample attachments
+              if (sample[h] != null && sample[h].length > 0) {
+                let filenames = '';
+                sample[h].forEach(a => filenames += this.getAttachmentFileName(a.attachment) + ', ');
+                sampleAOA[i + ''] = filenames;
+              } else {
+                sampleAOA[i + ''] = '';
+              }
+            } else if (h === this.utilityService.getCustomizedSampleAttrLabel('researchers', this.customized_attrs)) {
+              // researchers
+              // deal with sample user
+              // only the first user
+              sampleAOA[i + ''] =
+              (sample[h] != null && sample[h].length > 0)
+              ? sample[h][0].first_name + ' ' + sample[h][0].last_name
+              : '';
+            } else if (h === this.utilityService.getCustomizedSampleAttrLabel('date_out', this.customized_attrs)) {
+              // sample occupation
+              const occupied_key = this.utilityService.getCustomizedSampleAttrLabel('occupied', this.customized_attrs);
+              if ( sample[occupied_key] !== undefined && sample[occupied_key] !== '' && sample[h] != null) {
+                sampleAOA[i + ''] =  'YES/' + sample[h];
+              } else {
+                sampleAOA[i + ''] = '';
+              }
+            } else {
+              // all other keys
+              sampleAOA[i + ''] = sample[h] !== null ? sample[h] : '';
+            }
+          } else {
+            sampleAOA[i + ''] = '';
+          }
+        })
+        data.push(sampleAOA);
+      })
+    }
+    return data;
+  }
   // save sample json to aoa
   formatSampleJson2AOA(samples: Array<Sample>, selected_headers: Array<string> = new Array<string>()): Array<Array<any>> {
       const data: Array<Array<any>> = [];
@@ -206,6 +315,10 @@ export class ExcelUploadLoadService {
       }
       // console.log(data);
       return data;
+  }
+  // get the ctypes of csamples
+  getCSampleTypes(csamples: Array<CSample>) {
+    return Object.assign([], this.ctypeService.getSampleTypes(true, csamples));
   }
   // get sample types from samples
   getSampleTypes(samples: Array<Sample>): Array<string> {

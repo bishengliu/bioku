@@ -9,8 +9,8 @@ import { Box, BoxFilter } from '../../_classes/Box';
 import { Sample, SampleFilter, Attachment } from '../../_classes/Sample';
 import { CSample, CAttachment } from '../../_classes/CType';
 import { User } from '../../_classes/User';
-import {  ContainerService } from '../../_services/ContainerService';
-import {  UtilityService } from '../../_services/UtilityService';
+import { ContainerService } from '../../_services/ContainerService';
+import { UtilityService } from '../../_services/UtilityService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';

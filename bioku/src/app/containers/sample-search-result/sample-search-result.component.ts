@@ -38,7 +38,7 @@ export class SampleSearchResultComponent implements OnInit, OnChanges {
   displayed_samples: Array<any> = [];
   // CUSTOM SAMPEL CODE NAME
   custom_sample_code_name = 'sample code';
-  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, private ctypeService: CTypeService,) {
+  constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService, private ctypeService: CTypeService, ) {
     this.appUrl = this.appSetting.URL;
     // for redering sample name
     this.SHOW_ORIGINAL_NAME = this.appSetting.SHOW_ORIGINAL_NAME;

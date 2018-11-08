@@ -128,6 +128,18 @@ export const AppSetting = {
         {
             name: 'position',
             label: 'POSITION'
+        },
+        {
+            name: 'date_out',
+            label: 'DATE TAKEN'
+        },
+        {
+            name: 'occupied',
+            label: 'OCCUPIED'
+        },
+        {
+            name: 'researchers',
+            label: 'RESEARCHERS'
         }
     ],
     ////////////////////////////////// BACKEND API URLS////////////////////////////

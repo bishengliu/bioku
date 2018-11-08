@@ -96,12 +96,13 @@
         <td class="">
           <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
               <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
-                {{researcher.first_name != null 
-                  ? (researcher.first_name.toUpperCase() + ' ') 
-                  : ' '}}
-                {{researcher.last_name != null 
-                  ? (researcher.last_name.toUpperCase() + ' ')
-                  : ' '}}
+                {{(researcher.first_name != null 
+                  ? (researcher.first_name.toUpperCase() | slice:0:1) 
+                  : '') 
+                  +
+                  (researcher.last_name != null 
+                  ? (researcher.last_name.toUpperCase() + '' | slice:0:1)
+                  : '')}}
               </span>
           </div> 
         </td> 

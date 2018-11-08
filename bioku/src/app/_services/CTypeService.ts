@@ -138,6 +138,24 @@ export class CTypeService {
                     attachment_subattrs.push(attachment_subattr_description);
                     attachment_attr.subattrs = attachment_subattrs;
                     this.mattrs.push(attachment_attr);
+                    // researchers
+                    let researcher_attr: CTypeAttr = new CTypeAttr();
+                    researcher_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'researchers',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('researchers', this.customized_attrs), // 'NAME'
+                        attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: false,
+                        attr_order: 4,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.mattrs.push(researcher_attr);
                     // end minimal attrs
                     // basic attrs
                     // container
@@ -153,7 +171,7 @@ export class CTypeService {
                         attr_value_decimal_total_digit: null,
                         attr_value_decimal_point: null,
                         attr_required: true,
-                        attr_order: 4,
+                        attr_order: 5,
                         has_sub_attr: false,
                         subattrs: new Array<CTypeSubAttr>()
                     }
@@ -171,7 +189,7 @@ export class CTypeService {
                         attr_value_decimal_total_digit: null,
                         attr_value_decimal_point: null,
                         attr_required: true,
-                        attr_order: 5,
+                        attr_order: 6,
                         has_sub_attr: false,
                         subattrs: new Array<CTypeSubAttr>()
                     }
@@ -189,11 +207,47 @@ export class CTypeService {
                         attr_value_decimal_total_digit: null,
                         attr_value_decimal_point: null,
                         attr_required: true,
-                        attr_order: 6,
+                        attr_order: 7,
                         has_sub_attr: false,
                         subattrs: new Array<CTypeSubAttr>()
                     }
                     this.battrs.push(pos_attr);
+                    // occupied
+                    let occupied_attr: CTypeAttr = new CTypeAttr();
+                    occupied_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'occupied',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('occupied', this.customized_attrs), // POSITION
+                        attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: false,
+                        attr_order: 8,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.battrs.push(occupied_attr);
+                    // date out
+                    let dateout_attr: CTypeAttr = new CTypeAttr();
+                    dateout_attr = {
+                        pk: -1, // no pk
+                        ctype_id: null, // no ctype
+                        attr_name: 'date_out',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('date_out', this.customized_attrs), // POSITION
+                        attr_value_type: 4, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+                        attr_value_text_max_length: null,
+                        attr_value_decimal_total_digit: null,
+                        attr_value_decimal_point: null,
+                        attr_required: false,
+                        attr_order: 9,
+                        has_sub_attr: false,
+                        subattrs: new Array<CTypeSubAttr>()
+                    }
+                    this.battrs.push(dateout_attr);
                     // add minimal attrs
                     this.battrs = [...this.battrs, ...this.mattrs];
                 }
@@ -303,16 +357,27 @@ export class CTypeService {
         return types;
     }
     genSamplesAttrs(samples: Array<CSample>, USE_CSAMPLE: boolean,
-        DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>, sample_types: Array<string>): Array<string> {
+        DISPLAY_COMMON_ATTRS: boolean, all_ctypes: Array<CType>,
+        sample_types: Array<string>, exclude_date = false, full_load = false): Array<string> {
         let attrs = new Array<string>();
         if (samples !== undefined && samples !== null && USE_CSAMPLE) {
             // get basic attrs
             const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
             ctype_basic_attrs.forEach((a: CTypeAttr) => {
-              if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== this.utilityService.
-              getCustomizedSampleAttrLabel('attachments', this.customized_attrs)) {
-                attrs.push(a.attr_label);
-              }
+                // load everything
+                if (full_load) {
+                    if (attrs.indexOf(a.attr_label) === -1) {
+                    attrs.push(a.attr_label);
+                  }
+                } else {
+                    // exclude researcher and attachments
+                    if (attrs.indexOf(a.attr_label) === -1
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('attachments', this.customized_attrs)
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('researchers', this.customized_attrs)) {
+                attrs.push(a.attr_label); }
+                }
             })
             // get only relevant ctypes
             let box_sample_ctypes: Array<CType> = new Array<CType>();
@@ -324,10 +389,10 @@ export class CTypeService {
             if (box_sample_ctypes != null) {
               if (DISPLAY_COMMON_ATTRS) {
                 // only display common sample attrs
-                attrs = [...attrs, ...this.getCommonAttrs(box_sample_ctypes)];
+                attrs = [...attrs, ...this.getCommonAttrs(box_sample_ctypes, exclude_date)];
               } else {
                 // display max sample attr
-                attrs = [...attrs, ...this.getMaxAttrs(box_sample_ctypes)];
+                attrs = [...attrs, ...this.getMaxAttrs(box_sample_ctypes, exclude_date)];
               }
             } else {
               // loop into samples to get the attrs
@@ -341,14 +406,23 @@ export class CTypeService {
           }
           return attrs;
     }
-    genSampleAttrs(sample: CSample): Array<string> {
+    genSampleAttrs(sample: CSample, full_load = false): Array<string> {
         let attrs = new Array<string>();
         // get the basic attrs
         const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
           ctype_basic_attrs.forEach((a: CTypeAttr) => {
-            if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== this.utilityService.
-            getCustomizedSampleAttrLabel('attachments', this.customized_attrs)) {
-              attrs.push(a.attr_label);
+            if (full_load) {
+                if (attrs.indexOf(a.attr_label) === -1) {
+                  attrs.push(a.attr_label);
+                }
+            } else {
+                if (attrs.indexOf(a.attr_label) === -1
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('attachments', this.customized_attrs)
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('researchers', this.customized_attrs)) {
+                  attrs.push(a.attr_label);
+                }
             }
           })
         // get extra attrs
@@ -381,6 +455,11 @@ export class CTypeService {
         displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('name', this.customized_attrs)] = sample.name;
         displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('storage_date', this.customized_attrs)] = sample.storage_date;
         displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('attachments', this.customized_attrs)] = sample.attachments;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('researchers', this.customized_attrs)] = sample.researchers;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('date_out', this.customized_attrs)] = sample.date_out;
+        displayed_sample[
+            this.utilityService.getCustomizedSampleAttrLabel('occupied', this.customized_attrs)
+        ] = sample.occupied ? 'YES' : 'NO';
         // loop into sample attrs
         attrs.forEach((key: string) => {
           if (displayed_sample[key] === undefined) {
