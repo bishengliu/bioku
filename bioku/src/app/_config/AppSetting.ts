@@ -89,6 +89,47 @@ export const AppSetting = {
     'ALLOW_MOVE_SAMPLE_BETWEEN_BOXES': true,
     // show common sample attrs amonong different ctypes
     'DISPLAY_COMMON_ATTRS': true,
+    // customized ctype labels, for csample fixed attrs
+    'CUSTOMIZED_ATTRS' : [
+        {
+            name: 'name',
+            label: 'NAME'
+        },
+        {
+            name: 'storage_date',
+            label: 'STORAGE_DATE'
+        },
+        {
+            name: 'attachments',
+            label: 'ATTACHMENTS',
+            subattrs: [
+                {
+                    name: 'label',
+                    label: 'FILE_LABEL'
+                },
+                {
+                    name: 'attachment',
+                    label: 'FILE'
+                },
+                {
+                    name: 'description',
+                    label: 'DESCRIPTION'
+                }
+            ]
+        },
+        {
+            name: 'container',
+            label: 'CONTAINER'
+        },
+        {
+            name: 'box_position',
+            label: 'BOX'
+        },
+        {
+            name: 'position',
+            label: 'POSITION'
+        }
+    ],
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

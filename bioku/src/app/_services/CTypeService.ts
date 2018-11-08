@@ -1,10 +1,11 @@
 import { Injectable , Inject} from '@angular/core';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { AppSetting} from '../_config/AppSetting';
-import {APP_CONFIG} from '../_providers/AppSettingProvider';
+import { AppSetting } from '../_config/AppSetting';
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
 import { AlertService } from '../_services/AlertService';
+import { UtilityService } from '../_services/UtilityService';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 // CType class
@@ -20,8 +21,11 @@ export class CTypeService {
     private options_NoContentType: RequestOptions;
     private mattrs: Array<CTypeAttr> = new Array<CTypeAttr>()
     private battrs: Array<CTypeAttr> = new Array<CTypeAttr>()
+    private customized_attrs: Array<any> = new Array<any> ();
     constructor(private http: Http, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-                private router: Router, private alertService: AlertService) {
+                private router: Router, private alertService: AlertService, private utilityService: UtilityService) {
+                    // first set up the customized attrs
+                    this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
                     // minimal attrs
                     // name
                     let name_attr: CTypeAttr = new CTypeAttr();
@@ -29,7 +33,8 @@ export class CTypeService {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'name',
-                        attr_label: 'NAME',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('name', this.customized_attrs), // 'NAME'
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -46,7 +51,8 @@ export class CTypeService {
                         pk: -2, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'storage_date',
-                        attr_label: 'STORAGE_DATE',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('storage_date', this.customized_attrs), // 'STORAGE_DATE'
                         attr_value_type: 4, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -63,7 +69,8 @@ export class CTypeService {
                         pk: -3, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'attachments',
-                        attr_label: 'ATTACHMENTS',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('attachments', this.customized_attrs), // 'ATTACHMENTS'
                         attr_value_type: 3, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -83,7 +90,8 @@ export class CTypeService {
                         parent_attr_id: null,
                         parent_attr: 'attachments',
                         attr_name: 'label',
-                        attr_label: 'FILE_LABEL',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttachmentAttrLabel('label', this.customized_attrs), // FILE_LABEL
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -100,7 +108,8 @@ export class CTypeService {
                         parent_attr_id: null,
                         parent_attr: 'attachments',
                         attr_name: 'attachment',
-                        attr_label: 'FILE',
+                        attr_label: this.utilityService.
+                        getCustomizedSampleAttachmentAttrLabel('attachment', this.customized_attrs), // FILE
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -117,7 +126,8 @@ export class CTypeService {
                         parent_attr_id: null,
                         parent_attr: 'attachments',
                         attr_name: 'description',
-                        attr_label: 'DESCRIPTION',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttachmentAttrLabel('description', this.customized_attrs), // DESCRIPTION
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -136,7 +146,8 @@ export class CTypeService {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'container',
-                        attr_label: 'CONTAINER',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('container', this.customized_attrs), // CONTAINER
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -153,7 +164,8 @@ export class CTypeService {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'box_position',
-                        attr_label: 'BOX',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('box_position', this.customized_attrs), // BOX
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -170,7 +182,8 @@ export class CTypeService {
                         pk: -1, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'position',
-                        attr_label: 'POSITION',
+                        attr_label: this.utilityService.
+                                    getCustomizedSampleAttrLabel('position', this.customized_attrs), // POSITION
                         attr_value_type: 0, // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
                         attr_value_text_max_length: null,
                         attr_value_decimal_total_digit: null,
@@ -296,11 +309,12 @@ export class CTypeService {
             // get basic attrs
             const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
             ctype_basic_attrs.forEach((a: CTypeAttr) => {
-              if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
+              if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== this.utilityService.
+              getCustomizedSampleAttrLabel('attachments', this.customized_attrs)) {
                 attrs.push(a.attr_label);
               }
             })
-            // get only relavant ctypes
+            // get only relevant ctypes
             let box_sample_ctypes: Array<CType> = new Array<CType>();
             if (all_ctypes !== null) {
               box_sample_ctypes = all_ctypes.filter((c: CType) => {
@@ -332,7 +346,8 @@ export class CTypeService {
         // get the basic attrs
         const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
           ctype_basic_attrs.forEach((a: CTypeAttr) => {
-            if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== 'ATTACHMENTS') {
+            if (attrs.indexOf(a.attr_label) === -1 && a.attr_label !== this.utilityService.
+            getCustomizedSampleAttrLabel('attachments', this.customized_attrs)) {
               attrs.push(a.attr_label);
             }
           })
@@ -360,12 +375,12 @@ export class CTypeService {
           }
         });
         // get the basic attrs
-        displayed_sample['CONTAINER'] = sample.container;
-        displayed_sample['BOX'] = sample.box_position;
-        displayed_sample['POSITION'] = sample.position;
-        displayed_sample['NAME'] = sample.name;
-        displayed_sample['STORAGE_DATE'] = sample.storage_date;
-        displayed_sample['ATTACHMENTS'] = sample.attachments;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('container', this.customized_attrs)] = sample.container;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('box_position', this.customized_attrs)] = sample.box_position;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('position', this.customized_attrs)] = sample.position;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('name', this.customized_attrs)] = sample.name;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('storage_date', this.customized_attrs)] = sample.storage_date;
+        displayed_sample[this.utilityService.getCustomizedSampleAttrLabel('attachments', this.customized_attrs)] = sample.attachments;
         // loop into sample attrs
         attrs.forEach((key: string) => {
           if (displayed_sample[key] === undefined) {

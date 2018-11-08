@@ -212,7 +212,6 @@ export class UtilityService {
         }
         return name;
     }
-
     // print all the values of an object
     convertObj2String(obj: any): string {
         let res = ''
@@ -227,5 +226,28 @@ export class UtilityService {
             }
         }
         return res;
+    }
+    getCustomizedSampleAttrLabel(name: string, customized_attrs) {
+        let label = '';
+        const attr = customized_attrs.find((a: any) => {
+            return a.name === name;
+        });
+        label = attr !== undefined ? attr.label : name;
+        return label;
+    }
+    getCustomizedSampleAttachmentAttrLabel(name: string, customized_attrs) {
+        let label = '';
+        const attr = customized_attrs.find((a: any) => {
+            return a.name === 'attachments';
+        });
+        if (attr !== undefined) {
+            const subattr = attr.subattrs.find((sa: any) => {
+                return sa.name === name;
+            });
+            label = subattr !== undefined ? subattr.label : name;
+        } else {
+            label = name;
+        }
+        return label;
     }
 }
