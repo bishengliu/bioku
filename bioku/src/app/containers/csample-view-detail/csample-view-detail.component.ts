@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnChanges, Inject } from '@angular/core';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData } from '../../_classes/CType';
-import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { CTypeService } from '../../_services/CTypeService';
-import {  UtilityService } from '../../_services/UtilityService';
+import { UtilityService } from '../../_services/UtilityService';
 
 @Component({
   selector: 'app-csample-view-detail',
