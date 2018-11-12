@@ -142,6 +142,8 @@ export const AppSetting = {
             label: 'RESEARCHERS'
         }
     ],
+    // date regex format
+    'DATE_REGEX': 'DD-MM-YYYY', // OR 'YYYY-MM-DD'
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',

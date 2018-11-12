@@ -256,7 +256,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
     const exclude_date = true;
     const ctypes: Array<CType> = this.ctypeService.getCTypesByNames(sample_types, all_ctypes);
     if (this.DISPLAY_COMMON_ATTRS) {
-      return this.ctypeService.getMaxAttrs(ctypes, exclude_date);
+      return this.ctypeService.getCommonAttrs(ctypes, exclude_date);
     } else {
       return this.ctypeService.getMaxAttrs(ctypes, exclude_date);
     }

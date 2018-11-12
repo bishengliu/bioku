@@ -10,7 +10,10 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class CustomFormValidators {
     private validTimeout;
-    constructor(private http: Http,  @Inject(APP_CONFIG) private appSetting: any) {}
+    private date_regex = 'DD-MM-YYYY';
+    constructor(private http: Http,  @Inject(APP_CONFIG) private appSetting: any) {
+        this.date_regex = this.appSetting.DATE_REGEX;
+    }
     // validate customized type
     ctypeNameRegexValidator() {
         return (control: FormControl): {[s: string]: Boolean} => {
@@ -43,6 +46,60 @@ export class CustomFormValidators {
             }
             if (isNaN(+control.value) || +control.value <= 0) {
                 return { numberInvalid: true }
+            }
+        }
+    }
+    decimalValidator(total_digit, decimal_point, is_postive = true) {
+        return (control: FormControl): {[s: string]: Boolean} => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return null
+            }
+            if (isNaN(+control.value)) {
+                return { decimalInvalid: true }
+            }
+            if (is_postive && +control.value < 0 ) {
+                return { decimalInvalid: true }
+            }
+            if (!is_postive && +control.value >= 0 ) {
+                return { decimalInvalid: true }
+            }
+            // check the decimal points
+            if (control.value.toString().indexOf('.') === -1 || total_digit <= decimal_point) {
+                return { decimalInvalid: true }
+            }
+            const array = control.value.toString().split('.');
+            if (array.length !== 2
+            || array[0].length + array[1].length > total_digit
+            || array[1].length > decimal_point
+                ) {
+                    return { decimalInvalid: true }
+                }
+            if (control.value.toString().length  - 1 > total_digit) {
+                return { decimalInvalid: true }
+            }
+        }
+    }
+    // date
+    dateValidator() {
+        return (control: FormControl): {[s: string]: Boolean} => {
+            // not reuired
+            if (!control.value || control.value.length === 0 || control.value === '') {
+                return null
+            }
+            // DD/MM/YYYY or DD-MM-YYYY
+            // /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/
+            if (this.date_regex === 'DD-MM-YYYY'
+                && !control.value.match(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/)) {
+                return { dateInvalid: true }
+            } else {
+                // YYYY-MM-DD or YYYY/MM/DD
+                if (this.date_regex === 'YYYY-MM-DD'
+                && !control.value.match(/^(\d{4})[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/)) {
+                    return { dateInvalid: true }
+                } else {
+                    return { dateInvalid: false }
+                }
             }
         }
     }

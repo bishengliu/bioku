@@ -232,7 +232,7 @@ export class UtilityService {
         const attr = customized_attrs.find((a: any) => {
             return a.name === name;
         });
-        label = attr !== undefined ? attr.label : name;
+        label = attr !== undefined ? attr.label : name.toUpperCase();
         return label;
     }
     getCustomizedSampleAttachmentAttrLabel(name: string, customized_attrs) {

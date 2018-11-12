@@ -8,7 +8,7 @@ import { AppSetting} from '../../../_config/AppSetting';
 import { APP_CONFIG } from '../../../_providers/AppSettingProvider';
 import { LogAppStateService } from '../../../_services/LogAppStateService';
 import { User } from '../../../_classes/User';
-import {  ContainerService } from '../../../_services/ContainerService';
+import { ContainerService } from '../../../_services/ContainerService';
 
 // redux
 import { AppStore } from '../../../_providers/ReduxProviders';
