@@ -96,6 +96,14 @@ export const AppSetting = {
             label: 'NAME'
         },
         {
+            name: 'ctype',
+            label: 'TYPE'
+        },
+        {
+            name: 'type',
+            label: 'TYPE'
+        },
+        {
             name: 'storage_date',
             label: 'STORAGE_DATE'
         },

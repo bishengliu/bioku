@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
+import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl, FormArray} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppSetting } from '../../_config/AppSetting';
@@ -75,12 +75,12 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   fb_group_controlsConfig = {};
   extra_attrs: Array<any> = new Array<any>();
   // add or remove function
-  subattr_handler: Array<any> = new Array<any>();
+  subattr_handler = {};
   private customized_attrs: Array<any> = new Array<any> ();
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private ctypeService: CTypeService,
               private cValidators: CustomFormValidators, private alertService: AlertService, private router: Router,
               private utilityService: UtilityService, private route: ActivatedRoute,
-              fb: FormBuilder, private localStorageService: LocalStorageService) {
+              private fb: FormBuilder, private localStorageService: LocalStorageService) {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
@@ -93,7 +93,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       this.ctypeService.getCTypes()
       .subscribe((ctypes: Array<CType>) => {
         this.all_ctypes = ctypes;
-        console.log(this.all_ctypes);
+        // console.log(this.all_ctypes);
       },
       () => {
         this.failed = true;
@@ -114,8 +114,8 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
     const minimal_attrs = ['ctype', 'name', 'color', 'storage_date', 'attachment'];
     this.extra_attrs = this.getMinimalLabels(minimal_attrs);
     this.sampleForm = this.USE_CSAMPLE
-    ? fb.group(this.fb_group_controlsConfig)
-    : this.sampleForm = fb.group({
+    ? this.fb.group(this.fb_group_controlsConfig)
+    : this.sampleForm = this.fb.group({
       // general
       'color': [, ],
       'type': [, Validators.required],
@@ -187,17 +187,20 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       // get current form values
       const fb_values = this.sampleForm.value;
       // update fromgroup
-
-      // format left and right extra attrs
+      this.sampleForm = this.updateFormGroup(this.fb, fb_values, this.ctype, this.fb_group_controlsConfig);
+      // gen and bind subattr add and remove function
+      this.subattr_handler = this.genSubAttrHandlers(this.sampleForm, this.ctype);
     }
   }
-
-  // getExtraAttrs(sample_types: string, all_ctypes: Array<CType>) {
-  //   // get the relavent ctypes
-  //   const exclude_date = false;
-  //   const ctypes: Array<CType> = this.ctypeService.getCTypesByNames([sample_types], all_ctypes);
-  //   return this.ctypeService.getMaxAttrs(ctypes, exclude_date);
-  // }
+// render form label
+renderFormLabel(name) {
+  const matched = this.extra_attrs.find((a: any) => {return a.name === name })
+  if (matched !== undefined) {
+    return matched.label;
+  } else {
+    return name;
+  }
+}
 // get minial atrtr label
 getMinimalLabels(attrs: Array<string>): Array<any> {
   const labels: Array<any> = new Array<any>();
@@ -234,7 +237,7 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
       this.extra_attrs.push({'name': attr.attr_name, 'label': attr.attr_label.toUpperCase()});
       fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, this.genFbConfigObjNoSubAttr(attr));
     } else {
-      // update extra_attrs
+      // update subattr extra_attrs
       const extra_label = {};
       extra_label['name'] = attr.attr_name;
       extra_label['label'] = [];
@@ -248,10 +251,6 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
       obj[attr.attr_name] = fb.array([
         this.genSubfbConfig(fb, attr.subattrs)
       ]);
-      // add function 
-
-      // remove function
-      
     }
   });
   return fb.group(fb_group_controlsConfig);
@@ -360,7 +359,25 @@ genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
         this.attchament_is2large = false;
       }
   }
-
+// gen subattr handler
+genSubAttrHandlers(formGroup: FormGroup, ctype: CType) {
+  const handler = {};
+  ctype.attrs.forEach((attr: CTypeAttr) => {
+    if (+attr.attr_value_type === 3) {
+      // add handler
+      handler['add_' + attr.attr_name] = () => {
+        const control = <FormArray>formGroup.controls[attr.attr_name];
+        control.push(this.genSubfbConfig(this.fb, attr.subattrs));
+      }
+      // remove handler
+      handler['remove_' + attr.attr_name] = (i: number) => {
+        const control = <FormArray>formGroup.controls[attr.attr_name];
+        control.removeAt(i);
+      }
+    }
+  })
+  return handler;
+}
   updateSampleDate(value: any) {
     this.freezing_date = value.formatted;
   }

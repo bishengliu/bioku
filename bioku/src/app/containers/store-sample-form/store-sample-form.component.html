@@ -2,8 +2,8 @@
   <div class="ui negative message" *ngIf="!form_valid && !saving">
     <div class="header">"sample name" and "sample type" are required! </div>
 </div>
-
-<form *ngIf="!saving" [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
+<!-- OLD TYPES-->
+<form *ngIf="!saving && !USE_CSAMPLE" [formGroup]="sampleForm" class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" enctype="multipart/form-data">
   <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
     <i class="icon add circle"></i> SAVE SAMPLES 
   </button>  
@@ -363,7 +363,7 @@
   </div>
 </form>
 <!--date and color-->
-<div class="ui grid" *ngIf="sample_type != '-' && !saving">
+<div class="ui grid" *ngIf="sample_type != '-' && !saving &&  !USE_CSAMPLE">
   <div class="eight wide column">
       <div><span class="header">freezing date: </span></div>
       <my-date-picker name="freezing_date" [options]="myDatePickerOptions" [(ngModel)]="freezing_date" 
@@ -375,6 +375,34 @@
       [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
   </div>
 </div>
+<!--CTYPE-->
+<div *ngIf="USE_CSAMPLE">
+  <!-- form need to render the form-->
+  <form *ngIf="USE_CSAMPLE" [formGroup]="sampleForm" 
+  class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" 
+  enctype="multipart/form-data">
+    <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
+      <i class="icon add circle"></i> SAVE SAMPLES 
+    </button> 
+    <div class="two fields">
+      <div class="field">
+
+      </div>
+    </div>
+  </form>
+  <div class="ui grid" *ngIf="sample_type != '-' && !saving">
+    <div class="eight wide column">
+        <div><span class="header">{{renderFormLabel('storage_date')}}: </span></div>
+        <my-date-picker name="storage_date" [options]="myDatePickerOptions" [(ngModel)]="storage_date" 
+        (ngModelChange)="updateSampleDate($event)"></my-date-picker>
+    </div>
+    <div class="eight wide column" *ngIf="sample_type != '-'">
+        <div><span class="header">{{renderFormLabel('color')}}: </span></div>
+        <color-picker [(ngModel)]="color" (ngModelChange)="updateSampleColor($event)" 
+        [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
+    </div>
+  </div>
+</div>
 <!-- saving-->
 <!--loading info-->
 <div *ngIf="saving" class="ui loading segment center aligned">
@@ -382,7 +410,6 @@
   <p class="brown-text"> saving samples into box ... </p>
 </div>
 </div>
-
 
 <!--loading failed-->
 <div *ngIf="failed" class="ui loading segment center aligned">
