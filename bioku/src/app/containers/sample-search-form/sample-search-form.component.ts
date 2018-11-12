@@ -145,19 +145,21 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   }
 
   updateType(value: any) {
-    // console.log(value);
-    this.sample_types = value;
-    // this.sample_type = value.target.value;
-    // FIND EXTRA SAMPLE ATTRS
-    this.extra_attrs = this.getExtraAttrs(this.sample_types, this.all_ctypes);
-    // get current form values
-    const fb_values = this.searchForm.value;
-    // update fromgroup
-    this.searchForm = this.updateFormGroup(this.fb, fb_values, this.extra_attrs, this.fb_group_controlsConfig);
-    // watch form changes
-    this.preSearch();
-    // format left and right extra attrs
-    [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
+    if (this.USE_CSAMPLE) {
+      // console.log(value);
+      this.sample_types = value;
+      // this.sample_type = value.target.value;
+      // FIND EXTRA SAMPLE ATTRS
+      this.extra_attrs = this.getExtraAttrs(this.sample_types, this.all_ctypes);
+      // get current form values
+      const fb_values = this.searchForm.value;
+      // update fromgroup
+      this.searchForm = this.updateFormGroup(this.fb, fb_values, this.extra_attrs, this.fb_group_controlsConfig);
+      // watch form changes
+      this.preSearch();
+      // format left and right extra attrs
+      [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
+    }
   }
   // pre sample search
   preSearch() {

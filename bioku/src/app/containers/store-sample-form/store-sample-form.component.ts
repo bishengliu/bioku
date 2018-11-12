@@ -70,12 +70,15 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   all_ctypes: Array<CType> = new Array<CType>();
   // loading falied
   failed = false;
+  fb_group_controlsConfig = {};
+  extra_attrs: Array<String> = new Array<String>();
+  left_extra_attrs: Array<Array<String>> = new Array<Array<String>> ();
+  right_extra_attrs: Array<Array<String>> = new Array<Array<String>> ();
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private ctypeService: CTypeService,
               private cValidators: CustomFormValidators, private alertService: AlertService, private router: Router,
               private route: ActivatedRoute, fb: FormBuilder, private localStorageService: LocalStorageService) {
     this.appUrl = this.appSetting.URL;
     this.availableColors = this.appSetting.APP_COLORS;
-    this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
     this.sample_type = '-';
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
@@ -90,9 +93,20 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         this.failed = true;
         this.alertService.error('failed to retrieve sample types, please refresh the page or contact the support!', false);
       });
+    } else {
+      this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     }
-    // formGroup
-    this.sampleForm = fb.group({
+
+    this.fb_group_controlsConfig = {
+      'type': [, Validators.required],
+      'name': [, Validators.required],
+      'color': [, ],
+      'freezing_date': [, ],
+      'attachment': [, ]
+    }
+    this.sampleForm = this.USE_CSAMPLE
+    ? fb.group(this.fb_group_controlsConfig)
+    : this.sampleForm = fb.group({
       // general
       'color': [, ],
       'type': [, Validators.required],
@@ -154,6 +168,16 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
 
   updateType(value: any) {
     this.sample_type = value.target.value;
+    // reset form group for csample
+    if (this.USE_CSAMPLE) {
+      // FIND EXTRA SAMPLE ATTRS
+
+      // get current form values
+
+      // update fromgroup
+
+      // format left and right extra attrs
+    }
   }
   // check upload photo
   validateAttachmentUpload(event: EventTarget) {
