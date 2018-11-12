@@ -1,15 +1,18 @@
 import { Component, OnInit, OnChanges, Inject, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
-import {FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
+import { FormBuilder, AbstractControl, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData } from '../../_classes/CType';
 import { Container } from '../../_classes/Container';
 import { ContainerService } from '../../_services/ContainerService';
-import {  AlertService } from '../../_services/AlertService';
+import { AlertService } from '../../_services/AlertService';
 import { LocalStorageService } from '../../_services/LocalStorageService';
+import { CTypeService } from '../../_services/CTypeService';
+import { UtilityService } from '../../_services/UtilityService';
 // custom from validator
 import { CustomFormValidators } from '../../_helpers/CustomFormValidators';
 // mydatepicker
@@ -49,7 +52,6 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       showSelectorArrow: false,
       editableDateField: false,
       openSelectorOnInputClick: true};
-
   // color picker
   availableColors: Array<string> = [];
   pickerOptions: IColorPickerConfiguration = {
@@ -62,7 +64,13 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   saving: Boolean = false;
   // CUSTOM SAMPEL CODE NAME
   custom_sample_code_name = 'sample code';
-  constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService,
+  // use casmple
+  USE_CSAMPLE = true;
+  // all the ctypes
+  all_ctypes: Array<CType> = new Array<CType>();
+  // loading falied
+  failed = false;
+  constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private ctypeService: CTypeService,
               private cValidators: CustomFormValidators, private alertService: AlertService, private router: Router,
               private route: ActivatedRoute, fb: FormBuilder, private localStorageService: LocalStorageService) {
     this.appUrl = this.appSetting.URL;
@@ -70,6 +78,19 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
     this.all_sample_types = this.appSetting.SAMPLE_TYPE;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME.toLowerCase();
     this.sample_type = '-';
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    this.failed = false;
+    // get all sample ctypes
+    if (this.USE_CSAMPLE) {
+      this.ctypeService.getCTypes()
+      .subscribe((ctypes: Array<CType>) => {
+        this.all_ctypes = ctypes;
+      },
+      () => {
+        this.failed = true;
+        this.alertService.error('failed to retrieve sample types, please refresh the page or contact the support!', false);
+      });
+    }
     // formGroup
     this.sampleForm = fb.group({
       // general

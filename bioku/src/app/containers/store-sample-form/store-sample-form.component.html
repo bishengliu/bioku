@@ -1,4 +1,5 @@
-<div class="ui negative message" *ngIf="!form_valid && !saving">
+<div *ngIf="!failed">
+  <div class="ui negative message" *ngIf="!form_valid && !saving">
     <div class="header">"sample name" and "sample type" are required! </div>
 </div>
 
@@ -374,10 +375,17 @@
       [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
   </div>
 </div>
-
 <!-- saving-->
 <!--loading info-->
 <div *ngIf="saving" class="ui loading segment center aligned">
   <br/><br/><br/><br/>
   <p class="brown-text"> saving samples into box ... </p>
+</div>
+</div>
+
+
+<!--loading failed-->
+<div *ngIf="failed" class="ui loading segment center aligned">
+  <br/><br/><br/><br/>
+  <p class="red-text"> something went wrong, please refresh the page or contact support ... </p>
 </div>

@@ -107,7 +107,7 @@
         <div class="ui divider"></div>
         <button class="ui mini fluid inverted primary button" (click)="storeSamples()">
           <i class="icon add circle"></i>
-          STORE SAMPLES
+          STORE {{emptySelectedCells.length === 1? 'SAMPLE': 'SAMPLES'}}
         </button>
       </div> 
     </div> 
