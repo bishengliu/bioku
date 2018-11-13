@@ -376,7 +376,7 @@
   </div>
 </div>
 <!--CTYPE-->
-<div *ngIf="USE_CSAMPLE">
+<div *ngIf="USE_CSAMPLE && !saving">
   <!-- form need to render the form-->
   <form *ngIf="USE_CSAMPLE" [formGroup]="sampleForm" 
   class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" 
@@ -386,22 +386,140 @@
     </button> 
     <div class="two fields">
       <div class="field">
+        <table class="ui small very basic compact padded single line table">
+          <tbody>
+            <!-- ctype -->
+            <tr>
+              <th class="right aligned">{{renderFormLabel('ctype')}}</th>
+              <td colspan="2">
+                <div class="ui input wide-form">                        
+                  <select class="ui tiny tight_around dropdown" id="ctype" [formControl]="sampleForm.controls['ctype']" (change)="updateType($event)">
+                      <option value="-"> -- select -- </option>
+                      <option *ngFor="let option of all_sample_types" value="{{option}}">{{option}}</option>
+                  </select>
+                </div>
+                <div *ngIf="sampleForm.controls['ctype'].hasError('required') && sampleForm.controls['ctype'].touched" 
+                class="ui mini negative message">{{renderFormLabel('ctype')}} is required</div>                               
+              </td>
+          </tr>
+          <!-- storage data-->
+          <tr *ngIf="sample_type != '-'">
+              <th class="right aligned">{{renderFormLabel('storage_date')}}</th>
+              <td colspan="2">
+                  <my-date-picker name="storage_date" 
+                  [options]="myDatePickerOptions" 
+                  [(ngModel)]="storage_date" 
+                  [ngModelOptions]="{standalone: true}"
+                  (ngModelChange)="updateStorageDate($event)">
+                </my-date-picker>
+                <div *ngIf="(storage_date == null || storage_date == '') && sampleForm.touched" 
+                class="ui mini negative message"> 
+                  {{renderFormLabel('storage_date')}} is required
+                </div>
+              </td>
+          </tr>
+          <!-- left extra attrs-->
+          <tr *ngFor="let attr of left_extra_attrs">
+              <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
+              <td colspan="2">
+                <div class="ui input wide-form">
+                    <input class="" type="text" id="{{attr.name}}" [formControl]="sampleForm.controls[attr.name]">
+                </div>
+                <div *ngIf="sampleForm.controls[attr.name].touched">
+                  <!--required-->
+                  <div *ngIf="sampleForm.controls[attr.name].hasError('required')"  class="ui mini negative message">
+                      {{renderFormLabel(attr.name)}} is required!
+                  </div>
+                  <!--max legth-->
+                  <div *ngIf="sampleForm.controls[attr.name].hasError('maxlength')"  class="ui mini negative message">
+                      you've typed too long for {{renderFormLabel(attr.name)}}!
+                  </div>
+                  <!--decimal-->
+                  <div *ngIf="sampleForm.controls[attr.name].hasError('decimalInvalid')"  class="ui mini negative message">
+                      {{renderFormLabel(attr.name)}} is invalid!
+                  </div>
+                  <!--decimal-->
+                  <div *ngIf="sampleForm.controls[attr.name].hasError('numberInvalid')"  class="ui mini negative message">
+                      {{renderFormLabel(attr.name)}} is invalid!
+                  </div>
+                  <!--date-->
+                  <div *ngIf="sampleForm.controls[attr.name].hasError('dateInvalid')">
+                      {{renderFormLabel(attr.name)}} is not a valid date format! a date must matches the format {{date_regex}}.
+                  </div>
+                </div>
+              </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="field">
+        <table class="ui small very basic compact padded single line table" *ngIf="sample_type != '-'">
+          <tbody>
+            <!-- name -->
+              <tr>
+                  <th class="right aligned">{{renderFormLabel('name')}}</th>
+                  <td colspan="2">
+                      <div class="ui icon input wide-form">
+                        <input class="" type="text" maxlength="20" id="name" [formControl]="sampleForm.controls['name']" placeholder="name ...">
+                      </div> 
+                      <div *ngIf="sampleForm.controls['name'].hasError('required') && sampleForm.controls['name'].touched" 
+                      class="ui mini negative message">{{renderFormLabel('name')}} is required</div>                                               
+                  </td>
+              </tr>
+              <!--color-->
+              <tr>
+                  <th class="right aligned">{{renderFormLabel('color')}}</th>
+                  <td colspan="2">
+                      <color-picker 
+                      [(ngModel)]="color" 
+                      [ngModelOptions]="{standalone: true}"
+                      (ngModelChange)="updateSampleColor($event)" 
+                      [availableColors]="availableColors" 
+                      [pickerConfig]="pickerOptions">
+                    </color-picker>
+                  </td>
+              </tr>
+              <!-- right extra attrs-->
+              <tr *ngFor="let attr of right_extra_attrs">
+                  <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
+                  <td colspan="2">
+                      <div class="ui input wide-form">
+                          <input class="" type="text" id="{{attr.name}}" [formControl]="sampleForm.controls[attr.name]">
+                      </div>
+                      <div *ngIf="sampleForm.controls[attr.name].touched">
+                          <!--required-->
+                          <div *ngIf="sampleForm.controls[attr.name].hasError('required')" class="ui mini negative message">
+                              {{renderFormLabel(attr.name)}} is required!
+                          </div>
+                          <!--max legth-->
+                          <div *ngIf="sampleForm.controls[attr.name].hasError('maxlength')" class="ui mini negative message">
+                              you've typed too long for {{renderFormLabel(attr.name)}}!
+                          </div>
+                          <!--decimal-->
+                          <div *ngIf="sampleForm.controls[attr.name].hasError('decimalInvalid')" class="ui mini negative message">
+                              {{renderFormLabel(attr.name)}} is invalid!
+                          </div>
+                          <!--decimal-->
+                          <div *ngIf="sampleForm.controls[attr.name].hasError('numberInvalid')" class="ui mini negative message">
+                              {{renderFormLabel(attr.name)}} is invalid!
+                          </div>
+                          <!--date-->
+                          <div *ngIf="sampleForm.controls[attr.name].hasError('dateInvalid')" class="ui mini negative message">
+                              {{renderFormLabel(attr.name)}} is not a valid date format! a date must matches the format {{date_regex}}.
+                          </div>
+                        </div>
+                  </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="field" *ngIf="sample_type != '-' && has_subattr">
+        <table class="ui small very basic compact padded single line table">
 
+        </table>
       </div>
     </div>
   </form>
-  <div class="ui grid" *ngIf="sample_type != '-' && !saving">
-    <div class="eight wide column">
-        <div><span class="header">{{renderFormLabel('storage_date')}}: </span></div>
-        <my-date-picker name="storage_date" [options]="myDatePickerOptions" [(ngModel)]="storage_date" 
-        (ngModelChange)="updateSampleDate($event)"></my-date-picker>
-    </div>
-    <div class="eight wide column" *ngIf="sample_type != '-'">
-        <div><span class="header">{{renderFormLabel('color')}}: </span></div>
-        <color-picker [(ngModel)]="color" (ngModelChange)="updateSampleColor($event)" 
-        [availableColors]="availableColors" [pickerConfig]="pickerOptions"></color-picker>
-    </div>
-  </div>
 </div>
 <!-- saving-->
 <!--loading info-->

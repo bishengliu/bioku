@@ -151,7 +151,7 @@ export const AppSetting = {
         }
     ],
     // date regex format
-    'DATE_REGEX': 'DD-MM-YYYY', // OR 'YYYY-MM-DD'
+    'DATE_REGEX': 'YYYY-MM-DD', // OR 'YYYY-MM-DD' OR 'DD-MM-YYYY'
     ////////////////////////////////// BACKEND API URLS////////////////////////////
     // server reset password
     'RESET_PASSWORD': '/reset_password/',
