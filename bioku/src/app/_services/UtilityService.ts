@@ -250,4 +250,28 @@ export class UtilityService {
         }
         return label;
     }
+    //decode ctype input type
+    decodeCTyeAttrType(attr_value_type: number): string {
+        let decoded: string;
+        if (attr_value_type === 0) {
+            decoded ="text";
+        } else if (attr_value_type === 1 || attr_value_type === 2) {
+            decoded ="number";
+        }
+        else if (attr_value_type === 4) {
+            decoded ="date";
+        }
+        else {
+            decoded = "text";
+        }
+        return decoded;
+    }
+    // get ctype attr input decimal step
+    decodeCTypeDigitStep(attr_value_type: number, decimal_point: number): number {
+        let step =0.01;
+        if ( attr_value_type === 2) {
+            step = 1 / (10 * decimal_point);
+        }
+        return step
+    }
 }
