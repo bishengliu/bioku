@@ -201,7 +201,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       this.subattr_handler = this.genSubAttrHandlers(this.sampleForm, this.ctype);
       // split the extra_attrs for display
       [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
-      // console.log([this.left_extra_attrs, this.right_extra_attrs]);
+      console.log([this.left_extra_attrs, this.right_extra_attrs]);
     }
   }
 // render form label
@@ -278,7 +278,10 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
     // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
     if (+attr.attr_value_type !== 3) {
       // no sub attrs
-      this.extra_attrs.push({'name': attr.attr_name, 'label': attr.attr_label.toUpperCase()});
+      this.extra_attrs.push(
+        {'name': attr.attr_name,
+          'label': attr.attr_label.toUpperCase(),
+          'attr': this.utilityService.decodeCTPyeInputAttr(attr)});
       fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, this.genFbConfigObjNoSubAttr(attr));
     } else {
       this.has_subattr = true;
@@ -287,7 +290,10 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
       extra_label['name'] = attr.attr_name;
       extra_label['label'] = [];
       attr.subattrs.forEach((subattr: CTypeSubAttr) => {
-        const extra_sublabel = {'name': subattr.attr_name, 'label': subattr.attr_label.toUpperCase()};
+        const extra_sublabel = {
+        'name': subattr.attr_name,
+        'label': subattr.attr_label.toUpperCase(),
+        'attr': this.utilityService.decodeCTPyeInputAttr(subattr)};
         extra_label['label'].push(extra_sublabel);
       });
       this.extra_attrs.push(extra_label);

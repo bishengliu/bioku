@@ -401,11 +401,11 @@
                 <div *ngIf="sampleForm.controls['ctype'].hasError('required') && sampleForm.controls['ctype'].touched" 
                 class="ui mini negative message">{{renderFormLabel('ctype')}} is required</div>                               
               </td>
-          </tr>
-          <!-- storage data-->
-          <tr *ngIf="sample_type != '-'">
+            </tr>
+            <!-- storage data-->
+            <tr *ngIf="sample_type != '-'">
               <th class="right aligned">{{renderFormLabel('storage_date')}}</th>
-              <td colspan="2">
+              <td colspan="2" class="store_sample">
                   <my-date-picker name="storage_date" 
                   [options]="myDatePickerOptions" 
                   [(ngModel)]="storage_date" 
@@ -417,13 +417,19 @@
                   {{renderFormLabel('storage_date')}} is required
                 </div>
               </td>
-          </tr>
-          <!-- left extra attrs-->
-          <tr *ngFor="let attr of left_extra_attrs">
+            </tr>
+            <!-- left extra attrs-->
+            <tr *ngFor="let attr of left_extra_attrs">
               <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
               <td colspan="2">
                 <div class="ui input wide-form">
-                    <input class="" type="text" id="{{attr.name}}" [formControl]="sampleForm.controls[attr.name]">
+                    <input class="" 
+                    type="{{attr.attr.type}}" 
+                    step="{{attr.attr.step}}"
+                    required="{{attr.attr.required}}"
+                    maxlength="{{attr.attr.maxlength}}"
+                    id="{{attr.name}}" 
+                    [formControl]="sampleForm.controls[attr.name]">
                 </div>
                 <div *ngIf="sampleForm.controls[attr.name].touched">
                   <!--required-->
@@ -460,7 +466,12 @@
                   <th class="right aligned">{{renderFormLabel('name')}}</th>
                   <td colspan="2">
                       <div class="ui icon input wide-form">
-                        <input class="" type="text" maxlength="20" id="name" [formControl]="sampleForm.controls['name']" placeholder="name ...">
+                        <input class="" 
+                        type="text" 
+                        maxlength="20" 
+                        id="name" 
+                        [formControl]="sampleForm.controls['name']" 
+                        placeholder="name ...">
                       </div> 
                       <div *ngIf="sampleForm.controls['name'].hasError('required') && sampleForm.controls['name'].touched" 
                       class="ui mini negative message">{{renderFormLabel('name')}} is required</div>                                               
@@ -484,7 +495,13 @@
                   <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
                   <td colspan="2">
                       <div class="ui input wide-form">
-                          <input class="" type="text" id="{{attr.name}}" [formControl]="sampleForm.controls[attr.name]">
+                          <input class="" 
+                          type="{{attr.attr.attr.type}}"
+                          step="{{attr.attr.step}}"
+                          required="{{attr.attr.required}}"
+                          maxlength="{{attr.attr.maxlength}}"
+                          id="{{attr.name}}" 
+                          [formControl]="sampleForm.controls[attr.name]">
                       </div>
                       <div *ngIf="sampleForm.controls[attr.name].touched">
                           <!--required-->

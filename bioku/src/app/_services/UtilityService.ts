@@ -1,5 +1,6 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
+import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../_classes/CType';
 
 @Injectable()
 export class UtilityService {
@@ -250,28 +251,57 @@ export class UtilityService {
         }
         return label;
     }
-    //decode ctype input type
-    decodeCTyeAttrType(attr_value_type: number): string {
+    // decode ctype input type
+    decodeCTypeAttrType(attr_value_type: number): string {
         let decoded: string;
         if (attr_value_type === 0) {
-            decoded ="text";
+            decoded = 'text';
         } else if (attr_value_type === 1 || attr_value_type === 2) {
-            decoded ="number";
-        }
-        else if (attr_value_type === 4) {
-            decoded ="date";
-        }
-        else {
-            decoded = "text";
+            decoded = 'number';
+        } else if (attr_value_type === 4) {
+            decoded = 'date';
+        } else {
+            decoded = 'text';
         }
         return decoded;
     }
     // get ctype attr input decimal step
     decodeCTypeDigitStep(attr_value_type: number, decimal_point: number): number {
-        let step =0.01;
+        let step = 0.01;
         if ( attr_value_type === 2) {
             step = 1 / (10 * decimal_point);
         }
         return step
+    }
+    // decodeCTPyeInputAttr
+    decodeCTPyeInputAttr(attr: CTypeAttr | CTypeSubAttr) {
+        const obj = {};
+        // input type
+        obj['type'] = this.decodeCTypeAttrType(attr.attr_value_type);
+        // required or not
+        obj['required'] = attr.attr_required;
+        // max for string
+        if (attr.attr_value_type === 0
+            && attr.attr_value_text_max_length !== null
+            && !isNaN(+attr.attr_value_text_max_length)
+            && +attr.attr_value_text_max_length > 0
+            ) {
+            obj['maxlength'] = +attr.attr_value_text_max_length;
+        } else {
+            obj['maxlength'] = null;
+        }
+        // step for float/decimal
+        if (attr.attr_value_type === 2) {
+            if (attr.attr_value_decimal_point !== null
+                && !isNaN(+attr.attr_value_decimal_point)
+                && +attr.attr_value_decimal_point > 0) {
+                    obj['step'] = this.decodeCTypeDigitStep(attr.attr_value_type, attr.attr_value_decimal_point);
+                } else {
+                    obj['step'] = 0.01;
+                }
+        } else {
+            obj['step'] = null;
+        }
+        return obj;
     }
 }
