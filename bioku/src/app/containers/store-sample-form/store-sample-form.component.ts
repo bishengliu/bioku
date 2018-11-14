@@ -75,8 +75,11 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   fb_group_controlsConfig = {};
   minimal_attrs: Array<string> = ['ctype', 'name', 'color', 'storage_date', 'attachment']
   extra_attrs: Array<any> = new Array<any>();
+  // for the main type attr
   left_extra_attrs: Array<any> = new Array<any> ();
   right_extra_attrs: Array<any> = new Array<any> ();
+  // for the subattr
+  sub_table_attrs: Array<any> = new Array<any> ();
   has_subattr = false;
   // add or remove function
   subattr_handler = {};
@@ -186,6 +189,10 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
     this.sample_type = value.target.value;
     // reset form group for csample
     if (this.USE_CSAMPLE) {
+      // empty the form
+      this.extra_attrs = [];
+      this.left_extra_attrs = [];
+      this.right_extra_attrs = [];
       //
       this.has_subattr = false;
       // get the selected ctype
@@ -197,11 +204,14 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       const fb_values = this.sampleForm.value;
       // update fromgroup
       this.sampleForm = this.updateFormGroup(this.fb, fb_values, this.ctype, this.fb_group_controlsConfig);
+      // get sub_table_attrs
+      if (this.has_subattr) {
+        this.sub_table_attrs = this.genSubTableAttrs(this.extra_attrs);
+      }
       // gen and bind subattr add and remove function
       this.subattr_handler = this.genSubAttrHandlers(this.sampleForm, this.ctype);
       // split the extra_attrs for display
       [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
-      console.log([this.left_extra_attrs, this.right_extra_attrs]);
     }
   }
 // render form label
@@ -210,8 +220,28 @@ renderFormLabel(name) {
   if (matched !== undefined) {
     return matched.label;
   } else {
-    return name;
+    return name.toUpperCase();
   }
+}
+renderFormSubTableLabel(attr_name: string, subattr_name: string) {
+  const pmatched = this.extra_attrs.find((a: any) => {return a.name === attr_name });
+  if (pmatched !== undefined) {
+    // find the sub
+    const smatched = pmatched.subattrs.find((a: any) => {return a.name === subattr_name });
+    if (smatched !== undefined) {
+      return smatched.label;
+    } else {
+      return subattr_name.toUpperCase();
+    }
+  } else {
+    return subattr_name.toUpperCase();
+  }
+}
+// get the sub_table_attrs
+genSubTableAttrs(extra_attrs: Array<any>): Array<any> {
+  return extra_attrs.filter((ex: any) => {
+    return typeof ex.subattrs === 'object' && ex.subattrs.length > 0;
+  })
 }
   // update left and right extra attrs
   updateLeftRightExtraAttrs(extra_attrs: Array<any>) {
@@ -220,7 +250,7 @@ renderFormLabel(name) {
     // remove the minimal attrs and attr with sub
     const minimal_attrs = this.minimal_attrs;
     const new_extra_attrs: Array<any> = extra_attrs.filter((attr: any) => {
-      return minimal_attrs.indexOf(attr.name) === -1 && typeof attr.label !== 'object';
+      return minimal_attrs.indexOf(attr.name) === -1 && typeof attr.subattrs !== 'object';
     })
     const len = new_extra_attrs.length;
     if (len > 0) {
@@ -288,13 +318,14 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
       // update subattr extra_attrs
       const extra_label = {};
       extra_label['name'] = attr.attr_name;
-      extra_label['label'] = [];
+      extra_label['label'] = attr.attr_label;
+      extra_label['subattrs'] = [];
       attr.subattrs.forEach((subattr: CTypeSubAttr) => {
         const extra_sublabel = {
         'name': subattr.attr_name,
         'label': subattr.attr_label.toUpperCase(),
         'attr': this.utilityService.decodeCTPyeInputAttr(subattr)};
-        extra_label['label'].push(extra_sublabel);
+        extra_label['subattrs'].push(extra_sublabel);
       });
       this.extra_attrs.push(extra_label);
       // add_subattr.attr_label
@@ -302,6 +333,7 @@ updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_grou
       obj[attr.attr_name] = fb.array([
         this.genSubfbConfig(fb, attr.subattrs)
       ]);
+      fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, obj);
     }
   });
   return fb.group(fb_group_controlsConfig);
@@ -428,6 +460,13 @@ genSubAttrHandlers(formGroup: FormGroup, ctype: CType) {
     }
   })
   return handler;
+}
+// add_column
+add_column(attr_name: string) {
+  return this.subattr_handler['add_' + attr_name]();
+}
+remove_column(attr_name: string, i: number) {
+  return this.subattr_handler['remove_' + attr_name](i);
 }
   updateSampleDate(value: any) {
     this.freezing_date = value.formatted;

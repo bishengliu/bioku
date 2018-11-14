@@ -496,7 +496,7 @@
                   <td colspan="2">
                       <div class="ui input wide-form">
                           <input class="" 
-                          type="{{attr.attr.attr.type}}"
+                          type="{{attr.attr.type}}"
                           step="{{attr.attr.step}}"
                           required="{{attr.attr.required}}"
                           maxlength="{{attr.attr.maxlength}}"
@@ -530,11 +530,78 @@
           </tbody>
         </table>
       </div>
+      <!--sub attrs tables-->
       <div class="field" *ngIf="sample_type != '-' && has_subattr">
-        <table class="ui small very basic compact padded single line table">
-
-        </table>
+        <div class="ui grey segment" *ngFor="let stable of sub_table_attrs">
+            <table class="ui small very basic compact padded single line table">
+                <thead class="tight_around">
+                  <tr class="tight_around">
+                      <th class="tight_around"></th>
+                      <th class="center aligned tight_around" 
+                        [attr.colspan]="stable.subattrs.length">
+                        {{renderFormLabel(stable.name)}}
+                      </th>
+                      <td class="center aligned tight_around">
+                        <a class="clickable" (click)="add_column(stable.name)">
+                          <i class="icon plus circle"></i>
+                        </a>
+                      </td>
+                  </tr>
+                </thead>
+                <tbody *ngIf="sampleForm.controls[stable.name].controls.length > 0">
+                  <tr>
+                      <th></th>
+                      <th *ngFor="let subattr of stable.subattrs">
+                          {{renderFormSubTableLabel(stable.name, subattr.name)}}
+                      </th>
+                      <td></td>
+                  </tr>
+                  <tr *ngFor="let subformgroup of sampleForm.controls[stable.name].controls; let i=index">
+                    <td>#{{i + 1}}</td>
+                    <td *ngFor="let subattr of stable.subattrs">
+                        <div class="ui input wide-form">
+                            <input class="" 
+                            type="{{subattr.attr.type}}"
+                            step="{{subattr.attr.step}}"
+                            required="{{subattr.attr.required}}"
+                            maxlength="{{subattr.attr.maxlength}}"
+                            id="{{subattr.name}}" 
+                            [formControl]="subformgroup.controls[subattr.name]">
+                        </div>
+                        <div *ngIf="subformgroup.controls[subattr.name].touched">
+                            <!--required-->
+                            <div *ngIf="subformgroup.controls[subattr.name].hasError('required')"  class="ui mini negative message">
+                                {{renderFormSubTableLabel(stable.name, subattr.name)}} is required!
+                            </div>
+                            <!--max legth-->
+                            <div *ngIf="subformgroup.controls[subattr.name].hasError('maxlength')"  class="ui mini negative message">
+                                you've typed too long for {{renderFormSubTableLabel(stable.name, subattr.name)}}!
+                            </div>
+                            <!--decimal-->
+                            <div *ngIf="subformgroup.controls[subattr.name].hasError('decimalInvalid')"  class="ui mini negative message">
+                                {{renderFormSubTableLabel(stable.name, subattr.name)}} is invalid!
+                            </div>
+                            <!--decimal-->
+                            <div *ngIf="subformgroup.controls[subattr.name].hasError('numberInvalid')"  class="ui mini negative message">
+                                {{renderFormSubTableLabel(stable.name, subattr.name)}} is invalid!
+                            </div>
+                            <!--date-->
+                            <div *ngIf="subformgroup.controls[subattr.name].hasError('dateInvalid')">
+                                {{renderFormSubTableLabel(stable.name, subattr.name)}} is not a valid date format! a date must matches the format {{date_regex}}.
+                            </div>
+                          </div>
+                    </td>
+                    <td class="center aligned">
+                        <a class="clickable" (click)="remove_column(stable.name, i)">
+                          <i class="icon red remove circle"></i>
+                        </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
       </div>
+
     </div>
   </form>
 </div>
