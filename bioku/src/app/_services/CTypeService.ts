@@ -324,6 +324,15 @@ export class CTypeService {
         })
         return sample_attrs;
     }
+    // convert ctype name to pk
+    convertCTypeName2PK(type_name: string, all_ctypes: Array<CType>): number {
+        let pk: number = null;
+        const found: CType = all_ctypes.find((ctype: CType) => { return ctype.type.toUpperCase() === type_name.toUpperCase(); });
+        if (found !== undefined) {
+            pk = found.pk;
+        }
+        return pk;
+    }
     // get common full sample attrs
     getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {
         const ctypes: Array<CType> = new Array<CType>();

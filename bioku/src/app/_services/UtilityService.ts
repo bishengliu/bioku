@@ -1,9 +1,14 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../_classes/CType';
-
+import { APP_CONFIG } from '../_providers/AppSettingProvider';
 @Injectable()
 export class UtilityService {
+    private customized_attrs: Array<any> = new Array<any> ();
+    constructor(@Inject(APP_CONFIG) private appSetting: any) {
+        // first set up the customized attrs
+        this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
+    }
     // sort array by multiple property
     // add '-' before the property for descending sort
     sortArrayBySingleProperty(property: string) {
@@ -228,7 +233,7 @@ export class UtilityService {
         }
         return res;
     }
-    getCustomizedSampleAttrLabel(name: string, customized_attrs) {
+    getCustomizedSampleAttrLabel(name: string, customized_attrs = this.customized_attrs) {
         let label = '';
         const attr = customized_attrs.find((a: any) => {
             return a.name === name;
@@ -236,7 +241,7 @@ export class UtilityService {
         label = attr !== undefined ? attr.label : name.toUpperCase();
         return label;
     }
-    getCustomizedSampleAttachmentAttrLabel(name: string, customized_attrs) {
+    getCustomizedSampleAttachmentAttrLabel(name: string, customized_attrs = this.customized_attrs) {
         let label = '';
         const attr = customized_attrs.find((a: any) => {
             return a.name === 'attachments';
@@ -254,11 +259,11 @@ export class UtilityService {
     // decode ctype input type
     decodeCTypeAttrType(attr_value_type: number): string {
         let decoded: string;
-        if (attr_value_type === 0) {
+        if (+attr_value_type === 0) {
             decoded = 'text';
-        } else if (attr_value_type === 1 || attr_value_type === 2) {
+        } else if (+attr_value_type === 1 || +attr_value_type === 2) {
             decoded = 'number';
-        } else if (attr_value_type === 4) {
+        } else if (+attr_value_type === 4) {
             decoded = 'date';
         } else {
             decoded = 'text';

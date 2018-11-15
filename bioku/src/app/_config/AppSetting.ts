@@ -126,6 +126,24 @@ export const AppSetting = {
             ]
         },
         {
+            name: 'attachment',
+            label: 'ATTACHMENT',
+            subattrs: [
+                {
+                    name: 'label',
+                    label: 'FILE_LABEL'
+                },
+                {
+                    name: 'attachment',
+                    label: 'FILE'
+                },
+                {
+                    name: 'description',
+                    label: 'DESCRIPTION'
+                }
+            ]
+        },
+        {
             name: 'container',
             label: 'CONTAINER'
         },

@@ -433,23 +433,32 @@
                 </div>
                 <div *ngIf="sampleForm.controls[attr.name].touched">
                   <!--required-->
-                  <div *ngIf="sampleForm.controls[attr.name].hasError('required')"  class="ui mini negative message">
+                  <div *ngIf="attr.attr.required 
+                  && sampleForm.controls[attr.name].hasError('required')"
+                  class="ui mini negative message">
                       {{renderFormLabel(attr.name)}} is required!
                   </div>
                   <!--max legth-->
-                  <div *ngIf="sampleForm.controls[attr.name].hasError('maxlength')"  class="ui mini negative message">
+                  <div *ngIf="attr.attr.type == 'text' && attr.attr.maxlength != null
+                  && sampleForm.controls[attr.name].hasError('maxlength')"
+                  class="ui mini negative message">
                       you've typed too long for {{renderFormLabel(attr.name)}}!
                   </div>
                   <!--decimal-->
-                  <div *ngIf="sampleForm.controls[attr.name].hasError('decimalInvalid')"  class="ui mini negative message">
+                  <div *ngIf="attr.attr.type == 'number' && attr.attr.step != null
+                  && sampleForm.controls[attr.name].hasError('decimalInvalid')"
+                  class="ui mini negative message">
                       {{renderFormLabel(attr.name)}} is invalid!
                   </div>
                   <!--decimal-->
-                  <div *ngIf="sampleForm.controls[attr.name].hasError('numberInvalid')"  class="ui mini negative message">
+                  <div *ngIf="attr.attr.type == 'number' && attr.attr.step == null
+                  && sampleForm.controls[attr.name].hasError('numberInvalid')" 
+                  class="ui mini negative message">
                       {{renderFormLabel(attr.name)}} is invalid!
                   </div>
                   <!--date-->
-                  <div *ngIf="sampleForm.controls[attr.name].hasError('dateInvalid')">
+                  <div *ngIf="attr.attr.type == 'date'
+                  && sampleForm.controls[attr.name].hasError('dateInvalid')">
                       {{renderFormLabel(attr.name)}} is not a valid date format! a date must matches the format {{date_regex}}.
                   </div>
                 </div>
@@ -490,6 +499,32 @@
                     </color-picker>
                   </td>
               </tr>
+              <!--upload-->
+              <tr class="right aligned">
+                <td>{{renderFormLabel('attachment', true)}}</td>
+                <td colspan="2">
+                   <!-- upload -->
+                   <div class="field">
+                      <div class="ui mini input right action wide-form">
+                        <input type="text" id="attachment_name" readonly placeholder="click to browse a file" 
+                        value="{{attchment_name}}" #attachmentName>
+                        <label class="ui mini secondary button">Browse
+                          <input type="file" id="attachment" placeholder="new attachment" 
+                              class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
+                        </label>
+                      </div>
+                      <div *ngIf="attchament_is2large" class="ui mini negative message">Maximum upload size is 10MB!</div>
+                    </div>
+                    <div class="field">
+                        <div class="ui input wide-form">
+                            <input type="text" id="attchament_label" value="{{attchment_name}}" 
+                            placeholder="{{renderFormSubTableLabel('attachment', 'label', true) | lowercase}}" #attachmentLabel>
+                            <input type="text" id="attchament_description" value="" 
+                            placeholder="{{renderFormSubTableLabel('attachment', 'description', true)| lowercase }}" #attachmentDescription>
+                        </div>
+                    </div>
+                </td>
+            </tr>
               <!-- right extra attrs-->
               <tr *ngFor="let attr of right_extra_attrs">
                   <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
@@ -505,23 +540,33 @@
                       </div>
                       <div *ngIf="sampleForm.controls[attr.name].touched">
                           <!--required-->
-                          <div *ngIf="sampleForm.controls[attr.name].hasError('required')" class="ui mini negative message">
+                          <div *ngIf="attr.attr.required
+                          && sampleForm.controls[attr.name].hasError('required')" 
+                          class="ui mini negative message">
                               {{renderFormLabel(attr.name)}} is required!
                           </div>
                           <!--max legth-->
-                          <div *ngIf="sampleForm.controls[attr.name].hasError('maxlength')" class="ui mini negative message">
+                          <div *ngIf="attr.attr.type == 'text' && attr.attr.maxlength != null
+                          && sampleForm.controls[attr.name].hasError('maxlength')"
+                          class="ui mini negative message">
                               you've typed too long for {{renderFormLabel(attr.name)}}!
                           </div>
                           <!--decimal-->
-                          <div *ngIf="sampleForm.controls[attr.name].hasError('decimalInvalid')" class="ui mini negative message">
+                          <div *ngIf="attr.attr.type == 'number' && attr.attr.step != null
+                          && sampleForm.controls[attr.name].hasError('decimalInvalid')"
+                          class="ui mini negative message">
                               {{renderFormLabel(attr.name)}} is invalid!
                           </div>
                           <!--decimal-->
-                          <div *ngIf="sampleForm.controls[attr.name].hasError('numberInvalid')" class="ui mini negative message">
+                          <div *ngIf="attr.attr.type == 'number' && attr.attr.step != null
+                          && sampleForm.controls[attr.name].hasError('numberInvalid')"
+                          class="ui mini negative message">
                               {{renderFormLabel(attr.name)}} is invalid!
                           </div>
                           <!--date-->
-                          <div *ngIf="sampleForm.controls[attr.name].hasError('dateInvalid')" class="ui mini negative message">
+                          <div *ngIf="attr.attr.type == 'date'
+                          && sampleForm.controls[attr.name].hasError('dateInvalid')" 
+                          class="ui mini negative message">
                               {{renderFormLabel(attr.name)}} is not a valid date format! a date must matches the format {{date_regex}}.
                           </div>
                         </div>
@@ -601,7 +646,6 @@
               </table>
         </div>
       </div>
-
     </div>
   </form>
 </div>
@@ -609,10 +653,9 @@
 <!--loading info-->
 <div *ngIf="saving" class="ui loading segment center aligned">
   <br/><br/><br/><br/>
-  <p class="brown-text"> saving samples into box ... </p>
+  <p class="brown-text"> saving ... </p>
 </div>
 </div>
-
 <!--loading failed-->
 <div *ngIf="failed" class="ui loading segment center aligned">
   <br/><br/><br/><br/>

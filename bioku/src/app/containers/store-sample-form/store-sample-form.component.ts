@@ -214,35 +214,65 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       [this.left_extra_attrs, this.right_extra_attrs] = this.updateLeftRightExtraAttrs(this.extra_attrs);
     }
   }
-// render form label
-renderFormLabel(name) {
-  const matched = this.extra_attrs.find((a: any) => {return a.name === name })
-  if (matched !== undefined) {
-    return matched.label;
-  } else {
-    return name.toUpperCase();
-  }
-}
-renderFormSubTableLabel(attr_name: string, subattr_name: string) {
-  const pmatched = this.extra_attrs.find((a: any) => {return a.name === attr_name });
-  if (pmatched !== undefined) {
-    // find the sub
-    const smatched = pmatched.subattrs.find((a: any) => {return a.name === subattr_name });
-    if (smatched !== undefined) {
-      return smatched.label;
+  // render form label
+  renderFormLabel(name: string, check_customized_attrs = false) {
+    if (check_customized_attrs) {
+      const matched = this.customized_attrs
+      .find((a: any) => {return a.name === name });
+      if (matched !== undefined) {
+        return matched.label;
+      } else {
+        return name.toUpperCase();
+      }
     } else {
-      return subattr_name.toUpperCase();
+      const matched = this.extra_attrs
+      .find((a: any) => {return a.name === name });
+      if (matched !== undefined) {
+        return matched.label;
+      } else {
+        return name.toUpperCase();
+      }
     }
-  } else {
-    return subattr_name.toUpperCase();
   }
-}
-// get the sub_table_attrs
-genSubTableAttrs(extra_attrs: Array<any>): Array<any> {
-  return extra_attrs.filter((ex: any) => {
-    return typeof ex.subattrs === 'object' && ex.subattrs.length > 0;
-  })
-}
+  renderFormSubTableLabel(attr_name: string, subattr_name: string, check_customized_attrs = false) {
+    if (check_customized_attrs) {
+      const pmatched = this.customized_attrs
+      .find((a: any) => {return a.name === attr_name });
+      if (pmatched !== undefined) {
+        // find the sub
+        const smatched = pmatched.subattrs
+        .find((a: any) => {return a.name === subattr_name });
+        if (smatched !== undefined) {
+          return smatched.label;
+        } else {
+          return subattr_name.toUpperCase();
+        }
+      } else {
+        return subattr_name.toUpperCase();
+      }
+    } else {
+      const pmatched = this.extra_attrs
+      .find((a: any) => {return a.name === attr_name });
+      if (pmatched !== undefined) {
+        // find the sub
+        const smatched = pmatched.subattrs
+        .find((a: any) => {return a.name === subattr_name });
+        if (smatched !== undefined) {
+          return smatched.label;
+        } else {
+          return subattr_name.toUpperCase();
+        }
+      } else {
+        return subattr_name.toUpperCase();
+      }
+    }
+  }
+  // get the sub_table_attrs
+  genSubTableAttrs(extra_attrs: Array<any>): Array<any> {
+    return extra_attrs.filter((ex: any) => {
+      return typeof ex.subattrs === 'object' && ex.subattrs.length > 0;
+    })
+  }
   // update left and right extra attrs
   updateLeftRightExtraAttrs(extra_attrs: Array<any>) {
     const left_extra_attrs: Array<any> = new Array<any>();
@@ -275,116 +305,72 @@ genSubTableAttrs(extra_attrs: Array<any>): Array<any> {
     }
     return [left_extra_attrs, right_extra_attrs];
   }
-// get minial atrtr label
-getMinimalLabels(attrs: Array<string>): Array<any> {
-  const labels: Array<any> = new Array<any>();
-  attrs.forEach((a: string) => {
-    const obj = {};
-    obj['name'] = a;
-    if (a === 'attachments') {
-      obj['label'] = this.utilityService.getCustomizedSampleAttachmentAttrLabel(a, this.customized_attrs)
-    } else {
-      obj['label'] = this.utilityService.getCustomizedSampleAttrLabel(a, this.customized_attrs);
-    }
-    labels.push(obj);
-  });
-  return labels;
-}
-updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_group_controlsConfig: any) {
-  fb_group_controlsConfig = {
-    'ctype': [ctype.type, Validators.required],
-    'name': [(fb_values['name'] !== undefined ? fb_values['name'] : null), Validators.required],
-    'color': [fb_values['color'] !== undefined ? fb_values['color'] : null, ],
-    'storage_date': [, ], // will be update later on
-    'attachment': [(fb_values['attachment'] !== undefined ? fb_values['attachment'] : null), ]
+  // get minial atrtr label
+  getMinimalLabels(attrs: Array<string>): Array<any> {
+    const labels: Array<any> = new Array<any>();
+    attrs.forEach((a: string) => {
+      const obj = {};
+      obj['name'] = a;
+      if (a === 'attachments') {
+        obj['label'] = this.utilityService.getCustomizedSampleAttachmentAttrLabel(a, this.customized_attrs)
+      } else {
+        obj['label'] = this.utilityService.getCustomizedSampleAttrLabel(a, this.customized_attrs);
+      }
+      labels.push(obj);
+    });
+    return labels;
   }
-  // get the minmal extra for csample
-  const minimal_attrs = this.minimal_attrs;
-  this.extra_attrs = this.getMinimalLabels(minimal_attrs);
-  // extra atta in the ctype
-  ctype.attrs.forEach((attr: CTypeAttr) => {
-    const obj = {};
-    // type, is_required, label
-    // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
-    if (+attr.attr_value_type !== 3) {
-      // no sub attrs
-      this.extra_attrs.push(
-        {'name': attr.attr_name,
-          'label': attr.attr_label.toUpperCase(),
-          'attr': this.utilityService.decodeCTPyeInputAttr(attr)});
-      fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, this.genFbConfigObjNoSubAttr(attr));
-    } else {
-      this.has_subattr = true;
-      // update subattr extra_attrs
-      const extra_label = {};
-      extra_label['name'] = attr.attr_name;
-      extra_label['label'] = attr.attr_label;
-      extra_label['subattrs'] = [];
-      attr.subattrs.forEach((subattr: CTypeSubAttr) => {
-        const extra_sublabel = {
-        'name': subattr.attr_name,
-        'label': subattr.attr_label.toUpperCase(),
-        'attr': this.utilityService.decodeCTPyeInputAttr(subattr)};
-        extra_label['subattrs'].push(extra_sublabel);
-      });
-      this.extra_attrs.push(extra_label);
-      // add_subattr.attr_label
-      // this.subattr_handler
-      obj[attr.attr_name] = fb.array([
-        this.genSubfbConfig(fb, attr.subattrs)
-      ]);
-      fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, obj);
+  updateFormGroup(fb: FormBuilder, fb_values: Array<string>, ctype: CType, fb_group_controlsConfig: any) {
+    fb_group_controlsConfig = {
+      'ctype': [ctype.type, Validators.required],
+      'name': [(fb_values['name'] !== undefined ? fb_values['name'] : null), Validators.required],
+      'color': [fb_values['color'] !== undefined ? fb_values['color'] : null, ],
+      'storage_date': [, ], // will be update later on
+      'attachment': [(fb_values['attachment'] !== undefined ? fb_values['attachment'] : null), ]
     }
-  });
-  return fb.group(fb_group_controlsConfig);
-}
-// gen attr fb obj
-genFbConfigObjNoSubAttr (attr: CTypeAttr) {
-  const obj = {}
-  if (+attr.attr_value_type === 0) {
-    // string
-    // need to deal with length
-    // attr_value_text_max_length
-    obj[attr.attr_name]  = attr.attr_required
-    ? (
-        attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
-        ? [, Validators.compose([Validators.required, Validators.maxLength(+attr.attr_value_text_max_length)])]
-        : [, Validators.required]
-      )
-    : (
-        attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
-        ? [, Validators.maxLength(+attr.attr_value_text_max_length)]
-        : [, ]
-      );
-  } else if (+attr.attr_value_type === 1) {
-    // digit
-    // need to validate a number
-    obj[attr.attr_name]  = attr.attr_required
-    ? [, Validators.compose([Validators.required,
-      this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])]
-    : [, Validators.compose([
-      this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])];
-  } else if (+attr.attr_value_type === 2) {
-    // decimal
-    // need to validate a decimal
-    // Validators.compose([Validators.required, this.cValidators.digitValidator()])
-    obj[attr.attr_name]  = attr.attr_required
-    ?  [, Validators.compose([Validators.required, this.cValidators.numberPostiveValidator()])]
-    :  [, Validators.compose([this.cValidators.numberPostiveValidator()])];
-  } else {
-    // date
-    // need to validate a date
-    obj[attr.attr_name]  = attr.attr_required
-    ?  [, Validators.compose([Validators.required, this.cValidators.dateValidator()])]
-    :  [, Validators.compose([this.cValidators.dateValidator()])];
+    // get the minmal extra for csample
+    const minimal_attrs = this.minimal_attrs;
+    this.extra_attrs = this.getMinimalLabels(minimal_attrs);
+    // extra atta in the ctype
+    ctype.attrs.forEach((attr: CTypeAttr) => {
+      const obj = {};
+      // type, is_required, label
+      // 0: string, 1, digit; 2, decimal; 3 has sub attr; 4 date
+      if (+attr.attr_value_type !== 3) {
+        // no sub attrs
+        this.extra_attrs.push(
+          {'name': attr.attr_name,
+            'label': attr.attr_label.toUpperCase(),
+            'attr': this.utilityService.decodeCTPyeInputAttr(attr)});
+        fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, this.genFbConfigObjNoSubAttr(attr));
+      } else {
+        this.has_subattr = true;
+        // update subattr extra_attrs
+        const extra_label = {};
+        extra_label['name'] = attr.attr_name;
+        extra_label['label'] = attr.attr_label;
+        extra_label['subattrs'] = [];
+        attr.subattrs.forEach((subattr: CTypeSubAttr) => {
+          const extra_sublabel = {
+          'name': subattr.attr_name,
+          'label': subattr.attr_label.toUpperCase(),
+          'attr': this.utilityService.decodeCTPyeInputAttr(subattr)};
+          extra_label['subattrs'].push(extra_sublabel);
+        });
+        this.extra_attrs.push(extra_label);
+        // add_subattr.attr_label
+        // this.subattr_handler
+        obj[attr.attr_name] = fb.array([
+          this.genSubfbConfig(fb, attr.subattrs)
+        ]);
+        fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, obj);
+      }
+    });
+    return fb.group(fb_group_controlsConfig);
   }
-  return obj;
-}
-// gen sub_fb_config
-genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
-  const sub_fb_config = {};
-  subattrs.forEach((attr: CTypeSubAttr) => {
-    const obj = {};
+  // gen attr fb obj
+  genFbConfigObjNoSubAttr (attr: CTypeAttr) {
+    const obj = {}
     if (+attr.attr_value_type === 0) {
       // string
       // need to deal with length
@@ -400,18 +386,17 @@ genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
           ? [, Validators.maxLength(+attr.attr_value_text_max_length)]
           : [, ]
         );
-    } else if (+attr.attr_value_type === 1) {
-      // digit
-      // need to validate a number
+    } else if (+attr.attr_value_type === 2) {
+      // decimal, float
+      // need to validate a decimal
       obj[attr.attr_name]  = attr.attr_required
       ? [, Validators.compose([Validators.required,
         this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])]
       : [, Validators.compose([
         this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])];
-    } else if (+attr.attr_value_type === 2) {
-      // decimal
-      // need to validate a decimal
-      // Validators.compose([Validators.required, this.cValidators.digitValidator()])
+    } else if (+attr.attr_value_type === 1) {
+      // digit
+      // need to validate a digit
       obj[attr.attr_name]  = attr.attr_required
       ?  [, Validators.compose([Validators.required, this.cValidators.numberPostiveValidator()])]
       :  [, Validators.compose([this.cValidators.numberPostiveValidator()])];
@@ -422,11 +407,54 @@ genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
       ?  [, Validators.compose([Validators.required, this.cValidators.dateValidator()])]
       :  [, Validators.compose([this.cValidators.dateValidator()])];
     }
-    Object.assign(sub_fb_config, obj)
-  });
-  return fb.group(sub_fb_config);
-}
-// check upload photo
+    return obj;
+  }
+  // gen sub_fb_config
+  genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
+    const sub_fb_config = {};
+    subattrs.forEach((attr: CTypeSubAttr) => {
+      const obj = {};
+      if (+attr.attr_value_type === 0) {
+        // string
+        // need to deal with length
+        // attr_value_text_max_length
+        obj[attr.attr_name]  = attr.attr_required
+        ? (
+            attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+            ? [, Validators.compose([Validators.required, Validators.maxLength(+attr.attr_value_text_max_length)])]
+            : [, Validators.required]
+          )
+        : (
+            attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+            ? [, Validators.maxLength(+attr.attr_value_text_max_length)]
+            : [, ]
+          );
+      } else if (+attr.attr_value_type === 2) {
+        // decimal, float
+        // need to validate a decimal
+        obj[attr.attr_name]  = attr.attr_required
+        ? [, Validators.compose([Validators.required,
+          this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])]
+        : [, Validators.compose([
+          this.cValidators.decimalValidator(+attr.attr_value_decimal_total_digit, +attr.attr_value_decimal_point, true)])];
+      } else if (+attr.attr_value_type === 1) {
+        // digit
+        // need to validate a digit
+        obj[attr.attr_name]  = attr.attr_required
+        ?  [, Validators.compose([Validators.required, this.cValidators.numberPostiveValidator()])]
+        :  [, Validators.compose([this.cValidators.numberPostiveValidator()])];
+      } else {
+        // date
+        // need to validate a date
+        obj[attr.attr_name]  = attr.attr_required
+        ?  [, Validators.compose([Validators.required, this.cValidators.dateValidator()])]
+        :  [, Validators.compose([this.cValidators.dateValidator()])];
+      }
+      Object.assign(sub_fb_config, obj)
+    });
+    return fb.group(sub_fb_config);
+  }
+  // check upload photo
   validateAttachmentUpload(event: EventTarget) {
       const eventObj: MSInputMethodContext = <MSInputMethodContext> event;
       const target: HTMLInputElement = <HTMLInputElement> eventObj.target;
@@ -442,32 +470,32 @@ genSubfbConfig(fb: FormBuilder, subattrs: Array<CTypeSubAttr>) {
         this.attchament_is2large = false;
       }
   }
-// gen subattr handler
-genSubAttrHandlers(formGroup: FormGroup, ctype: CType) {
-  const handler = {};
-  ctype.attrs.forEach((attr: CTypeAttr) => {
-    if (+attr.attr_value_type === 3) {
-      // add handler
-      handler['add_' + attr.attr_name] = () => {
-        const control = <FormArray>formGroup.controls[attr.attr_name];
-        control.push(this.genSubfbConfig(this.fb, attr.subattrs));
+  // gen subattr handler
+  genSubAttrHandlers(formGroup: FormGroup, ctype: CType) {
+    const handler = {};
+    ctype.attrs.forEach((attr: CTypeAttr) => {
+      if (+attr.attr_value_type === 3) {
+        // add handler
+        handler['add_' + attr.attr_name] = () => {
+          const control = <FormArray>formGroup.controls[attr.attr_name];
+          control.push(this.genSubfbConfig(this.fb, attr.subattrs));
+        }
+        // remove handler
+        handler['remove_' + attr.attr_name] = (i: number) => {
+          const control = <FormArray>formGroup.controls[attr.attr_name];
+          control.removeAt(i);
+        }
       }
-      // remove handler
-      handler['remove_' + attr.attr_name] = (i: number) => {
-        const control = <FormArray>formGroup.controls[attr.attr_name];
-        control.removeAt(i);
-      }
-    }
-  })
-  return handler;
-}
-// add_column
-add_column(attr_name: string) {
-  return this.subattr_handler['add_' + attr_name]();
-}
-remove_column(attr_name: string, i: number) {
-  return this.subattr_handler['remove_' + attr_name](i);
-}
+    })
+    return handler;
+  }
+  // add_column
+  add_column(attr_name: string) {
+    return this.subattr_handler['add_' + attr_name]();
+  }
+  remove_column(attr_name: string, i: number) {
+    return this.subattr_handler['remove_' + attr_name](i);
+  }
   updateSampleDate(value: any) {
     this.freezing_date = value.formatted;
   }
@@ -487,9 +515,21 @@ remove_column(attr_name: string, i: number) {
       this.form_valid = false;
     } else {
       values.color = this.color;
-      values.freezing_date = this.freezing_date;
+      if (!this.USE_CSAMPLE) {
+        values.freezing_date = this.freezing_date;
+      } else {
+        values.storage_date = this.storage_date;
+      // convert type name to pk
+      const ctype_pk: number = this.ctypeService.convertCTypeName2PK(values.ctype, this.all_ctypes);
+        if (ctype_pk === null) {
+          this.form_valid = false;
+        } else {
+          values.ctype = ctype_pk;
+        }
+      }
       const label = this.attachmentLabelInput.nativeElement.value
       const description = this.attachmentDescriptionInput.nativeElement.value;
+      // console.log(values);
       const formData: FormData = new FormData();
       formData.append('obj', JSON.stringify(values));
       formData.append('slots', JSON.stringify(this.slots))
