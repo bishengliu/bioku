@@ -11,6 +11,7 @@ import { AppStore } from '../_providers/ReduxProviders';
 // CType class
 import { CType, CTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, CSubAttrData} from '../_classes/CType';
 import { Sample, Attachment } from '../_classes/Sample';
+import { isArray } from 'util';
 @Injectable()
 export class CTypeService {
     private state: any;
@@ -576,6 +577,111 @@ export class CTypeService {
                 });
         }
         return subattr_data;
+    }
+    // convert form values for saving
+    formatCSample4Saving(posted_values: any, all_ctypes: Array<CType>): any {
+        const obj = {};
+        // csample attrs
+        const csample_keys = ['ctype_pk', 'color', 'name', 'storage_date'];
+        // convert sample
+        const csample = {};
+        csample['ctype_pk'] = +posted_values['ctype'];
+        csample['color'] = posted_values['color'];
+        csample['name'] = posted_values['name'];
+        csample['storage_date'] = posted_values['storage_date'];
+        obj['csample'] = csample;
+        // get ctype
+        const ctype: CType = all_ctypes.find((ct: CType) => { return ct.pk === +posted_values['ctype']; });
+        if (ctype === undefined) {
+            return false;
+        }
+        const keys = Object.keys(posted_values);
+        // get attr with the subattr
+        const complex_attrs: Array<CTypeAttr> = new Array<CTypeAttr>();
+        ctype.attrs.forEach((attr: CTypeAttr) => {
+            if (attr.has_sub_attr
+                && attr.subattrs !== undefined
+                && attr.subattrs !== null
+                && attr.subattrs.length > 0 ) {
+                complex_attrs.push(attr);
+            }
+        });
+        // get all the attr with subattrs
+        const complex_attr_names = complex_attrs.map((a: CTypeAttr) => { return a.attr_name; });
+        // ---------------------------
+        // get key without sub_attrs
+        const attr_keys = keys.filter((k: string) => {
+            return (
+                k !== 'researchers' && k !== 'attachments' && k !== 'attachment'
+                && csample_keys.indexOf(k) === -1
+                && complex_attr_names.indexOf(k) === -1)
+        });
+        // campledata
+        const csampledata = [];
+        attr_keys.forEach((k: string) => {
+            // build the obj
+            const data = {};
+            // get the attr
+            const attr = ctype.attrs.find((a: CTypeAttr) => { return a.attr_name === k; })
+            if (attr !== undefined) {
+                // pk
+                data['ctype_attr_id'] = attr.pk;
+                // value id default 0
+                data['ctype_attr_value_id'] = 0;
+                // value
+                data['ctype_attr_value_part1'] = posted_values[k];
+                // append
+                csampledata.push(data);
+            }
+        });
+        obj['csampledata'] = csampledata;
+        // ---------------------------------
+        // get the keys with subattrs
+        const complex_attr_keys = keys.filter((k: string) => {
+            return (
+                k !== 'researchers' && k !== 'attachments' && k !== 'attachment'
+                && csample_keys.indexOf(k) === -1
+                && complex_attr_names.indexOf(k) !== -1)
+        });
+        // csamplesubdata
+        const csamplesubdata = [];
+        complex_attr_keys.forEach((k: string) => {
+            // get the attr
+            const complex_attr = ctype.attrs
+            .find((a: CTypeAttr) => { return a.has_sub_attr && a.attr_name === k; })
+            if (complex_attr !== undefined) {
+                const posted_data_array = posted_values[complex_attr.attr_name];
+                if (isArray(posted_data_array) && posted_data_array.length > 0 ) {
+                    // get pks for each keys
+                    const sub_keys = Object.keys(posted_data_array[0]);
+                    const pk_obj = {};
+                    sub_keys.forEach((sk: string) => {
+                        const sub_attr = complex_attr.subattrs.find((sa: CTypeSubAttr) => {
+                            return sa.attr_name === sk;
+                        })
+                        if (sub_attr !== undefined) {
+                            pk_obj[sk + '_pk'] = sub_attr.pk;
+                        }
+                    })
+                    posted_data_array.forEach((ditem, i: number) => {
+                        sub_keys.forEach((sk: string) => {
+                            // build the obj
+                            const data = {};
+                            // pks
+                            data['ctype_sub_attr_id'] = pk_obj[sk + '_pk']
+                            // value id
+                            data['ctype_sub_attr_value_id'] = i;
+                            // value
+                            data['ctype_attr_value_part1'] = ditem[sk]
+                            // append
+                            csamplesubdata.push(data);
+                        })
+                    });
+                }
+            }
+        });
+        obj['csamplesubdata'] = csamplesubdata;
+        return obj;
     }
     // get all the material types
     getCTypes() {

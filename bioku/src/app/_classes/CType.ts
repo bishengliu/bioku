@@ -67,6 +67,7 @@ export class CSampleData {
     csample_id: number;
     ctype_attr_id: number;
     ctype_attr: CTypeAttr;
+    ctype_attr_value_id: number;
     ctype_attr_value_part1: string;
     ctype_attr_value_part2: string;
 
@@ -77,6 +78,7 @@ export class CSampleSubData {
     csample_id: number;
     ctype_sub_attr_id: number;
     ctype_sub_attr: CTypeSubAttr;
+    ctype_sub_attr_value_id: number;
     ctype_sub_attr_value_part1: string;
     ctype_sub_attr_value_part2: string;
 }

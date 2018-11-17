@@ -511,27 +511,32 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   }
 
   onCreate(values: any) {
+    let posted_values = {};
     if (values.name == null || values.type === '-') {
       this.form_valid = false;
     } else {
       values.color = this.color;
       if (!this.USE_CSAMPLE) {
         values.freezing_date = this.freezing_date;
+        posted_values = values;
       } else {
         values.storage_date = this.storage_date;
       // convert type name to pk
       const ctype_pk: number = this.ctypeService.convertCTypeName2PK(values.ctype, this.all_ctypes);
-        if (ctype_pk === null) {
-          this.form_valid = false;
-        } else {
-          values.ctype = ctype_pk;
-        }
+      if (ctype_pk === null) {
+        this.form_valid = false;
+      } else {
+        values.ctype = ctype_pk;
       }
+      // for obj for saving
+      posted_values = this.ctypeService.formatCSample4Saving(values, this.all_ctypes);
+    }
+      console.log(posted_values);
       const label = this.attachmentLabelInput.nativeElement.value
       const description = this.attachmentDescriptionInput.nativeElement.value;
       // console.log(values);
       const formData: FormData = new FormData();
-      formData.append('obj', JSON.stringify(values));
+      formData.append('obj', JSON.stringify(posted_values));
       formData.append('slots', JSON.stringify(this.slots))
       if (this.file) {
         formData.append('file', this.file, this.file.name);
