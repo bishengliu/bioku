@@ -526,6 +526,7 @@ export class CTypeService {
                         const csample_subdata_item: CSampleSubData = new CSampleSubData();
                         csample_subdata_item.csample_id = sd.csample_id;
                         csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                        csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
                         csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
                         csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
                         csample_subdata_item.pk = sd.pk;
@@ -542,6 +543,7 @@ export class CTypeService {
                             const csample_subdata_item: CSampleSubData = new CSampleSubData();
                             csample_subdata_item.csample_id = sd.csample_id;
                             csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                            csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
                             csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
                             csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
                             csample_subdata_item.pk = sd.pk;
@@ -565,6 +567,7 @@ export class CTypeService {
                             const csample_subdata_item: CSampleSubData = new CSampleSubData();
                             csample_subdata_item.csample_id = sd.csample_id;
                             csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
+                            csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
                             csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
                             csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
                             csample_subdata_item.pk = sd.pk;
@@ -672,7 +675,7 @@ export class CTypeService {
                             // value id
                             data['ctype_sub_attr_value_id'] = i;
                             // value
-                            data['ctype_attr_value_part1'] = ditem[sk]
+                            data['ctype_sub_attr_value_part1'] = ditem[sk]
                             // append
                             csamplesubdata.push(data);
                         })
