@@ -477,14 +477,30 @@ export class CTypeService {
               return d.ctype_attr.attr_label === key;
             })
             if (found_data !== undefined) {
-              displayed_sample[key] = found_data.ctype_attr_value_part1 + found_data.ctype_attr_value_part2;
+              displayed_sample[key] = (
+                  found_data.ctype_attr_value_part1 !== null
+                  ? found_data.ctype_attr_value_part1
+                  : ''
+                  ) + (
+                      found_data.ctype_attr_value_part2 !== null
+                      ? found_data.ctype_attr_value_part2
+                      : ''
+                      );
             } else {
               // check subdata
               const found_subdata: CSampleSubData = sample.csample_subdata.find( (d: CSampleSubData) => {
                 return d.ctype_sub_attr.parent_attr === key.toLowerCase();
               })
               if (found_subdata !== undefined) {
-                displayed_sample[key] = found_subdata.ctype_sub_attr_value_part1 + found_subdata.ctype_sub_attr_value_part2;
+                displayed_sample[key] = (
+                    found_subdata.ctype_sub_attr_value_part1 !== null
+                    ? found_subdata.ctype_sub_attr_value_part1
+                    : ''
+                    ) + (
+                        found_subdata.ctype_sub_attr_value_part2 !== null
+                        ? found_subdata.ctype_sub_attr_value_part2
+                        : ''
+                        );
               } else {
                 displayed_sample[key] = '';
               }

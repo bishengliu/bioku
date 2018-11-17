@@ -44,7 +44,7 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
     if (this.samplePK !== null && +this.samplePK > 0) {
       // get sample details from the server
       this.sample = this.findSample(+this.samplePK);
-      console.log(this.sample);
+      // console.log(this.sample);
       // retrieve sample relation here
       this.activateModal();
     }
