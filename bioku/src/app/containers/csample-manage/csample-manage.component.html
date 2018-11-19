@@ -7,7 +7,7 @@
   <div class="ui grid row small_padding stackable">
       <div class="eight wide column">
         <h3 class="ui violet left aligned header">
-          <i class="icon edit layout"></i>MODIFY SAMPLE
+          <i class="icon edit layout"></i>MODIFY {{sample.name}}
         </h3>
       </div>
       <div class="eight wide column">
@@ -20,3 +20,129 @@
 
   <!--loading-->
   <!--sample details-->
+  <div class="ui stackable sixteen wide column grid small_padding">
+    <div class="eight wide column">
+      <table class="ui unstackable small striped compact teal table">
+        <tr *ngFor="let attr of mctype_attrs">
+          <th>{{attr.attr_label}}</th>
+          <td>
+            <div *ngIf="!attr.is_changing">
+                <span *ngIf="attr.attr_name == 'name'">
+                    <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr.attr_label]) }}</span>
+                    <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
+                  </span>
+                <span *ngIf="attr.attr_name == 'storage_date'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
+                <span *ngIf="attr.attr_name != 'storage_date' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
+                <!--changable-->
+                <i class="ui icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
+                <!--attr with children-->
+                <i class="ui icon gray align justify right floated" *ngIf="attr.has_sub_attr"></i>
+            </div>
+            <div *ngIf="attr.is_changing">
+                <i class="ui icon red undo right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
+            </div>
+          </td>
+        </tr>
+        <!-- attachment-->
+        <tr>
+          <th>ATTACHMENTS</th>
+          <td>
+            <a *ngIf="attachment_upload== false" 
+              class="ui right floated grey mini compact icon button" 
+              (click)="displayAttachmentUpload()">
+              <i class="cloud upload icon"></i>
+            </a>
+            <div *ngIf="display_sample.ATTACHMENTS != null && display_sample.ATTACHMENTS.length > 0">
+              <div class="nopadding no_margin" *ngFor="let attachment of display_sample.ATTACHMENTS">
+                <div class="ui mini icon buttons">
+                  <a class="ui red button" (click)="attachment2Delete(attachment.pk, attachment.label)">
+                    <i class="delete icon" suiPopup popupText="remove this attachment" ></i>
+                  </a>
+                  <a class="ui basic button" target="_blank" href="{{appUrl + attachment.attachment}}">
+                    <span class="teal-text" suiPopup popupText="{{attachment.description ? attachment.description : 'no description found!'}}">
+                    {{ attachment.label != null
+                      ? attachment.label > 20 
+                        ? (attachment.label | slice:0:20) + '..'
+                        : attachment.label
+                      : null }}
+                    </span>                        
+                  </a>                                     
+                </div>
+              </div>
+            </div>
+            <div>
+                <div class="ui divider" *ngIf="attachment_upload==true||attachment_delete==true"></div>
+                <!-- upload -->
+                <div class="field" *ngIf="attachment_upload==true">
+                  <div class="ui mini input right action wide-form">
+                    <input type="text" id="attachment_name" readonly 
+                    placeholder="click browse to find the attachment" 
+                    value="{{attchment_name}}" #attachmentName>
+                    <label class="ui mini secondary button">Browse
+                      <input type="file" id="attachment" placeholder="new attachment" 
+                          class="hidden" id="attchment_upload" (change)="validateAttachmentUpload($event)">
+                    </label>
+                    <button class="ui primary mini icon button" (click)="performAttachmentUpload()"><i class="icon check"></i></button>
+                    <button class="ui mini icon basic button" (click)="hideAttachmentUpload()"><i class="icon delete"></i></button>
+                  </div>
+                  <div *ngIf="attchament_is2large" class="ui mini negative message">maximum upload size is 10MB!</div>
+                  <div *ngIf="attchament_error" class="ui mini negative message">both attachment and label are required!</div>
+                </div>
+                <div class="field" *ngIf="attachment_upload==true">
+                  <div class="ui mini input wide-form">
+                    <input type="text" id="attchament_label" value="{{attchment_name}}" placeholder="attchament label" #attachmentLabel>
+                    <input type="text" id="attchament_description" value="" placeholder="attchament description" #attachmentDescription>
+                  </div>
+                </div>
+                <!-- remove attchment -->
+                <div *ngIf="attachment_delete==true">                
+                  <div class="ui mini right floated icon buttons">
+                    <button class="ui primary icon button" (click)="performAttachmentDelete()"><i class="icon check"></i></button>
+                    <button class="ui basic icon button" (click)="cancelAttachmentDelete()"><i class="icon delete"></i></button>
+                  </div>
+                  <p class="small red-text">delete {{ attachment_to_delete != null 
+                    ? 
+                      attachment_to_delete > 20 
+                      ? (attachment_to_delete | slice:0:20) + '..'
+                      : attachment_to_delete
+                    : null}}?</p>              
+                </div>
+            </div>        
+          </td>
+        </tr>
+        <!-- researcher-->
+        <tr>
+          <th>RESEARCHER</th>
+          <td class="">
+            <div *ngIf="display_sample.researchers != null && display_sample.researchers.length > 0">
+                <span class="nopadding no_margin" *ngFor="let researcher of display_sample.researchers">
+                  {{(researcher.first_name != null 
+                    ? (researcher.first_name.toUpperCase() | slice:0:1) 
+                    : '') 
+                    +
+                    (researcher.last_name != null 
+                    ? (researcher.last_name.toUpperCase() + '' | slice:0:1)
+                    : '')}}
+                </span>
+            </div> 
+          </td> 
+        </tr>
+        <!-- color -->
+        <tr>
+          <td>
+            COLOR
+          </td>
+          <td>
+            <color-picker 
+            [(ngModel)]="sample.color" 
+            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" 
+            [availableColors]="availableColors" [pickerConfig]="pickerOptions">
+            </color-picker>                                            
+          </td>
+          </tr> 
+      </table>
+    </div>
+    <div class="eight wide column">
+      
+    </div>
+  </div>

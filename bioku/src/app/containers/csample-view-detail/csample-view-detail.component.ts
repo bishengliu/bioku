@@ -17,6 +17,7 @@ export class CsampleViewDetailComponent implements OnInit, OnChanges {
   appUrl: string;
   display_sample: any = {};
   attrs: Array<string> = new Array<string>();
+  ctype_attrs: Array<CTypeAttr> = new Array<CTypeAttr> ();
   subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
   // FOR RENDERING SAMPLE NAME
   SHOW_ORIGINAL_NAME: false;
@@ -39,6 +40,7 @@ export class CsampleViewDetailComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     this.attrs = this.ctypeService.genSampleAttrs(this.sample);
+    this.ctype_attrs = this.ctypeService.genSampleCTypeAttrs(this.sample);
     this.display_sample = this.ctypeService.genDisplaySample(this.sample, this.attrs);
     this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
     // console.log(this.display_sample);

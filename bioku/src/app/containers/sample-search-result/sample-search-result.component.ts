@@ -97,6 +97,9 @@ export class SampleSearchResultComponent implements OnInit, OnChanges {
     }
     // console.log(this.displayed_samples);
   }
+  getBasicAttrLabel(name: string) {
+    return this.utilityService.getCustomizedSampleAttrLabel(name);
+  }
   // calColspan() {
   //   let colspan = 1;
   //   const general_count = 10;

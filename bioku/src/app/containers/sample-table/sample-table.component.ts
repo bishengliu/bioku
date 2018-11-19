@@ -128,6 +128,9 @@ export class SampleTableComponent implements OnInit, OnChanges {
     this.sample_attrs = this.ctypeService
     .genSamplesAttrs(this.samples, this.USE_CSAMPLE, this.DISPLAY_COMMON_ATTRS, this.all_ctypes, this.sample_types);
   }
+  getBasicAttrLabel(name: string) {
+    return this.utilityService.getCustomizedSampleAttrLabel(name);
+  }
   // gen displayed_samples
   genDisplaySamples() {
     if (this.samples != null && this.sample_attrs != null && this.USE_CSAMPLE) {

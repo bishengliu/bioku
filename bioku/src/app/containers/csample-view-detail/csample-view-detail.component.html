@@ -2,15 +2,15 @@
   <div class="eight wide column">
     <table class="ui unstackable small striped compact teal table">
       <tbody>
-        <tr *ngFor="let attr of attrs">
-          <th>{{attr}}</th>
+        <tr *ngFor="let attr of ctype_attrs">
+          <th>{{attr.attr_label}}</th>
           <td>
-            <span *ngIf="attr == 'NAME'">
-              <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr]) }}</span>
+            <span *ngIf="attr.attr_name == 'name'">
+              <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr.attr_label]) }}</span>
               <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
             </span>
-            <span *ngIf="attr == 'STORAGE_DATE'">{{display_sample[attr] | date: 'yyyy-MM-dd'}}</span>
-            <span *ngIf="attr != 'STORAGE_DATE' && attr != 'NAME'">{{display_sample[attr]}}</span>
+            <span *ngIf="attr.attr_name == 'storage_date'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
+            <span *ngIf="attr.attr_name != 'storage_date' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
           </td>
         </tr>
         <tr>

@@ -9,7 +9,7 @@ import { ContainerService } from '../../_services/ContainerService';
 import { AlertService } from '../../_services/AlertService';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
-import {  UtilityService } from '../../_services/UtilityService';
+import { UtilityService } from '../../_services/UtilityService';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -28,12 +28,13 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
   appUrl: string;
   @Input() container: Container = null;
   @Input() box: Box = null;
-  action_panel_msg: string= null;
+  action_panel_msg: string = null;
   display_sample: any = {};
   attrs: Array<string> = new Array<string>();
+  ctype_attrs: Array<CTypeAttr> = new Array<CTypeAttr> ();
   subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
   // FOR RENDERING SAMPLE NAME
-  SHOW_ORIGINAL_NAME: false;
+  SHOW_ORIGINAL_NAME = false;
   NAME_MIN_LENGTH: 15;
   NAME_MIN_right_LENGTH: 10;
   NAME_SYMBOL: '...';
@@ -88,6 +89,7 @@ export class CsampleBasicDetailComponent implements OnInit, OnChanges {
     if (this.samplePK != null) {
       this.sample = this.findSample(this.samplePK);
       this.attrs = this.ctypeService.genSampleAttrs(this.sample);
+      this.ctype_attrs = this.ctypeService.genSampleCTypeAttrs(this.sample);
       this.display_sample = this.ctypeService.genDisplaySample(this.sample, this.attrs);
       this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
     }

@@ -22,6 +22,11 @@ export class CTypeAttr {
     has_sub_attr: boolean;
     subattrs: Array<CTypeSubAttr>;
 }
+// modified attr
+export class MCTypeAttr extends CTypeAttr {
+    is_changable: boolean;
+    is_changing: boolean;
+}
 
 export class CTypeSubAttr {
     pk: number;

@@ -9,7 +9,7 @@ import { UtilityService } from '../_services/UtilityService';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 // CType class
-import { CType, CTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, CSubAttrData} from '../_classes/CType';
+import { CType, CTypeAttr, MCTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, CSubAttrData} from '../_classes/CType';
 import { Sample, Attachment } from '../_classes/Sample';
 import { isArray } from 'util';
 @Injectable()
@@ -142,7 +142,7 @@ export class CTypeService {
                     // researchers
                     let researcher_attr: CTypeAttr = new CTypeAttr();
                     researcher_attr = {
-                        pk: -1, // no pk
+                        pk: -4, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'researchers',
                         attr_label: this.utilityService.
@@ -162,7 +162,7 @@ export class CTypeService {
                     // container
                     let container_attr: CTypeAttr = new CTypeAttr();
                     container_attr = {
-                        pk: -1, // no pk
+                        pk: -5, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'container',
                         attr_label: this.utilityService.
@@ -180,7 +180,7 @@ export class CTypeService {
                     // box
                     let box_attr: CTypeAttr = new CTypeAttr();
                     box_attr = {
-                        pk: -1, // no pk
+                        pk: -6, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'box_position',
                         attr_label: this.utilityService.
@@ -198,7 +198,7 @@ export class CTypeService {
                     // sample position
                     let pos_attr: CTypeAttr = new CTypeAttr();
                     pos_attr = {
-                        pk: -1, // no pk
+                        pk: -7, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'position',
                         attr_label: this.utilityService.
@@ -216,7 +216,7 @@ export class CTypeService {
                     // occupied
                     let occupied_attr: CTypeAttr = new CTypeAttr();
                     occupied_attr = {
-                        pk: -1, // no pk
+                        pk: -8, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'occupied',
                         attr_label: this.utilityService.
@@ -234,7 +234,7 @@ export class CTypeService {
                     // date out
                     let dateout_attr: CTypeAttr = new CTypeAttr();
                     dateout_attr = {
-                        pk: -1, // no pk
+                        pk: -9, // no pk
                         ctype_id: null, // no ctype
                         attr_name: 'date_out',
                         attr_label: this.utilityService.
@@ -442,7 +442,71 @@ export class CTypeService {
             attrs = [...attrs, ...sample.ctype.attrs.map((a: CTypeAttr) => { return a.attr_label })];
         }
         return attrs;
-      }
+    }
+    // gen csample ctypeattr
+    genSampleCTypeAttrs(sample: CSample, full_load = false): Array<CTypeAttr> {
+        let attrs: Array<CTypeAttr> = new Array<CTypeAttr>();
+        // get the basic attrs
+        const ctype_basic_attrs: Array<CTypeAttr> = this.getBasicCTypeAttrs();
+        ctype_basic_attrs.forEach((a: CTypeAttr) => {
+            // search for a
+            const found = attrs.find((at: CTypeAttr) => { return at.pk === a.pk && at.attr_name === a.attr_name });
+            if (full_load) {
+
+                if (found === undefined) {
+                    attrs.push(a);
+                }
+            } else {
+                if (found === undefined
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('attachments', this.customized_attrs)
+                && a.attr_label !== this.utilityService.
+                getCustomizedSampleAttrLabel('researchers', this.customized_attrs)) {
+                    attrs.push(a);
+                }
+            }
+        })
+        // get extra attrs
+        if (sample != null
+            && sample.ctype !== undefined && sample.ctype !== null
+            && sample.ctype.type !== undefined && sample.ctype.type !== null) {
+              attrs = [...attrs, ...sample.ctype.attrs];
+          }
+        return attrs;
+    }
+    // get csample extra attr without child attr
+    getCSampleCTypeAttrs(sample: CSample): Array<CTypeAttr> {
+        return sample.ctype.attrs.filter((a: CTypeAttr) => {
+            return a.attr_value_type !== 3;
+        })
+    }
+    // get csample extra complex
+    getCSampleCTypeComplexAttrs(sample: CSample): Array<CTypeAttr> {
+        return sample.ctype.attrs.filter((a: CTypeAttr) => {
+            return a.attr_value_type === 3 && a.has_sub_attr && a.subattrs.length > 0;
+        })
+    }
+    // apply change tag
+    // apply only to the parent attr
+    applyCTypeAttrChangableTag(ctype_attrs: Array<CTypeAttr>):  Array<MCTypeAttr> {
+        const mctype_attrs: Array<MCTypeAttr> = new Array<MCTypeAttr>();
+        // arary for not change
+        const non_changables = ['pk', 'box_id', 'container_id', 'occupied', 'researchers', 'ctype_id',
+        'type', 'date_in', 'date_out', 'hposition', 'vposition', 'container', 'box_position', 'position'];
+        ctype_attrs.forEach((attr: CTypeAttr) => {
+            // apply to the parent level
+            if (non_changables.indexOf(attr.attr_name) === -1
+            && (!attr.has_sub_attr && attr.attr_value_type !== 3)) {
+                //  changable
+                const mattr = Object.assign(attr, {'is_changable': true}, {'is_changing': false});
+                mctype_attrs.push(<MCTypeAttr>mattr);
+            } else {
+                const mattr = Object.assign(attr, {'is_changable': false}, {'is_changing': false});
+                mctype_attrs.push(<MCTypeAttr>mattr);
+            }
+        });
+        return mctype_attrs
+    }
     // gen csample displayed view
     genDisplaySample(sample: CSample, attrs: Array<string>) {
         const displayed_sample = {};
