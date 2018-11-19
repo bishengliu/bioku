@@ -518,9 +518,11 @@ export class CTypeService {
             && sample.csample_subdata !== undefined && sample.csample_subdata !== null) {
                 sample.csample_subdata.forEach((sd: CSampleSubData) => {
                     const data_index = subattr_data.findIndex((data: Array<CSubAttrData>) => {
-                        return data[0] !== null
-                        && data[0] !== undefined
-                        && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id);
+                        return (
+                            data[0] !== undefined
+                            && data[0] !== null
+                            && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id)
+                        );
                     })
                     if ( data_index === -1) {
                         const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();

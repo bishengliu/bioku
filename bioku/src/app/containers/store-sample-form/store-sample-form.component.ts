@@ -531,7 +531,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       // for obj for saving
       posted_values = this.ctypeService.formatCSample4Saving(values, this.all_ctypes);
     }
-      console.log(posted_values);
+      // console.log(posted_values);
       const label = this.attachmentLabelInput.nativeElement.value
       const description = this.attachmentDescriptionInput.nativeElement.value;
       // console.log(values);

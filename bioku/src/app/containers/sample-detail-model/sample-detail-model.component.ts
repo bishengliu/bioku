@@ -1,12 +1,13 @@
 import { Component, OnInit, OnChanges, Input, Inject, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 // import { SuiModal, ComponentModalConfig, ModalSize, SuiModalService, SuiModalModule} from 'ng2-semantic-ui';
 import { Box } from '../../_classes/Box';
 import { Sample } from '../../_classes/Sample';
 import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType } from '../../_classes/CType';
 import { User } from '../../_classes/User';
 import { Container } from '../../_classes/Container';
-import { AppSetting} from '../../_config/AppSetting';
-import {APP_CONFIG} from '../../_providers/AppSettingProvider';
+import { AppSetting } from '../../_config/AppSetting';
+import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 // redux
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState } from '../../_redux/root/state';
@@ -28,7 +29,7 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   custom_sample_code_name = 'sample code';
   USE_CSAMPLE = true;
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
-              private containerService: ContainerService ) {
+              private containerService: ContainerService, private router: Router ) {
     this.appUrl = this.appSetting.URL;
     this.custom_sample_code_name = this.appSetting.CUSTOM_SAMPLE_CODE_NAME;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
@@ -39,6 +40,7 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit() {}
+
   ngOnChanges() {
     // use DbClickCount to triger changes
     if (this.samplePK !== null && +this.samplePK > 0) {
@@ -74,5 +76,9 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
       }
       return sample;
     }
+  }
+  // modify the sample
+  modify(sample: CSample){
+    this.router.navigate(['/containers', sample.container_id, sample.box_position, sample.pk]);
   }
 }

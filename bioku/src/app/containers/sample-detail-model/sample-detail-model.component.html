@@ -8,7 +8,13 @@ style="display: block !important;"
     (click)="cancelPropagation($event)">
         <div class="ui center aligned header">
             <span [ngStyle]="{color: sample.color}">{{sample.name}}</span>
-            ({{ USE_CSAMPLE? sample.ctype.type : sample.type }})
+            <span>({{ USE_CSAMPLE ? sample.ctype.type : sample.type }})</span>
+            <button *ngIf="USE_CSAMPLE" 
+            class="ui mini primary button right floated" 
+            (click)="modify(sample)">
+                <i class="icon edit outline"></i>
+                MODIFY
+            </button>
         </div>
         <div class="scrolling content" *ngIf="!USE_CSAMPLE">
             <app-sample-view-detail [sample]="sample"></app-sample-view-detail>
