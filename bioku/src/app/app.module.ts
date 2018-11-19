@@ -127,6 +127,7 @@ import { CtypeSubattrDetailComponent } from './ctype/ctype-subattr-detail/ctype-
 import { CsampleViewDetailComponent } from './containers/csample-view-detail/csample-view-detail.component';
 import { SampleViewDetailComponent } from './containers/sample-view-detail/sample-view-detail.component';
 import { CsampleBasicDetailComponent } from './containers/csample-basic-detail/csample-basic-detail.component';
+import { CsampleManageComponent } from './containers/csample-manage/csample-manage.component';
 
 @NgModule({
   declarations: [
@@ -210,6 +211,7 @@ import { CsampleBasicDetailComponent } from './containers/csample-basic-detail/c
     CsampleViewDetailComponent,
     SampleViewDetailComponent,
     CsampleBasicDetailComponent,
+    CsampleManageComponent,
   ],
   imports: [
     BrowserModule,

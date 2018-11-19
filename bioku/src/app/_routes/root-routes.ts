@@ -24,6 +24,7 @@ import { ResetPasswordComponent } from '../account/reset-password/reset-password
 import { ContainerSampleUploadComponent } from '../containers/container-sample-upload/container-sample-upload.component';
 import { BoxManageComponent } from '../containers/box-manage/box-manage.component';
 import { CtypeComponent } from '../ctype/ctype.component';
+import { CsampleManageComponent } from '../containers/csample-manage/csample-manage.component';
 // guards
 import { AuthGuard } from '../_guards/AuthGuard';
 import { AdminGuard } from '../_guards/AdminGuard';
@@ -79,6 +80,8 @@ export const routes: Routes = [
   {path: 'containers/:ct_pk/:box_pos/move_samples', component: MoveSampleComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent,
+                        canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
+  {path: 'containers/:ct_pk/:box_pos/:sp_pk', component: CsampleManageComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/manage', component: BoxManageComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
