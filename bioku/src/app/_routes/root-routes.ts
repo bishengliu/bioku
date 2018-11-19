@@ -81,7 +81,7 @@ export const routes: Routes = [
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/store_samples', component: StoreSampleComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
-  {path: 'containers/:ct_pk/:box_pos/:sp_pk', component: CsampleManageComponent,
+  {path: 'containers/:ct_pk/:box_pos/:sp_pos/:sp_pk', component: CsampleManageComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },
   {path: 'containers/:ct_pk/:box_pos/manage', component: BoxManageComponent,
                         canActivate: [AppActiveGuard, GroupCountGuard, FetchAuthInfoGuard, AuthGuard, ] },

@@ -79,6 +79,6 @@ export class SampleDetailModelComponent implements OnInit, OnChanges {
   }
   // modify the sample
   modify(sample: CSample){
-    this.router.navigate(['/containers', sample.container_id, sample.box_position, sample.pk]);
+    this.router.navigate(['/containers', sample.container_id, sample.box_position, sample.position, sample.pk]);
   }
 }
