@@ -377,6 +377,29 @@ export class ContainerService {
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
+    // updateCSampleData
+    updateCSampleData(container_pk, box_position: string, csample_position: string, attr_pk: number, value: any) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+                                  container_pk + '/' + box_position + '/' + csample_position
+                                  + '/' + attr_pk + '/update/';
+        const body: string = JSON.stringify({ 'value': value });
+        return this.http.put(query_url, body, this.options) // do provide header accorrding to django
+                .map((response: Response) => response.json())
+                .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
+    // update CSampleSubData
+    updateCSampleSubData(container_pk, box_position: string, csample_position: string, attr_pk: number, subattr_pk: number, value: any) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+                                  container_pk + '/' + box_position + '/' + csample_position
+                                  + '/' + attr_pk + '/'
+                                  + subattr_pk + '/update/';
+        const body: string = JSON.stringify({ 'value': value });
+        return this.http.put(query_url, body, this.options) // do provide header accorrding to django
+                .map((response: Response) => response.json())
+                .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // search samples
     SearchSample(obj: any) {
         this.updateState();

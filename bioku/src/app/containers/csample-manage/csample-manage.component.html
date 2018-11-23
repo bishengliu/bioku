@@ -39,7 +39,13 @@
                 <i class="ui icon gray align justify right floated" *ngIf="attr.has_sub_attr"></i>
             </div>
             <div *ngIf="attr.is_changing">
-                <i class="ui icon red undo right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
+              <!--need to work here for input type and validaiton and storage_date date picker-->
+                <div class="ui icon input wide-form">
+                    <input class="" type="text" [(ngModel)]="display_sample_copy[attr.attr_label]" 
+                    (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, false)">
+                </div> 
+                <i class="ui icon green check icon right floated clickable" *ngIf="attr.is_changable"></i>
+                <i class="ui icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>                
             </div>
           </td>
         </tr>
