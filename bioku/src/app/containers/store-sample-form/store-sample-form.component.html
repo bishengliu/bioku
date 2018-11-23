@@ -407,11 +407,11 @@
               <th class="right aligned">{{renderFormLabel('storage_date')}}</th>
               <td colspan="2" class="store_sample">
                   <my-date-picker name="storage_date" 
-                  [options]="myDatePickerOptions" 
-                  [(ngModel)]="storage_date" 
-                  [ngModelOptions]="{standalone: true}"
-                  (ngModelChange)="updateStorageDate($event)">
-                </my-date-picker>
+                    [options]="myDatePickerOptions" 
+                    [(ngModel)]="storage_date" 
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="updateStorageDate($event)">
+                  </my-date-picker>
                 <div *ngIf="(storage_date == null || storage_date == '') && sampleForm.touched" 
                 class="ui mini negative message"> 
                   {{renderFormLabel('storage_date')}} is required

@@ -15,7 +15,8 @@ import { ContainerService } from '../../_services/ContainerService';
 import { AlertService } from '../../_services/AlertService';
 // color picker
 import { IColorPickerConfiguration } from 'ng2-color-picker';
-import { ValueUnwrapper } from '@angular/core/src/change_detection/change_detection';
+// mydatepicker
+import {IMyOptions} from 'mydatepicker';
 @Component({
   selector: 'app-csample-manage',
   templateUrl: './csample-manage.component.html',
@@ -70,6 +71,16 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   attchament_is2large: Boolean = false;
   attchament_error: Boolean = false;
   msg: string = null;
+  storage_date: string = null;
+   // mydatepicker
+  myDatePickerOptions: IMyOptions = {
+    // other options...
+    todayBtnTxt: 'Today',
+    dateFormat: 'yyyy-mm-dd',
+    openSelectorTopOfInput: true,
+    showSelectorArrow: false,
+    editableDateField: false,
+    openSelectorOnInputClick: true};
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private ctypeService: CTypeService,
   private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService,
   private router: Router, private route: ActivatedRoute) {
@@ -148,6 +159,11 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // top level sample fix attr
     const fixed_sample_attrs = ['name', 'storage_date', 'color'];
     if (fixed_sample_attrs.indexOf(attr.attr_name) !== -1) {
+      // sample.freezing_date
+      if (attr.attr_name === 'storage_date') {
+        value = value.formatted;
+        this.storage_date = value.formatted;
+      }
       this.updateFixedSampleDetail(value, csample, csample.box_position, csample.position, attr.attr_name, attr.attr_required);
     } else if ( !attr.has_sub_attr
       && attr.attr_value_type === 3
@@ -157,7 +173,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.updateCSampleData(value, csample, attr)
       } else {
         // sub attrs, complext attrs
-
+        this.updateCSampleSubData(value, csample, attr, subattr, subdata)
       }
   }
   // update top level fixed attrs
@@ -182,8 +198,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.display_sample[data_attr] = value;
         this.display_sample_copy[data_attr] = value;
       }, (err) => {
-        console.log(
-        this.msg = 'fail to update sample detail!')
+        console.log(this.msg = 'fail to update sample detail!')
         this.alertService.error('fail to update sample detail!', false); });
     }
   }
@@ -221,7 +236,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     }
   }
   // need to add or remove subdata
-  
+
   // update display_sample for subattr data
   synDisplaySubData(value: any, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
     this.subattr_data.forEach((sd: Array<CSubAttrData>) => {

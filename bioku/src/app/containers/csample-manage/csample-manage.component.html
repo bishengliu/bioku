@@ -34,18 +34,25 @@
                 <span *ngIf="attr.attr_name == 'storage_date'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
                 <span *ngIf="attr.attr_name != 'storage_date' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
                 <!--changable-->
-                <i class="ui icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
+                <i class="icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
                 <!--attr with children-->
-                <i class="ui icon gray align justify right floated" *ngIf="attr.has_sub_attr"></i>
+                <i class="icon grey table right floated" *ngIf="attr.has_sub_attr"></i>
             </div>
             <div *ngIf="attr.is_changing">
               <!--need to work here for input type and validaiton and storage_date date picker-->
-                <div class="ui icon input wide-form">
+                <div class="ui icon input wide-form" *ngIf="attr.attr_name != 'storage_date'">
                     <input class="" type="text" [(ngModel)]="display_sample_copy[attr.attr_label]" 
-                    (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, false)">
+                    (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, attr.attr_required)">
+                </div>
+                <div class="store_sample" *ngIf="attr.attr_name == 'storage_date'">
+                  <my-date-picker name="storage_date" 
+                    [options]="myDatePickerOptions" 
+                    [(ngModel)]="storage_date" 
+                    (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, true)">
+                  </my-date-picker>
                 </div> 
-                <i class="ui icon green check icon right floated clickable" *ngIf="attr.is_changable"></i>
-                <i class="ui icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>                
+                <i class="icon green check icon right floated clickable" *ngIf="attr.is_changable"></i>
+                <i class="icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>                
             </div>
           </td>
         </tr>
@@ -54,14 +61,14 @@
           <th>ATTACHMENTS</th>
           <td>
             <a *ngIf="attachment_upload== false" 
-              class="ui right floated grey mini compact icon button" 
               (click)="displayAttachmentUpload()">
-              <i class="cloud upload icon"></i>
+              <i class="plus square outline icon teal right floated clickable"
+              suiPopup popupText="upload another attachment"></i>
             </a>
             <div *ngIf="display_sample.ATTACHMENTS != null && display_sample.ATTACHMENTS.length > 0">
               <div class="nopadding no_margin" *ngFor="let attachment of display_sample.ATTACHMENTS">
                 <div class="ui mini icon buttons">
-                  <a class="ui red button" (click)="attachment2Delete(attachment.pk, attachment.label)">
+                  <a class="ui mini basic button" (click)="attachment2Delete(attachment.pk, attachment.label)">
                     <i class="delete icon" suiPopup popupText="remove this attachment" ></i>
                   </a>
                   <a class="ui basic button" target="_blank" href="{{appUrl + attachment.attachment}}">
@@ -141,7 +148,7 @@
           <td>
             <color-picker 
             [(ngModel)]="sample.color" 
-            (ngModelChange)="updateSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" 
+            (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" 
             [availableColors]="availableColors" [pickerConfig]="pickerOptions">
             </color-picker>                                            
           </td>
