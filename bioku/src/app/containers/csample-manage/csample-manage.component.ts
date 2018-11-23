@@ -197,6 +197,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         // update display_sample
         this.display_sample[data_attr] = value;
         this.display_sample_copy[data_attr] = value;
+        // need to dispatch to the redux box sample ------------------
       }, (err) => {
         console.log(this.msg = 'fail to update sample detail!')
         this.alertService.error('fail to update sample detail!', false); });
