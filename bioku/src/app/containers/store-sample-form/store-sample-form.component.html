@@ -381,7 +381,7 @@
   <form *ngIf="USE_CSAMPLE" [formGroup]="sampleForm" 
   class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" 
   enctype="multipart/form-data">
-    <button *ngIf="sampleForm.touched && sampleForm.valid" type="submit" class="ui fluid primary button">
+    <button *ngIf="sampleForm.valid" type="submit" class="ui fluid primary button">
       <i class="icon add circle"></i> SAVE SAMPLES 
     </button> 
     <div class="two fields">
@@ -422,7 +422,8 @@
             <tr *ngFor="let attr of left_extra_attrs">
               <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
               <td colspan="2">
-                <div class="ui input wide-form">
+                <!--non date type-->
+                <div class="ui input wide-form" *ngIf="attr.attr.type != 'date'">
                     <input class="" 
                     type="{{attr.attr.type}}" 
                     step="{{attr.attr.step}}"
@@ -431,7 +432,24 @@
                     id="{{attr.name}}" 
                     [formControl]="sampleForm.controls[attr.name]">
                 </div>
-                <div *ngIf="sampleForm.controls[attr.name].touched">
+                <!--date type-->
+                <div class="store_sample">
+                    <my-date-picker name="attr.name" *ngIf="attr.attr.type == 'date'"
+                    [options]="myDatePickerOptions" 
+                    [(ngModel)]="date_attrs[attr.name]" 
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="updateDate($event, attr)">
+                  </my-date-picker>
+                </div>      
+                <!--date type required-->
+                <div *ngIf="attr.attr.type == 'date' && sampleForm.touched
+                && (date_attrs[attr.name] == null || date_attrs[attr.name] == '') 
+                && attr.attr.required" 
+                    class="ui mini negative message"> 
+                    {{renderFormLabel(attr.name)}} is required!
+                </div>    
+                <!--non date type validation-->
+                <div *ngIf="sampleForm.controls[attr.name].touched && attr.attr.type != 'date'">
                   <!--required-->
                   <div *ngIf="attr.attr.required 
                   && sampleForm.controls[attr.name].hasError('required')"
@@ -529,7 +547,8 @@
               <tr *ngFor="let attr of right_extra_attrs">
                   <th class="right aligned">{{renderFormLabel(attr.name)}}</th>
                   <td colspan="2">
-                      <div class="ui input wide-form">
+                    <!--non date type-->
+                      <div class="ui input wide-form" *ngIf="attr.attr.type != 'date'">
                           <input class="" 
                           type="{{attr.attr.type}}"
                           step="{{attr.attr.step}}"
@@ -538,7 +557,34 @@
                           id="{{attr.name}}" 
                           [formControl]="sampleForm.controls[attr.name]">
                       </div>
-                      <div *ngIf="sampleForm.controls[attr.name].touched">
+                      <!--date type-->
+                      <div class="ui input wide-form" *ngIf="attr.attr.type == 'date'">
+                          <input class="" 
+                          type="{{attr.attr.type}}"
+                          step="{{attr.attr.step}}"
+                          required="{{attr.attr.required}}"
+                          maxlength="{{attr.attr.maxlength}}"
+                          id="{{attr.name}}" 
+                          value="date_attrs[attr.name]"
+                          [formControl]="sampleForm.controls[attr.name]">
+                      </div>
+                      <div class="store_sample">
+                          <my-date-picker name="attr.name" *ngIf="attr.attr.type == 'date'"
+                          [options]="myDatePickerOptions" 
+                          [(ngModel)]="date_attrs[attr.name]" 
+                          [ngModelOptions]="{standalone: true}"
+                          (ngModelChange)="updateDate($event, attr)">
+                        </my-date-picker>                       
+                      </div>    
+                      <!--date type required-->
+                      <div *ngIf="attr.attr.type == 'date' && sampleForm.touched
+                      && (date_attrs[attr.name] == null || date_attrs[attr.name] == '') 
+                      && attr.attr.required" 
+                        class="ui mini negative message"> 
+                          {{renderFormLabel(attr.name)}} is required!
+                      </div>       
+                      <!--non date type validation-->           
+                      <div *ngIf="sampleForm.controls[attr.name].touched && attr.attr.type != 'date'">
                           <!--required-->
                           <div *ngIf="attr.attr.required
                           && sampleForm.controls[attr.name].hasError('required')" 

@@ -43,6 +43,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   all_sample_types: Array<String> = new Array<String>();
   freezing_date: string = null;
   storage_date: string = null;
+  date_attrs = {};
   color = '#000000';
   // mydatepicker
   myDatePickerOptions: IMyOptions = {
@@ -339,7 +340,8 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       if (+attr.attr_value_type !== 3) {
         // no sub attrs
         this.extra_attrs.push(
-          {'name': attr.attr_name,
+          {'pk': attr.pk,
+            'name': attr.attr_name,
             'label': attr.attr_label.toUpperCase(),
             'attr': this.utilityService.decodeCTPyeInputAttr(attr)});
         fb_group_controlsConfig = Object.assign({}, fb_group_controlsConfig, this.genFbConfigObjNoSubAttr(attr));
@@ -347,11 +349,13 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         this.has_subattr = true;
         // update subattr extra_attrs
         const extra_label = {};
+        extra_label['pk'] = attr.pk;
         extra_label['name'] = attr.attr_name;
         extra_label['label'] = attr.attr_label;
         extra_label['subattrs'] = [];
         attr.subattrs.forEach((subattr: CTypeSubAttr) => {
           const extra_sublabel = {
+          'pk': subattr.pk,
           'name': subattr.attr_name,
           'label': subattr.attr_label.toUpperCase(),
           'attr': this.utilityService.decodeCTPyeInputAttr(subattr)};
@@ -402,10 +406,11 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       :  [, Validators.compose([this.cValidators.numberPostiveValidator()])];
     } else {
       // date
+      this.date_attrs[attr.attr_name] = '';
       // need to validate a date
       obj[attr.attr_name]  = attr.attr_required
-      ?  [, Validators.compose([Validators.required, this.cValidators.dateValidator()])]
-      :  [, Validators.compose([this.cValidators.dateValidator()])];
+      ?  [this.date_attrs[attr.attr_name], Validators.compose([Validators.required])]
+      :  [this.date_attrs[attr.attr_name], ];
     }
     return obj;
   }
@@ -502,6 +507,10 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   updateStorageDate(value: any) {
     this.storage_date = value.formatted;
   }
+  updateDate(value: any, attr: any) {
+    this.date_attrs[attr.name] = value.formatted;
+    this.sampleForm.controls[attr.name].setValue(this.date_attrs[attr.name]);
+  }
   updateSampleColor(value: any) {
     this.color = value;
   }
@@ -521,6 +530,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         posted_values = values;
       } else {
         values.storage_date = this.storage_date;
+        console.log(values);
       // convert type name to pk
       const ctype_pk: number = this.ctypeService.convertCTypeName2PK(values.ctype, this.all_ctypes);
       if (ctype_pk === null) {

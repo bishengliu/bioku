@@ -15,6 +15,7 @@ import { UtilityService } from '../../_services/UtilityService';
 import { AppStore } from '../../_providers/ReduxProviders';
 import { AppState , AppPartialState} from '../../_redux/root/state';
 import { SetCurrentBoxAction, setCurrentBoxActionCreator } from '../../_redux/container/container_actions';
+import { LocalStorageService } from '../../_services/LocalStorageService';
 // g2-sticky
 // import { Ng2StickyModule } from 'ng2-sticky';
 @Component({
@@ -47,7 +48,7 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
   // DbClickCount: EventEmitter<number> = new EventEmitter<number> ();
   constructor(private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private router: Router, private containerService: ContainerService, private alertService: AlertService,
-              private utilityService: UtilityService) {
+              private utilityService: UtilityService, private localStorageService: LocalStorageService) {
     this.FRONT_SAMPLE_STRIECT_FILTER = this.appSetting.FRONT_SAMPLE_STRIECT_FILTER;
     this.ALLOW_DOWNLOAD_EXPORT = this.appSetting.ALLOW_DOWNLOAD_EXPORT;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
@@ -155,7 +156,6 @@ export class BoxDetailComponent implements OnInit, OnDestroy {
     }
     this.DbClickCount++;
   }
-
   ngOnInit() {
     this.sub = this.route.queryParams
       .mergeMap((params) => {

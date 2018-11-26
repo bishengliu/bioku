@@ -282,11 +282,11 @@ export class UtilityService {
     decodeCTPyeInputAttr(attr: CTypeAttr | CTypeSubAttr) {
         const obj = {};
         // input type
-        obj['type'] = this.decodeCTypeAttrType(attr.attr_value_type);
+        obj['type'] = this.decodeCTypeAttrType(+attr.attr_value_type);
         // required or not
         obj['required'] = attr.attr_required;
         // max for string
-        if (attr.attr_value_type === 0
+        if (+attr.attr_value_type === 0
             && attr.attr_value_text_max_length !== null
             && !isNaN(+attr.attr_value_text_max_length)
             && +attr.attr_value_text_max_length > 0
@@ -296,11 +296,11 @@ export class UtilityService {
             obj['maxlength'] = null;
         }
         // step for float/decimal
-        if (attr.attr_value_type === 2) {
+        if (+attr.attr_value_type === 2) {
             if (attr.attr_value_decimal_point !== null
                 && !isNaN(+attr.attr_value_decimal_point)
                 && +attr.attr_value_decimal_point > 0) {
-                    obj['step'] = this.decodeCTypeDigitStep(attr.attr_value_type, attr.attr_value_decimal_point);
+                    obj['step'] = this.decodeCTypeDigitStep(+attr.attr_value_type, +attr.attr_value_decimal_point);
                 } else {
                     obj['step'] = 0.01;
                 }
