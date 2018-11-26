@@ -450,10 +450,17 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         :  [, Validators.compose([this.cValidators.numberPostiveValidator()])];
       } else {
         // date
+        const date = {};
+        date[attr.attr_name] = '';
+        // create if not exist
+        if (this.date_attrs[attr.parent_attr] === undefined) {
+          this.date_attrs[attr.parent_attr] = [];
+        }
+        this.date_attrs[attr.parent_attr].push(date);
         // need to validate a date
         obj[attr.attr_name]  = attr.attr_required
-        ?  [, Validators.compose([Validators.required, this.cValidators.dateValidator()])]
-        :  [, Validators.compose([this.cValidators.dateValidator()])];
+        ?  [, Validators.compose([Validators.required])]
+        :  [, ];
       }
       Object.assign(sub_fb_config, obj)
     });
@@ -489,6 +496,9 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         handler['remove_' + attr.attr_name] = (i: number) => {
           const control = <FormArray>formGroup.controls[attr.attr_name];
           control.removeAt(i);
+          if (this.date_attrs[attr.attr_name] !== undefined) {
+            this.date_attrs[attr.attr_name].splice(i, 1)
+          }
         }
       }
     })
@@ -511,6 +521,11 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
     this.date_attrs[attr.name] = value.formatted;
     this.sampleForm.controls[attr.name].setValue(this.date_attrs[attr.name]);
   }
+  updateSubDate(value: any, attr_name: string, i: number, subattr_name) {
+    this.date_attrs[attr_name][i][subattr_name] = value.formatted;
+    const pfb = <FormArray>this.sampleForm.controls[attr_name];
+    (<FormGroup>pfb.controls[i]).controls[subattr_name].setValue(value.formatted);
+  }
   updateSampleColor(value: any) {
     this.color = value;
   }
@@ -530,7 +545,6 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         posted_values = values;
       } else {
         values.storage_date = this.storage_date;
-        console.log(values);
       // convert type name to pk
       const ctype_pk: number = this.ctypeService.convertCTypeName2PK(values.ctype, this.all_ctypes);
       if (ctype_pk === null) {
