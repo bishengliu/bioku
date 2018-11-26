@@ -34,25 +34,29 @@
                 <span *ngIf="attr.attr_name == 'storage_date'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
                 <span *ngIf="attr.attr_name != 'storage_date' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
                 <!--changable-->
-                <i class="icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>
+                <i class="icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>
                 <!--attr with children-->
                 <i class="icon grey table right floated" *ngIf="attr.has_sub_attr"></i>
             </div>
             <div *ngIf="attr.is_changing">
               <!--need to work here for input type and validaiton and storage_date date picker-->
+              <!--(ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, attr.attr_required)"-->
                 <div class="ui icon input wide-form" *ngIf="attr.attr_name != 'storage_date'">
-                    <input class="" type="text" [(ngModel)]="display_sample_copy[attr.attr_label]" 
-                    (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, attr.attr_required)">
+                    <input class="" type="text" [(ngModel)]="display_sample_copy[attr.attr_label]"                    
+                    (ngModelChange)="preSaveSampleData($event, attr)"
+                    >
                 </div>
+                <!--(ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, true)"-->
                 <div class="store_sample" *ngIf="attr.attr_name == 'storage_date'">
                   <my-date-picker name="storage_date" 
                     [options]="myDatePickerOptions" 
                     [(ngModel)]="storage_date" 
-                    (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, true)">
+                    (ngModelChange)="preSaveSampleData($event, attr)"
+                    >
                   </my-date-picker>
                 </div> 
-                <i class="icon green check icon right floated clickable" *ngIf="attr.is_changable"></i>
-                <i class="icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr.pk)"></i>                
+                <i class="icon green check icon right floated clickable" *ngIf="attr.is_changable" (click)="performSaveCSample(attr)"></i>
+                <i class="icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>                
             </div>
           </td>
         </tr>
@@ -110,8 +114,8 @@
                 <!-- remove attchment -->
                 <div *ngIf="attachment_delete==true">                
                   <div class="ui mini right floated icon buttons">
-                    <button class="ui primary icon button" (click)="performAttachmentDelete()"><i class="icon check"></i></button>
                     <button class="ui basic icon button" (click)="cancelAttachmentDelete()"><i class="icon delete"></i></button>
+                    <button class="ui red icon basic button" (click)="performAttachmentDelete()"><i class="icon check"></i></button>
                   </div>
                   <p class="small red-text">delete {{ attachment_to_delete != null 
                     ? 
@@ -148,7 +152,7 @@
           <td>
             <color-picker 
             [(ngModel)]="sample.color" 
-            (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, 'color', false)" 
+            (ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, 'COLOR', 'color', false)" 
             [availableColors]="availableColors" [pickerConfig]="pickerOptions">
             </color-picker>                                            
           </td>

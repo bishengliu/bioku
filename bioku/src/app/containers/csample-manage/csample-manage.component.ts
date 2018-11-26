@@ -152,54 +152,54 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     }
     return sample;
   }
-  // save top attrs and complex details
-  saveSample(value: any, csample: CSample, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
+  // presave sample
+  // exlude color and attachments
+  preSaveSampleData(value: any, attr: CTypeAttr) {
     // validation
     // ==============================================================
+    // console.log(this.display_sample_copy);
+    if (attr.attr_value_type === 4) {
+      // a date
+      value = value.formatted;
+      this.storage_date = value;
+      this.display_sample_copy[attr.attr_label] = value;
+    } else {
+      this.display_sample_copy[attr.attr_label] = value;
+    }
+  }
+  performSaveCSample(attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
     // top level sample fix attr
     const fixed_sample_attrs = ['name', 'storage_date', 'color'];
     if (fixed_sample_attrs.indexOf(attr.attr_name) !== -1) {
-      // sample.freezing_date
-      if (attr.attr_name === 'storage_date') {
-        value = value.formatted;
-        this.storage_date = value.formatted;
-      }
-      this.updateFixedSampleDetail(value, csample, csample.box_position, csample.position, attr.attr_name, attr.attr_required);
+      this.updateFixedSampleDetail(this.display_sample_copy[attr.attr_label],
+        this.sample, this.sample.box_position, this.sample.position, attr.attr_label, attr.attr_name, attr.attr_required);
     } else if ( !attr.has_sub_attr
       && attr.attr_value_type === 3
       && Array.isArray(attr.subattrs)
       && attr.subattrs.length > 0) {
         // top level ctype attrs
-        this.updateCSampleData(value, csample, attr)
+        this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
       } else {
         // sub attrs, complext attrs
-        this.updateCSampleSubData(value, csample, attr, subattr, subdata)
+        this.updateCSampleSubData(this.display_sample_copy[attr.attr_label], this.sample, attr, subattr, subdata)
       }
   }
   // update top level fixed attrs
   updateFixedSampleDetail(value: any, csample: CSample, box_position: string,
-    sample_position: string, data_attr: string, required: boolean) {
+    sample_position: string, attr_label: string, attr_name: string, required: boolean) {
     // console.log('update sample details', csample);
-    this.msg = null;
-    if ((value === '' || value == null) && required) {
-      this.msg = data_attr + ' is required!';
-      this.alertService.error(data_attr + ' is required!', false);
+    if ((value === '' || value === null) && required) {
+      this.alertService.error(attr_name + ' is required!', false);
     } else {
-      this.msg = null;
-      // sample.storage_date
-      if (data_attr === 'storage_date') {
-        value = value.formatted;
-        // csample.storage_date =  value;
-      }
       this.containerService
-      .updateSampleDetail(this.container.pk, box_position, sample_position, data_attr, value)
+      .updateSampleDetail(this.container.pk, box_position, sample_position, attr_name, value)
       .subscribe(() => {
         // update display_sample
-        this.display_sample[data_attr] = value;
-        this.display_sample_copy[data_attr] = value;
-        // need to dispatch to the redux box sample ------------------
+        this.display_sample[attr_label] = value;
+        this.display_sample_copy[attr_label] = value;
+        // need to dispatch to the redux box sample ------------------ ===================================================================================================
+        this.toggleChangePostSave(attr_name);
       }, (err) => {
-        console.log(this.msg = 'fail to update sample detail!')
         this.alertService.error('fail to update sample detail!', false); });
     }
   }
@@ -214,6 +214,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           // update display_sample
           this.display_sample[attr.attr_name] = value;
           this.display_sample_copy[attr.attr_name] = value;
+          this.toggleChangePostSave(attr.attr_name);
           }, (err) => {
           console.log(
           this.msg = 'fail to update sample detail!')
@@ -228,8 +229,10 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.containerService
       .updateCSampleSubData(this.container.pk, csample.box_position, csample.position, attr.pk, subattr.pk, value)
       .subscribe(() => {
+        // need to dispatch to the redux box sample ------------------ ===================================================================================================
         // update display_sample
         this.synDisplaySubData(value, attr, subattr, subdata);
+        // need hide the box for editing
         }, (err) => {
         console.log(
         this.msg = 'fail to update sample detail!')
@@ -254,6 +257,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // update the copy
     this.subattr_data_copy = Object.assign({}, this.subattr_data);
   }
+
   // route force refrsh
   forceRefresh() {
     this.router.navigate(['/containers', this.container.pk], { queryParams: { 'box_position': this.box.box_position } });
@@ -263,10 +267,20 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
   }
   // toggle change status
-  toggleChange(attr_pk: number) {
+  toggleChange(attr: CTypeAttr) {
     this.mctype_attrs.forEach((mattr: MCTypeAttr) => {
-      if (mattr.pk === attr_pk) {
+      if (mattr.pk === attr.pk) {
         mattr.is_changing = !mattr.is_changing;
+        // restore date
+        // this.display_sample_copy[attr.attr_label] = this.display_sample[attr.attr_label];
+      }
+    });
+  }
+  toggleChangePostSave(attr_name: string) {
+    this.mctype_attrs.forEach((mattr: MCTypeAttr) => {
+      if (mattr.attr_name === attr_name) {
+        mattr.is_changing = !mattr.is_changing;
+        this.display_sample[attr_name] = this.display_sample_copy[attr_name];
       }
     });
   }
