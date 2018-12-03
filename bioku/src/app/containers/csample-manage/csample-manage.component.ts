@@ -25,6 +25,7 @@ import {IMyOptions} from 'mydatepicker';
 export class CsampleManageComponent implements OnInit, OnDestroy {
   loading = true;
   load_failed = false;
+  require_refresh = false;
   // route param
   ct_pk: number;
   box_pos: string;
@@ -199,6 +200,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.display_sample_copy[attr_label] = value;
         // need to dispatch to the redux box sample ------------------ ===================================================================================================
         this.toggleChangePostSave(attr_name);
+        this.require_refresh = true;
       }, (err) => {
         this.alertService.error('fail to update sample detail!', false); });
     }
@@ -215,6 +217,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.display_sample[attr.attr_name] = value;
           this.display_sample_copy[attr.attr_name] = value;
           this.toggleChangePostSave(attr.attr_name);
+          this.require_refresh = true;
           }, (err) => {
           console.log(
           this.msg = 'fail to update sample detail!')
@@ -233,9 +236,9 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         // update display_sample
         this.synDisplaySubData(value, attr, subattr, subdata);
         // need hide the box for editing
+        this.require_refresh = true;
         }, (err) => {
-        console.log(
-        this.msg = 'fail to update sample detail!')
+        console.log(this.msg = 'fail to update sample detail!')
         this.alertService.error('fail to update sample detail!', false); });
     }
   }
@@ -319,6 +322,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.cancelAttachmentDelete();
           this.hideAttachmentUpload();
           this.alertService.success('the attchament removed!', true);
+          this.require_refresh = true;
         }, () => {
           // tslint:disable-next-line:quotemark
           this.alertService.error("failed to delete sample attachments!", true);
@@ -386,6 +390,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.updateSampleAttchmentUpload(data);
           this.hideAttachmentUpload();
           this.alertService.success('the attchament uploaded!', true);
+          this.require_refresh = true;
         },
         () => this.alertService.error('something went wrong, the attchament not uploaded!', true)
       );

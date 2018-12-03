@@ -11,10 +11,13 @@
         </h3>
       </div>
       <div class="eight wide column">
-        <a class="ui grey button right floated"
+        <a class="ui grey button right floated" *ngIf="!require_refresh"
         [routerLink]="['/containers/', container.pk, box.box_position]">
-            <i class="icon caret left"></i>
-            BACK
+            <i class="icon caret left"></i> BACK
+        </a>
+        <a class="ui teal button right floated" *ngIf="require_refresh"
+        (click)="forceRefresh()">
+            <i class="icon caret left"></i> DONE
         </a>
       </div>
   </div>
