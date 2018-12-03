@@ -35,32 +35,40 @@
                     <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr.attr_label]) }}</span>
                     <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
                   </span>
-                <span *ngIf="attr.attr_name == 'storage_date'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
-                <span *ngIf="attr.attr_name != 'storage_date' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
+                <span *ngIf="attr.attr_value_type === 4">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
+                <span *ngIf="attr.attr_value_type !== 4 && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
                 <!--changable-->
                 <i class="icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>
                 <!--attr with children-->
                 <i class="icon grey table right floated" *ngIf="attr.has_sub_attr"></i>
             </div>
             <div *ngIf="attr.is_changing">
-              <!--need to work here for input type and validaiton and storage_date date picker-->
-              <!--(ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, attr.attr_required)"-->
-                <div class="ui icon input wide-form" *ngIf="attr.attr_name != 'storage_date'">
-                    <input class="" type="text" [(ngModel)]="display_sample_copy[attr.attr_label]"                    
-                    (ngModelChange)="preSaveSampleData($event, attr)"
-                    >
+              <!--need to work here for input type and validaiton-->
+              <!--non date type-->
+                <div class="ui icon input wide-form" *ngIf="attr.attr_value_type !== 4">
+                  <input class="" 
+                  type="{{attr.input_attr.type}}" 
+                  step="{{attr.input_attr.step}}"
+                  required="{{attr.input_attr.required}}"
+                  maxlength="{{attr.input_attr.maxlength}}"
+                  [(ngModel)]="display_sample_copy[attr.attr_label]"                    
+                    (ngModelChange)="preSaveSampleData($event, attr)">
                 </div>
-                <!--(ngModelChange)="updateFixedSampleDetail($event, sample, box.box_position, sample.position, attr.attr_name, true)"-->
-                <div class="store_sample" *ngIf="attr.attr_name == 'storage_date'">
-                  <my-date-picker name="storage_date" 
-                    [options]="myDatePickerOptions" 
-                    [(ngModel)]="storage_date" 
-                    (ngModelChange)="preSaveSampleData($event, attr)"
-                    >
-                  </my-date-picker>
-                </div> 
-                <i class="icon green check icon right floated clickable" *ngIf="attr.is_changable" (click)="performSaveCSample(attr)"></i>
-                <i class="icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>                
+                <!--date type-->
+                <div class="store_sample">
+                  <my-date-picker name="attr.name" *ngIf="attr.attr_value_type === 4"
+                  [options]="myDatePickerOptions" 
+                  [(ngModel)]="date_attrs[attr.attr_name]" 
+                  (ngModelChange)="preSaveSampleData($event, attr)">
+                </my-date-picker>
+              </div>
+              <div>
+                <span class="red-text" *ngIf="validations[attr.attr_name] != ''">{{validations[attr.attr_name]}}</span>   
+                <i class="icon green check icon right floated clickable" 
+                *ngIf="attr.is_changable && validations[attr.attr_name] == ''" 
+                (click)="performSaveCSample(attr)"></i>
+                <i class="icon red close icon right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>
+              </div>                         
             </div>
           </td>
         </tr>

@@ -1,13 +1,15 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
-import { CSample, CAttachment, CTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../_classes/CType';
+import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../_classes/CType';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 @Injectable()
 export class UtilityService {
     private customized_attrs: Array<any> = new Array<any> ();
+    private date_regex = 'DD-MM-YYYY';
     constructor(@Inject(APP_CONFIG) private appSetting: any) {
         // first set up the customized attrs
         this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
+        this.date_regex = this.appSetting.DATE_REGEX;
     }
     // sort array by multiple property
     // add '-' before the property for descending sort
@@ -308,5 +310,61 @@ export class UtilityService {
             obj['step'] = null;
         }
         return obj;
+    }
+    // validation for edit sample attr
+    preSaveSampleDataValidation(value: any, attr: MCTypeAttr) {
+        // if have sub attr, skip
+        if (attr.attr_value_type === 3) {
+            return '';
+        }
+        let msg = '';
+        if (attr.attr_required && (value === undefined || value === null || value === '')){
+            msg = attr.attr_label + ' is required!';
+            return msg;
+        }
+        if (attr.attr_value_type === 0 ) {
+            // string
+            if (attr.attr_value_text_max_length !== null && value.length > attr.attr_value_text_max_length) {
+                msg = attr.attr_label + ' is too long!';
+                return msg;
+            }
+        }
+        else if (attr.attr_value_type === 1) {
+            // digit
+            if (isNaN(+value) || +value.toString().split('.') !== -1) {
+                msg = attr.attr_label + ' is invalid!';
+                return msg;
+            } 
+        }
+        else if (attr.attr_value_type === 2) {
+            //float
+            const total_digit = attr.attr_value_decimal_total_digit;
+            const decimal_point = attr.attr_value_decimal_point;
+            const is_postive = true;
+            if (isNaN(+value)
+            || (is_postive && +value < 0)
+            || (!is_postive && +value >= 0)
+            || (value.toString().indexOf('.') === -1 || total_digit <= decimal_point)) {
+                msg = attr.attr_label + ' is invalid!';
+                return msg;
+            }
+            const array = value.toString().split('.');
+            if (array.length !== 2
+            || array[0].length + array[1].length > total_digit
+            || array[1].length > decimal_point
+                ) {
+                    msg = attr.attr_label + ' is invalid!';
+                return msg;
+                }
+            if (value.toString().length  - 1 > total_digit) {
+                msg = attr.attr_label + ' is invalid!';
+                return msg;
+            }
+        }
+        else {
+            // date
+            msg = '';
+        }
+        return msg;
     }
 }

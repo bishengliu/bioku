@@ -488,7 +488,7 @@ export class CTypeService {
     }
     // apply change tag
     // apply only to the parent attr
-    applyCTypeAttrChangableTag(ctype_attrs: Array<CTypeAttr>):  Array<MCTypeAttr> {
+    genMCTypeAttr(ctype_attrs: Array<CTypeAttr>):  Array<MCTypeAttr> {
         const mctype_attrs: Array<MCTypeAttr> = new Array<MCTypeAttr>();
         // arary for not change
         const non_changables = ['pk', 'box_id', 'container_id', 'occupied', 'researchers', 'ctype_id',
@@ -498,10 +498,11 @@ export class CTypeService {
             if (non_changables.indexOf(attr.attr_name) === -1
             && (!attr.has_sub_attr && attr.attr_value_type !== 3)) {
                 //  changable
-                const mattr = Object.assign(attr, {'is_changable': true}, {'is_changing': false});
+                const mattr = Object.assign(attr, {'is_changable': true}, {'is_changing': false}, {input_attr: this.utilityService.decodeCTPyeInputAttr(attr)});
+
                 mctype_attrs.push(<MCTypeAttr>mattr);
             } else {
-                const mattr = Object.assign(attr, {'is_changable': false}, {'is_changing': false});
+                const mattr = Object.assign(attr, {'is_changable': false}, {'is_changing': false}, {input_attr: null});
                 mctype_attrs.push(<MCTypeAttr>mattr);
             }
         });

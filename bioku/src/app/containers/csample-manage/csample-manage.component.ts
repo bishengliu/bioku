@@ -72,7 +72,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   attchament_is2large: Boolean = false;
   attchament_error: Boolean = false;
   msg: string = null;
-  storage_date: string = null;
+  date_attrs = {};
    // mydatepicker
   myDatePickerOptions: IMyOptions = {
     // other options...
@@ -82,6 +82,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     showSelectorArrow: false,
     editableDateField: false,
     openSelectorOnInputClick: true};
+  // validation object
+  validations = {};
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private ctypeService: CTypeService,
   private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService,
   private router: Router, private route: ActivatedRoute) {
@@ -123,12 +125,12 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.attrs = this.ctypeService.genSampleAttrs(this.sample);
         this.display_sample = this.ctypeService.genDisplaySample(this.sample, this.attrs);
         this.display_sample_copy = Object.assign({}, this.display_sample);
-        console.log(this.display_sample);
         // modify ctype_attr and apply changable tag
-        this.mctype_attrs = this.ctypeService.applyCTypeAttrChangableTag(this.ctype_attrs);
+        this.mctype_attrs = this.ctypeService.genMCTypeAttr(this.ctype_attrs);
+        console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
         this.subattr_data_copy = Object.assign({}, this.subattr_data);
-        console.log(this.subattr_data);
+        // console.log(this.subattr_data);
       } else {
         this.load_failed = true;
         this.loading = false;
@@ -155,17 +157,18 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   }
   // presave sample
   // exlude color and attachments
-  preSaveSampleData(value: any, attr: CTypeAttr) {
+  preSaveSampleData(value: any, attr: MCTypeAttr) {
     // validation
-    // ==============================================================
-    // console.log(this.display_sample_copy);
-    if (attr.attr_value_type === 4) {
-      // a date
-      value = value.formatted;
-      this.storage_date = value;
-      this.display_sample_copy[attr.attr_label] = value;
-    } else {
-      this.display_sample_copy[attr.attr_label] = value;
+    this.validations[attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, attr);
+    if (this.validations[attr.attr_name] !== '') {
+      if (attr.attr_value_type === 4) {
+        // a date
+        value = value.formatted;
+        this.date_attrs[attr.attr_name] = value;
+        this.display_sample_copy[attr.attr_label] = value;
+      } else {
+        this.display_sample_copy[attr.attr_label] = value;
+      }
     }
   }
   performSaveCSample(attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
@@ -175,9 +178,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.updateFixedSampleDetail(this.display_sample_copy[attr.attr_label],
         this.sample, this.sample.box_position, this.sample.position, attr.attr_label, attr.attr_name, attr.attr_required);
     } else if ( !attr.has_sub_attr
-      && attr.attr_value_type === 3
-      && Array.isArray(attr.subattrs)
-      && attr.subattrs.length > 0) {
+      && attr.attr_value_type !== 3) {
         // top level ctype attrs
         this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
       } else {
@@ -198,7 +199,6 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         // update display_sample
         this.display_sample[attr_label] = value;
         this.display_sample_copy[attr_label] = value;
-        // need to dispatch to the redux box sample ------------------ ===================================================================================================
         this.toggleChangePostSave(attr_name);
         this.require_refresh = true;
       }, (err) => {
@@ -232,7 +232,6 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.containerService
       .updateCSampleSubData(this.container.pk, csample.box_position, csample.position, attr.pk, subattr.pk, value)
       .subscribe(() => {
-        // need to dispatch to the redux box sample ------------------ ===================================================================================================
         // update display_sample
         this.synDisplaySubData(value, attr, subattr, subdata);
         // need hide the box for editing

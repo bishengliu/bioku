@@ -26,8 +26,15 @@ export class CTypeAttr {
 export class MCTypeAttr extends CTypeAttr {
     is_changable: boolean;
     is_changing: boolean;
+    input_attr: InputAttr;
 }
-
+// input attr
+class InputAttr {
+    type: string;
+    maxlength: number;
+    step: number;
+    required: boolean;
+}
 export class CTypeSubAttr {
     pk: number;
     ctype_id: number;

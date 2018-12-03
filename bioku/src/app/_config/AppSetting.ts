@@ -157,7 +157,7 @@ export const AppSetting = {
         },
         {
             name: 'date_out',
-            label: 'DATE TAKEN'
+            label: 'TAKEN ON'
         },
         {
             name: 'occupied',
