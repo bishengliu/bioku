@@ -511,11 +511,19 @@ export class CTypeService {
     genMSubAttrData(subattr_data: Array<Array<CSubAttrData>>): Array<Array<MCSubAttrData>> {
         const msubattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
         subattr_data.forEach((row_items: Array<CSubAttrData>) => {
+            const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
             row_items.forEach((item: CSubAttrData) => {
                 let mcsubattrdata: MCSubAttrData = new MCSubAttrData();
                 mcsubattrdata.csample_subdata = Object.assign(item.csample_subdata);
-                mcsubattrdata.msub_attr = Object.assign(item.sub_attr,  {'is_changing': false},  {'is_deleting': false}, )
+                mcsubattrdata.msub_attr = Object.assign(
+                    {},
+                    item.sub_attr,
+                    {'is_changing': false},
+                    {'is_deleting': false},
+                    {'input_attr': this.utilityService.decodeCTPyeInputAttr(item.sub_attr)})
+                msubattr_data_items.push(mcsubattrdata);
             })
+            msubattr_data.push(msubattr_data_items);
         });
 
         return msubattr_data;

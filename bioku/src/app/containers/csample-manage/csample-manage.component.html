@@ -172,12 +172,12 @@
       </table>
     </div>
     <!-- sub sample data -->
-    <div *ngFor="let sd of subattr_data" class="eight wide column">
+    <div *ngFor="let sd of msubattr_data" class="eight wide column">
         <table class="ui unstackable small striped compact grey table">
             <thead>
               <tr class="center aligned warning">
                 <th class="tight_around" [attr.colspan]="sd.length + 1">
-                  {{sd[0].sub_attr.parent_attr.toUpperCase()}}
+                  {{sd[0].msub_attr.parent_attr.toUpperCase()}}
                   <span>                    
                     <i class="icon teal plus circle right floated clickable"></i>
                   </span>
@@ -186,7 +186,7 @@
             </thead>
             <thead>
                 <tr>
-                  <th *ngFor="let item of sd">{{item.sub_attr.attr_label}}</th>
+                  <th *ngFor="let item of sd">{{item.msub_attr.attr_label.toUpperCase()}}</th>
                   <th></th>
                 </tr>
             </thead>

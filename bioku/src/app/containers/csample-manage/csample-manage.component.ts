@@ -135,7 +135,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
         // modify the subattr of subattr_data
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
-        this.subattr_data_copy = Object.assign({}, this.subattr_data);
+        this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
         console.log(this.msubattr_data);
       } else {
         this.load_failed = true;
