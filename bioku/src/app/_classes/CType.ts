@@ -49,7 +49,12 @@ export class CTypeSubAttr {
     attr_required: boolean;
     attr_order: number;
 }
-
+// modified CTypeSubAttr
+export class MCTypeSubAttr extends CTypeSubAttr {
+    is_changable: boolean;
+    is_deleting: boolean;
+    input_attr: InputAttr;
+}
 export class CSample {
     pk: number;
     ctype_id: number;
@@ -105,5 +110,10 @@ export class CAttachment {
 
 export class CSubAttrData {
     sub_attr: CTypeSubAttr;
+    csample_subdata: Array<CSampleSubData>;
+}
+
+export class MCSubAttrData {
+    msub_attr: MCTypeSubAttr;
     csample_subdata: Array<CSampleSubData>;
 }

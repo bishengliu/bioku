@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData,
-  CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../../_classes/CType';
+  CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCSubAttrData, MCTypeSubAttr } from '../../_classes/CType';
 import { AppSetting } from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { AppStore } from '../../_providers/ReduxProviders';
@@ -39,7 +39,9 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   display_sample: any = {};
   display_sample_copy: any = {};
   subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
+  msubattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
   subattr_data_copy: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
+  msubattr_data_copy: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
   attrs: Array<string> = new Array<string>(); // only labels
   ctype_attrs: Array<CTypeAttr> = new Array<CTypeAttr> ();
   // modified attr with changable tag
@@ -131,8 +133,10 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.mctype_attrs = this.ctypeService.genMCTypeAttr(this.ctype_attrs);
         console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
+        // modify the subattr of subattr_data
+        this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
         this.subattr_data_copy = Object.assign({}, this.subattr_data);
-        console.log(this.subattr_data);
+        console.log(this.msubattr_data);
       } else {
         this.load_failed = true;
         this.loading = false;

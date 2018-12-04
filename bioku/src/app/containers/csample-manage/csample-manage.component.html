@@ -176,7 +176,7 @@
         <table class="ui unstackable small striped compact grey table">
             <thead>
               <tr class="center aligned warning">
-                <th class="tight_around" [attr.colspan]="sd.length">
+                <th class="tight_around" [attr.colspan]="sd.length + 1">
                   {{sd[0].sub_attr.parent_attr.toUpperCase()}}
                   <span>                    
                     <i class="icon teal plus circle right floated clickable"></i>
@@ -195,12 +195,20 @@
                 <td *ngFor="let attr_item of sd; let attr_index = index">
                   {{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
                 </td>
-                <th>
-                    <span>                    
-                      <i class="icon teal edit right floated clickable"></i>
-                      <i class="icon teal edit right floated clickable"></i>
-                    </span>
+                <th class="">
+                  <div>
+                      <i class="icon red trash alternate outline right floated clickable"></i>
+                      <i class="icon teal edit right floated clickable"></i>  
+                  </div>
+                  <div>
+                      <i class="icon red check right floated clickable"></i>
+                      <i class="icon grey undo right floated clickable"></i> 
+                  </div>              
                 </th>
+              </tr>
+              <tr>
+                <td *ngFor="let attr_item of sd; let attr_index = index"></td>
+                <td></td>
               </tr>
             </tbody>
         </table>           
