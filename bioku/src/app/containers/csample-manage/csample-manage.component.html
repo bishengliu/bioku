@@ -172,12 +172,12 @@
       </table>
     </div>
     <!-- sub sample data -->
-    <div *ngFor="let sd of msubattr_data" class="eight wide column">
+    <div *ngFor="let sd_table of msubattr_data; let table_index = index" class="eight wide column">
         <table class="ui unstackable small striped compact grey table">
             <thead>
               <tr class="center aligned warning">
-                <th class="tight_around" [attr.colspan]="sd.length + 1">
-                  {{sd[0].msub_attr.parent_attr.toUpperCase()}}
+                <th class="tight_around" [attr.colspan]="sd_table.length + 1">
+                  {{sd_table[0].sub_attr.parent_attr.toUpperCase()}}
                   <span>                    
                     <i class="icon teal plus circle right floated clickable"></i>
                   </span>
@@ -186,29 +186,57 @@
             </thead>
             <thead>
                 <tr>
-                  <th *ngFor="let item of sd">{{item.msub_attr.attr_label.toUpperCase()}}</th>
+                  <th *ngFor="let item of sd_table">{{item.sub_attr.attr_label.toUpperCase()}}</th>
                   <th></th>
                 </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data_item of sd[0].csample_subdata; let data_index = index">
-                <td *ngFor="let attr_item of sd; let attr_index = index">
-                  {{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
-                </td>
-                <th class="">
-                  <div>
-                      <i class="icon red trash alternate outline right floated clickable"></i>
-                      <i class="icon teal edit right floated clickable"></i>  
+              <tr *ngFor="let data_item of sd_table[0].csample_subdata; let data_index = index">
+                <!---->
+                <td *ngFor="let attr_item of sd_table; let attr_index = index" 
+                [ngClass]="{'negative': sd_table[attr_index].csample_subdata[data_index].is_deleting}">
+                  <div *ngIf="!sd_table[attr_index].csample_subdata[data_index].is_changing">
+                      {{sd_table[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
+                  </div>                  
+                  <div *ngIf="sd_table[attr_index].csample_subdata[data_index].is_changing">
+                    input box here
                   </div>
-                  <div>
-                      <i class="icon red check right floated clickable"></i>
-                      <i class="icon grey undo right floated clickable"></i> 
-                  </div>              
+                </td>
+                <th>
+                  <div *ngIf="!sd_table[0].csample_subdata[data_index].is_deleting && !sd_table[0].csample_subdata[data_index].is_changing">
+                    <a class="right floated clickable" (click)="toggleSubdataDeletion(table_index, data_index)">
+                        <i class="icon red trash alternate outline"></i>
+                    </a>
+                    <a class="right floated clickable" (click)="toggleSubdataChange(table_index, data_index)">
+                        <i class="icon teal edit"></i>  
+                    </a>
+                  </div>
+                  <!-- -->
+                  <div *ngIf="sd_table[0].csample_subdata[data_index].is_deleting">
+                      <a class="ui mini grey button right floated" (click)="toggleSubdataDeletion(table_index, data_index)">
+                        <i class="icon undo"></i><span>Cancel</span>
+                      </a>  
+                    <a class="ui mini red button right floated" (click)="performSubdataDeletion(table_index, data_index)">
+                      <i class="icon trash alternate outline"></i><span>Confirm</span>
+                    </a>               
+                  </div>
+                  <!---->
+                  <div *ngIf="sd_table[0].csample_subdata[data_index].is_changing">
+                    <a class="ui mini grey button right floated" (click)="toggleSubdataChange(table_index, data_index)">
+                      <i class="icon undo"></i><span>Cancel</span>
+                    </a>
+                    <a class="ui mini teal button right floated" (click)="performSubdataChange(table_index, data_index)">
+                      <i class="icon check"></i><span>Save</span>
+                    </a>                  
+                </div>             
                 </th>
               </tr>
               <tr>
-                <td *ngFor="let attr_item of sd; let attr_index = index"></td>
-                <td></td>
+                <td *ngFor="let attr_item of sd_table; let attr_index = index"></td>
+                <td>
+                  <i class="icon red check right floated clickable"></i>
+                  <i class="icon grey x icon right floated clickable"></i> 
+                </td>
               </tr>
             </tbody>
         </table>           

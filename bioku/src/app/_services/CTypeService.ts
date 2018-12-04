@@ -9,7 +9,7 @@ import { UtilityService } from '../_services/UtilityService';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 // CType class
-import { CType, CTypeAttr, MCTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, CSubAttrData, MCSubAttrData, MCTypeSubAttr} from '../_classes/CType';
+import { CType, CTypeAttr, MCTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, MCSampleSubData, CSubAttrData, MCSubAttrData, MCTypeSubAttr} from '../_classes/CType';
 import { Sample, Attachment } from '../_classes/Sample';
 import { isArray } from 'util';
 @Injectable()
@@ -514,12 +514,15 @@ export class CTypeService {
             const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
             row_items.forEach((item: CSubAttrData) => {
                 let mcsubattrdata: MCSubAttrData = new MCSubAttrData();
-                mcsubattrdata.csample_subdata = Object.assign(item.csample_subdata);
-                mcsubattrdata.msub_attr = Object.assign(
+                mcsubattrdata.csample_subdata = new Array<MCSampleSubData>();
+                item.csample_subdata.forEach((data: CSampleSubData) => {
+                    mcsubattrdata.csample_subdata.push(
+                        Object.assign({}, data, {'is_changing': false}, {'is_deleting': false})
+                        )
+                }); 
+                mcsubattrdata.sub_attr = <MCTypeSubAttr>Object.assign(
                     {},
-                    item.sub_attr,
-                    {'is_changing': false},
-                    {'is_deleting': false},
+                    item.sub_attr,                   
                     {'input_attr': this.utilityService.decodeCTPyeInputAttr(item.sub_attr)})
                 msubattr_data_items.push(mcsubattrdata);
             })

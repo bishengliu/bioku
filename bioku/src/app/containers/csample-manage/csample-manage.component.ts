@@ -40,7 +40,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   display_sample_copy: any = {};
   subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
   msubattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
-  subattr_data_copy: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
+  // subattr_data_copy: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
   msubattr_data_copy: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
   attrs: Array<string> = new Array<string>(); // only labels
   ctype_attrs: Array<CTypeAttr> = new Array<CTypeAttr> ();
@@ -131,7 +131,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.display_sample_copy = Object.assign({}, this.display_sample);
         // modify ctype_attr and apply changable tag
         this.mctype_attrs = this.ctypeService.genMCTypeAttr(this.ctype_attrs);
-        console.log(this.mctype_attrs);
+        // console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
         // modify the subattr of subattr_data
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
@@ -243,7 +243,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         // need hide the box for editing
         this.require_refresh = true;
         }, (err) => {
-        console.log(this.msg = 'fail to update sample detail!')
+        // console.log(this.msg = 'fail to update sample detail!')
         this.alertService.error('fail to update sample detail!', false); });
     }
   }
@@ -263,7 +263,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           });
     });
     // update the copy
-    this.subattr_data_copy = Object.assign({}, this.subattr_data);
+    this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
+    this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
   }
 
   // route force refrsh
@@ -292,6 +293,24 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       }
     });
   }
+  // ---------------------------------subdate change----------------------------
+  toggleSubdataDeletion(table_index: number, data_index: number) {
+    this.msubattr_data[table_index].forEach((row: MCSubAttrData) => {
+      row.csample_subdata[data_index].is_deleting = !row.csample_subdata[data_index].is_deleting;
+    })
+  }
+  performSubdataDeletion(table_index: number, data_index: number) {
+
+  }
+  toggleSubdataChange(table_index: number, data_index: number) {
+    this.msubattr_data[table_index].forEach((row: MCSubAttrData) => {
+      row.csample_subdata[data_index].is_changing = !row.csample_subdata[data_index].is_changing;
+    })
+  }
+  performSubdataChange(table_index: number, data_index: number) {
+
+  }
+  
   // ---------------------------------- attachment --------------------------
   displayAttachmentUpload() {
     this.attachment_upload = true;

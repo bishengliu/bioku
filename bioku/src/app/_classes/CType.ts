@@ -51,8 +51,6 @@ export class CTypeSubAttr {
 }
 // modified CTypeSubAttr
 export class MCTypeSubAttr extends CTypeSubAttr {
-    is_changable: boolean;
-    is_deleting: boolean;
     input_attr: InputAttr;
 }
 export class CSample {
@@ -99,7 +97,10 @@ export class CSampleSubData {
     ctype_sub_attr_value_part1: string;
     ctype_sub_attr_value_part2: string;
 }
-
+export class MCSampleSubData extends CSampleSubData {
+    is_changing: boolean;
+    is_deleting: boolean;
+}
 export class CAttachment {
     pk: number;
     csample_id: number;
@@ -114,6 +115,6 @@ export class CSubAttrData {
 }
 
 export class MCSubAttrData {
-    msub_attr: MCTypeSubAttr;
-    csample_subdata: Array<CSampleSubData>;
+    sub_attr: MCTypeSubAttr;
+    csample_subdata: Array<MCSampleSubData>;
 }
