@@ -115,6 +115,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.box_pos = params['box_pos'];
       this.sp_pos = params['sp_pos']
       this.sp_pk = +params['sp_pk'];
+      // should cal api to load the latest sample details ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      // return this.containerService.sampleDetail(this.ct_pk, this.box_pos, this.sp_pos, this.sp_pk);
       return Observable.of(this.findSample(this.sp_pk));
     })
     .subscribe((sample: CSample) => {
@@ -130,7 +132,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
         this.subattr_data_copy = Object.assign({}, this.subattr_data);
-        // console.log(this.subattr_data);
+        console.log(this.subattr_data);
       } else {
         this.load_failed = true;
         this.loading = false;

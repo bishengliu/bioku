@@ -367,7 +367,6 @@ export class ContainerService {
         return this.http.post(query_url, formData, this.options_NoContentType) // do provide header accorrding to django
         .catch((error: any) => Observable.throw(error || 'Server error'));
     }
-
     // save add samples
     addSamples(formData: FormData, container_pk: number, box_position: string) {
         this.updateState();
@@ -377,12 +376,21 @@ export class ContainerService {
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
+    // load sample details
+    sampleDetail(container_pk: number, box_position: string, sample_position: string, sample_pk: number) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+                                  container_pk + '/' + box_position + '/' + sample_position + '/' + sample_pk;
+        return this.http.get(query_url, this.options)
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
     // updateCSampleData
     updateCSampleData(container_pk, box_position: string, csample_position: string, attr_pk: number, value: any) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
-                                  + '/' + attr_pk + '/update/';
+                                  + '/' + attr_pk + '/update_attr_data/';
         const body: string = JSON.stringify({ 'value': value });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())
@@ -394,7 +402,7 @@ export class ContainerService {
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
                                   + '/' + attr_pk + '/'
-                                  + subattr_pk + '/update/';
+                                  + subattr_pk + '/update_subattr_data/';
         const body: string = JSON.stringify({ 'value': value });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())

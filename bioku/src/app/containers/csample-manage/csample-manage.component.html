@@ -171,7 +171,38 @@
           </tr> 
       </table>
     </div>
-    <div class="eight wide column">
-      
+    <!-- sub sample data -->
+    <div *ngFor="let sd of subattr_data" class="eight wide column">
+        <table class="ui unstackable small striped compact grey table">
+            <thead>
+              <tr class="center aligned warning">
+                <th class="tight_around" [attr.colspan]="sd.length">
+                  {{sd[0].sub_attr.parent_attr.toUpperCase()}}
+                  <span>                    
+                    <i class="icon teal plus circle right floated clickable"></i>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <thead>
+                <tr>
+                  <th *ngFor="let item of sd">{{item.sub_attr.attr_label}}</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data_item of sd[0].csample_subdata; let data_index = index">
+                <td *ngFor="let attr_item of sd; let attr_index = index">
+                  {{sd[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
+                </td>
+                <th>
+                    <span>                    
+                      <i class="icon teal edit right floated clickable"></i>
+                      <i class="icon teal edit right floated clickable"></i>
+                    </span>
+                </th>
+              </tr>
+            </tbody>
+        </table>           
     </div>
   </div>
