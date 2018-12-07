@@ -52,7 +52,7 @@
                   required="{{attr.input_attr.required}}"
                   maxlength="{{attr.input_attr.maxlength}}"
                   [(ngModel)]="display_sample_copy[attr.attr_label]"                    
-                    (ngModelChange)="preSaveSampleData($event, attr)">
+                  (ngModelChange)="preSaveSampleData($event, attr)">
                 </div>
                 <!--date type-->
                 <div class="store_sample">
@@ -199,7 +199,29 @@
                       {{sd_table[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
                   </div>                  
                   <div *ngIf="sd_table[attr_index].csample_subdata[data_index].is_changing">
-                    input box here
+                    <!--no date type-->
+                    <div class="ui icon input wide-form" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
+                      <input class="" 
+                      type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
+                      step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
+                      required="{{sd_table[attr_index].sub_attr.input_attr.required}}"
+                      maxlength="{{sd_table[attr_index].sub_attr.input_attr.maxlength}}"
+                      [(ngModel)]="msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1"                    
+                      (ngModelChange)="preSaveSampleSubData($event, table_index, attr_index, data_index)">
+                    </div>
+                    <!-- date type-->
+                    <div class="store_sample">
+                      <my-date-picker *ngIf="+sd_table[attr_index].sub_attr.attr_value_type === 4"
+                      [options]="myDatePickerOptions" 
+                      [(ngModel)]="date_attrs[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name]" 
+                      (ngModelChange)="preSaveSampleSubData($event, table_index, attr_index, data_index)">
+                    </my-date-picker>
+                    </div>
+                    <div *ngIf="validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name] != ''">
+                      <span class="red-text">
+                        {{validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name]}}
+                      </span> 
+                    </div>                      
                   </div>
                 </td>
                 <th>

@@ -1,6 +1,6 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
-import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr } from '../_classes/CType';
+import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCTypeSubAttr } from '../_classes/CType';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 @Injectable()
 export class UtilityService {
@@ -311,8 +311,8 @@ export class UtilityService {
         }
         return obj;
     }
-    // validation for edit sample attr
-    preSaveSampleDataValidation(value: any, attr: MCTypeAttr) {
+    // validation for edit sample attr or subattr
+    preSaveSampleDataValidation(value: any, attr: MCTypeAttr | MCTypeSubAttr) {
         // if have sub attr, skip
         if (attr.attr_value_type === 3) {
             return '';

@@ -300,17 +300,64 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     })
   }
   performSubdataDeletion(table_index: number, data_index: number) {
+    // get all the pks to delete
+    const pks: Array<number> = new Array<number>();
+    this.msubattr_data[table_index].forEach((row: MCSubAttrData, attr_index: number) => {
+      pks.push(row.csample_subdata[data_index].pk);
+    })
+    if (pks.length > 0) {
+      // save
+      this.containerService.
+      deleteCSampleSubData(this.container.pk, this.box.box_position, this.sample.position, this.sample.pk, pks)
+      .subscribe(() => {
+        // // delete from msubattr_data
+        this.msubattr_data = this.syncSubAttrDataDeletion(this.msubattr_data, pks);
+        this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
+        // this.toggleChangePostSave(attr_name);
+        this.require_refresh = true;
+      },
+      () => {
+        this.alertService.error('Something went wrong, failed to delete the data!', false);
+      });
+    } else {
+      this.alertService.error('Something went wrong, nothing to delete', false);
+    }
+  }
+  syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, subattr_data_pks: Array<number>): Array<Array<MCSubAttrData>> {
+    let new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
 
+
+    return new_subattr_data;
   }
   toggleSubdataChange(table_index: number, data_index: number) {
-    this.msubattr_data[table_index].forEach((row: MCSubAttrData) => {
+    this.msubattr_data[table_index].forEach((row: MCSubAttrData, attr_index: number) => {
       row.csample_subdata[data_index].is_changing = !row.csample_subdata[data_index].is_changing;
+      // restore the data to original data
+      if(!row.csample_subdata[data_index].is_changing) {
+        this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 
+        = row.csample_subdata[data_index].ctype_sub_attr_value_part1;
+      }
     })
   }
   performSubdataChange(table_index: number, data_index: number) {
 
   }
-  
+  preSaveSampleSubData(value: any, table_index: number, attr_index: number, data_index: number) {
+    // get the sub_attr
+    const sub_attr = this.msubattr_data_copy[table_index][attr_index].sub_attr;
+    // validation
+    this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
+    if (this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] !== '') {
+      if (sub_attr.attr_value_type === 4) {
+        // a date
+        value = value.formatted;
+        this.date_attrs[sub_attr.parent_attr + '_'+ sub_attr.attr_name] = value;
+        this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
+      } else {
+        this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
+      }
+    }
+  }
   // ---------------------------------- attachment --------------------------
   displayAttachmentUpload() {
     this.attachment_upload = true;
