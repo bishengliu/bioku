@@ -531,6 +531,30 @@ export class CTypeService {
 
         return msubattr_data;
     }
+    // delete subattr_data
+    syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, subattr_data_pks: Array<number>): Array<Array<MCSubAttrData>> {
+        let new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
+        subattr_data.forEach((row_items: Array<MCSubAttrData>) =>{
+            const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
+            row_items.forEach((item: MCSubAttrData) =>{
+                let mcsubattrdata: MCSubAttrData = new MCSubAttrData();
+                mcsubattrdata.csample_subdata = new Array<MCSampleSubData>();
+                // sub_attr
+                mcsubattrdata.sub_attr = <MCTypeSubAttr>Object.assign({}, item.sub_attr);
+                // sub_attr_data
+                mcsubattrdata.csample_subdata = [...item.csample_subdata.filter((data: MCSampleSubData) => {
+                    return subattr_data_pks.indexOf(data.pk) === -1;
+                })];
+                if(mcsubattrdata.csample_subdata.length > 0) {
+                    msubattr_data_items.push(mcsubattrdata);
+                } 
+            })
+            if (msubattr_data_items.length > 0) {
+                new_subattr_data.push(msubattr_data_items);
+            }            
+        })
+        return new_subattr_data;
+    }
     // gen csample displayed view
     genDisplaySample(sample: CSample, attrs: Array<string>) {
         const displayed_sample = {};

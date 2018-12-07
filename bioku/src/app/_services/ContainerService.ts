@@ -396,14 +396,25 @@ export class ContainerService {
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
-    // update CSampleSubData
-    updateCSampleSubData(container_pk: number, box_position: string, csample_position: string, attr_pk: number, subattr_pk: number, value: any) {
+    // update CSampleSubData and single subattr
+    updateCSampleSubAttrData(container_pk: number, box_position: string, csample_position: string, attr_pk: number, subattr_pk: number, value: any) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
                                   + '/' + attr_pk + '/'
-                                  + subattr_pk + '/update_subattr_data/';
+                                  + subattr_pk + '/update/';
         const body: string = JSON.stringify({ 'value': value });
+        return this.http.put(query_url, body, this.options) // do provide header accorrding to django
+                .map((response: Response) => response.json())
+                .catch((error: any) => Observable.throw(error || 'Server error'));
+    }
+    // update CSample a row subattr data
+    updateCSampleSubAttrBatchData(container_pk: number, box_position: string, csample_position: string,  csample_pk: number, data: Array<any>) {
+        this.updateState();
+        const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
+                                  container_pk + '/' + box_position + '/' + csample_position
+                                  + '/' + csample_pk + '/batch_update/';
+        const body: string = JSON.stringify({ 'data': data });
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -413,7 +424,7 @@ export class ContainerService {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
-                                  + '/' + csample_pk + '/delete_subattr_data'
+                                  + '/' + csample_pk + '/delete_subattr_data/'
         const body: string = JSON.stringify(subattr_data_pks);
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())

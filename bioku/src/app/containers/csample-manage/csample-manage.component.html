@@ -192,7 +192,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data_item of sd_table[0].csample_subdata; let data_index = index">
-                <!---->
+                <!--edit and deletion-->
                 <td *ngFor="let attr_item of sd_table; let attr_index = index" 
                 [ngClass]="{'negative': sd_table[attr_index].csample_subdata[data_index].is_deleting}">
                   <div *ngIf="!sd_table[attr_index].csample_subdata[data_index].is_changing">
@@ -200,7 +200,7 @@
                   </div>                  
                   <div *ngIf="sd_table[attr_index].csample_subdata[data_index].is_changing">
                     <!--no date type-->
-                    <div class="ui icon input wide-form" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
+                    <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
                       <input class="" 
                       type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
                       step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
@@ -224,7 +224,7 @@
                     </div>                      
                   </div>
                 </td>
-                <th>
+                <td>
                   <div *ngIf="!sd_table[0].csample_subdata[data_index].is_deleting && !sd_table[0].csample_subdata[data_index].is_changing">
                     <a class="right floated clickable" (click)="toggleSubdataDeletion(table_index, data_index)">
                         <i class="icon red trash alternate outline"></i>
@@ -233,25 +233,25 @@
                         <i class="icon teal edit"></i>  
                     </a>
                   </div>
-                  <!-- -->
+                  <!-- deletion -->
                   <div *ngIf="sd_table[0].csample_subdata[data_index].is_deleting">
-                      <a class="ui mini grey button right floated" (click)="toggleSubdataDeletion(table_index, data_index)">
-                        <i class="icon undo"></i><span>Cancel</span>
+                      <a class="clickable right floated" (click)="toggleSubdataDeletion(table_index, data_index)">
+                        <i class="icon grey undo"></i><span></span>
                       </a>  
-                    <a class="ui mini red button right floated" (click)="performSubdataDeletion(table_index, data_index)">
-                      <i class="icon trash alternate outline"></i><span>Confirm</span>
+                    <a class="clickable right floated" (click)="performSubdataDeletion(table_index, data_index)">
+                      <i class="icon red trash alternate outline"></i><span></span>
                     </a>               
                   </div>
-                  <!---->
+                  <!-- edit -->
                   <div *ngIf="sd_table[0].csample_subdata[data_index].is_changing">
-                    <a class="ui mini grey button right floated" (click)="toggleSubdataChange(table_index, data_index)">
-                      <i class="icon undo"></i><span>Cancel</span>
+                    <a class="clickable right floated" (click)="toggleSubdataChange(table_index, data_index)">
+                      <i class="icon grey undo"></i><span></span>
                     </a>
-                    <a class="ui mini teal button right floated" (click)="performSubdataChange(table_index, data_index)">
-                      <i class="icon check"></i><span>Save</span>
+                    <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)">
+                      <i class="icon teal check"></i><span></span>
                     </a>                  
                 </div>             
-                </th>
+              </td>
               </tr>
               <tr>
                 <td *ngFor="let attr_item of sd_table; let attr_index = index"></td>
