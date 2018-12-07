@@ -179,7 +179,8 @@
                 <th class="tight_around" [attr.colspan]="sd_table.length + 1">
                   {{sd_table[0].sub_attr.parent_attr.toUpperCase()}}
                   <span>                    
-                    <i class="icon teal plus circle right floated clickable"></i>
+                    <i class="icon teal plus circle right floated clickable" 
+                    (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i>
                   </span>
                 </th>
               </tr>
@@ -217,6 +218,7 @@
                       (ngModelChange)="preSaveSampleSubData($event, table_index, attr_index, data_index)">
                     </my-date-picker>
                     </div>
+                    <!-- validation message -->
                     <div *ngIf="validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name] != ''">
                       <span class="red-text">
                         {{validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name]}}
@@ -247,17 +249,46 @@
                     <a class="clickable right floated" (click)="toggleSubdataChange(table_index, data_index)">
                       <i class="icon grey undo"></i><span></span>
                     </a>
-                    <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)">
+                    <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)"
+                    *ngIf="validations[sd_table[0].sub_attr.parent_attr + '_valid']">
                       <i class="icon teal check"></i><span></span>
                     </a>                  
                 </div>             
               </td>
               </tr>
-              <tr>
-                <td *ngFor="let attr_item of sd_table; let attr_index = index"></td>
+              <tr *ngIf="add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]">
+                <td *ngFor="let attr_item of sd_table; let attr_index = index">
+                  <!--no date type-->
+                    <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
+                        <input class="" 
+                        type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
+                        step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
+                        required="{{sd_table[attr_index].sub_attr.input_attr.required}}"
+                        maxlength="{{sd_table[attr_index].sub_attr.input_attr.maxlength}}"
+                        [(ngModel)]="add_subattr_data[attr_index]['value']"                    
+                        (ngModelChange)="preAddSampleSubData($event, attr_index, sd_table[attr_index].sub_attr)">
+                    </div>
+                    <!-- date type-->
+                    <div class="store_sample">
+                        <my-date-picker *ngIf="+sd_table[attr_index].sub_attr.attr_value_type === 4"
+                        [options]="myDatePickerOptions" 
+                        [(ngModel)]="add_subattr_data[attr_index]['value']" 
+                        (ngModelChange)="preAddSampleSubData($event, attr_index, sd_table[attr_index].sub_attr)">
+                      </my-date-picker>
+                    </div>
+                    <!-- validation message -->
+                    <div *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_' + sd_table[0].sub_attr.attr_name] != ''">
+                        <span class="red-text">
+                          {{add_validations[sd_table[attr_index].sub_attr.attr_name]}}
+                        </span> 
+                    </div> 
+                </td>
                 <td>
-                  <i class="icon red check right floated clickable"></i>
-                  <i class="icon grey x icon right floated clickable"></i> 
+                  <i class="icon grey x icon right floated clickable"                  
+                  (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i> 
+                  <i class="icon teal check right floated clickable" 
+                  *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_valid']"
+                  (click)="performAddSubAttrData(sd_table[0].sub_attr.parent_attr_id)"></i>                  
                 </td>
               </tr>
             </tbody>

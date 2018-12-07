@@ -86,6 +86,12 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     openSelectorOnInputClick: true};
   // validation object
   validations = {};
+  // new subattr_data, will be clean upon submission
+  add_subattr_data: Array<any> = new Array<any>();
+  // will be clean upon submission
+  add_validations = {};
+  // add new subattr_data handler
+  add_subattr_data_handler= {};
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore, private ctypeService: CTypeService,
   private containerService: ContainerService, private alertService: AlertService, private utilityService: UtilityService,
   private router: Router, private route: ActivatedRoute) {
@@ -136,6 +142,21 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         // modify the subattr of subattr_data
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
         this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
+        // gen the hander
+        this.msubattr_data.forEach((table_attrs: Array<MCSubAttrData>) => {          
+          // create empty data
+          table_attrs.forEach((item: MCSubAttrData) => {
+            const subattr_data_item: any = {};
+            subattr_data_item.parent_attr_id = item.sub_attr.parent_attr_id;
+            subattr_data_item.subattr_pk = item.sub_attr.pk;
+            subattr_data_item.csample_pk = this.sample.pk;
+            subattr_data_item.value = null;
+            this.add_subattr_data.push(subattr_data_item)
+          })          
+          // toggle status
+          this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
+          this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
+        });
         console.log(this.msubattr_data);
       } else {
         this.load_failed = true;
@@ -167,7 +188,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   preSaveSampleData(value: any, attr: MCTypeAttr) {
     // validation
     this.validations[attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, attr);
-    if (this.validations[attr.attr_name] !== '') {
+    if (this.validations[attr.attr_name] === '') {
       if (attr.attr_value_type === 4) {
         // a date
         value = value.formatted;
@@ -365,8 +386,11 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // get the sub_attr
     const sub_attr = this.msubattr_data_copy[table_index][attr_index].sub_attr;
     // validation
+    if( !(sub_attr.parent_attr + '_valid' in this.validations)) {
+      this.validations[sub_attr.parent_attr + '_valid'] = false;
+    } 
     this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
-    if (this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] !== '') {
+    if (this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] === '') {
       if (sub_attr.attr_value_type === 4) {
         // a date
         value = value.formatted;
@@ -375,7 +399,25 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       } else {
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       }
+    } else {
+      if (this.validations[sub_attr.parent_attr + '_valid']) {
+        this.validations[sub_attr.parent_attr + '_valid'] = false;
+      }
     }
+  }
+  toggleAddSubAttrData(parent_attr: string) {
+    if ((parent_attr in this.add_subattr_data_handler)) {
+      this.add_subattr_data_handler[parent_attr] = !this.add_subattr_data_handler[parent_attr];
+    }
+  }
+  preAddSampleSubData(value: any, attr_index: number, sub_attr: MCTypeSubAttr) {
+    // validate
+  }
+  performAddSubAttrData(parent_attr_id: number) {
+    // empty add_subattr_data and add_validations
+    this.add_validations = {};
+    this.add_subattr_data = new Array<any>();
+    // sync data
   }
   // ---------------------------------- attachment --------------------------
   displayAttachmentUpload() {
