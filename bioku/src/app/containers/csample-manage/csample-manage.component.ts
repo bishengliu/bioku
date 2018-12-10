@@ -206,14 +206,17 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     if (fixed_sample_attrs.indexOf(attr.attr_name) !== -1) {
       this.updateFixedSampleDetail(this.display_sample_copy[attr.attr_label],
         this.sample, this.sample.box_position, this.sample.position, attr.attr_label, attr.attr_name, attr.attr_required);
-    } else if ( !attr.has_sub_attr
-      && attr.attr_value_type !== 3) {
-        // top level ctype attrs
-        this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
-      } else {
-        // sub attrs, complext attrs
-        this.updateCSampleSubAttrData(this.display_sample_copy[attr.attr_label], this.sample, attr, subattr, subdata)
-      }
+    } 
+    else {
+      if ( !attr.has_sub_attr && attr.attr_value_type !== 3) {
+          // top level ctype attrs
+          this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
+        } 
+        // else {
+        //   // sub attrs, complext attrs
+        //   this.updateCSampleSubAttrData(this.display_sample_copy[attr.attr_label], this.sample, attr, subattr, subdata)
+        // }
+    } 
   }
   // update top level fixed attrs
   updateFixedSampleDetail(value: any, csample: CSample, box_position: string,
@@ -240,7 +243,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.alertService.error(attr.attr_label + ' is required!', false);
       } else {
         this.containerService
-        .updateCSampleData(this.container.pk, csample.box_position, csample.position, attr.pk, value)
+        .updateCSampleData(this.container.pk, csample.box_position, this.sample.position, csample.pk, attr.pk, value)
         .subscribe(() => {
           // update display_sample
           this.display_sample[attr.attr_name] = value;
@@ -253,25 +256,23 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.alertService.error('fail to update sample detail!', false); });
       }
   }
-  // update csamplesubdata
-  updateCSampleSubAttrData(value: any, csample: CSample, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
-    if (subattr.attr_required && (value === '' || value == null) ) {
-      this.alertService.error(subattr.attr_label + ' of' + attr.attr_label + ' is required!', false);
-    } else {
-      this.containerService
-      .updateCSampleSubAttrData(this.container.pk, csample.box_position, csample.position, attr.pk, subattr.pk, value)
-      .subscribe(() => {
-        // update display_sample
-        this.synDisplaySubData(value, attr, subattr, subdata);
-        // need hide the box for editing
-        this.require_refresh = true;
-        }, (err) => {
-        // console.log(this.msg = 'fail to update sample detail!')
-        this.alertService.error('fail to update sample detail!', false); });
-    }
-  }
-  // need to add or remove subdata
-
+  // // update csamplesubdata
+  // updateCSampleSubAttrData(value: any, csample: CSample, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
+  //   if (subattr.attr_required && (value === '' || value == null) ) {
+  //     this.alertService.error(subattr.attr_label + ' of' + attr.attr_label + ' is required!', false);
+  //   } else {
+  //     this.containerService
+  //     .updateCSampleSubAttrData(this.container.pk, csample.box_position, csample.position, attr.pk, subattr.pk, value)
+  //     .subscribe(() => {
+  //       // update display_sample
+  //       this.synDisplaySubData(value, attr, subattr, subdata);
+  //       // need hide the box for editing
+  //       this.require_refresh = true;
+  //       }, (err) => {
+  //       // console.log(this.msg = 'fail to update sample detail!')
+  //       this.alertService.error('fail to update sample detail!', false); });
+  //   }
+  // }
   // update display_sample for subattr data
   synDisplaySubData(value: any, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
     this.subattr_data.forEach((sd: Array<CSubAttrData>) => {
@@ -316,7 +317,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // ---------------------------------subdate change----------------------------
+  // ---------------------------------subdata change----------------------------
   toggleSubdataDeletion(table_index: number, data_index: number) {
     this.msubattr_data[table_index].forEach((row: MCSubAttrData) => {
       row.csample_subdata[data_index].is_deleting = !row.csample_subdata[data_index].is_deleting;
@@ -439,7 +440,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     if(data.filter((item: any)=> { return item.value !== null && item.value !== ''}).length === 0) {
       this.alertService.error('Something went wrong, nothing to save!', false);
     }
-    this.containerService.updateCSampleSubAttrBatchData(this.container.pk, this.sample.box_position, this.sample.position, this.sample.pk, data)
+    this.containerService.addCSampleSubAttrBatchData(this.container.pk, this.sample.box_position, this.sample.position, this.sample.pk, data)
     .subscribe((data: Array<CSampleSubData>) => {
       // sync data
       this.appendCSampleSubData(table_index, data);
