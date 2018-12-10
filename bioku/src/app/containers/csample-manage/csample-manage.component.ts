@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData,
-  CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCSubAttrData, MCTypeSubAttr } from '../../_classes/CType';
+  CSampleSubData, MCSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCSubAttrData, MCTypeSubAttr } from '../../_classes/CType';
 import { AppSetting } from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { AppStore } from '../../_providers/ReduxProviders';
@@ -429,11 +429,48 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // validation the whole subattr
     this.add_validations[sub_attr.parent_attr + '_valid'] = this.utilityService.checkSampleTotalSubDataValidation(this.add_subattr_data, this.msubattr_data[table_index]); 
   }
-  performAddSubAttrData(parent_attr_id: number) {
-    // empty add_subattr_data and add_validations
-    this.add_validations = {};
-    this.add_subattr_data = new Array<any>();
-    // sync data
+  performAddSubAttrData(table_index: number) {
+    // get the data
+    const parent_attr_id = this.msubattr_data[table_index][0].sub_attr.parent_attr_id;
+    const parent_attr = this.msubattr_data[table_index][0].sub_attr.parent_attr;
+    const data: Array<any> = this.add_subattr_data.filter((item: any) => {
+      return item.parent_attr_id === parent_attr_id;
+    });
+    if(data.filter((item: any)=> { return item.value !== null && item.value !== ''}).length === 0) {
+      this.alertService.error('Something went wrong, nothing to save!', false);
+    }
+    this.containerService.updateCSampleSubAttrBatchData(this.container.pk, this.sample.box_position, this.sample.position, this.sample.pk, data)
+    .subscribe((data: Array<CSampleSubData>) => {
+      // sync data
+      this.appendCSampleSubData(table_index, data);
+      this.add_validations[parent_attr + '_valid'] = false;
+      this.add_subattr_data_handler[parent_attr] = false;
+    }, 
+    () => {
+      this.alertService.error('Something went wrong, failed to save data!', false);
+      this.add_validations[parent_attr + '_valid'] = false;
+      this.add_subattr_data_handler[parent_attr] = false;
+    });    
+  }
+  // append new subdata
+  appendCSampleSubData(table_index: number, data: Array<CSampleSubData>) {
+    this.msubattr_data[table_index].forEach((subdata: MCSubAttrData) => {
+      const item: MCSampleSubData = new MCSampleSubData();
+      const data_item: CSampleSubData = data.find((di: CSampleSubData) => {
+        return di.pk === subdata.sub_attr.pk;
+      });
+      if (data_item !== undefined) {
+        item.is_changing = false;
+        item.is_deleting = false;
+        item.csample_id = data_item.csample_id;
+        item.ctype_sub_attr = data_item.ctype_sub_attr;
+        item.ctype_sub_attr_id = data_item.ctype_sub_attr_id;
+        item.ctype_sub_attr_value_id = data_item.ctype_sub_attr_value_id;
+        item.ctype_sub_attr_value_part1 = data_item.ctype_sub_attr_value_part1;
+        item.ctype_sub_attr_value_part2 = data_item.ctype_sub_attr_value_part2;
+        subdata.csample_subdata.push(item);
+      }   
+    })  
   }
   // ---------------------------------- attachment --------------------------
   displayAttachmentUpload() {
