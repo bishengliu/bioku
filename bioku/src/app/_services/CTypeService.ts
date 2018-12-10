@@ -770,7 +770,7 @@ export class CTypeService {
                                     col_data_item.ctype_sub_attr_value_id = i;
                                     col_data_item.ctype_sub_attr_value_part1 = null;
                                     col_data_item.ctype_sub_attr_value_part2 = null;
-                                    col_data_item.pk = item_data.pk;
+                                    col_data_item.pk = null;
                                 }
                             col_subdata.push(col_data_item);
                             }
