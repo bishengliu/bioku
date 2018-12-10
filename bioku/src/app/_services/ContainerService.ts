@@ -415,7 +415,7 @@ export class ContainerService {
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
                                   + '/' + csample_pk + '/subdata/';
-        const body: string = JSON.stringify({ 'data': data });
+        const body: string = JSON.stringify(data);
         return this.http.put(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));
@@ -437,7 +437,7 @@ export class ContainerService {
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
                                   + '/' + csample_pk + '/subdata/';
-        const body: string = JSON.stringify({ 'data': data });
+        const body: string = JSON.stringify(data);
         return this.http.post(query_url, body, this.options) // do provide header accorrding to django
                 .map((response: Response) => response.json())
                 .catch((error: any) => Observable.throw(error || 'Server error'));

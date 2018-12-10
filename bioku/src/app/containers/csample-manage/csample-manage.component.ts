@@ -143,13 +143,14 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
         this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
         // gen the hander
-        this.msubattr_data.forEach((table_attrs: Array<MCSubAttrData>) => {          
+        this.msubattr_data.forEach((table_attrs: Array<MCSubAttrData>) => {
           // create empty data
           table_attrs.forEach((item: MCSubAttrData) => {
             const subattr_data_item: any = {};
             subattr_data_item.parent_attr_id = item.sub_attr.parent_attr_id;
             subattr_data_item.subattr_pk = item.sub_attr.pk;
             subattr_data_item.csample_pk = this.sample.pk;
+            subattr_data_item.ctype_sub_attr_value_id = item.csample_subdata.length === 0 ? 0 : item.csample_subdata.length;
             subattr_data_item.value = null;
             this.add_subattr_data.push(subattr_data_item)
           })          
@@ -157,7 +158,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
           this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
         });
-        // console.log(this.msubattr_data);
+        console.log(this.msubattr_data);
         // console.log(this.add_subattr_data);
       } else {
         this.load_failed = true;
@@ -212,10 +213,6 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           // top level ctype attrs
           this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
         } 
-        // else {
-        //   // sub attrs, complext attrs
-        //   this.updateCSampleSubAttrData(this.display_sample_copy[attr.attr_label], this.sample, attr, subattr, subdata)
-        // }
     } 
   }
   // update top level fixed attrs
@@ -254,23 +251,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.alertService.error('fail to update sample detail!', false); });
       }
   }
-  // // update csamplesubdata
-  // updateCSampleSubAttrData(value: any, csample: CSample, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
-  //   if (subattr.attr_required && (value === '' || value == null) ) {
-  //     this.alertService.error(subattr.attr_label + ' of' + attr.attr_label + ' is required!', false);
-  //   } else {
-  //     this.containerService
-  //     .updateCSampleSubAttrData(this.container.pk, csample.box_position, csample.position, attr.pk, subattr.pk, value)
-  //     .subscribe(() => {
-  //       // update display_sample
-  //       this.synDisplaySubData(value, attr, subattr, subdata);
-  //       // need hide the box for editing
-  //       this.require_refresh = true;
-  //       }, (err) => {
-  //       // console.log(this.msg = 'fail to update sample detail!')
-  //       this.alertService.error('fail to update sample detail!', false); });
-  //   }
-  // }
+
   // update display_sample for subattr data
   synDisplaySubData(value: any, attr: CTypeAttr, subattr: CTypeSubAttr, subdata: CSampleSubData) {
     this.subattr_data.forEach((sd: Array<CSubAttrData>) => {
@@ -445,9 +426,10 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.add_validations[parent_attr + '_valid'] = false;
       this.add_subattr_data_handler[parent_attr] = false;
     }, 
-    () => {
+    (err) => {
+      console.log(err);
       this.alertService.error('Something went wrong, failed to save data!', false);
-      this.add_validations[parent_attr + '_valid'] = false;
+      // this.add_validations[parent_attr + '_valid'] = false;
       this.add_subattr_data_handler[parent_attr] = false;
     });    
   }
