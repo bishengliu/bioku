@@ -538,7 +538,7 @@ export class CTypeService {
     // delete subattr_data
     syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, subattr_data_pks: Array<number>): Array<Array<MCSubAttrData>> {
         const new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
-        subattr_data.forEach((row_items: Array<MCSubAttrData>) =>{
+        subattr_data.forEach((row_items: Array<MCSubAttrData>) => {
             const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
             row_items.forEach((item: MCSubAttrData) => {
                 const mcsubattrdata: MCSubAttrData = new MCSubAttrData();
@@ -627,91 +627,110 @@ export class CTypeService {
     }
     // get all the subattrs and data
     genSubAttrData(sample: CSample): Array<Array<CSubAttrData>> {
+        console.log(sample);
         const subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
         if (sample !== undefined && sample !== null
             && sample.ctype !== undefined && sample.ctype !== null
             && sample.ctype.type !== undefined && sample.ctype.type !== null
             && sample.csample_subdata !== undefined && sample.csample_subdata !== null) {
+                const data_tables: Array<Array<Array<CSampleSubData>>> = new Array<Array<Array<CSampleSubData>>>();
+                // get the table index
+                const parent_attr_pks: Array<number> = new Array<number>();
                 sample.csample_subdata.forEach((sd: CSampleSubData) => {
-                    const data_index = subattr_data.findIndex((data: Array<CSubAttrData>) => {
-                        return (
-                            data[0] !== undefined
-                            && data[0] !== null
-                            && (data[0].sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id)
-                        );
-                    })
-                    if ( data_index === -1) {
-                        const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();
-                        const subdata: CSubAttrData = new CSubAttrData();
-                        const sub_attr: CTypeSubAttr = new CTypeSubAttr();
-                        sub_attr.attr_label = sd.ctype_sub_attr.attr_label;
-                        sub_attr.attr_name = sd.ctype_sub_attr.attr_name;
-                        sub_attr.attr_order = sd.ctype_sub_attr.attr_order;
-                        sub_attr.attr_required = sd.ctype_sub_attr.attr_required;
-                        sub_attr.attr_value_decimal_point = sd.ctype_sub_attr.attr_value_decimal_point;
-                        sub_attr.attr_value_decimal_total_digit = sd.ctype_sub_attr.attr_value_decimal_total_digit;
-                        sub_attr.attr_value_text_max_length = sd.ctype_sub_attr.attr_value_text_max_length;
-                        sub_attr.attr_value_type = sd.ctype_sub_attr.attr_value_type;
-                        sub_attr.ctype_id = sd.ctype_sub_attr.ctype_id;
-                        sub_attr.parent_attr = sd.ctype_sub_attr.parent_attr;
-                        sub_attr.parent_attr_id = sd.ctype_sub_attr.parent_attr_id;
-                        sub_attr.pk = sd.ctype_sub_attr.pk;
-                        const csample_subdata: Array<CSampleSubData> = new Array<CSampleSubData>();
-                        const csample_subdata_item: CSampleSubData = new CSampleSubData();
-                        csample_subdata_item.csample_id = sd.csample_id;
-                        csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
-                        csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
-                        csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
-                        csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
-                        csample_subdata_item.pk = sd.pk;
-                        csample_subdata.push(csample_subdata_item);
-                        subdata.sub_attr = Object.assign({}, sub_attr);
-                        subdata.csample_subdata = Object.assign([], csample_subdata);
-                        subattr_data_item.push(subdata);
-                        subattr_data.push(subattr_data_item);
-                    } else {
-                        const subdata_index = subattr_data[data_index].findIndex((data: CSubAttrData) => {
-                            return data.sub_attr.pk === sd.pk && data.sub_attr.parent_attr_id === sd.ctype_sub_attr.parent_attr_id;
-                        })
-                        if (subdata_index !== -1) {
-                            const csample_subdata_item: CSampleSubData = new CSampleSubData();
-                            csample_subdata_item.csample_id = sd.csample_id;
-                            csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
-                            csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
-                            csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
-                            csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
-                            csample_subdata_item.pk = sd.pk;
-                            subattr_data[data_index][subdata_index].csample_subdata.push(csample_subdata_item);
-                        } else {
-                            const subdata: CSubAttrData = new CSubAttrData();
-                            const sub_attr: CTypeSubAttr = new CTypeSubAttr();
-                            sub_attr.attr_label = sd.ctype_sub_attr.attr_label;
-                            sub_attr.attr_name = sd.ctype_sub_attr.attr_name;
-                            sub_attr.attr_order = sd.ctype_sub_attr.attr_order;
-                            sub_attr.attr_required = sd.ctype_sub_attr.attr_required;
-                            sub_attr.attr_value_decimal_point = sd.ctype_sub_attr.attr_value_decimal_point;
-                            sub_attr.attr_value_decimal_total_digit = sd.ctype_sub_attr.attr_value_decimal_total_digit;
-                            sub_attr.attr_value_text_max_length = sd.ctype_sub_attr.attr_value_text_max_length;
-                            sub_attr.attr_value_type = sd.ctype_sub_attr.attr_value_type;
-                            sub_attr.ctype_id = sd.ctype_sub_attr.ctype_id;
-                            sub_attr.parent_attr = sd.ctype_sub_attr.parent_attr;
-                            sub_attr.parent_attr_id = sd.ctype_sub_attr.parent_attr_id;
-                            sub_attr.pk = sd.ctype_sub_attr.pk;
-                            const csample_subdata: Array<CSampleSubData> = new Array<CSampleSubData>();
-                            const csample_subdata_item: CSampleSubData = new CSampleSubData();
-                            csample_subdata_item.csample_id = sd.csample_id;
-                            csample_subdata_item.ctype_sub_attr_id = sd.ctype_sub_attr_id;
-                            csample_subdata_item.ctype_sub_attr_value_id = sd.ctype_sub_attr_value_id;
-                            csample_subdata_item.ctype_sub_attr_value_part1 = sd.ctype_sub_attr_value_part1;
-                            csample_subdata_item.ctype_sub_attr_value_part2 = sd.ctype_sub_attr_value_part2;
-                            csample_subdata_item.pk = sd.pk;
-                            csample_subdata.push(csample_subdata_item);
-                            subdata.sub_attr = Object.assign({}, sub_attr);
-                            subdata.csample_subdata = Object.assign([], csample_subdata);
-                            subattr_data[data_index].push(subdata)
-                        }
+                    if (parent_attr_pks.indexOf(sd.ctype_sub_attr.parent_attr_id) === -1 ) {
+                        parent_attr_pks.push(sd.ctype_sub_attr.parent_attr_id);
                     }
+                })
+                // loop into parent_attr_pks
+                parent_attr_pks.forEach((p_pk: number) => {
+                    const data_table: Array<Array<CSampleSubData>> = new Array<Array<CSampleSubData>>();
+                    // get each sub atttr data
+                    const pdata: Array<CSampleSubData> = sample.csample_subdata.filter((sd: CSampleSubData) => {
+                        return sd.ctype_sub_attr.parent_attr_id === p_pk;
+                    })
+                    // get all the subattr_pk
+                    const subattr_pks: Array<number> = new Array<number>();
+                    pdata.forEach((item: CSampleSubData) => {
+                        if (subattr_pks.indexOf(item.ctype_sub_attr_id) === -1) {
+                            subattr_pks.push(item.ctype_sub_attr_id);
+                        }
+                    })
+                    subattr_pks.forEach((s_pk: number) => {
+                        const sdata: Array<CSampleSubData> = pdata.filter((item: CSampleSubData) => {
+                            return item.ctype_sub_attr_id === s_pk;
+                        })
+                        data_table.push(sdata.sort(this.utilityService.sortArrayBySingleProperty('ctype_sub_attr_value_id')));
+                    });
+                    data_tables.push(data_table);
                 });
+                // get all the type complex attrs
+                const all_complex_attrs: Array<CTypeAttr> = sample.ctype.attrs.filter((attr: CTypeAttr) => {
+                    return attr.has_sub_attr && attr.attr_value_type === 3;
+                });
+                // -------------------------
+                data_tables.forEach((data_table: Array<Array<CSampleSubData>>) => {
+                    // get all the subattrs of the current
+
+                    // for each table
+                    const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();
+                    // get the max data count
+                    let max_count = 0;
+                    data_table.forEach((col: Array<CSampleSubData>) => {
+                        max_count = col.length - 1 >= max_count ? col.length - 1 : max_count;
+                    })
+                    data_table.forEach((col: Array<CSampleSubData>) => {
+                        // for each col
+                        const col_attrdata: CSubAttrData = new CSubAttrData();
+                        // col attr
+                        const col_attr: CTypeSubAttr = new CTypeSubAttr();
+                        // col data
+                        const col_subdata: Array<CSampleSubData> = new Array<CSampleSubData>();
+                        // get attr
+                        if (col.length > 0) {
+                            col_attr.attr_label = col[0].ctype_sub_attr.attr_label;
+                            col_attr.attr_name = col[0].ctype_sub_attr.attr_name;
+                            col_attr.attr_order = col[0].ctype_sub_attr.attr_order;
+                            col_attr.attr_required = col[0].ctype_sub_attr.attr_required;
+                            col_attr.attr_value_decimal_point = col[0].ctype_sub_attr.attr_value_decimal_point;
+                            col_attr.attr_value_decimal_total_digit = col[0].ctype_sub_attr.attr_value_decimal_total_digit;
+                            col_attr.attr_value_text_max_length = col[0].ctype_sub_attr.attr_value_text_max_length;
+                            col_attr.attr_value_type = col[0].ctype_sub_attr.attr_value_type;
+                            col_attr.ctype_id = col[0].ctype_sub_attr.ctype_id;
+                            col_attr.parent_attr = col[0].ctype_sub_attr.parent_attr;
+                            col_attr.parent_attr_id = col[0].ctype_sub_attr.parent_attr_id;
+                            col_attr.pk = col[0].ctype_sub_attr.pk;
+                        }
+                        // get data
+                        if (col.length > 0) {
+                            for (let i = 0; i <= max_count; i++) {
+                                const item_data = col.find((sd: CSampleSubData) => {
+                                    return sd.ctype_sub_attr_value_id !== null && sd.ctype_sub_attr_value_id === i;
+                                })
+                                const col_data_item: CSampleSubData = new CSampleSubData();
+                                if (item_data !== undefined) {
+                                    col_data_item.csample_id = item_data.csample_id;
+                                    col_data_item.ctype_sub_attr_id = item_data.ctype_sub_attr_id;
+                                    col_data_item.ctype_sub_attr_value_id = item_data.ctype_sub_attr_value_id;
+                                    col_data_item.ctype_sub_attr_value_part1 = item_data.ctype_sub_attr_value_part1;
+                                    col_data_item.ctype_sub_attr_value_part2 = item_data.ctype_sub_attr_value_part2;
+                                    col_data_item.pk = item_data.pk;
+                                } else {
+                                    col_data_item.csample_id = sample.pk;
+                                    col_data_item.ctype_sub_attr_id = col_attr.pk;
+                                    col_data_item.ctype_sub_attr_value_id = i;
+                                    col_data_item.ctype_sub_attr_value_part1 = null;
+                                    col_data_item.ctype_sub_attr_value_part2 = null;
+                                    col_data_item.pk = item_data.pk;
+                                }
+                            col_subdata.push(col_data_item);
+                            }
+                        }
+                        col_attrdata.sub_attr = Object.assign({}, col_attr);
+                        col_attrdata.csample_subdata = Object.assign([], col_subdata);
+                        subattr_data_item.push(col_attrdata);
+                    })
+                    subattr_data.push(subattr_data_item);
+                })
         }
         return subattr_data;
     }

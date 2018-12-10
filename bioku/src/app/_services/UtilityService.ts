@@ -1,6 +1,7 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
-import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCTypeSubAttr, MCSubAttrData } from '../_classes/CType';
+import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType,
+    CSubAttrData, CTypeSubAttr, MCTypeSubAttr, MCSubAttrData } from '../_classes/CType';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 @Injectable()
 export class UtilityService {

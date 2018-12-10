@@ -139,6 +139,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.mctype_attrs = this.ctypeService.genMCTypeAttr(this.ctype_attrs);
         // console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
+        // console.log(this.subattr_data);
         // modify the subattr of subattr_data
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
         this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
@@ -158,7 +159,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
           this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
         });
-        console.log(this.msubattr_data);
+        // console.log(this.msubattr_data);
         // console.log(this.add_subattr_data);
       } else {
         this.load_failed = true;
