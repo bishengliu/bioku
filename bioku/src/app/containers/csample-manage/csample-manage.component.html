@@ -203,7 +203,7 @@
                   <div *ngIf="sd_table[attr_index].csample_subdata[data_index].is_changing">
                     <!--no date type-->
                     <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
-                      <input class="" 
+                      <input class="subdata_input" 
                       type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
                       step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
                       required="{{sd_table[attr_index].sub_attr.input_attr.required}}"
@@ -261,7 +261,7 @@
                 <td *ngFor="let attr_item of sd_table; let attr_index = index">
                   <!--no date type-->
                     <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
-                        <input class="" 
+                        <input class="subdata_input" 
                         type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
                         step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
                         required="{{sd_table[attr_index].sub_attr.input_attr.required}}"

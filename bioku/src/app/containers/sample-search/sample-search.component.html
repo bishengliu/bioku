@@ -46,7 +46,10 @@
 </div>
 <!-- modal -->
 <div class="sixteen wide column">
-    <app-sample-detail-model [samples]="samples" [samplePK]="dbClickedSamplePK" [DbClickCount]="DbClickCount"></app-sample-detail-model>
+    <app-sample-detail-model [samples]="samples" 
+    [samplePK]="dbClickedSamplePK" 
+    [DbClickCount]="DbClickCount">
+  </app-sample-detail-model>
   </div>
 <!-- searching -->
 <div *ngIf="searching" class="ui loading segment center aligned">
