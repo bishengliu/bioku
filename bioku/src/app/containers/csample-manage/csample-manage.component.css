@@ -1,3 +1,10 @@
 .subdata_input{
     width: 50% !important;
 }
+.wide_date {
+    width: 25% !important;
+}
+/* .mydp {
+    width: 100% !important;
+    padding-left: 1px !important;
+} */

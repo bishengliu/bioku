@@ -80,6 +80,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // other options...
     todayBtnTxt: 'Today',
     dateFormat: 'yyyy-mm-dd',
+    height: '27px',
+    width: '100%',
     openSelectorTopOfInput: true,
     showSelectorArrow: false,
     editableDateField: false,
@@ -159,7 +161,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
           this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
         });
-        // console.log(this.msubattr_data);
+        console.log(this.msubattr_data);
         // console.log(this.add_subattr_data);
       } else {
         this.load_failed = true;
@@ -329,11 +331,6 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
   toggleSubdataChange(table_index: number, data_index: number) {
     this.msubattr_data[table_index].forEach((row: MCSubAttrData, attr_index: number) => {
       row.csample_subdata[data_index].is_changing = !row.csample_subdata[data_index].is_changing;
-      // restore the data to original data
-      // if(!row.csample_subdata[data_index].is_changing) {
-      //   this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1
-      //   = row.csample_subdata[data_index].ctype_sub_attr_value_part1;
-      // }
     })
   }
   performSubdataChange(table_index: number, data_index: number) {
@@ -367,22 +364,23 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // get the sub_attr
     const sub_attr = this.msubattr_data_copy[table_index][attr_index].sub_attr;
     // validation
-    if ( !(sub_attr.parent_attr + '_valid' in this.validations)) {
-      this.validations[sub_attr.parent_attr + '_valid'] = false;
+    if ( !(sub_attr.parent_attr + '_' + data_index + '_valid' in this.validations)) {
+      this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = false;
     }
-    this.validations[sub_attr.parent_attr + '_' + sub_attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
-    if (this.validations[sub_attr.parent_attr + '_' + sub_attr.attr_name] === '') {
+    this.validations[sub_attr.parent_attr  + '_' + data_index + '_' + sub_attr.attr_name]
+    = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
+    if (this.validations[sub_attr.parent_attr + '_' + data_index + '_' + sub_attr.attr_name] === '') {
       if (sub_attr.attr_value_type === 4) {
         // a date
         value = value.formatted;
-        this.date_attrs[sub_attr.parent_attr + '_' + sub_attr.attr_name] = value;
+        this.date_attrs[sub_attr.parent_attr + '_' + data_index + '_' + sub_attr.attr_name] = value;
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       } else {
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       }
     } else {
-      if (this.validations[sub_attr.parent_attr + '_valid']) {
-        this.validations[sub_attr.parent_attr + '_valid'] = false;
+      if (this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid']) {
+        this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = false;
       }
     }
   }

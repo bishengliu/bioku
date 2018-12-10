@@ -21,11 +21,11 @@
     </a>
   </div>
 </div>
-
   <!--loading-->
   <!--sample details-->
-  <div class="ui stackable grid small_padding">
-    <div class="eight wide column">
+  <div class="ui stackable sixteen wide column grid small_padding">
+    <div class="one wide column"></div>
+    <div class="six wide column">
       <table class="ui unstackable small striped compact teal table">
         <tr *ngFor="let attr of mctype_attrs">
           <th>{{attr.attr_label}}</th>
@@ -158,9 +158,7 @@
         </tr>
         <!-- color -->
         <tr>
-          <th>
-            COLOR
-          </th>
+          <th>COLOR</th>
           <td>
             <color-picker 
             [(ngModel)]="sample.color" 
@@ -172,37 +170,40 @@
       </table>
     </div>
     <!-- sub sample data -->
-    <div *ngFor="let sd_table of msubattr_data; let table_index = index" class="eight wide column">
-        <table class="ui unstackable small striped compact grey table">
+    <div class="eight wide column">
+        <table class="ui unstackable compact small striped grey table"
+        *ngFor="let sd_table of msubattr_data; let table_index = index">
           <thead>
             <tr class="center aligned warning">
               <th class="tight_around" [attr.colspan]="sd_table.length + 1">
                   {{sd_table[0].sub_attr.parent_attr.toUpperCase()}}
-              <span>                    
-                <i class="icon teal plus circle right floated clickable" 
-                  *ngIf="!add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]"
-                (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i>
+              <span class="teal-text right floated clickable"
+                *ngIf="!add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]"
+                (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)">                    
+                <i class="icon plus circle"></i> 
+                {{sd_table[0].sub_attr.parent_attr.toUpperCase()}}
               </span>
               </th>
             </tr>
           </thead>
           <thead>
             <tr>
-              <th *ngFor="let item of sd_table">{{item.sub_attr.attr_label.toUpperCase()}}</th>
-              <th></th>
+              <th *ngFor="let item of sd_table">{{item.sub_attr.attr_label.toUpperCase()}}</th>   
+              <th></th>          
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data_item of sd_table[0].csample_subdata; let data_index = index">
                 <!--edit and deletion-->
-                <td *ngFor="let attr_item of sd_table; let attr_index = index" 
-                [ngClass]="{'negative': sd_table[attr_index].csample_subdata[data_index].is_deleting}">
+                <td *ngFor="let attr_item of sd_table; let attr_index = index"
+                [ngClass]="{'negative': sd_table[attr_index].csample_subdata[data_index].is_deleting, 
+                'wide_date': sd_table[attr_index].sub_attr.attr_value_type === '4'}">
                   <div *ngIf="!sd_table[attr_index].csample_subdata[data_index].is_changing">
                       {{sd_table[attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1}}
                   </div>                  
                   <div *ngIf="sd_table[attr_index].csample_subdata[data_index].is_changing">
                     <!--no date type-->
-                    <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
+                    <div class="ui mini input" *ngIf="sd_table[attr_index].sub_attr.attr_value_type !== '4'">
                       <input class="subdata_input" 
                       type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
                       step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
@@ -212,55 +213,56 @@
                       (ngModelChange)="preSaveSampleSubData($event, table_index, attr_index, data_index)">
                     </div>
                     <!-- date type-->
-                    <div class="store_sample">
-                      <my-date-picker *ngIf="+sd_table[attr_index].sub_attr.attr_value_type === 4"
+                    <div class="store_sample" *ngIf="sd_table[attr_index].sub_attr.attr_value_type === '4'">
+                      <my-date-picker name = "" 
                       [options]="myDatePickerOptions" 
-                      [(ngModel)]="date_attrs[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name]" 
+                      [(ngModel)]="date_attrs[sd_table[attr_index].sub_attr.parent_attr + '_' + data_index + '_' + sd_table[attr_index].sub_attr.attr_name]" 
                       (ngModelChange)="preSaveSampleSubData($event, table_index, attr_index, data_index)">
-                    </my-date-picker>
+                      </my-date-picker>
                     </div>
                     <!-- validation message -->
-                    <div *ngIf="validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name] != ''">
+                    <div *ngIf="validations[sd_table[attr_index].sub_attr.parent_attr  + '_' + data_index + '_'+ sd_table[attr_index].sub_attr.attr_name] != ''">
                       <span class="red-text">
-                        {{validations[sd_table[attr_index].sub_attr.parent_attr + '_'+ sd_table[attr_index].sub_attr.attr_name]}}
+                        {{validations[sd_table[attr_index].sub_attr.parent_attr  + '_' + data_index + '_'+ sd_table[attr_index].sub_attr.attr_name]}}
                       </span> 
                     </div>                      
                   </div>
-                </td>
-                <td>
-                  <div *ngIf="!sd_table[0].csample_subdata[data_index].is_deleting && !sd_table[0].csample_subdata[data_index].is_changing">
-                    <a class="right floated clickable" (click)="toggleSubdataDeletion(table_index, data_index)">
-                        <i class="icon red trash alternate outline"></i>
-                    </a>
-                    <a class="right floated clickable" (click)="toggleSubdataChange(table_index, data_index)">
-                        <i class="icon teal edit"></i>  
-                    </a>
-                  </div>
-                  <!-- deletion -->
-                  <div *ngIf="sd_table[0].csample_subdata[data_index].is_deleting">
-                      <a class="clickable right floated" (click)="toggleSubdataDeletion(table_index, data_index)">
+                </td>  
+                <td class="">
+                    <div *ngIf="!sd_table[0].csample_subdata[data_index].is_deleting && !sd_table[0].csample_subdata[data_index].is_changing">
+                      <a class="right floated clickable" (click)="toggleSubdataDeletion(table_index, data_index)">
+                          <i class="icon red trash alternate outline"></i>
+                      </a>
+                      <a class="right floated clickable" (click)="toggleSubdataChange(table_index, data_index)">
+                          <i class="icon teal edit"></i>  
+                      </a>
+                    </div>
+                    <!-- deletion -->
+                    <div *ngIf="sd_table[0].csample_subdata[data_index].is_deleting">
+                        <a class="clickable right floated" (click)="toggleSubdataDeletion(table_index, data_index)">
+                          <i class="icon grey undo"></i><span></span>
+                        </a>  
+                      <a class="clickable right floated" (click)="performSubdataDeletion(table_index, data_index)">
+                        <i class="icon red trash alternate outline"></i><span></span>
+                      </a>               
+                    </div>
+                    <!-- edit -->
+                    <div *ngIf="sd_table[0].csample_subdata[data_index].is_changing">
+                      <a class="clickable right floated" (click)="toggleSubdataChange(table_index, data_index)">
                         <i class="icon grey undo"></i><span></span>
-                      </a>  
-                    <a class="clickable right floated" (click)="performSubdataDeletion(table_index, data_index)">
-                      <i class="icon red trash alternate outline"></i><span></span>
-                    </a>               
-                  </div>
-                  <!-- edit -->
-                  <div *ngIf="sd_table[0].csample_subdata[data_index].is_changing">
-                    <a class="clickable right floated" (click)="toggleSubdataChange(table_index, data_index)">
-                      <i class="icon grey undo"></i><span></span>
-                    </a>
-                    <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)"
-                    *ngIf="validations[sd_table[0].sub_attr.parent_attr + '_valid']">
-                      <i class="icon teal check"></i><span></span>
-                    </a>                  
-                </div>             
-              </td>
+                      </a>
+                      <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)"
+                      *ngIf="validations[sd_table[0].sub_attr.parent_attr + '_valid']">
+                        <i class="icon teal check"></i><span></span>
+                      </a>                  
+                  </div>             
+                </td>              
             </tr>
             <tr class="top aligned" *ngIf="add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]">
-                <td *ngFor="let attr_item of sd_table; let attr_index = index">
+                <td *ngFor="let attr_item of sd_table; let attr_index = index"
+                [ngClass]="{'wide_date': sd_table[attr_index].sub_attr.attr_value_type === '4'}">
                   <!--no date type-->
-                    <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
+                    <div class="ui mini input" *ngIf="sd_table[attr_index].sub_attr.attr_value_type !== '4'">
                         <input class="subdata_input" 
                         type="{{sd_table[attr_index].sub_attr.input_attr.type}}" 
                         step="{{sd_table[attr_index].sub_attr.input_attr.step}}"
@@ -270,8 +272,8 @@
                         (ngModelChange)="preAddSampleSubData($event, sd_table[attr_index].sub_attr, table_index)">
                     </div>
                     <!-- date type-->
-                    <div class="store_sample">
-                        <my-date-picker *ngIf="+sd_table[attr_index].sub_attr.attr_value_type === 4"
+                    <div class="store_sample" *ngIf="sd_table[attr_index].sub_attr.attr_value_type === '4'">
+                        <my-date-picker name = "" 
                         [options]="myDatePickerOptions" 
                         [(ngModel)]="add_subattr_data[attr_index]['value']" 
                         (ngModelChange)="preAddSampleSubData($event, sd_table[attr_index].sub_attr, table_index)">
@@ -284,15 +286,16 @@
                         </span> 
                     </div> 
                 </td>
-                <td>
-                  <i class="icon grey x icon right floated clickable"                  
-                  (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i> 
-                  <i class="icon teal check right floated clickable" 
-                  *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_valid']"
-                  (click)="performAddSubAttrData(table_index)"></i>                  
+                <td class="">
+                    <i class="icon grey x icon right floated clickable"                  
+                    (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i> 
+                    <i class="icon teal check right floated clickable" 
+                    *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_valid']"
+                    (click)="performAddSubAttrData(table_index)"></i>                  
                 </td>
             </tr>
           </tbody>
-        </table>           
+        </table> 
     </div>
+    <div class="one wide column"></div>
   </div>
