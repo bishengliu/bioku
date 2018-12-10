@@ -386,10 +386,11 @@ export class ContainerService {
     //         .catch((error: any) => Observable.throw(error || 'Server error'));
     // }
     // updateCSampleData
-    updateCSampleData(container_pk: number, box_position: string, csample_position: string, csample_pk: number, attr_pk: number, value: any) {
+    updateCSampleData(container_pk: number, box_position: string,
+        csample_position: string, csample_pk: number, attr_pk: number, value: any) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
-                                  container_pk + '/' + box_position + '/' + csample_position  
+                                  container_pk + '/' + box_position + '/' + csample_position
                                   + '/'  + csample_pk
                                   + '/' + attr_pk + '/update/';
         const body: string = JSON.stringify({ 'value': value });
@@ -398,7 +399,8 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // // update CSampleSubData for a single subattr
-    // updateCSampleSubAttrData(container_pk: number, box_position: string, csample_position: string, attr_pk: number, subattr_pk: number, value: any) {
+    // updateCSampleSubAttrData(container_pk: number,
+    // box_position: string, csample_position: string, attr_pk: number, subattr_pk: number, value: any) {
     //     this.updateState();
     //     const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
     //                               container_pk + '/' + box_position + '/' + csample_position
@@ -410,7 +412,8 @@ export class ContainerService {
     //             .catch((error: any) => Observable.throw(error || 'Server error'));
     // }
     // update CSample a row subattr data
-    updateCSampleSubAttrBatchData(container_pk: number, box_position: string, csample_position: string,  csample_pk: number, data: Array<any>) {
+    updateCSampleSubAttrBatchData(container_pk: number, box_position: string,
+        csample_position: string,  csample_pk: number, data: Array<any>) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
@@ -421,7 +424,8 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // delete csamplesubdata
-    deleteCSampleSubData(container_pk: number, box_position: string, csample_position: string,  csample_pk: number, subattr_data_pks: Array<number>) {
+    deleteCSampleSubData(container_pk: number, box_position: string, csample_position: string,
+        csample_pk: number, subattr_data_pks: Array<number>) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position
@@ -432,7 +436,8 @@ export class ContainerService {
                 .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // add new sub data
-    addCSampleSubAttrBatchData(container_pk: number, box_position: string, csample_position: string,  csample_pk: number, data: Array<any>) {
+    addCSampleSubAttrBatchData(container_pk: number, box_position: string, csample_position: string,
+        csample_pk: number, data: Array<any>) {
         this.updateState();
         const query_url: string = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
                                   container_pk + '/' + box_position + '/' + csample_position

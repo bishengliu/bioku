@@ -9,7 +9,8 @@ import { UtilityService } from '../_services/UtilityService';
 // redux
 import { AppStore } from '../_providers/ReduxProviders';
 // CType class
-import { CType, CTypeAttr, MCTypeAttr, CTypeSubAttr, CSample, CSampleData, CSampleSubData, MCSampleSubData, CSubAttrData, MCSubAttrData, MCTypeSubAttr} from '../_classes/CType';
+import { CType, CTypeAttr, MCTypeAttr, CTypeSubAttr, CSample, CSampleData,
+    CSampleSubData, MCSampleSubData, CSubAttrData, MCSubAttrData, MCTypeSubAttr} from '../_classes/CType';
 import { Sample, Attachment } from '../_classes/Sample';
 import { isArray } from 'util';
 @Injectable()
@@ -498,7 +499,10 @@ export class CTypeService {
             if (non_changables.indexOf(attr.attr_name) === -1
             && (!attr.has_sub_attr && attr.attr_value_type !== 3)) {
                 //  changable
-                const mattr = Object.assign(attr, {'is_changable': true}, {'is_changing': false}, {input_attr: this.utilityService.decodeCTPyeInputAttr(attr)});
+                const mattr = Object.assign(attr,
+                    {'is_changable': true},
+                    {'is_changing': false},
+                    {input_attr: this.utilityService.decodeCTPyeInputAttr(attr)});
                 mctype_attrs.push(<MCTypeAttr>mattr);
             } else {
                 const mattr = Object.assign(attr, {'is_changable': false}, {'is_changing': false}, {input_attr: null});
@@ -513,16 +517,16 @@ export class CTypeService {
         subattr_data.forEach((row_items: Array<CSubAttrData>) => {
             const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
             row_items.forEach((item: CSubAttrData) => {
-                let mcsubattrdata: MCSubAttrData = new MCSubAttrData();
+                const mcsubattrdata: MCSubAttrData = new MCSubAttrData();
                 mcsubattrdata.csample_subdata = new Array<MCSampleSubData>();
                 item.csample_subdata.forEach((data: CSampleSubData) => {
                     mcsubattrdata.csample_subdata.push(
                         Object.assign({}, data, {'is_changing': false}, {'is_deleting': false})
                         )
-                }); 
+                });
                 mcsubattrdata.sub_attr = <MCTypeSubAttr>Object.assign(
                     {},
-                    item.sub_attr,                   
+                    item.sub_attr,
                     {'input_attr': this.utilityService.decodeCTPyeInputAttr(item.sub_attr)})
                 msubattr_data_items.push(mcsubattrdata);
             })
@@ -533,11 +537,11 @@ export class CTypeService {
     }
     // delete subattr_data
     syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, subattr_data_pks: Array<number>): Array<Array<MCSubAttrData>> {
-        let new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
+        const new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
         subattr_data.forEach((row_items: Array<MCSubAttrData>) =>{
             const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
-            row_items.forEach((item: MCSubAttrData) =>{
-                let mcsubattrdata: MCSubAttrData = new MCSubAttrData();
+            row_items.forEach((item: MCSubAttrData) => {
+                const mcsubattrdata: MCSubAttrData = new MCSubAttrData();
                 mcsubattrdata.csample_subdata = new Array<MCSampleSubData>();
                 // sub_attr
                 mcsubattrdata.sub_attr = <MCTypeSubAttr>Object.assign({}, item.sub_attr);
@@ -545,13 +549,13 @@ export class CTypeService {
                 mcsubattrdata.csample_subdata = [...item.csample_subdata.filter((data: MCSampleSubData) => {
                     return subattr_data_pks.indexOf(data.pk) === -1;
                 })];
-                if(mcsubattrdata.csample_subdata.length > 0) {
+                if (mcsubattrdata.csample_subdata.length > 0) {
                     msubattr_data_items.push(mcsubattrdata);
-                } 
+                }
             })
             if (msubattr_data_items.length > 0) {
                 new_subattr_data.push(msubattr_data_items);
-            }            
+            }
         })
         return new_subattr_data;
     }

@@ -153,7 +153,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
             subattr_data_item.ctype_sub_attr_value_id = item.csample_subdata.length === 0 ? 0 : item.csample_subdata.length;
             subattr_data_item.value = null;
             this.add_subattr_data.push(subattr_data_item)
-          })          
+          })
           // toggle status
           this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
           this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
@@ -207,13 +207,12 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     if (fixed_sample_attrs.indexOf(attr.attr_name) !== -1) {
       this.updateFixedSampleDetail(this.display_sample_copy[attr.attr_label],
         this.sample, this.sample.box_position, this.sample.position, attr.attr_label, attr.attr_name, attr.attr_required);
-    } 
-    else {
+    } else {
       if ( !attr.has_sub_attr && attr.attr_value_type !== 3) {
           // top level ctype attrs
           this.updateCSampleData(this.display_sample_copy[attr.attr_label], this.sample, attr)
-        } 
-    } 
+        }
+    }
   }
   // update top level fixed attrs
   updateFixedSampleDetail(value: any, csample: CSample, box_position: string,
@@ -331,7 +330,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       row.csample_subdata[data_index].is_changing = !row.csample_subdata[data_index].is_changing;
       // restore the data to original data
       // if(!row.csample_subdata[data_index].is_changing) {
-      //   this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 
+      //   this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1
       //   = row.csample_subdata[data_index].ctype_sub_attr_value_part1;
       // }
     })
@@ -345,11 +344,11 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       item.value = subattr_data.csample_subdata[data_index].ctype_sub_attr_value_part1;
       data.push(item);
     })
-    if(data.length > 0 ) {
+    if (data.length > 0 ) {
       // save
       this.containerService.
       updateCSampleSubAttrBatchData(this.container.pk, this.box.box_position, this.sample.position, this.sample.pk, data)
-      .subscribe(() =>{
+      .subscribe(() => {
         // update from the copy
         this.msubattr_data = Object.assign({}, this.msubattr_data_copy);
         // toggle change
@@ -367,15 +366,15 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // get the sub_attr
     const sub_attr = this.msubattr_data_copy[table_index][attr_index].sub_attr;
     // validation
-    if( !(sub_attr.parent_attr + '_valid' in this.validations)) {
+    if ( !(sub_attr.parent_attr + '_valid' in this.validations)) {
       this.validations[sub_attr.parent_attr + '_valid'] = false;
-    } 
-    this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
-    if (this.validations[sub_attr.parent_attr + '_'+ sub_attr.attr_name] === '') {
+    }
+    this.validations[sub_attr.parent_attr + '_' + sub_attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
+    if (this.validations[sub_attr.parent_attr + '_' + sub_attr.attr_name] === '') {
       if (sub_attr.attr_value_type === 4) {
         // a date
         value = value.formatted;
-        this.date_attrs[sub_attr.parent_attr + '_'+ sub_attr.attr_name] = value;
+        this.date_attrs[sub_attr.parent_attr + '_' + sub_attr.attr_name] = value;
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       } else {
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
@@ -397,7 +396,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     this.add_validations[subattr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
     // update data
     this.add_subattr_data.forEach((item: any) => {
-      if (item.parent_attr_id === sub_attr.parent_attr_id 
+      if (item.parent_attr_id === sub_attr.parent_attr_id
         && item.subattr_pk === sub_attr.pk) {
           if (sub_attr.attr_value_type === 4) {
             item.value = value.formatted;
@@ -407,7 +406,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         }
     })
     // validation the whole subattr
-    this.add_validations[sub_attr.parent_attr + '_valid'] = this.utilityService.checkSampleTotalSubDataValidation(this.add_subattr_data, this.msubattr_data[table_index]); 
+    this.add_validations[sub_attr.parent_attr + '_valid']
+    = this.utilityService.checkSampleTotalSubDataValidation(this.add_subattr_data, this.msubattr_data[table_index]);
   }
   performAddSubAttrData(table_index: number) {
     // get the data
@@ -416,22 +416,23 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     const data: Array<any> = this.add_subattr_data.filter((item: any) => {
       return item.parent_attr_id === parent_attr_id;
     });
-    if(data.filter((item: any)=> { return item.value !== null && item.value !== ''}).length === 0) {
+    if (data.filter((item: any) => { return item.value !== null && item.value !== ''}).length === 0) {
       this.alertService.error('Something went wrong, nothing to save!', false);
     }
-    this.containerService.addCSampleSubAttrBatchData(this.container.pk, this.sample.box_position, this.sample.position, this.sample.pk, data)
-    .subscribe((data: Array<CSampleSubData>) => {
+    this.containerService
+    .addCSampleSubAttrBatchData(this.container.pk, this.sample.box_position, this.sample.position, this.sample.pk, data)
+    .subscribe((rdata: Array<CSampleSubData>) => {
       // sync data
-      this.appendCSampleSubData(table_index, data);
+      this.appendCSampleSubData(table_index, rdata);
       this.add_validations[parent_attr + '_valid'] = false;
       this.add_subattr_data_handler[parent_attr] = false;
-    }, 
+    },
     (err) => {
       console.log(err);
       this.alertService.error('Something went wrong, failed to save data!', false);
       // this.add_validations[parent_attr + '_valid'] = false;
       this.add_subattr_data_handler[parent_attr] = false;
-    });    
+    });
   }
   // append new subdata
   appendCSampleSubData(table_index: number, data: Array<CSampleSubData>) {
@@ -450,8 +451,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         item.ctype_sub_attr_value_part1 = data_item.ctype_sub_attr_value_part1;
         item.ctype_sub_attr_value_part2 = data_item.ctype_sub_attr_value_part2;
         subdata.csample_subdata.push(item);
-      }   
-    })  
+      }
+    })
   }
   // ---------------------------------- attachment --------------------------
   displayAttachmentUpload() {

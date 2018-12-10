@@ -318,7 +318,7 @@ export class UtilityService {
             return '';
         }
         let msg = '';
-        if (attr.attr_required && (value === undefined || value === null || value === '')){
+        if (attr.attr_required && (value === undefined || value === null || value === '')) {
             msg = attr.attr_label + ' is required!';
             return msg;
         }
@@ -328,16 +328,14 @@ export class UtilityService {
                 msg = attr.attr_label + ' is too long!';
                 return msg;
             }
-        }
-        else if (attr.attr_value_type === 1) {
+        } else if (attr.attr_value_type === 1) {
             // digit
             if (isNaN(+value) || +value.toString().split('.') !== -1) {
                 msg = attr.attr_label + ' is invalid!';
                 return msg;
-            } 
-        }
-        else if (attr.attr_value_type === 2) {
-            //float
+            }
+        } else if (attr.attr_value_type === 2) {
+            // float
             const total_digit = attr.attr_value_decimal_total_digit;
             const decimal_point = attr.attr_value_decimal_point;
             const is_postive = true;
@@ -360,8 +358,7 @@ export class UtilityService {
                 msg = attr.attr_label + ' is invalid!';
                 return msg;
             }
-        }
-        else {
+        } else {
             // date
             msg = '';
         }
@@ -373,7 +370,7 @@ export class UtilityService {
         let is_valid = true;
         table_attrs.forEach((item: MCSubAttrData) => {
             const data_item = add_subattr_data.find((data: any) => {
-                return data.parent_attr_id === parent_attr_pk && data.subattr_pk == item.sub_attr.pk;
+                return data.parent_attr_id === parent_attr_pk && data.subattr_pk === item.sub_attr.pk;
             })
             if (data_item === undefined) {
                 is_valid = false;
@@ -385,7 +382,7 @@ export class UtilityService {
                 if (validation !== '') {
                     is_valid =  false;
                 }
-            }  
+            }
         })
         return is_valid;
     }
