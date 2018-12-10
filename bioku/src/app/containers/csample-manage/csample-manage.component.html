@@ -1,30 +1,30 @@
 <div class="ui grid row">
-    <div class="eight wide column"></div>
-    <div class="eight wide column">
-      <app-container-box-navbar></app-container-box-navbar>
-    </div>
+  <div class="eight wide column"></div>
+  <div class="eight wide column">
+    <app-container-box-navbar></app-container-box-navbar>
   </div>
-  <div class="ui grid row small_padding stackable">
-      <div class="eight wide column">
-        <h3 class="ui violet left aligned header">
-          <i class="icon edit layout"></i>MODIFY {{sample.name}}
-        </h3>
-      </div>
-      <div class="eight wide column">
-        <a class="ui grey button right floated" *ngIf="!require_refresh"
-        [routerLink]="['/containers/', container.pk, box.box_position]">
-            <i class="icon caret left"></i> BACK
-        </a>
-        <a class="ui teal button right floated" *ngIf="require_refresh"
-        (click)="forceRefresh()">
-            <i class="icon caret left"></i> DONE
-        </a>
-      </div>
+</div>
+<div class="ui grid row small_padding stackable">
+  <div class="eight wide column">
+    <h3 class="ui violet left aligned header">
+      <i class="icon edit layout"></i>MODIFY {{sample.name}}
+    </h3>
   </div>
+  <div class="eight wide column">
+    <a class="ui grey button right floated" *ngIf="!require_refresh"
+    [routerLink]="['/containers/', container.pk, box.box_position]">
+      <i class="icon caret left"></i> BACK
+    </a>
+    <a class="ui teal button right floated" *ngIf="require_refresh"
+    (click)="forceRefresh()">
+      <i class="icon caret left"></i> DONE
+    </a>
+  </div>
+</div>
 
   <!--loading-->
   <!--sample details-->
-  <div class="ui stackable sixteen wide column grid small_padding">
+  <div class="ui stackable grid small_padding">
     <div class="eight wide column">
       <table class="ui unstackable small striped compact teal table">
         <tr *ngFor="let attr of mctype_attrs">
@@ -174,25 +174,26 @@
     <!-- sub sample data -->
     <div *ngFor="let sd_table of msubattr_data; let table_index = index" class="eight wide column">
         <table class="ui unstackable small striped compact grey table">
-            <thead>
-              <tr class="center aligned warning">
-                <th class="tight_around" [attr.colspan]="sd_table.length + 1">
+          <thead>
+            <tr class="center aligned warning">
+              <th class="tight_around" [attr.colspan]="sd_table.length + 1">
                   {{sd_table[0].sub_attr.parent_attr.toUpperCase()}}
-                  <span>                    
-                    <i class="icon teal plus circle right floated clickable" 
-                    (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i>
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <thead>
-                <tr>
-                  <th *ngFor="let item of sd_table">{{item.sub_attr.attr_label.toUpperCase()}}</th>
-                  <th></th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data_item of sd_table[0].csample_subdata; let data_index = index">
+              <span>                    
+                <i class="icon teal plus circle right floated clickable" 
+                  *ngIf="!add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]"
+                (click)="toggleAddSubAttrData(sd_table[0].sub_attr.parent_attr)"></i>
+              </span>
+              </th>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <th *ngFor="let item of sd_table">{{item.sub_attr.attr_label.toUpperCase()}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data_item of sd_table[0].csample_subdata; let data_index = index">
                 <!--edit and deletion-->
                 <td *ngFor="let attr_item of sd_table; let attr_index = index" 
                 [ngClass]="{'negative': sd_table[attr_index].csample_subdata[data_index].is_deleting}">
@@ -255,8 +256,8 @@
                     </a>                  
                 </div>             
               </td>
-              </tr>
-              <tr *ngIf="add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]">
+            </tr>
+            <tr class="top aligned" *ngIf="add_subattr_data_handler[sd_table[0].sub_attr.parent_attr]">
                 <td *ngFor="let attr_item of sd_table; let attr_index = index">
                   <!--no date type-->
                     <div class="ui mini input" *ngIf="+sd_table[attr_index].sub_attr.attr_value_type !== 4">
@@ -266,20 +267,20 @@
                         required="{{sd_table[attr_index].sub_attr.input_attr.required}}"
                         maxlength="{{sd_table[attr_index].sub_attr.input_attr.maxlength}}"
                         [(ngModel)]="add_subattr_data[attr_index]['value']"                    
-                        (ngModelChange)="preAddSampleSubData($event, attr_index, sd_table[attr_index].sub_attr)">
+                        (ngModelChange)="preAddSampleSubData($event, sd_table[attr_index].sub_attr, table_index)">
                     </div>
                     <!-- date type-->
                     <div class="store_sample">
                         <my-date-picker *ngIf="+sd_table[attr_index].sub_attr.attr_value_type === 4"
                         [options]="myDatePickerOptions" 
                         [(ngModel)]="add_subattr_data[attr_index]['value']" 
-                        (ngModelChange)="preAddSampleSubData($event, attr_index, sd_table[attr_index].sub_attr)">
+                        (ngModelChange)="preAddSampleSubData($event, sd_table[attr_index].sub_attr, table_index)">
                       </my-date-picker>
                     </div>
                     <!-- validation message -->
                     <div *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_' + sd_table[0].sub_attr.attr_name] != ''">
                         <span class="red-text">
-                          {{add_validations[sd_table[attr_index].sub_attr.attr_name]}}
+                          {{add_validations[sd_table[attr_index].sub_attr.parent_attr + '_' + sd_table[attr_index].sub_attr.attr_name]}}
                         </span> 
                     </div> 
                 </td>
@@ -290,8 +291,8 @@
                   *ngIf="add_validations[sd_table[0].sub_attr.parent_attr + '_valid']"
                   (click)="performAddSubAttrData(sd_table[0].sub_attr.parent_attr_id)"></i>                  
                 </td>
-              </tr>
-            </tbody>
+            </tr>
+          </tbody>
         </table>           
     </div>
   </div>

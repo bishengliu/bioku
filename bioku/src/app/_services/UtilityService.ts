@@ -1,6 +1,6 @@
 import { Injectable , Inject} from '@angular/core';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
-import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCTypeSubAttr } from '../_classes/CType';
+import { CSample, CAttachment, CTypeAttr, MCTypeAttr, CSampleData, CSampleSubData, CType, CSubAttrData, CTypeSubAttr, MCTypeSubAttr, MCSubAttrData } from '../_classes/CType';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 @Injectable()
 export class UtilityService {
@@ -366,5 +366,27 @@ export class UtilityService {
             msg = '';
         }
         return msg;
+    }
+    // check whether all the subattr field is valid
+    checkSampleTotalSubDataValidation (add_subattr_data: Array<any>, table_attrs: Array<MCSubAttrData>) {
+        const parent_attr_pk = table_attrs[0].sub_attr.parent_attr_id;
+        let is_valid = true;
+        table_attrs.forEach((item: MCSubAttrData) => {
+            const data_item = add_subattr_data.find((data: any) => {
+                return data.parent_attr_id === parent_attr_pk && data.subattr_pk == item.sub_attr.pk;
+            })
+            if (data_item === undefined) {
+                is_valid = false;
+            }
+            if (item.sub_attr.attr_required && (data_item.value === null || data_item === '')) {
+                is_valid = false;
+            } else {
+                const validation = this.preSaveSampleDataValidation(data_item.value, item.sub_attr);
+                if (validation !== '') {
+                    is_valid =  false;
+                }
+            }  
+        })
+        return is_valid;
     }
 }

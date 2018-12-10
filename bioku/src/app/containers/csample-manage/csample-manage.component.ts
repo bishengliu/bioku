@@ -157,7 +157,8 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
           this.add_validations[table_attrs[0].sub_attr.parent_attr + '_valid'] = false;
           this.add_subattr_data_handler[table_attrs[0].sub_attr.parent_attr] = false;
         });
-        console.log(this.msubattr_data);
+        // console.log(this.msubattr_data);
+        // console.log(this.add_subattr_data);
       } else {
         this.load_failed = true;
         this.loading = false;
@@ -410,8 +411,23 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.add_subattr_data_handler[parent_attr] = !this.add_subattr_data_handler[parent_attr];
     }
   }
-  preAddSampleSubData(value: any, attr_index: number, sub_attr: MCTypeSubAttr) {
+  preAddSampleSubData(value: any, sub_attr: MCTypeSubAttr, table_index: number) {
     // validate
+    const subattr_name = sub_attr.parent_attr + '_' + sub_attr.attr_name;
+    this.add_validations[subattr_name] = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
+    // update data
+    this.add_subattr_data.forEach((item: any) => {
+      if (item.parent_attr_id === sub_attr.parent_attr_id 
+        && item.subattr_pk === sub_attr.pk) {
+          if (sub_attr.attr_value_type === 4) {
+            item.value = value.formatted;
+          } else {
+            item.value = value;
+          }
+        }
+    })
+    // validation the whole subattr
+    this.add_validations[sub_attr.parent_attr + '_valid'] = this.utilityService.checkSampleTotalSubDataValidation(this.add_subattr_data, this.msubattr_data[table_index]); 
   }
   performAddSubAttrData(parent_attr_id: number) {
     // empty add_subattr_data and add_validations
