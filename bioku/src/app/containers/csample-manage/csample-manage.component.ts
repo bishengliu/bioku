@@ -339,6 +339,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     this.msubattr_data_copy[table_index].forEach((subattr_data: MCSubAttrData) => {
       const item: any = {};
       item.pk = subattr_data.csample_subdata[data_index].pk;
+      item.subattr_pk = subattr_data.sub_attr.pk;
       item.value = subattr_data.csample_subdata[data_index].ctype_sub_attr_value_part1;
       data.push(item);
     })
@@ -365,7 +366,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     const sub_attr = this.msubattr_data_copy[table_index][attr_index].sub_attr;
     // validation
     if ( !(sub_attr.parent_attr + '_' + data_index + '_valid' in this.validations)) {
-      this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = false;
+      this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = true;
     }
     this.validations[sub_attr.parent_attr  + '_' + data_index + '_' + sub_attr.attr_name]
     = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
@@ -378,6 +379,16 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       } else {
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       }
+      const vkeys: Array<string> =  Object.keys(this.validations);
+      let is_valid = true;
+      vkeys.forEach((vkey: string) => {
+        if (vkey !== sub_attr.parent_attr + '_' + data_index  + '_valid'
+        && vkey.indexOf(sub_attr.parent_attr + '_' + data_index  + '_') !== -1
+        && this.validations[vkey] !== '') {
+          is_valid = false;
+        }
+      })
+      this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = is_valid;
     } else {
       if (this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid']) {
         this.validations[sub_attr.parent_attr + '_' + data_index  + '_valid'] = false;

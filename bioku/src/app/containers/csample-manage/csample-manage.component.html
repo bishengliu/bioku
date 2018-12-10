@@ -252,7 +252,7 @@
                         <i class="icon grey undo"></i><span></span>
                       </a>
                       <a class="clickable right floated" (click)="performSubdataChange(table_index, data_index)"
-                      *ngIf="validations[sd_table[0].sub_attr.parent_attr + '_valid']">
+                      *ngIf="validations[sd_table[0].sub_attr.parent_attr + '_' + data_index +'_valid']">
                         <i class="icon teal check"></i><span></span>
                       </a>                  
                   </div>             
