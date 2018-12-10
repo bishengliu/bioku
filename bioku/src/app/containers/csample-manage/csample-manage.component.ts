@@ -246,13 +246,11 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         .updateCSampleData(this.container.pk, csample.box_position, this.sample.position, csample.pk, attr.pk, value)
         .subscribe(() => {
           // update display_sample
-          this.display_sample[attr.attr_name] = value;
+          this.display_sample[attr.attr_label] = value;
           this.display_sample_copy[attr.attr_name] = value;
           this.toggleChangePostSave(attr.attr_name);
           this.require_refresh = true;
           }, (err) => {
-          console.log(
-          this.msg = 'fail to update sample detail!')
           this.alertService.error('fail to update sample detail!', false); });
       }
   }
