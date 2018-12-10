@@ -627,7 +627,6 @@ export class CTypeService {
     }
     // get all the subattrs and data
     genSubAttrData(sample: CSample): Array<Array<CSubAttrData>> {
-        console.log(sample);
         const subattr_data: Array<Array<CSubAttrData>> = new Array<Array<CSubAttrData>>();
         if (sample !== undefined && sample !== null
             && sample.ctype !== undefined && sample.ctype !== null
@@ -665,12 +664,63 @@ export class CTypeService {
                 });
                 // get all the type complex attrs
                 const all_complex_attrs: Array<CTypeAttr> = sample.ctype.attrs.filter((attr: CTypeAttr) => {
-                    return attr.has_sub_attr && attr.attr_value_type === 3;
+                    return attr.has_sub_attr && +attr.attr_value_type === 3;
                 });
-                // -------------------------
+                // --------------------------------------------------------------------------------
+                all_complex_attrs.forEach((pattr: CTypeAttr) => {
+                    // get the table data of the ctypeattr
+                    const data_table_index: number = data_tables.findIndex((titem: Array<Array<CSampleSubData>>) => {
+                        const col = titem.find((item: Array<CSampleSubData>) => {
+                            return item[0].ctype_sub_attr.parent_attr_id === pattr.pk;
+                        })
+                        return (col !== undefined  ? true : false);
+                    })
+                    if (data_table_index !== -1 ) {
+                        // with data
+                        if (pattr.subattrs.length > 0) {
+                            pattr.subattrs.forEach((subattr: CTypeSubAttr) => {
+                                const col: Array<CSampleSubData> = data_tables[data_table_index].find((item: Array<CSampleSubData>) => {
+                                    return item.length > 0 && item[0].ctype_sub_attr_id === subattr.pk;
+                                })
+                                if (col === undefined) {
+                                    // fake a empty col
+                                    const new_col: Array<CSampleSubData> = new Array<CSampleSubData>();
+                                    const new_col_data: CSampleSubData = new CSampleSubData();
+                                    new_col_data.pk = null;
+                                    new_col_data.csample_id = sample.pk;
+                                    new_col_data.ctype_sub_attr_id = subattr.pk;
+                                    new_col_data.ctype_sub_attr = subattr;
+                                    new_col_data.ctype_sub_attr_value_id = 0;
+                                    new_col_data.ctype_sub_attr_value_part1 = null;
+                                    new_col_data.ctype_sub_attr_value_part2 = null;
+                                    new_col.push(new_col_data);
+                                    data_tables[data_table_index].push(new_col);
+                                }
+                            })
+                        }
+                    } else {
+                        // no data
+                        if (pattr.subattrs.length > 0) {
+                            const data_table: Array<Array<CSampleSubData>> = new Array<Array<CSampleSubData>>();
+                            pattr.subattrs.forEach((subattr: CTypeSubAttr) => {
+                                // fake a empty col
+                                const new_col: Array<CSampleSubData> = new Array<CSampleSubData>();
+                                const new_col_data: CSampleSubData = new CSampleSubData();
+                                new_col_data.pk = null;
+                                new_col_data.csample_id = sample.pk;
+                                new_col_data.ctype_sub_attr_id = subattr.pk;
+                                new_col_data.ctype_sub_attr = subattr;
+                                new_col_data.ctype_sub_attr_value_id = 0;
+                                new_col_data.ctype_sub_attr_value_part1 = null;
+                                new_col_data.ctype_sub_attr_value_part2 = null;
+                                new_col.push(new_col_data);
+                                data_table.push(new_col);
+                            })
+                            data_tables.push(data_table);
+                        }
+                    }
+                })
                 data_tables.forEach((data_table: Array<Array<CSampleSubData>>) => {
-                    // get all the subattrs of the current
-
                     // for each table
                     const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();
                     // get the max data count
