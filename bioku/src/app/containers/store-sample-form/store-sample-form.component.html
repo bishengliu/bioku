@@ -669,7 +669,7 @@
                             id="{{subattr.name}}" 
                             [formControl]="subformgroup.controls[subattr.name]">
                         </div>
-                        <div class="ui input wide-form" *ngIf="subattr.attr.type == 'date'">
+                        <div class="ui input wide-form hidden" *ngIf="subattr.attr.type == 'date'">
                             <input class="" 
                             type="{{subattr.attr.type}}"
                             step="{{subattr.attr.step}}"

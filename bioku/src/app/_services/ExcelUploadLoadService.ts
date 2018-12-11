@@ -173,7 +173,7 @@ export class ExcelUploadLoadService {
   formatCSample2AOA(displayed_samples: Array<any>, sample_attrs: Array<string>) {
     const data: Array<Array<any>> = [];
     // set the header as the first object
-    console.log(displayed_samples);
+    // console.log(displayed_samples);
     // headers
     const headerAOA = new Array();
     sample_attrs.forEach((h: string, i: number) => {
