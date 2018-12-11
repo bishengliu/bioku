@@ -675,7 +675,7 @@ export class CTypeService {
                     // get the table data of the ctypeattr
                     const data_table_index: number = data_tables.findIndex((titem: Array<Array<CSampleSubData>>) => {
                         const col = titem.find((item: Array<CSampleSubData>) => {
-                            return item[0].ctype_sub_attr.parent_attr_id === pattr.pk;
+                            return +item[0].ctype_sub_attr.parent_attr_id === pattr.pk;
                         })
                         return (col !== undefined  ? true : false);
                     })
@@ -684,7 +684,7 @@ export class CTypeService {
                         if (pattr.subattrs.length > 0) {
                             pattr.subattrs.forEach((subattr: CTypeSubAttr) => {
                                 const col: Array<CSampleSubData> = data_tables[data_table_index].find((item: Array<CSampleSubData>) => {
-                                    return item.length > 0 && item[0].ctype_sub_attr_id === subattr.pk;
+                                    return item.length > 0 && +item[0].ctype_sub_attr_id === +subattr.pk;
                                 })
                                 if (col === undefined) {
                                     // fake a empty col
@@ -758,7 +758,7 @@ export class CTypeService {
                         if (col.length > 0) {
                             for (let i = 0; i <= max_count; i++) {
                                 const item_data = col.find((sd: CSampleSubData) => {
-                                    return sd.ctype_sub_attr_value_id !== null && sd.ctype_sub_attr_value_id === i;
+                                    return sd.ctype_sub_attr_value_id !== null && +sd.ctype_sub_attr_value_id === i;
                                 })
                                 const col_data_item: CSampleSubData = new CSampleSubData();
                                 if (item_data !== undefined) {
