@@ -9,7 +9,7 @@
     <form [formGroup]="cAttrForm" class="ui large form" (ngSubmit)="cAttrForm.valid && onUpdate(cAttrForm.value)">
       <div class="twe fields">
           <div class="field" [class.error]="cAttrForm.controls['attr_name'].invalid && cAttrForm.controls['attr_name'].touched">
-              <label class="required left floated blue-text">SUBATTR NAME</label>
+              <label class="required left floated">SUBATTR NAME</label>
               <div class="ui teal input">
                   <input type="text" id="attr_name" [formControl]="cAttrForm.controls['attr_name']" placeholder="required">
               </div>
@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="field">
-              <label class="left floated blue-text">VALUE TYPE</label>
+              <label class="left floated">VALUE TYPE</label>
               <div class="ui input">                        
                 <select class="ui dropdown" id="attr_value_type" value="" (change)="changeValueType($event)"
                 [formControl]="cAttrForm.controls['attr_value_type']">
@@ -47,7 +47,7 @@
       </div>
       <div class="two fields">
         <div class="inline field" *ngIf="value_type !== 3">
-          <label class="left floated blue-text">VALUE REQUIRED?</label>
+          <label class="left floated">VALUE REQUIRED?</label>
           <div class="ui toggle checkbox" >
             <input type="checkbox" id="attr_required" 
             [formControl]="cAttrForm.controls['attr_required']">
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="inline field" *ngIf="value_type === 0">
-          <label class="left floated blue-text">TEXT SIZE: </label>
+          <label class="left floated">TEXT SIZE: </label>
           <div class="ui toggle checkbox">
             <input type="checkbox" name="attr_value_text_max_length" 
             id="attr_value_text_max_length" value="50"
@@ -66,7 +66,7 @@
       </div>
       <div class="two fields">
         <div class="field" *ngIf="value_type === 1 || value_type === 2">
-          <label class="left floated blue-text">MAXIMAL DIGIT LENGTH</label>
+          <label class="left floated">MAXIMAL DIGIT LENGTH</label>
           <div class="ui input">
             <input class="" type="number" value="5" maxlength="10" 
             id="attr_value_decimal_total_digit" 
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="field" *ngIf="value_type === 2">
-          <label class="left floated blue-text">DECIMAL POINTS</label>
+          <label class="left floated">DECIMAL POINTS</label>
           <div class="ui input">
             <input class="" type="numner" value="2" maxlength="9" 
             id="attr_value_decimal_point" 
