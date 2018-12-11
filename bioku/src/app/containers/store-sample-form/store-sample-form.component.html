@@ -385,7 +385,7 @@
       <i class="icon add circle"></i> SAVE SAMPLES 
     </button> 
     <div class="two fields">
-      <div class="field">
+      <div class="five wide field">
         <table class="ui small very basic compact padded single line table">
           <tbody>
             <!-- ctype -->
@@ -495,7 +495,7 @@
           </tbody>
         </table>
       </div>
-      <div class="field">
+      <div class="five wide field">
         <table class="ui small very basic compact padded single line table" *ngIf="sample_type != '-'">
           <tbody>
             <!-- name -->
@@ -632,7 +632,7 @@
         </table>
       </div>
       <!--sub attrs tables-->
-      <div class="field" *ngIf="sample_type != '-' && has_subattr">
+      <div class="eight wide field" *ngIf="sample_type != '-' && has_subattr">
         <div class="ui grey segment" *ngFor="let stable of sub_table_attrs">
             <table class="ui small very basic compact padded single line table">
                 <thead class="tight_around">
@@ -659,7 +659,8 @@
                   </tr>
                   <tr *ngFor="let subformgroup of sampleForm.controls[stable.name].controls; let i=index">
                     <td>#{{i + 1}}</td>
-                    <td *ngFor="let subattr of stable.subattrs">
+                    <td *ngFor="let subattr of stable.subattrs" 
+                    [ngClass]="{'wide_date': subattr.attr.type == 'date'}">
                         <div class="ui input wide-form" *ngIf="subattr.attr.type != 'date'">
                             <input class="" 
                             type="{{subattr.attr.type}}"
