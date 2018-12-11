@@ -141,7 +141,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
         this.mctype_attrs = this.ctypeService.genMCTypeAttr(this.ctype_attrs);
         // console.log(this.mctype_attrs);
         this.subattr_data = this.ctypeService.genSubAttrData(this.sample);
-        console.log(this.subattr_data);
+        // console.log(this.subattr_data);
         // modify the subattr of subattr_data
         this.msubattr_data = this.ctypeService.genMSubAttrData(this.subattr_data);
         this.msubattr_data_copy = Object.assign({}, this.msubattr_data);

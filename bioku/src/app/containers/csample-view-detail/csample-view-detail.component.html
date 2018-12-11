@@ -44,8 +44,9 @@
       </tbody>
     </table>
   </div>
-  <div *ngFor="let sd of subattr_data" class="eight wide column">
-      <table class="ui unstackable small striped compact grey table">
+  <div class="eight wide column">
+      <table class="ui unstackable small striped compact grey table"
+       *ngFor="let sd of subattr_data">
           <thead>
             <tr class="center aligned warning">
               <th class="tight_around" [attr.colspan]="sd.length">

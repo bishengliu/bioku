@@ -727,10 +727,19 @@ export class CTypeService {
                 data_tables.forEach((data_table: Array<Array<CSampleSubData>>) => {
                     // for each table
                     const subattr_data_item: Array<CSubAttrData> = Array<CSubAttrData>();
-                    // get the max data count
-                    let max_count = 0;
+                    // // get the max data count
+                    // let max_count = 0;
+                    // data_table.forEach((col: Array<CSampleSubData>) => {
+                    //     max_count = col.length - 1 >= max_count ? col.length - 1 : max_count;
+                    // })
+                    const value_ids: Array<number> = new Array<number>();
                     data_table.forEach((col: Array<CSampleSubData>) => {
-                        max_count = col.length - 1 >= max_count ? col.length - 1 : max_count;
+                        col.forEach((data: CSampleSubData) => {
+                            if (!isNaN(+data.ctype_sub_attr_value_id) 
+                            && value_ids.indexOf(+data.ctype_sub_attr_value_id) === -1) {
+                                value_ids.push(+data.ctype_sub_attr_value_id);
+                            }
+                        })
                     })
                     data_table.forEach((col: Array<CSampleSubData>) => {
                         // for each col
@@ -756,28 +765,52 @@ export class CTypeService {
                         }
                         // get data
                         if (col.length > 0) {
-                            for (let i = 0; i <= max_count; i++) {
-                                const item_data = col.find((sd: CSampleSubData) => {
-                                    return sd.ctype_sub_attr_value_id !== null && +sd.ctype_sub_attr_value_id === i;
-                                })
+                            // based on value_ids
+                            value_ids.forEach((id: number) => {
                                 const col_data_item: CSampleSubData = new CSampleSubData();
+                                const item_data = col.find((sd: CSampleSubData) => {
+                                    return sd.ctype_sub_attr_value_id !== null && +sd.ctype_sub_attr_value_id === id;
+                                })
                                 if (item_data !== undefined) {
                                     col_data_item.csample_id = item_data.csample_id;
                                     col_data_item.ctype_sub_attr_id = item_data.ctype_sub_attr_id;
-                                    col_data_item.ctype_sub_attr_value_id = item_data.ctype_sub_attr_value_id;
+                                    col_data_item.ctype_sub_attr_value_id = +item_data.ctype_sub_attr_value_id;
                                     col_data_item.ctype_sub_attr_value_part1 = item_data.ctype_sub_attr_value_part1;
                                     col_data_item.ctype_sub_attr_value_part2 = item_data.ctype_sub_attr_value_part2;
                                     col_data_item.pk = item_data.pk;
                                 } else {
                                     col_data_item.csample_id = sample.pk;
                                     col_data_item.ctype_sub_attr_id = col_attr.pk;
-                                    col_data_item.ctype_sub_attr_value_id = i;
+                                    col_data_item.ctype_sub_attr_value_id = id;
                                     col_data_item.ctype_sub_attr_value_part1 = null;
                                     col_data_item.ctype_sub_attr_value_part2 = null;
                                     col_data_item.pk = null;
                                 }
-                            col_subdata.push(col_data_item);
-                            }
+                                col_subdata.push(col_data_item);
+                            }); 
+                            // //  based on max count
+                            // for (let i = 0; i <= max_count; i++) {
+                            //     const item_data = col.find((sd: CSampleSubData) => {
+                            //         return sd.ctype_sub_attr_value_id !== null && +sd.ctype_sub_attr_value_id === i;
+                            //     })
+                            //     const col_data_item: CSampleSubData = new CSampleSubData();
+                            //     if (item_data !== undefined) {
+                            //         col_data_item.csample_id = item_data.csample_id;
+                            //         col_data_item.ctype_sub_attr_id = item_data.ctype_sub_attr_id;
+                            //         col_data_item.ctype_sub_attr_value_id = item_data.ctype_sub_attr_value_id;
+                            //         col_data_item.ctype_sub_attr_value_part1 = item_data.ctype_sub_attr_value_part1;
+                            //         col_data_item.ctype_sub_attr_value_part2 = item_data.ctype_sub_attr_value_part2;
+                            //         col_data_item.pk = item_data.pk;
+                            //     } else {
+                            //         col_data_item.csample_id = sample.pk;
+                            //         col_data_item.ctype_sub_attr_id = col_attr.pk;
+                            //         col_data_item.ctype_sub_attr_value_id = i;
+                            //         col_data_item.ctype_sub_attr_value_part1 = null;
+                            //         col_data_item.ctype_sub_attr_value_part2 = null;
+                            //         col_data_item.pk = null;
+                            //     }
+                            // col_subdata.push(col_data_item);
+                            // }
                         }
                         col_attrdata.sub_attr = Object.assign({}, col_attr);
                         col_attrdata.csample_subdata = Object.assign([], col_subdata);
