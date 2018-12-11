@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
+import { CType, CTypeAttr, CTypeSubAttr, CTypeSubAttrExt } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
 import { AlertService } from '../../_services/AlertService';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ export class CtypeSubattrDeleteComponent implements OnInit {
   subattr_pk: number;
   private sub: any; // subscribe to params observable
   cSubAttr: CTypeSubAttr = new CTypeSubAttr();
+  allow_change = false;
   constructor(private ctypeService: CTypeService, private alertService: AlertService,
     private router: Router, private route: ActivatedRoute, ) {
     this.sub = this.route.parent.parent.params
@@ -31,7 +32,10 @@ export class CtypeSubattrDeleteComponent implements OnInit {
       return this.ctypeService.getCTypeSubAttrDetail(this.ctype_pk, this.attr_pk, this.subattr_pk)
     })
     .subscribe(
-      (cSubAttr: CTypeSubAttr) => { this.cSubAttr = cSubAttr },
+      (cSubAttr: CTypeSubAttrExt) => { 
+        this.cSubAttr = cSubAttr;
+        this.allow_change = +cSubAttr.data_count  === 0 ? true : false;
+       },
       () => {
         this.alertService.error('SOMETHING WENT WRONG, FAILED TO LOAD THE SUBATTR!', true);
         this.router.navigate(['../ctypes', this.ctype_pk, this.attr_pk]);

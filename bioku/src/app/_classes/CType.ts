@@ -22,6 +22,9 @@ export class CTypeAttr {
     has_sub_attr: boolean;
     subattrs: Array<CTypeSubAttr>;
 }
+export class CTypeAttrExt extends CTypeAttr {
+    data_count: string;
+}
 // modified attr
 export class MCTypeAttr extends CTypeAttr {
     is_changable: boolean;
@@ -48,6 +51,9 @@ export class CTypeSubAttr {
     attr_value_decimal_point: number;
     attr_required: boolean;
     attr_order: number;
+}
+export class CTypeSubAttrExt extends CTypeSubAttr {
+    data_count: string;
 }
 // modified CTypeSubAttr
 export class MCTypeSubAttr extends CTypeSubAttr {

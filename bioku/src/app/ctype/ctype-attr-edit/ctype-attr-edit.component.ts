@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
+import { CType, CTypeAttr, CTypeSubAttr, CTypeAttrExt } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
 import { AlertService } from '../../_services/AlertService';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,6 +20,7 @@ export class CtypeAttrEditComponent implements OnInit, OnDestroy {
   cAttrForm: FormGroup;
   cAttr: CTypeAttr = new CTypeAttr();
   value_type: number;
+  allow_change = false;
   constructor(private ctypeService: CTypeService, private alertService: AlertService,
     private router: Router, private route: ActivatedRoute, @Inject(APP_CONFIG) private appSetting: any,
     private cValidators: CustomFormValidators, private fb: FormBuilder) {
@@ -76,9 +77,10 @@ export class CtypeAttrEditComponent implements OnInit, OnDestroy {
       return this.ctypeService.getCTypeAttrDetail(this.pk, this.attr_pk)
     })
     .subscribe(
-      (cAttr: CTypeAttr) => {
+      (cAttr: CTypeAttrExt) => {
         this.cAttr = cAttr;
         this.value_type = this.cAttr.attr_value_type;
+        this.allow_change = +cAttr.data_count  === 0 ? true : false;
         // formGroup
       this.cAttrForm = this.fb.group({
         // customized type

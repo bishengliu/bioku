@@ -9,12 +9,14 @@
             CANCEL
           </a>     
           <div class="or"></div>
-          <button class="ui negative button" (click)="delete()">
+          <button class="ui negative button" 
+          [ngClass]="{'disabled noEvent': !allow_change || (cAttr.subattrs !== undefined && cAttr.subattrs.length > 0)}"
+          (click)="delete()">
               <i class="icon trash alternate outline"></i>
             CONFIRM DELETION
           </button>
         </div>
     </div>
-    <p class="grey-text">Deletion is only possible if this attr is not used yet.</p>
+    <p class="grey-text">Deletion is only possible if this attr has not been not used yet.</p>
   </div>
 </div>
