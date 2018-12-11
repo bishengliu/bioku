@@ -536,9 +536,9 @@ export class CTypeService {
         return msubattr_data;
     }
     // delete subattr_data
-    syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, subattr_data_pks: Array<number>): Array<Array<MCSubAttrData>> {
+    syncSubAttrDataDeletion(subattr_data: Array<Array<MCSubAttrData>>, table_index: number, data_index: number): Array<Array<MCSubAttrData>> {
         const new_subattr_data: Array<Array<MCSubAttrData>> = new Array<Array<MCSubAttrData>>();
-        subattr_data.forEach((row_items: Array<MCSubAttrData>) => {
+        subattr_data.forEach((row_items: Array<MCSubAttrData>, tindex: number) => {
             const msubattr_data_items:  Array<MCSubAttrData> = new Array<MCSubAttrData> ();
             row_items.forEach((item: MCSubAttrData) => {
                 const mcsubattrdata: MCSubAttrData = new MCSubAttrData();
@@ -546,9 +546,13 @@ export class CTypeService {
                 // sub_attr
                 mcsubattrdata.sub_attr = <MCTypeSubAttr>Object.assign({}, item.sub_attr);
                 // sub_attr_data
-                mcsubattrdata.csample_subdata = [...item.csample_subdata.filter((data: MCSampleSubData) => {
-                    return subattr_data_pks.indexOf(data.pk) === -1;
-                })];
+                if (table_index !== tindex) {
+                    mcsubattrdata.csample_subdata = [...item.csample_subdata];
+                } else {
+                    mcsubattrdata.csample_subdata = [...item.csample_subdata.filter((data: MCSampleSubData, dindex: number) => {
+                        return dindex !== data_index;
+                    })];
+                }
                 if (mcsubattrdata.csample_subdata.length > 0) {
                     msubattr_data_items.push(mcsubattrdata);
                 }

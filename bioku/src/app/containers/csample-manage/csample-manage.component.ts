@@ -317,7 +317,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       deleteCSampleSubData(this.container.pk, this.box.box_position, this.sample.position, this.sample.pk, pks)
       .subscribe(() => {
         // // delete from msubattr_data
-        this.msubattr_data = this.ctypeService.syncSubAttrDataDeletion(this.msubattr_data, pks);
+        this.msubattr_data = this.ctypeService.syncSubAttrDataDeletion(this.msubattr_data, table_index, data_index);
         this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
         this.require_refresh = true;
       },
@@ -348,8 +348,6 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
       this.containerService.
       updateCSampleSubAttrBatchData(this.container.pk, this.box.box_position, this.sample.position, this.sample.pk, data)
       .subscribe(() => {
-        // update from the copy
-        this.msubattr_data = Object.assign({}, this.msubattr_data_copy);
         // toggle change
         this.toggleSubdataChange(table_index, data_index);
         this.require_refresh = true;
@@ -371,11 +369,10 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     this.validations[sub_attr.parent_attr  + '_' + data_index + '_' + sub_attr.attr_name]
     = this.utilityService.preSaveSampleDataValidation(value, sub_attr);
     if (this.validations[sub_attr.parent_attr + '_' + data_index + '_' + sub_attr.attr_name] === '') {
-      if (sub_attr.attr_value_type === 4) {
+      if (+sub_attr.attr_value_type === 4) {
         // a date
-        value = value.formatted;
-        this.date_attrs[sub_attr.parent_attr + '_' + data_index + '_' + sub_attr.attr_name] = value;
-        this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
+        this.date_attrs[sub_attr.parent_attr + '_' + data_index + '_' + sub_attr.attr_name] = value.formatted;
+        this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value.formatted;
       } else {
         this.msubattr_data_copy[table_index][attr_index].csample_subdata[data_index].ctype_sub_attr_value_part1 = value;
       }
@@ -408,7 +405,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     this.add_subattr_data.forEach((item: any) => {
       if (item.parent_attr_id === sub_attr.parent_attr_id
         && item.subattr_pk === sub_attr.pk) {
-          if (sub_attr.attr_value_type === 4) {
+          if (+sub_attr.attr_value_type === 4) {
             item.value = value.formatted;
           } else {
             item.value = value;
@@ -434,8 +431,11 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     .subscribe((rdata: Array<CSampleSubData>) => {
       // sync data
       this.appendCSampleSubData(table_index, rdata);
+      console.log(this.msubattr_data);
+      this.msubattr_data_copy = Object.assign({}, this.msubattr_data);
       this.add_validations[parent_attr + '_valid'] = false;
       this.add_subattr_data_handler[parent_attr] = false;
+      this.require_refresh = true;
     },
     (err) => {
       console.log(err);
@@ -449,7 +449,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     this.msubattr_data[table_index].forEach((subdata: MCSubAttrData) => {
       const item: MCSampleSubData = new MCSampleSubData();
       const data_item: CSampleSubData = data.find((di: CSampleSubData) => {
-        return di.pk === subdata.sub_attr.pk;
+        return +di.ctype_sub_attr_id === +subdata.sub_attr.pk;
       });
       if (data_item !== undefined) {
         item.is_changing = false;
