@@ -194,7 +194,7 @@ export class CsampleManageComponent implements OnInit, OnDestroy {
     // validation
     this.validations[attr.attr_name] = this.utilityService.preSaveSampleDataValidation(value, attr);
     if (this.validations[attr.attr_name] === '') {
-      if (attr.attr_value_type === 4) {
+      if (+attr.attr_value_type === 4) {
         // a date
         value = value.formatted;
         this.date_attrs[attr.attr_name] = value;
