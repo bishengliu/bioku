@@ -69,7 +69,7 @@ export class ContainerBoxListComponent implements OnInit, OnDestroy {
       && state.authInfo.authGroup != null
       && state.authInfo.authGroup.length > 0) {
         this.user = state.authInfo.authUser;
-        this.show_upload_button = this.isAssistofGroup(state.authInfo.authGroup[0]);
+        this.show_upload_button = this.isPIorAssist(state.authInfo.authGroup[0]);
       }
   }
 
