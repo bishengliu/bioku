@@ -5,12 +5,16 @@
   </div>
 </div>
 <div class="ui grid row small_padding">
-  <div class="ten wide column">
-    <h3 class="ui violet left aligned header">{{appName}} UPLOADER</h3>
+  <div class="ten wide column extra_top_margin">
+    <h3 class="ui violet left aligned header ">{{appName}} UPLOADER</h3>  
   </div>
-  <div class="six wide column"> 
+  <div class="six wide column" > 
     <div class="two ui buttons float-right">
-        <button class="ui black button" (click)="chooseUploadMode(2)"><i class="icon options"></i> ADVANCED MODE</button>
+        <button class="ui black button" 
+        *ngIf="!load_failed && !loading && allowUpload && simple_or_advanced_mode === 0"
+        (click)="chooseUploadMode(2)">
+        <i class="icon options"
+        ></i> ADVANCED MODE</button>
         <a class="ui button" [routerLink]="['/containers', id]"><i class="icon caret left"></i>CANCEL</a>
     </div>
   </div>

@@ -3,10 +3,9 @@
     <div class="ui icon top attached info message">
       <i class="icon table"></i>
       <div class="content">
-        <div class="header">BOX LABEL: HELP THE APPLICAIOTN TO RECOGNIZE YOUR BOXES</div>
-        <p>Please help the application to find the boxes in your excel file, so that the application knows where to
-          put the boxes in the container. The box label following the pattern of "tower-shelf-box" is prefered.</p>
-        <p>If you have extra "letters" or "digits" in the box labels, you can trim them below.</p>
+        <div class="header">BOX LABEL: HELP THE UPLOADER TO RECOGNIZE YOUR BOXES</div>
+        <p>Please help the uploader to understand the boxes. The box label following the pattern of "tower-shelf-box" is prefered.</p>
+        <p>If you have extra "letters" or "digits" in the box labels, you can trim them off below.</p>
       </div>
     </div>
     <div class="ui raised mini attached segment left aligned">
@@ -18,7 +17,7 @@
         <div class="ui top left attached teal label">STEP 1</div>
         <div class="content">
           <div class="ui horizontal divider">box label</div>
-          <div class="ui slider checkbox">
+          <div class="ui toggle checkbox">
             <input type="checkbox" name="" id="box_has_label" (change)="toggleBoxHasLabel()" checked="checked">
             <label for="box_has_label">
               <span *ngIf="bLabel.box_has_label" class="">my boxes are labeled (with box position)</span>
@@ -31,7 +30,7 @@
         <div class="ui top left attached teal label">STEP 2</div>
         <div class="content">
           <div class="ui horizontal divider">box label pattern</div>
-          <div class="ui slider checkbox" [ngClass]="{'disabled': !bLabel.box_has_label }">
+          <div class="ui toggle checkbox" [ngClass]="{'disabled': !bLabel.box_has_label }">
             <input type="checkbox" name="" id="box_position_definition" (change)="toggleBoxPositionDefinition()" checked="checked" 
             [attr.disabled]="genDisabled()">
             <label for="box_position_definition">
@@ -46,7 +45,7 @@
         <div class="content">
             <div class="ui horizontal divider">data column</div>
           <!-- for box_defined_as_normal == true -->
-          <div class="ui slider checkbox" *ngIf="bLabel.box_defined_as_normal" [ngClass]="{'disabled': !bLabel.box_has_label }">
+          <div class="ui toggle checkbox" *ngIf="bLabel.box_defined_as_normal" [ngClass]="{'disabled': !bLabel.box_has_label }">
             <input type="checkbox" name="" id="box_tsb_one_column" (change)="toggleBoxTSBColumn()" checked="checked" 
             [attr.disabled]="genDisabled()">
             <label for="box_tsb_one_column">
@@ -55,7 +54,7 @@
             </label>
           </div>
           <!-- for box_defined_as_normal == false-->
-          <div class="ui slider checkbox" *ngIf="!bLabel.box_defined_as_normal" [ngClass]="{'disabled': !bLabel.box_has_label }">
+          <div class="ui toggle checkbox" *ngIf="!bLabel.box_defined_as_normal" [ngClass]="{'disabled': !bLabel.box_has_label }">
             <input type="checkbox" name="" id="box_sample_separated" (change)="toggleBoxSampleSeparated()" checked="checked" 
             [attr.disabled]="genDisabled()">
             <label for="box_sample_separated">

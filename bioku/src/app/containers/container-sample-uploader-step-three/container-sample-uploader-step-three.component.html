@@ -1,15 +1,15 @@
 <div class="ui grid row medium_bottom">
     <div class="sixteen wide column">
       <!-- info -->
-      <div class="ui icon top attached info message">
+      <!-- <div class="ui icon top attached info message">
         <i class="icon file excel outline"></i>
         <div class="content">
-          <div class="header">UPLOAD SAMPLE FILE</div>
+          <div class="header">UPLOAD THE EXCEL FILE</div>
           <p>Please speficy the sample type and column headers before uploading the excel file (.xlsx), so that the application knows
             how to save your samples</p>
         </div>
-      </div>
-      <div class="ui visible inverted attached icon message" *ngIf="!all_set_start_to_upload_file">
+      </div> -->
+      <div class="ui visible warning top attached icon message" *ngIf="!all_set_start_to_upload_file">
         <i class="info circle icon"></i>
         <div class="content">
           <div class="header">
@@ -42,18 +42,25 @@
             </span>);
         </div>
       </div>
+      <div class="ui icon attached info message">
+          <i class="icon file excel outline"></i>
+          <div class="content">
+            <div class="header">UPLOAD THE FILE</div>
+            <p>Please speficy the content and column headers before uploading the excel file (.xlsx)</p>
+          </div>
+        </div>
         <!-- end info -->
         <!-- sample type, columns -->
         <div class="ui raised mini attached segment left aligned" *ngIf="!all_set_start_to_upload_file">
           <div class="ui header blue">
-            <i class="icon caret right"></i>SAMPLE TYPE & COLUMN HEADERS</div>
+            <i class="icon caret right"></i>TYPE & COLUMN HEADERS</div>
         </div>
         <div class="ui two attached huge steps" *ngIf="!all_set_start_to_upload_file">
           <div class="step">
             <div class="ui top left attached teal label">STEP 1</div>
             <div class="content">
-              <div class="ui grid">
-                <div class="ui horizontal divider">SAMPLE TYPE</div>
+              <div class="ui horizontal divider">TYPE</div>
+              <div class="ui grid">                
                 <div class="ui form">
                   <div class="grouped fields">
                     <div class="field">
@@ -109,7 +116,7 @@
             <div class="ui top left attached teal label">STEP 2</div>
             <div class="content">
               <div class="ui horizontal divider">COLUMN HEADER</div>
-              <div class="ui slider checkbox">                 
+              <div class="ui toggle checkbox">                 
                 <input type="checkbox" name="" id="excel_file_header" (change)="toggleExcelFilerHeader()" checked="checked">
                 <label for="excel_file_header">
                   <span *ngIf="excel_file_has_header" class="">I have column headers in the excel file</span>
