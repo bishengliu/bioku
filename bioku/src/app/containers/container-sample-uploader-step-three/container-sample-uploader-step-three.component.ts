@@ -9,7 +9,10 @@ import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
 import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat } from '../../_classes/SampleUpload';
 // dragula
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
-
+// ctype
+import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
+import { CTypeService } from '../../_services/CTypeService';
+import { AlertService } from '../../_services/AlertService';
 @Component({
   selector: 'app-container-sample-uploader-step-three',
   templateUrl: './container-sample-uploader-step-three.component.html',
@@ -41,9 +44,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
   sampleFile: SampleFile = new SampleFile();
   column_headers: Array<string> = [];
-  sample_type = 'GENERAL';
+  sample_type = ''; //GENERAL
   excel_file_has_header = true;
-
+  sample_types: Array<string> = [];
   // excel upload map to sample model
   excelColAttrs: Array<ColumnAttr> = [];
   // get the requied columns
@@ -90,12 +93,23 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   freezing_date_included = false;
   freezing_date_format_is_set = false;
   freezing_date_format: SampleDateFormat = new SampleDateFormat();
+  // ctype
+  ctypes: Array<CType> = new Array<CType>();
+  USE_CSAMPLE = true;
   // all dates need to format to '2017-05-01',
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
-              private excelUploadLoadService: ExcelUploadLoadService,
-              private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService) {
+              private excelUploadLoadService: ExcelUploadLoadService, private ctypeService: CTypeService,
+              private xlsxHelperService: XlsxHelperService, private dragulaService: DragulaService,
+              private alertService: AlertService) {
     this.short_months = this.utilityService.getShortMonthNames();
     this.long_months = this.utilityService.getLongMonthNames();
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    if (this.USE_CSAMPLE) {
+      // ctypes
+      this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+    } else {
+      this.sample_types = this.appSetting.SAMPLE_TYPE;
+    }
   }
 
   ngOnInit() {
@@ -125,6 +139,20 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         }
       }
     });
+    // get all the ctypes
+    this.ctypeService.getCTypes()
+    .subscribe(
+      (ctypes: Array<CType>) => {
+        this.ctypes = ctypes;
+        console.log(this.ctypes);
+        // update ctypes
+        this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+        console.log(this.sample_types);
+      },
+      (err) => {
+        this.alertService.error('fail to load material types, please try again later!', false);
+        console.log(err)
+      });
   }
   private onDragulaDrop(source_column: number, target_column: number, header_moved: string) {
     this.updateColumnAttrs(source_column, target_column, header_moved);

@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AppStore } from '../../_providers/ReduxProviders';
-
 import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
 import { CTypeService } from '../../_services/CTypeService';
 import { AlertService } from '../../_services/AlertService';
