@@ -4,90 +4,176 @@
     <app-container-box-navbar></app-container-box-navbar>
   </div>
 </div>
-
 <div class="ui grid row small_padding">
-  <div class="five wide column">
-    <h3 class="ui blue left aligned header"><i class="icon cloud upload"></i>UPLOAD SAMPLES</h3>
-  </div>
-  <div class="five wide column">
+  <div class="ten wide column">
+    <h3 class="ui violet left aligned header">{{appName}} UPLOADER</h3>
   </div>
   <div class="six wide column"> 
-    <a class="ui button float-right" [routerLink]="['/containers', id]"><i class="icon caret left"></i>CANCEL</a>
+    <div class="two ui buttons float-right">
+        <button class="ui black button" (click)="chooseUploadMode(2)"><i class="icon options"></i> ADVANCED MODE</button>
+        <a class="ui button" [routerLink]="['/containers', id]"><i class="icon caret left"></i>CANCEL</a>
+    </div>
   </div>
 </div>
-
 <div class="ui grid row small_padding" *ngIf="!load_failed && !loading && allowUpload">
-  <div class="sixteen wide column" *ngIf="simple_or_advanced_mode === 0">
-      <div class="ui large fluid top attached violet icon message">
-          <i class="announcement icon"></i>
+  <div class="ui horizontal segments" *ngIf="simple_or_advanced_mode === 0">
+      <div class="ui segment">
+          <div class="header">PLEASE READ THIS FOLLOWING BEFORE PROCEED:</div>
           <div class="content">
-              <div class="header">
-                PLEASE READ THIS FOLLOWING CAREFULLY BEFORE PROCEED:
-              </div>
-              <p><i class="icon circle outline"></i>We only accept uploading the <span class="red-text"><strong>MS excel file ('.xlsx')</strong></span>, containing only <strong>ONE</strong> sheet and <strong>ONE</strong> sample type!</p>
-              <p><i class="icon circle outline"></i>We prefer that the boxes are labeled following the pattern of '<span class="red-text"><strong>TOWER-SHELF-BOX</strong></span>', for example ' 1<sup>(tower)</sup>-1<sup>(shelf)</sup>-1<sup>(box)</sup> <span>'</span>;</p>
-              <p><i class="icon circle outline"></i>We prefer that the samples are labeled following the pattern of '<span class="red-text"><strong>ROW-COLUMN</strong></span>', for example 'A1';</p>
-              <p><i class="icon circle outline"></i>We prefer that all the dates are stored as 'YYYY-MM-DD', for example '2017-12-25';</p>
-              <p><i class="icon circle outline"></i>If your samples are not saved as we recommended, we suggest that you format your samples as we recommended, using 3rd party applications,
-                or you can try upload your samples using the <span class="ui black label">ADVANCED UPLOAD MODE</span> below;</p>
-            </div>
-      </div>
-      <div class="ui horizontal attached segments">
-          <div class="ui blue attached segment">
-              <div class="ui horizontal divider">WHEN TO USE THE <span class="ui blue label">SIMPLE UPLOAD MODE</span></div>             
-              <div>                 
-                  <span><i class="icon caret right"></i>The boxes in your excel file are labeled following the pattern of '<span class="red-text"><strong>TOWER-SHELF-BOX</strong></span>';</span><br />
-                  <span><i class="icon caret right"></i>The samples in your excel file are labeled following the pattern of '<span class="red-text"><strong>ROW-COLUMN</strong></span>';</span><br />
-                  <span><i class="icon caret right"></i>The box layout is <span class="red-text"><strong>9 rows x 9 columns</strong></span>;</span>
-              </div>
+              <p>
+                <i class="icon caret right"></i>
+                Please upload only the 
+                <span><em>MS excel file ('.xlsx')</em></span>, 
+                containing a <em>single datasheet</em> of the <em>same type/content</em>.
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the boxes are labeled following the pattern of '
+                <span><em>TOWER-SHELF-BOX</em></span>', 
+                for example '1<sup>(tower)</sup>-1<sup>(shelf)</sup>-1<sup>(box)</sup>
+                <span>'</span>;
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that the all the box layouts are <em>9 rows x 9 columns</em>;
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the samples are labeled following the pattern of '<span><em>ROW-COLUMN</em></span>', for example 'A1';
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the dates are stored as 'YYYY-MM-DD', for example '2017-12-25';
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                If your boxes or samples are not saved as we recommended in the excel file, please format them before uploading;
+                you can also use the <span class="ui black label">ADVANCED MODE</span> above;
+              </p>
           </div>
-          <div class="ui black attached segment">
-              <div class="ui horizontal divider">WHEN TO USE THE <span class="ui black label">ADVANCED UPLOAD MODE</span></div>
-              <div>
-                  <span><i class="icon caret right"></i>The box layout is <span class="red-text"><strong>NOT</strong></span> 9 rows x 9 columns;</span><br />
-                <span><i class="icon caret right"></i>If you cannot upload your samples using the "SIMPLE UPLOAD MODE", you can try the "ADVANCED UPLOAD MODE" first before using 3rd party applications to reformat your samples.</span>
-              </div>
-          </div>
       </div>
-      <div class="two ui fluid bottom attached buttons">
-          <button class="ui blue button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> SIMPLE UPLOAD MODE</button>
-          <button class="ui black button" (click)="chooseUploadMode(2)"><i class="icon options"></i> ADVANCED UPLOAD MODE</button>
-      </div>
-      <div class="ui secondary top attached segment">
-        <div class="header">HOW DOES THE UPLOADER WORK?</div>
-      </div>
-      <div class="ui attached secondary segment">
-        <div class="content">
-          <p>
-            <i class="icon caret right"></i>In all cases, the {{appName}} sample uploader needs to know where to put the boxes (
-            <em>box labels</em>) and where to put your samples (
-            <em>sample labels</em>) in each box (
-            <em>box dimension/layout</em>) in your container!</p>
-          <p>
-            <i class="icon caret right"></i>The {{appName}} uses the pattern of "TOWER-SHELF-BOX" to locate a box in a container, where a "TOWER" conatins many
-            "SHELVES" (similar to drawers) and each "SHELF" contains several "BOXES"; the uploader first needs to understand your boxes
-            and samples;</p>
-          <p>
-            <i class="icon caret right"></i>The next step is to specify the cloumn headers in your excel file, so that uploader understands the details of your
-            samples.</p>
-          <p>
-            <i class="icon caret right"></i>The sample uploader allows you specify various date formats for your samples; You will be asked to provide the date
-            format in your file, if necessary.</p>
-          <p>
-            <i class="icon caret right"></i>You can upload your excel file after provide the above details; the sample uploader has a powerful buildin validator,
-            which will validate your samples and output all the necessary messages; please read always carefuly these outputs even
-            your samples have passed the validation;</p>
-          <p>
-            <i class="icon caret right"></i>The sample uploader will NOT override any box or sample already in your container; If the uploader detects the existence
-            of a box or sample in place, it will IGNORE SILENTLY the current sample in your excel file and move to the next sample;
-            therefore, you might end up uploading less samples and it is always good to check carefully what have actually been upladed;</p>
-          <p>
-            <i class="icon caret right"></i>Though it is not possible to consider all the possible ways of labeling your boxes or samples, we do offer you with
-            quite a lot of choices in the "ADVANCED UPLOAD MODE"; If it is really not working for you, please contact us for support.
-          </p>
+      <div class="ui segment">
+          <div class="header">HOW DOES THE {{appName}} UPLOADER WORK?</div>
+          <div class="content">
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader needs to know where to put the boxes 
+              (from <em>box labels</em>) and where to put the samples
+              (from <em>sample labels</em>) in a box 
+              (from <em>box dimension/layout</em>) in a container.</p>
+            <p>
+              <i class="icon caret right"></i>
+              In the first place, the {{appName}} uploader needs to understand the boxes and the samples; 
+              the {{appName}} uploader uses the pattern of "TOWER-SHELF-BOX" to locate a box in a container, where a "TOWER" may conatin several
+              "SHELVES" (similar to drawers) and each "SHELF" may contain several "BOXES";
+            </p>
+            <p>
+              <i class="icon caret right"></i>
+              The next step is to specify the cloumn headers in the excel file, so that the {{appName}} uploader understands other details of a sample,
+              which depend on the tyep/content specified;
+            </p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader allows you to specify various date formats; You will be asked to provide the date
+              format, if necessary;</p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader has many build-in validators; please always read carefuly the validation reports;</p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader will NOT override any box or sample already in your container; If the uploader detects the existence
+              of a box or sample in place, it will IGNORE SILENTLY the current sample in your excel file and move to the next sample;
+              therefore, you might end up uploading less samples and it is always good to check carefully what have been actually upladed;</p>
+            <p>
+              <i class="icon caret right"></i>
+              Though it is impossible to consider all the possible conventions of labeling the boxes or samples, 
+              the {{appName}} uploader offers many options in the "ADVANCED MODE".
+            </p>
         </div>
     </div>
   </div>
+  <button class="ui fluid blue bottom attached button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> EXPRESS MODE </button>  
+  <!-- <div class="eight wide column" *ngIf="simple_or_advanced_mode === 0">
+      <div class="ui top attached fluid message">
+          <div class="header">PLEASE READ THIS FOLLOWING BEFORE PROCEED:</div>
+          <div class="content">
+              <p>
+                <i class="icon caret right"></i>
+                Please upload only the 
+                <span><em>MS excel file ('.xlsx')</em></span>, 
+                containing a <em>single datasheet</em> of the <em>same type/content</em>.
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the boxes are labeled following the pattern of '
+                <span><em>TOWER-SHELF-BOX</em></span>', 
+                for example '1<sup>(tower)</sup>-1<sup>(shelf)</sup>-1<sup>(box)</sup>
+                <span>'</span>;
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that the all the box layouts are <em>9 rows x 9 columns</em>;
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the samples are labeled following the pattern of '<span><em>ROW-COLUMN</em></span>', for example 'A1';
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                It is highly recommended that all the dates are stored as 'YYYY-MM-DD', for example '2017-12-25';
+              </p>
+              <p>
+                <i class="icon caret right"></i>
+                If your boxes or samples are not saved as we recommended in the excel file, please format them before uploading;
+                you can also use the <span class="ui black label">ADVANCED MODE</span> above;
+              </p>
+          </div>
+      </div>
+      <button class="ui fluid blue bottom attached button" (click)="chooseUploadMode(1)"><i class="icon wizard"></i> EXPRESS MODE </button>  
+  </div>
+  <div class="eight wide column" *ngIf="simple_or_advanced_mode === 0">
+      <div class="ui secondary top attached segment">
+          <div class="header">HOW DOES THE {{appName}} UPLOADER WORK?</div>
+        </div>
+        <div class="ui attached secondary segment">
+          <div class="content">
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader needs to know where to put the boxes 
+              (from <em>box labels</em>) and where to put the samples
+              (from <em>sample labels</em>) in a box 
+              (from <em>box dimension/layout</em>) in a container.</p>
+            <p>
+              <i class="icon caret right"></i>
+              In the first place, the {{appName}} uploader needs to understand the boxes and the samples; 
+              the {{appName}} uploader uses the pattern of "TOWER-SHELF-BOX" to locate a box in a container, where a "TOWER" may conatin several
+              "SHELVES" (similar to drawers) and each "SHELF" may contain several "BOXES";
+            </p>
+            <p>
+              <i class="icon caret right"></i>
+              The next step is to specify the cloumn headers in the excel file, so that the {{appName}} uploader understands other details of a sample,
+              which depend on the tyep/content specified;
+            </p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader allows you to specify various date formats; You will be asked to provide the date
+              format, if necessary;</p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader has many build-in validators; please always read carefuly the validation reports;</p>
+            <p>
+              <i class="icon caret right"></i>
+              The {{appName}} uploader will NOT override any box or sample already in your container; If the uploader detects the existence
+              of a box or sample in place, it will IGNORE SILENTLY the current sample in your excel file and move to the next sample;
+              therefore, you might end up uploading less samples and it is always good to check carefully what have been actually upladed;</p>
+            <p>
+              <i class="icon caret right"></i>
+              Though it is impossible to consider all the possible conventions of labeling the boxes or samples, 
+              the {{appName}} uploader offers many options in the "ADVANCED MODE".
+            </p>
+          </div>
+        </div>
+  </div> -->
   <app-container-sample-upload-helper
     [uploadMode]="simple_or_advanced_mode"
     class="sixteen wide column" 
