@@ -56,7 +56,7 @@
                 <div class="ui form">
                   <div class="grouped fields">
                     <div class="field" *ngFor="let type of sample_types">
-                      <div class="ui slider checkbox">
+                      <div class="ui toggle checkbox">
                         <input id="sample_{{type}}" type="radio" name="sample_type" 
                         [attr.checked]="sample_type === type ? 'checked': null" 
                         (change)="updateSampleType(type)">
