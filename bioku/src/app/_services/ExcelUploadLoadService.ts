@@ -123,7 +123,7 @@ export class ExcelUploadLoadService {
         this.utilityService.getCustomizedSampleAttrLabel('storage_date', this.customized_attrs),
         this.utilityService.getCustomizedSampleAttrLabel('date_out', this.customized_attrs)
       ]
-      sample_position_headers.header_type = 'minimal_attrs';
+      minimal_attr_headers.header_type = 'minimal_attrs';
       shared_headers.push(minimal_attr_headers);
       return shared_headers;
   }

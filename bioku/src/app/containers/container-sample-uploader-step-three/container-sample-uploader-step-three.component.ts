@@ -144,9 +144,13 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     .subscribe(
       (ctypes: Array<CType>) => {
         this.ctypes = ctypes;
-        console.log(this.ctypes);
         // update ctypes
         this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+        if (this.USE_CSAMPLE && this.sample_types.length > 0){
+          this.sample_type = this.sample_types[0];
+          // update again
+          this.setDefaultSampleFile();
+        }
       },
       (err) => {
         this.alertService.error('fail to load material types, please try again later!', false);
@@ -267,7 +271,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   }
 
   setDefaultSampleFile() {
-    this.sample_type = '';
+    this.sample_type = 
+    this.USE_CSAMPLE
+    ? (this.sample_types.length > 0 ? this.sample_types[0]: '')
+    :'GENERAL';
     this.excel_file_has_header = true;
     this.column_header_is_set = false;
     this.all_set_start_to_upload_file = false;
@@ -289,7 +296,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     // get shared excel headers
     const shared_headers: Array<SampleExcelHeaders> = this.excelUploadLoadService.getSharedExcelHeaders();
     // box label
-    const box_label_headers = shared_headers.filter(h => h.header_type === 'box_position')[0].headers;
+    const box_label_headers = shared_headers.find(h => h.header_type === 'box_position').headers;
     if (bLabel.box_has_label) {
       if (bLabel.box_defined_as_normal && bLabel.box_tsb_one_column) {
         col_headers.push(box_label_headers[0]);
@@ -307,7 +314,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       }
     }
     // sample label
-    const sample_label_headers = shared_headers.filter(h => h.header_type === 'sample_position')[0].headers;
+    const sample_label_headers = shared_headers.find(h => h.header_type === 'sample_position').headers;
     if (sLabel.sampleLabelDefinition === 1) {
       // 2 cols for sample label
       col_headers.push(sample_label_headers[1]);
@@ -318,9 +325,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       col_headers.push(sample_label_headers[0]);
     }
     // get the minial headers
-    const minimal_headers: Array<string> = shared_headers.filter(h => h.header_type === 'minimal_attrs')[0].headers;
+    const minimal_headers: Array<string> = shared_headers.find(h => h.header_type === 'minimal_attrs').headers;
     // get ctype parental attrs
-    let ctype_pattrs: Array<string> = this.ctypeService.getCTypePAttrs(sample_type, ctypes, true);
+    let ctype_pattrs: Array<string> = this.ctypeService.getCTypePAttrs(sample_type, ctypes, false); // false is to load labels
     col_headers = [...col_headers, ...minimal_headers, ...ctype_pattrs]
     return col_headers;
   }
@@ -395,11 +402,12 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
   setDefaultColumnAttrs (): void {
     this.excelColAttrs = [];
-    const allColumnHeaders = this.excelUploadLoadService.getAllColumnHeaders();
+    const defaultColumnHeaders = this.USE_CSAMPLE
+    ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
+    : this.excelUploadLoadService.getAllColumnHeaders();
     this.column_headers.forEach((h: string) => {
-      const colAttr = new ColumnAttr();
       // get the index of current header
-      const col_index = allColumnHeaders.indexOf(h);
+      const col_index = defaultColumnHeaders.indexOf(h);
       if (col_index !== -1) {
         const columnAttr = new ColumnAttr();
         columnAttr.col_header = h;
