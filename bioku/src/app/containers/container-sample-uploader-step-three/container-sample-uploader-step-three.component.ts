@@ -147,7 +147,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         console.log(this.ctypes);
         // update ctypes
         this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
-        console.log(this.sample_types);
       },
       (err) => {
         this.alertService.error('fail to load material types, please try again later!', false);
@@ -254,7 +253,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   updateSampleType(sample_type: string): void {
     this.sample_type = sample_type === '' ? this.sample_type : sample_type;
     // get the column headers for current sample type
-    this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers = 
+    this.USE_CSAMPLE
+    ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
+    : this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.column_headers.sort();
     // prepare the default column attrs
     this.setDefaultColumnAttrs();
@@ -265,7 +267,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   }
 
   setDefaultSampleFile() {
-    this.sample_type = 'GENERAL';
+    this.sample_type = '';
     this.excel_file_has_header = true;
     this.column_header_is_set = false;
     this.all_set_start_to_upload_file = false;
@@ -275,11 +277,55 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.freezing_date_included = false;
     this.freezing_date_format_is_set = false;
     // set up column count and headers
-    this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers = this.USE_CSAMPLE
+    ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
+    : this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.column_headers.sort();
     this.setDefaultColumnAttrs();
   }
+  // use CSAMPLE
+  updateCTypeColumnHeaders(sample_type: string, ctypes: Array<CType>, bLabel: BoxLabel, sLabel: SampleLabel) {
+    let col_headers: Array<string> = [];
+    // get shared excel headers
+    const shared_headers: Array<SampleExcelHeaders> = this.excelUploadLoadService.getSharedExcelHeaders();
+    // box label
+    const box_label_headers = shared_headers.filter(h => h.header_type === 'box_position')[0].headers;
+    if (bLabel.box_has_label) {
+      if (bLabel.box_defined_as_normal && bLabel.box_tsb_one_column) {
+        col_headers.push(box_label_headers[0]);
+        // 1 col for box label
+      }
+      if (bLabel.box_defined_as_normal && !bLabel.box_tsb_one_column) {
+        col_headers.push(box_label_headers[1]);
+        col_headers.push(box_label_headers[2]);
+        col_headers.push(box_label_headers[3]);
+        // 3 col for box label
+      }
+      if (!bLabel.box_defined_as_normal && bLabel.box_sample_separated) {
+        // 1 col for box label
+        col_headers.push(box_label_headers[0]);
+      }
+    }
+    // sample label
+    const sample_label_headers = shared_headers.filter(h => h.header_type === 'sample_position')[0].headers;
+    if (sLabel.sampleLabelDefinition === 1) {
+      // 2 cols for sample label
+      col_headers.push(sample_label_headers[1]);
+      col_headers.push(sample_label_headers[2]);
 
+    } else {
+      // 1 col for sample label
+      col_headers.push(sample_label_headers[0]);
+    }
+    // get the minial headers
+    const minimal_headers: Array<string> = shared_headers.filter(h => h.header_type === 'minimal_attrs')[0].headers;
+    // get ctype parental attrs
+    let ctype_pattrs: Array<string> = this.ctypeService.getCTypePAttrs(sample_type, ctypes, true);
+    col_headers = [...col_headers, ...minimal_headers, ...ctype_pattrs]
+    return col_headers;
+  }
+
+  // use old sample type
   updateColumnHeaders (sample_type: string, bLabel: BoxLabel, sLabel: SampleLabel): Array<string> {
     const all_headers: Array<SampleExcelHeaders> = this.excelUploadLoadService.getAllExcelHeaders();
     let sample_headers: Array<string> = [];
@@ -439,7 +485,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     if ( +value === 1) { return 1 } else { return 'A'; }
   }
   ngOnChanges() {
-    this.column_headers = this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
+    this.column_headers = this.USE_CSAMPLE
+    ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
+    : this.updateColumnHeaders(this.sample_type, this.bLabel, this.sLabel);
     this.column_headers.sort();
     this.all_requied_headers = this.getRequiredColumnHeader();
     this.setDefaultColumnAttrs();

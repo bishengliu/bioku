@@ -20,7 +20,7 @@ export class ExcelUploadLoadService {
     this.DISPLAY_COMMON_ATTRS = this.appSetting.DISPLAY_COMMON_ATTRS;
     this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
  }
-    ///////////// DONOT CHANGE THIS: the order of each item must not be changed /////////////////
+  ///////////// DONOT CHANGE THIS: the order of each item must not be changed /////////////////
   getAllExcelHeaders(): Array<SampleExcelHeaders> {
     const all_headers: Array<SampleExcelHeaders>  = [];
     const box_position_headers = new SampleExcelHeaders();
@@ -101,6 +101,40 @@ export class ExcelUploadLoadService {
     all_headers = [...box_position_headers, ...sample_position_headers, ...general_headers,
       ...cell_headers, ...construct_headers, ...oligo_headers, ...tissue_headers, ...virus_headers];
     return all_headers;
+  }
+  // //////////////////////USE CSAMPLE ////////////////////////////////////////////////////////
+  // used for csample
+  getSharedExcelHeaders(): Array<SampleExcelHeaders> {
+      const shared_headers: Array<SampleExcelHeaders>  = [];
+      // box
+      const box_position_headers = new SampleExcelHeaders();
+      box_position_headers.headers =  ['BoxPosition', 'BoxPosition_Tower', 'BoxPosition_Shelf', 'BoxPosition_Box'];
+      box_position_headers.header_type = 'box_position';
+      shared_headers.push(box_position_headers);
+      // sample
+      const sample_position_headers = new SampleExcelHeaders();
+      sample_position_headers.headers =  ['SamplePosition', 'SamplePosition_Row', 'SamplePosition_Column'];
+      sample_position_headers.header_type = 'sample_position';
+      shared_headers.push(sample_position_headers);
+      // minimal attr
+      const minimal_attr_headers = new SampleExcelHeaders();
+      minimal_attr_headers.headers = [
+        this.utilityService.getCustomizedSampleAttrLabel('name', this.customized_attrs),
+        this.utilityService.getCustomizedSampleAttrLabel('storage_date', this.customized_attrs),
+        this.utilityService.getCustomizedSampleAttrLabel('date_out', this.customized_attrs)
+      ]
+      sample_position_headers.header_type = 'minimal_attrs';
+      shared_headers.push(minimal_attr_headers);
+      return shared_headers;
+  }
+
+  getSharedSampleModelAttrs(): Array<string> {
+    let shared_attrs: Array<string>  = [];
+    const box_position_headers =  ['box_position', 'box_position_tower', 'box_position_shelf', 'box_position_box'];
+    const sample_position_headers =  ['sample_position', 'sample_position_row', 'sample_position_column'];
+    const minimal_attrs = ['name', 'storage_date', 'date_out'];
+    shared_attrs = [...box_position_headers, ...sample_position_headers, ...minimal_attrs];
+    return shared_attrs;
   }
   displayFreezingDate(freezing_date_format: SampleDateFormat) {
     if (freezing_date_format !== undefined) {

@@ -335,6 +335,26 @@ export class CTypeService {
         }
         return pk;
     }
+    // get ctype parent leven simple attr names or lables
+    getCTypePAttrs(type: string, ctypes: Array<CType>, attr_name: boolean): Array<string> {
+        const pattrs: Array<string> = new Array<string>();
+        const ctype = ctypes.find((t: CType)=> {
+            return t.type.toUpperCase() === type.toUpperCase();
+        });
+        if ( ctype !== undefined) {
+            const attrs: Array<CTypeAttr> = ctype.attrs;
+            attrs.forEach((a:CTypeAttr)=> {
+                if(a.attr_value_type !== 3 && !a.has_sub_attr) {
+                    if(attr_name) {
+                        pattrs.push(a.attr_name);
+                    } else {
+                        pattrs.push(a.attr_label);
+                    }                
+                }                
+            })
+        }
+        return pattrs;
+    }
     // get common full sample attrs
     getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {
         const ctypes: Array<CType> = new Array<CType>();
