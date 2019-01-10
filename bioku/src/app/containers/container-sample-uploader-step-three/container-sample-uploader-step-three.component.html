@@ -127,22 +127,22 @@
                       <td id="column_target" [attr.column]="(cindex + 1)" [dragula]='"bag"' [dragulaOptions]="dragulaOptions" *ngFor="let c of column_headers; let cindex= index"
                         class="column_min_height container"></td>
                     </tr>
-                    <tr *ngIf="freezing_date_included && !freezing_date_format_is_set">
-                      <!--  freezing date format -->
+                    <tr *ngIf="require_set_date_format && !all_date_format_is_set && date_dropped.date_attr_label !== undefined">
+                      <!-- date format -->
                       <td [attr.colspan]="column_headers.length">
                         <div class="ui warning icon message">
                           <i class="icon alarm"></i>
                           <div class="content">
                             <div class="header">please specify the date format!</div>
-                            <p><span><i class="small icon circle"></i>You've selected the "Freezing Date" column, please specify the date format before proceeding further;</span><br />
-                              <span><i class="small icon circle"></i>You can drag the "Freezing Date" out/into table to hide or show this;</span><br />
+                            <p><span><i class="small icon circle"></i>You've selected the "{{date_dropped.date_attr_label}}" column, please specify the date format before proceeding further;</span><br />
+                              <span><i class="small icon circle"></i>You can drag the "{{date_dropped.date_attr_label}}" out/into table to hide or show this;</span><br />
                               <span><i class="small icon circle"></i>Drag the "year", "month" and "day" to change their orders; "joined with" cannot be dragged.</span><br />
                             </p>
                           </div>
                         </div>
                         <div class="ui grid row">
                           <div class="eight wide column">
-                            <div class="ui divider horizontal">Specifiy the freezing date format</div>
+                            <div class="ui divider horizontal">Specifiy the "{{date_dropped.date_attr_label}}" format</div>
                             <div class="ui equal width form">                              
                               <div class="four fields container"
                               id="date_position"
@@ -151,14 +151,14 @@
                               [dragulaOptions]="dragulaOptions">
                               <div class="field dragable_field movable" id="year">
                                 <label class="movable" for="year"><i class="brown icon move"></i>year</label>
-                                <select id="year" class="ui dropdown" [(ngModel)]="freezing_date_format.year_format" (ngModelChange)="updateFreezingDateFormat('year_format', $event)">
+                                <select id="year" class="ui dropdown" [(ngModel)]="date_dropped.format.year_format" (ngModelChange)="updateDateFormat('year_format', $event)">
                                   <option value="0">yyyy</option>
                                   <option value="1">yy</option>
                                 </select>
                               </div>
                               <div class="field dragable_field movable" id="month">
                                 <label class="movable" for="month"><i class="brown icon move"></i>month</label>
-                                <select id="month" class="ui dropdown" [(ngModel)]="freezing_date_format.month_format" (ngModelChange)="updateFreezingDateFormat('month_format', $event)">
+                                <select id="month" class="ui dropdown" [(ngModel)]="date_dropped.format.month_format" (ngModelChange)="updateDateFormat('month_format', $event)">
                                   <option value="0">MM (digits)</option>
                                   <option value="1">full month names</option>
                                   <option value="2">3-letter abbreviations</option>
@@ -178,7 +178,7 @@
                                       </i>
                                   joined with
                                 </label>
-                                <select id="join_date" class="ui dropdown" [(ngModel)]="freezing_date_format.join_symbol" (ngModelChange)="updateFreezingDateFormat('join_symbol', $event)">
+                                <select id="join_date" class="ui dropdown" [(ngModel)]="date_dropped.format.join_symbol" (ngModelChange)="updateDateFormat('join_symbol', $event)">
                                   <option value="/">/</option>
                                   <option value="-">-</option>
                                   <option value=".">.</option>
@@ -197,12 +197,12 @@
                             </div>
                           </div>
                           <div class="eight wide column">
-                              <div class="ui divider horizontal">Your freezing date</div>
+                              <div class="ui divider horizontal">Your "{{date_dropped.date_attr_label}}" date</div>
                             <div class="ui inverted attached segment">
-                              <i class="icon caret right"></i>The freezing date in your excel file looks like this: <span class="red-text">{{ displayFreezingDate() }}</span>.
+                              <i class="icon caret right"></i>The "{{date_dropped.date_attr_label}}" in your excel file looks like this: <span class="red-text">{{ displayDateFormat() }}</span>.
                             </div>
                             <div class="ui two mini buttons attached">
-                              <button class="ui positive button" (click)="doneFreezingDateFormat()">
+                              <button class="ui positive button" (click)="doneDateFormat()">
                                 <i class="icon checkmark"></i> Looks Good
                               </button>
                             </div>
@@ -218,7 +218,7 @@
           <button class="ui button" (click)="backSecondStep()" *ngIf="!all_set_start_to_upload_file && uploadMode === 2">
             <i class="icon caret left"></i> PREVIOUS </button>
           <button class="ui positive button" (click)="doneColumnHeaders()" 
-            *ngIf="(column_header_is_set && !all_set_start_to_upload_file) && (!freezing_date_included || (freezing_date_included && freezing_date_format_is_set ))">
+            *ngIf="(column_header_is_set && !all_set_start_to_upload_file) && (!require_set_date_format || (require_set_date_format && all_date_format_is_set ))">
             <i class="icon checkmark"></i> ALL SET & UPLOAD FILE <i class="icon caret right"></i>
           </button>
         </div>

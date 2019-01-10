@@ -344,7 +344,7 @@ export class CTypeService {
         if ( ctype !== undefined) {
             const attrs: Array<CTypeAttr> = ctype.attrs;
             attrs.forEach((a:CTypeAttr)=> {
-                if(a.attr_value_type !== 3 && !a.has_sub_attr) {
+                if(+a.attr_value_type !== 3 && !a.has_sub_attr) {
                     if(attr_name) {
                         pattrs.push(a.attr_name);
                     } else {
@@ -354,6 +354,25 @@ export class CTypeService {
             })
         }
         return pattrs;
+    }
+    getCTypsPDateAttrs(type: string, ctypes: Array<CType>, attr_name: boolean): Array<string> {
+        const pdateattrs: Array<string> = new Array<string>();
+        const ctype = ctypes.find((t: CType)=> {
+            return t.type.toUpperCase() === type.toUpperCase();
+        });
+        if ( ctype !== undefined) {
+            const attrs: Array<CTypeAttr> = ctype.attrs;
+            attrs.forEach((a:CTypeAttr)=> {
+                if(+a.attr_value_type === 4) {
+                    if(attr_name) {
+                        pdateattrs.push(a.attr_name);
+                    } else {
+                        pdateattrs.push(a.attr_label);
+                    }                
+                }                
+            })
+        }
+        return pdateattrs;
     }
     // get common full sample attrs
     getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {

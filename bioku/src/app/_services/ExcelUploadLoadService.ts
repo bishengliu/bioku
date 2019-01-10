@@ -108,12 +108,12 @@ export class ExcelUploadLoadService {
       const shared_headers: Array<SampleExcelHeaders>  = [];
       // box
       const box_position_headers = new SampleExcelHeaders();
-      box_position_headers.headers =  ['BoxPosition', 'BoxPosition_Tower', 'BoxPosition_Shelf', 'BoxPosition_Box'];
+      box_position_headers.headers =  ['BOX_POSITION', 'BOX_POSITION_TOWER', 'BOX_POSITION_SHELF', 'BOX_POSITION_BOX'];
       box_position_headers.header_type = 'box_position';
       shared_headers.push(box_position_headers);
       // sample
       const sample_position_headers = new SampleExcelHeaders();
-      sample_position_headers.headers =  ['SamplePosition', 'SamplePosition_Row', 'SamplePosition_Column'];
+      sample_position_headers.headers =  ['SAMPLE_POSITION', 'SAMPLE_POSITION_ROW', 'SAMPLE_POSITION_COLUMN'];
       sample_position_headers.header_type = 'sample_position';
       shared_headers.push(sample_position_headers);
       // minimal attr
@@ -154,6 +154,28 @@ export class ExcelUploadLoadService {
       // year
       fArray[+freezing_date_format.year_position - 1] = freezing_date_format.year_format === 0 ? '2017' : '17';
       return fArray.join(freezing_date_format.join_symbol);
+    } else {
+      return '';
+    }
+  }
+  displayDateFormat(date_format: SampleDateFormat) {
+    if (date_format !== undefined) {
+      const fArray: Array<string> = [];
+      fArray[date_format.day_position - 1] = '25';
+      // month
+      let month_example = '12';
+      if (+date_format.month_format === 1) {
+      // full month
+        month_example = 'December';
+      } else if (+date_format.month_format === 2) {
+        month_example = 'Dec';
+      } else {
+        month_example = '12';
+      }
+      fArray[+date_format.month_position - 1] = month_example;
+      // year
+      fArray[+date_format.year_position - 1] = date_format.year_format === 0 ? '2017' : '17';
+      return fArray.join(date_format.join_symbol);
     } else {
       return '';
     }

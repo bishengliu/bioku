@@ -6,7 +6,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
 import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat } from '../../_classes/SampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat, SampleUploadDateFormat } from '../../_classes/SampleUpload';
 // dragula
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 // ctype
@@ -50,8 +50,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   // excel upload map to sample model
   excelColAttrs: Array<ColumnAttr> = [];
   // get the requied columns
-   all_requied_headers: Array<string> = [];
-
+  all_requied_headers: Array<string> = [];
    // dragular driective options
    private dragulaDrop$: any;
    dragulaOptions: any = {
@@ -80,7 +79,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   column_header_is_set = false;
   // start to upload excel
   all_set_start_to_upload_file = false;
-
   // no data after upload
   // parse excel file failed
   excel_parse_failed = false;
@@ -89,10 +87,15 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   short_months: Array<string> = [];
   long_months: Array<string> = [];
   FREEZING_DATE = 'Freezing Date';
-  freezing_date_sample_attr_index: number;
-  freezing_date_included = false;
-  freezing_date_format_is_set = false;
-  freezing_date_format: SampleDateFormat = new SampleDateFormat();
+  // freezing_date_sample_attr_index: number;
+  // freezing_date_included = false;
+  // freezing_date_format_is_set = false;
+  // freezing_date_format: SampleDateFormat = new SampleDateFormat();
+  // all date formats
+  all_date_format_is_set = false;
+  require_set_date_format = false;
+  date_formats: Array<SampleUploadDateFormat> = new Array<SampleUploadDateFormat>();
+  date_dropped: SampleUploadDateFormat = new SampleUploadDateFormat();
   // ctype
   ctypes: Array<CType> = new Array<CType>();
   USE_CSAMPLE = true;
@@ -116,6 +119,25 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.sampleFile = new SampleFile();
     this.setDefaultSampleFile();
     this.all_requied_headers = this.getRequiredColumnHeader();
+    if (this.USE_CSAMPLE){
+      // get all the ctypes
+      this.ctypeService.getCTypes()
+      .subscribe(
+        (ctypes: Array<CType>) => {
+          this.ctypes = ctypes;
+          // update ctypes
+          this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+          if (this.USE_CSAMPLE && this.sample_types.length > 0){
+            this.sample_type = this.sample_types[0];
+            // update again
+            this.setDefaultSampleFile();
+          }
+        },
+        (err) => {
+          this.alertService.error('fail to load material types, please try again later!', false);
+          console.log(err)
+        });
+    }
     // dragular column headers
     this.dragulaDrop$ = this.dragulaService.drop.subscribe((value) => {
       const el = value[1]; // el moved
@@ -136,50 +158,59 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         const sibling = value[4];
         if (sibling != null) {
           this.onDragulaDateDrop(el.id, sibling.id);
+          this.require_set_date_format = true;
         }
       }
     });
-    // get all the ctypes
-    this.ctypeService.getCTypes()
-    .subscribe(
-      (ctypes: Array<CType>) => {
-        this.ctypes = ctypes;
-        // update ctypes
-        this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
-        if (this.USE_CSAMPLE && this.sample_types.length > 0){
-          this.sample_type = this.sample_types[0];
-          // update again
-          this.setDefaultSampleFile();
-        }
-      },
-      (err) => {
-        this.alertService.error('fail to load material types, please try again later!', false);
-        console.log(err)
-      });
   }
   private onDragulaDrop(source_column: number, target_column: number, header_moved: string) {
     this.updateColumnAttrs(source_column, target_column, header_moved);
     // check whether the freezing date is drag into the table or drag out of the table
-    if (header_moved === this.FREEZING_DATE) {
-      if ( target_column !== -1 ) {
-        // draged into the table
-        this.freezing_date_included = true;
-        this.freezing_date_format_is_set = false;
-      } else {
-        // draged out of the table
-        this.freezing_date_included = false;
-        this.freezing_date_format_is_set = false;
-      }
+    const date_dropped = this.date_formats.find((df: SampleUploadDateFormat)=> { return df.date_attr_label === header_moved })
+    if (date_dropped !== undefined) {
+      const include_date = target_column !== -1 ? true : false;
+      this.require_set_date_format = this.updateDateformatOnDragulaDrop(header_moved, include_date);
+      this.all_date_format_is_set = this.checkDateformatSetOnDragulaDrop();
+      // get updated date drop
+      this.date_dropped = this.date_formats.find((df: SampleUploadDateFormat)=> { return df.date_attr_label === header_moved });
+    } else {
+      this.date_dropped = new SampleUploadDateFormat();
+      this.date_dropped.format = this.setDefaultDateFormat();
     }
-    // this.freezing_date_sample_attr_index
+  }
+  // update date formats on drop
+  // return: if all not required/false, then required, otherwise require/true
+  updateDateformatOnDragulaDrop(header_moved: string, include_date: boolean): boolean {
+    const date_dropped_index = this.date_formats.findIndex((df: SampleUploadDateFormat)=> { return df.date_attr_label === header_moved });
+    if (date_dropped_index !== -1) {
+      this.date_formats[date_dropped_index].date_date_included = include_date;
+      this.date_formats[date_dropped_index].date_format_is_set = false;
+      this.date_formats[date_dropped_index].format = this.setDefaultDateFormat();
+    } 
+    // check the status
+    const date_dropped = this.date_formats.find((df: SampleUploadDateFormat)=> { return df.date_date_included === true })
+      if (date_dropped !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+  }
+  // check all_date_format_is_set
+  checkDateformatSetOnDragulaDrop(): boolean {
+    const date_dropped = this.date_formats.find((df: SampleUploadDateFormat)=> { return df.date_date_included === true && df.date_format_is_set === false })
+      if (date_dropped !== undefined) {
+        return false;
+      } else {
+        return true;
+      }
   }
 
   private onDragulaDateDrop(el_id: string, sb_id: string) {
-    // gen array from this.freezing_date_format
+    // gen array
     const array = [];
-    array[ (this.freezing_date_format['year_position'] - 1)] = 'year';
-    array[ (this.freezing_date_format['month_position'] - 1)] = 'month';
-    array[ (this.freezing_date_format['day_position'] - 1)] = 'day';
+    array[(this.date_dropped.format['year_position'] - 1)] = 'year';
+    array[(this.date_dropped.format['month_position'] - 1)] = 'month';
+    array[(this.date_dropped.format['day_position'] - 1)] = 'day';
     // find the index of the el
     const el_index = array.indexOf(el_id);
     array.splice(el_index, 1);
@@ -190,10 +221,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       const sb_index = array.indexOf(sb_id);
       array.splice(sb_index, 0, el_id);
     }
-    // update his.freezing_date_format
-    this.freezing_date_format['year_position'] = array.indexOf('year') + 1;
-    this.freezing_date_format['month_position'] = array.indexOf('month') + 1;
-    this.freezing_date_format['day_position'] = array.indexOf('day') + 1;
+    // update
+    this.date_dropped.format['year_position'] = array.indexOf('year') + 1;
+    this.date_dropped.format['month_position'] = array.indexOf('month') + 1;
+    this.date_dropped.format['day_position'] = array.indexOf('day') + 1;
   }
 
   handleValidFileDrop(evt: Array<File>) {
@@ -280,9 +311,12 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.all_set_start_to_upload_file = false;
     this.excel_parse_failed = false;
     this.no_valid_sample = false;
-    this.parsing_file = false
-    this.freezing_date_included = false;
-    this.freezing_date_format_is_set = false;
+    this.parsing_file = false;
+    // this.freezing_date_included = false;
+    // this.freezing_date_format_is_set = false;
+    this.date_dropped.format = this.setDefaultDateFormat();
+    this.require_set_date_format = false;
+    this.all_date_format_is_set = false;
     // set up column count and headers
     this.column_headers = this.USE_CSAMPLE
     ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
@@ -327,7 +361,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     // get the minial headers
     const minimal_headers: Array<string> = shared_headers.find(h => h.header_type === 'minimal_attrs').headers;
     // get ctype parental attrs
-    let ctype_pattrs: Array<string> = this.ctypeService.getCTypePAttrs(sample_type, ctypes, false); // false is to load labels
+    const ctype_pattrs: Array<string> = this.ctypeService.getCTypePAttrs(sample_type, ctypes, false); // false is to load labels
     col_headers = [...col_headers, ...minimal_headers, ...ctype_pattrs]
     return col_headers;
   }
@@ -417,9 +451,54 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       }
     });
     // find the freezing date sample_attr_index
-    this.freezing_date_sample_attr_index = this.getFreezingDateSampleModelIndex();
+    // this.freezing_date_sample_attr_index = this.getFreezingDateSampleModelIndex();
     // preapre the freezing date format
-    this.setDefaultFreezingDateFormat();
+    // this.setDefaultFreezingDateFormat();
+    // get all the date formats
+    this.date_formats = this.genDefaultDateFormats(this.USE_CSAMPLE);
+    // set all date format is set false
+    this.require_set_date_format = false;
+    this.all_date_format_is_set = false;
+  }
+  // gen default date_formats
+  genDefaultDateFormats(USE_CSAMPLE): Array<SampleUploadDateFormat> {
+    const date_formats = new Array<SampleUploadDateFormat>();
+
+    if (USE_CSAMPLE) {
+      // storage date
+      const sotrage_date_format = new SampleUploadDateFormat();
+      sotrage_date_format.date_attr_label = this.utilityService.getCustomizedSampleAttrLabel('storage_date');
+      sotrage_date_format.date_date_included = false;
+      sotrage_date_format.date_format_is_set = false;
+      sotrage_date_format.date_attr_index = this.getCSampleLabelIndex(this.utilityService.getCustomizedSampleAttrLabel('storage_date'));
+      sotrage_date_format.format = this.setDefaultDateFormat();
+      date_formats.push(sotrage_date_format);
+      // extra date fields
+      // get ctype parental data attr labels
+      const ctype_pattrs: Array<string> = this.ctypeService.getCTypsPDateAttrs(this.sample_type, this.ctypes, false); // false is to load labels
+      ctype_pattrs.forEach((a: string) => {
+        const date_format = new SampleUploadDateFormat();
+        date_format.date_attr_label = a;
+        date_format.date_date_included = false;
+        date_format.date_format_is_set = false;
+        date_format.date_attr_index = this.getCSampleLabelIndex(a);
+        date_format.format = this.setDefaultDateFormat();
+        date_formats.push(date_format);
+      })
+    } else {
+      const freezing_date_format = new SampleUploadDateFormat();
+      freezing_date_format.date_attr_label = this.FREEZING_DATE;
+      freezing_date_format.date_date_included = false;
+      freezing_date_format.date_format_is_set = false;
+      freezing_date_format.date_attr_index = this.getFreezingDateSampleModelIndex();
+      freezing_date_format.format = this.setDefaultDateFormat();
+      date_formats.push(freezing_date_format);
+    }
+    return date_formats;
+  }
+  // get attr_index by label
+  getCSampleLabelIndex(label: string): number {
+    return this.column_headers.indexOf(label);
   }
 
   updateColumnAttrs (source_column: number, target_column: number, header_moved: string): void {
@@ -448,38 +527,75 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     const allColumnHeaders = this.excelUploadLoadService.getAllColumnHeaders();
     return allColumnHeaders.indexOf(this.FREEZING_DATE);
   }
-  // set up the default freezing_date_format
-  setDefaultFreezingDateFormat(): void {
-    this.freezing_date_format.day_position = 3;
-    this.freezing_date_format.month_position = 2;
-    this.freezing_date_format.year_position = 1;
-    this.freezing_date_format.join_symbol = '-';
-    this.freezing_date_format.month_format = 0; // nummeric
-    this.freezing_date_format.year_format = 0; // yyyy
+  // // set up the default freezing_date_format
+  // setDefaultFreezingDateFormat(): void {
+  //   this.freezing_date_format.day_position = 3;
+  //   this.freezing_date_format.month_position = 2;
+  //   this.freezing_date_format.year_position = 1;
+  //   this.freezing_date_format.join_symbol = '-';
+  //   this.freezing_date_format.month_format = 0; // nummeric
+  //   this.freezing_date_format.year_format = 0; // yyyy
+  // }
+  // set the default date format
+  setDefaultDateFormat(): SampleDateFormat {
+    const format = new SampleDateFormat();
+    format.day_position = 3;
+    format.month_position = 2;
+    format.year_position = 1;
+    format.join_symbol = '-';
+    format.month_format = 0; // nummeric
+    format.year_format = 0; // yyyy
+    return format;
   }
-  // set freezing_date_format upon draged into the table
-  updateFreezingDateFormat(type: string, value: any): void {
-    this.freezing_date_format[type] = value;
+  // // set freezing_date_format upon draged into the table
+  // updateFreezingDateFormat(type: string, value: any): void {
+  //   this.freezing_date_format[type] = value;
+  // }
+  // update dropped date format
+  updateDateFormat(type: string, value: any): void {
+    this.date_dropped.format[type] = value;
   }
   // display formated date
-  displayFreezingDate() {
-    return this.excelUploadLoadService.displayFreezingDate(this.freezing_date_format);
+  displayDateFormat() {
+    return this.excelUploadLoadService.displayDateFormat(this.date_dropped.format);
   }
-  doneFreezingDateFormat() {
-    this.freezing_date_format_is_set = true;
+  doneDateFormat() {
+    // this.freezing_date_format_is_set = true;
+    // sync the set date format
+    const date_index = this.date_formats.findIndex((df: SampleUploadDateFormat)=> { return df.date_attr_label === this.date_dropped.date_attr_label; });
+    if(date_index !== -1) {
+      this.date_formats[date_index].date_format_is_set = true;
+      this.date_formats[date_index].format.day_position = this.date_dropped.format.day_position;
+      this.date_formats[date_index].format.join_symbol = this.date_dropped.format.join_symbol;
+      this.date_formats[date_index].format.month_format = this.date_dropped.format.month_format;
+      this.date_formats[date_index].format.month_position = this.date_dropped.format.month_position;
+      this.date_formats[date_index].format.year_format = this.date_dropped.format.year_format;
+      this.date_formats[date_index].format.year_position = this.date_dropped.format.year_position;
+    }
+    this.date_dropped = new SampleUploadDateFormat();
+    this.date_dropped.format = this.setDefaultDateFormat();
+
+
   }
+  // doneFreezingDateFormat() {
+  //   this.freezing_date_format_is_set = true;
+  // }
   doneColumnHeaders() {
     this.all_set_start_to_upload_file = true;
   }
   ///////////// DONOT CHANGE THIS /////////////////
   getRequiredColumnHeader() {
-    const sampleExcelHeaders: Array<SampleExcelHeaders> = this.excelUploadLoadService.getAllExcelHeaders();
+    const shared_headers: Array<SampleExcelHeaders> = this.excelUploadLoadService.getSharedExcelHeaders();
     let box_label_headers = [];
     if (this.bLabel.box_has_label) {
-      box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+      box_label_headers = shared_headers.find(h => h.header_type === 'box_position').headers;
     }
-    const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
-    return [...box_label_headers, ...sample_label_headers, 'Name'];
+    const sample_label_headers = shared_headers.find(h => h.header_type === 'sample_position').headers;
+    if(this.USE_CSAMPLE) {
+      return [...box_label_headers, ...sample_label_headers, this.utilityService.getCustomizedSampleAttrLabel('name')];
+    } else {
+      return [...box_label_headers, ...sample_label_headers, 'Name'];
+    }
   }
   ngOnDestroy() {
     if (this.dragulaDrop$ !== undefined) {
@@ -503,7 +619,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   validateSampleUpload () {
     this.excelData.emit(this.excelRawData);
     this.colAttrs.emit(this.excelColAttrs);
-    this.freezingDateFormat.emit(this.freezing_date_format);
+    this.freezingDateFormat.emit(this.date_dropped.format);
     this.excelHasFileHeader.emit(this.excel_file_has_header);
     this.sampleType.emit(this.sample_type);
   }

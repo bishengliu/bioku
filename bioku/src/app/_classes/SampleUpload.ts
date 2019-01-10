@@ -40,6 +40,14 @@ export class SampleExcelHeaders {
     headers: Array<string>;
 }
 
+export class SampleUploadDateFormat {
+    date_attr_label: string;
+    date_attr_index: number;
+    date_date_included: boolean;
+    date_format_is_set: boolean;
+    format: SampleDateFormat;
+}
+
 export class SampleDateFormat {
     day_position: number; // 1, 2, 3, day start with 1
     month_position: number;
