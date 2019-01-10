@@ -6,7 +6,8 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
 import { ExcelUploadLoadService } from '../../_services/ExcelUploadLoadService';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat, SampleUploadDateFormat } from '../../_classes/SampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders,
+  SampleDateFormat, SampleUploadDateFormat } from '../../_classes/SampleUpload';
 // dragula
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 // ctype
@@ -22,7 +23,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Output() activeStep: EventEmitter<number> = new EventEmitter<number> ();
   @Output() excelData: EventEmitter<Array<Array<any>>> = new EventEmitter<Array<Array<any>>> ();
   @Output() colAttrs: EventEmitter<Array<ColumnAttr>> = new EventEmitter<Array<ColumnAttr>> ();
-  @Output() freezingDateFormat: EventEmitter<SampleDateFormat> = new EventEmitter<SampleDateFormat> ();
+  // @Output() freezingDateFormat: EventEmitter<SampleDateFormat> = new EventEmitter<SampleDateFormat> ();
+  @Output() dateFormats: EventEmitter<Array<SampleUploadDateFormat>> = new EventEmitter<Array<SampleUploadDateFormat>> ();
   @Output() excelHasFileHeader: EventEmitter<Boolean> = new EventEmitter<Boolean> ();
   @Output() sampleType: EventEmitter<string> = new EventEmitter<string> ();
   @Input() sLabel: SampleLabel;
@@ -197,7 +199,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   }
   // check all_date_format_is_set
   checkDateformatSetOnDragulaDrop(): boolean {
-    const date_dropped = this.date_formats.find((df: SampleUploadDateFormat)=> { return df.date_date_included === true && df.date_format_is_set === false })
+    const date_dropped = this.date_formats
+    .find((df: SampleUploadDateFormat)=> { return df.date_date_included === true && df.date_format_is_set === false })
       if (date_dropped !== undefined) {
         return false;
       } else {
@@ -574,8 +577,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     }
     this.date_dropped = new SampleUploadDateFormat();
     this.date_dropped.format = this.setDefaultDateFormat();
-
-
+    // update status
+    this.all_date_format_is_set = this.checkDateformatSetOnDragulaDrop();
   }
   // doneFreezingDateFormat() {
   //   this.freezing_date_format_is_set = true;
@@ -619,7 +622,8 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   validateSampleUpload () {
     this.excelData.emit(this.excelRawData);
     this.colAttrs.emit(this.excelColAttrs);
-    this.freezingDateFormat.emit(this.date_dropped.format);
+    // this.freezingDateFormat.emit(this.date_dropped.format);
+    this.dateFormats.emit(this.date_formats.filter((df: SampleUploadDateFormat)=> {return df.date_date_included}))
     this.excelHasFileHeader.emit(this.excel_file_has_header);
     this.sampleType.emit(this.sample_type);
   }

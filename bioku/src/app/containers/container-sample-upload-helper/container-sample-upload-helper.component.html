@@ -2,7 +2,8 @@
 *ngIf="!start_validation_save"
 [ngClass]="{'hidden': activeStep !== 1 }"
 (activeStep)="captureActiveStep($event)" 
-(boxLabel)="captureBoxLabel($event)"></app-container-sample-uploader-step-one>
+(boxLabel)="captureBoxLabel($event)">
+</app-container-sample-uploader-step-one>
 
 <app-container-sample-uploader-step-two 
 *ngIf="!start_validation_save"
@@ -10,7 +11,8 @@
 [bLabel]="bLabel"
 [trigerChange]="trigerChange"
 (activeStep)="captureActiveStep($event)" 
-(sampleLabel)="captureSampleLabel($event)"></app-container-sample-uploader-step-two>
+(sampleLabel)="captureSampleLabel($event)">
+</app-container-sample-uploader-step-two>
 
 <app-container-sample-uploader-step-three
 *ngIf="!start_validation_save"
@@ -21,10 +23,12 @@
 (activeStep)="captureActiveStep($event)" 
 (excelData)="captureExcelData($event)"
 (colAttrs)="captureExcelCOlAttrs($event)"
-(freezingDateFormat)="captureFreezingDateFormat($event)"
+(dateFormats)="captureDateFormats($event)"
 (excelHasFileHeader)="captureExcelHasFileHeader($event)"
 (sampleType)="captureSampleType($event)"
-[ngClass]="{'hidden': activeStep !== 3 }"></app-container-sample-uploader-step-three>
+[ngClass]="{'hidden': activeStep !== 3 }">
+</app-container-sample-uploader-step-three>
+<!-- (freezingDateFormat)="captureFreezingDateFormat($event)" -->
 
 <app-container-sample-uploader-validate-save
 *ngIf="start_validation_save"
@@ -32,8 +36,9 @@
 [sLabel]="sLabel"
 [excelData]="excelData"
 [excelColAttrs]="excelColAttrs"
+[dateFormats]="dateFormats"
 [freezingDateFormat]="freezingDateFormat"
 [startValidation]="start_validation_save"
 [excelFileHeader]="excelFileHeader"
-[sampleType]="sampleType"
-></app-container-sample-uploader-validate-save>
+[sampleType]="sampleType">
+</app-container-sample-uploader-validate-save>

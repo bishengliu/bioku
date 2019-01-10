@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, Input, OnChanges, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat,
+import { BoxLabel, SampleLabel, ColumnAttr, SampleFile, SampleExcelHeaders, SampleDateFormat, SampleUploadDateFormat,
   SampleValidator, ValidatorOutput } from '../../_classes/SampleUpload';
   import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
@@ -28,6 +28,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   @Input() excelData: Array<Array<any>>;
   @Input() excelColAttrs: Array<ColumnAttr>;
   @Input() freezingDateFormat: SampleDateFormat;
+  @Input() dateFormats: Array<SampleUploadDateFormat>;
   @Input() startValidation: Boolean;
   @Input() excelFileHeader: Boolean;
   @Input() sampleType: string;

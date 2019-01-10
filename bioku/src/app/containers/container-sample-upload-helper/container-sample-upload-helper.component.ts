@@ -5,7 +5,7 @@ import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
-import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat} from '../../_classes/SampleUpload';
+import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat, SampleUploadDateFormat} from '../../_classes/SampleUpload';
 @Component({
   selector: 'app-container-sample-upload-helper',
   templateUrl: './container-sample-upload-helper.component.html',
@@ -21,6 +21,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   excelData: Array<Array<any>>;
   excelColAttrs: Array<ColumnAttr>;
   freezingDateFormat: SampleDateFormat;
+  date_formats: Array<SampleUploadDateFormat> = new Array<SampleUploadDateFormat>();
   excelFileHeader: Boolean = false;
   sampleType: string;
   // validate and save
@@ -53,6 +54,9 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   }
   captureFreezingDateFormat (freezing_date_format: SampleDateFormat) {
     this.freezingDateFormat = freezing_date_format;
+  }
+  captureDateFormats(date_formats: Array<SampleUploadDateFormat>) {
+    this.date_formats = date_formats;
   }
   captureExcelHasFileHeader(excel_has_file_header: Boolean) {
     this.excelFileHeader = excel_has_file_header
