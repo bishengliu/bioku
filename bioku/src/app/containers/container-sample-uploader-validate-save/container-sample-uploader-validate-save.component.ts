@@ -176,9 +176,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // valiate date format /////////////
       // check whether there is freezing_date has been included
       if (!this.validator_failed && this.data.length > 0) {
-        this.formatFreezingDate();
+        // format the data format
+        this.formatAllDates();
         // format all other columns to upload
         this.formatData(); // format and clean data
+        // apply for sample attr validations
       }
       // filter the data
       this.data = this.filterValidSamples(this.data);
@@ -308,79 +310,78 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const sample_label_validation_output = this.parseSampleLabel();
     this.checkValidationOutcome(sample_label_validation_output, 'sample labels');
   }
-  // validate freezingdate
-  formatFreezingDate() {
+  // format all dates
+  formatAllDates() {
+    // dateFormats: Array<SampleUploadDateFormat>
     // set pointer
     this.sampleValidator.validator_pointer = 3;
     // emit step
     this.valiadtionStep$.next(this.getValidationStep(this.sampleValidator.validator_pointer));
-    // check wether freezing date is included
-    let freezing_date_included = false;
-    this.excelColAttrs.forEach((c, i) => {
-      if (c.col_header === this.FREEZING_DATE && c.col_number > 0 ) {
-        freezing_date_included = true;
-        this.FREEZING_DATE_INDEX = c.sample_attr_index;
-      }
-    })
-    if (freezing_date_included) {
+    // check whether any date is included
+    if (this.dateFormats !== null && this.dateFormats.length > 0) {
       // emit message
-      let message = 'start to validate date format ...';
+      let message = 'start to validate date format(s) ...';
       this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
-      // get the date format
-      message = 'your date should like this: ' + this.excelUploadLoadService.displayFreezingDate(this.freezingDateFormat);
-      this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
-      // format Data
-      const date_formating_validation_output = this.formatDate();
+      let date_formating_validation_output = 0;
+      this.dateFormats.forEach((df: SampleUploadDateFormat) => {
+        message =  df.date_attr_label + ' should like this: ' + this.excelUploadLoadService.displayDateFormat(df.format);
+        this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
+        // formate data
+        date_formating_validation_output = this.formatDate(df) === 1 ? 1 : date_formating_validation_output;        
+      });
       this.checkValidationOutcome(date_formating_validation_output, 'date format');
+    } else {
+      let message = 'no date is included, skip the date validation!';
+      this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 3, message);
     }
-  }
-  formatDate(): number {
+  }  
+  formatDate(df: SampleUploadDateFormat): number {
     let output = 0;
     let has_warning = false;
-    const freezing_date_col = this.getColumnByHeader(this.FREEZING_DATE);
+    const date_col = this.getColumnByHeader(df.date_attr_label);
     this.data.forEach((d: Array<any>, i) => {
-      const freezing_date = d[( '' + (freezing_date_col - 1) )];
-      if (freezing_date === undefined || freezing_date === null  || freezing_date === '') {
+      const unformatted_date = d[( '' + (date_col - 1) )];
+      if (unformatted_date === undefined || unformatted_date === null  || unformatted_date === '') {
         has_warning = true;
-        d['freezing_date'] = null;
+        d[df.date_attr_name] = null;
         output = 1;
         // emit warning
         const message = 'invalid date or date not recognizable for row ' + (i + 1 ) +
-                        ', this sample will be saved with an date of today!';
+                        ', this sample will be saved with the date of today!';
         this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
       } else {
         // test date
-        const parsedDate = this.parseDate(freezing_date);
+        const parsedDate = this.parseDate(unformatted_date, df);
         if (parsedDate === '') {
           has_warning = true;
           output = 1;
-          d['freezing_date'] = this.utilityService.getTodayFormat;
+          d[df.date_attr_name] = this.utilityService.getTodayFormat;
           // emit warning
           const message = 'invalid date or date not recognizable  for row ' + (i + 1 ) +
-                          ', this sample will be saved with an date of today!';
+                          ', this sample will be saved with the date of today!';
           this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
         } else {
-          d['freezing_date'] = parsedDate;
+          d[df.date_attr_name] = parsedDate;
         }
       }
     });
     return output;
   }
-  parseDate (freezing_date: string): string {
-    const join_symbol = this.freezingDateFormat.join_symbol;
+  parseDate (unformatted_date: string, df: SampleUploadDateFormat): string {
+    const join_symbol = df.format.join_symbol;
     let year_final: string;
     let month_final: string;
     let day_final: string;
     if (join_symbol !== '') {
-      if (freezing_date.indexOf(join_symbol) !== -1 &&  freezing_date.split(join_symbol).length === 3) {
+      if (unformatted_date.indexOf(join_symbol) !== -1 &&  unformatted_date.split(join_symbol).length === 3) {
         // splite
-        const dArray = freezing_date.split(join_symbol);
+        const dArray = unformatted_date.split(join_symbol);
         let year_valid = false;
         let month_valid = false;
         let day_valid = false;
         // get the year
-        const year = dArray[this.freezingDateFormat.year_position - 1];
-        if (this.freezingDateFormat.year_format === 0) {
+        const year = dArray[df.format.year_position - 1];
+        if (df.format.year_format === 0) {
           // yyyy
           year_valid = (/^([0-9]+){4}$/.test(year));
           if (year_valid) {
@@ -394,8 +395,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           }
         }
         // get the month
-        const month = dArray[this.freezingDateFormat.month_position - 1];
-        if (this.freezingDateFormat.month_format === 0) {
+        const month = dArray[df.format.month_position - 1];
+        if (df.format.month_format === 0) {
           // number
           month_valid = (/^([0-9]+){1,2}$/.test(month)) && +month > 0 && + month < 13;
           if (month_valid) {
@@ -415,7 +416,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
           }
         }
         // get the day
-        const day = dArray[this.freezingDateFormat.day_position - 1];
+        const day = dArray[df.format.day_position - 1];
         day_valid = (/^([0-9]+){1,2}$/.test(day)) && +day > 0 && +day < 32;
         if (day_valid) {
           day_final = day.length === 2 ? day : '0' + day;
@@ -430,26 +431,26 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         let year = '';
         let month = '';
         let day = '';
-        if ((freezing_date.length < 6 && this.freezingDateFormat.year_format === 0)
-        ||  (freezing_date.length < 4 && this.freezingDateFormat.year_format === 1)) {
+        if ((unformatted_date.length < 6 && df.format.year_format === 0)
+        ||  (unformatted_date.length < 4 && df.format.year_format === 1)) {
           return '';
         }
         // join_symbol === ''
         let left = '';
         // year in the beginning
-        if (this.freezingDateFormat.year_position === 1) {
-          if (this.freezingDateFormat.year_format === 0) {
+        if (df.format.year_position === 1) {
+          if (df.format.year_format === 0) {
             // yyyy
-            year = freezing_date.substring(0, 4);
-            left = freezing_date.substring(4);
+            year = unformatted_date.substring(0, 4);
+            left = unformatted_date.substring(4);
           } else {
             // 2
-            year = 20 + freezing_date.substring(0, 2);
-            left = freezing_date.substring(2);
+            year = 20 + unformatted_date.substring(0, 2);
+            left = unformatted_date.substring(2);
           }
           // month and day
-          if (this.freezingDateFormat.month_position === 2) {
-            if (this.freezingDateFormat.month_format === 0) {
+          if (df.format.month_position === 2) {
+            if (df.format.month_format === 0) {
               // number
               if (left.length === 2) {
                 // 11
@@ -477,8 +478,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               day = left_copy.replace(/\D/g, '');
             }
           }
-          if (this.freezingDateFormat.month_position === 3) {
-            if (this.freezingDateFormat.month_format === 0) {
+          if (df.format.month_position === 3) {
+            if (df.format.month_format === 0) {
               // number
               if (left.startsWith('0')) {
                 day = left.substring(0, 2);
@@ -496,19 +497,19 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               day = left_copy.replace(/\D/g, '');
             }
           }
-        } else if (this.freezingDateFormat.year_position === 3) {
-          if (this.freezingDateFormat.year_format === 0) {
+        } else if (df.format.year_position === 3) {
+          if (df.format.year_format === 0) {
             // yyyy
-            year = freezing_date.substring(freezing_date.length - 4, freezing_date.length);
-            left = freezing_date.substring(0, freezing_date.length - 4);
+            year = unformatted_date.substring(unformatted_date.length - 4, unformatted_date.length);
+            left = unformatted_date.substring(0, unformatted_date.length - 4);
           } else {
             // 2
-            year = 20 + freezing_date.substring(freezing_date.length - 2, freezing_date.length);
-            left = freezing_date.substring(0, freezing_date.length - 2);
+            year = 20 + unformatted_date.substring(unformatted_date.length - 2, unformatted_date.length);
+            left = unformatted_date.substring(0, unformatted_date.length - 2);
           }
           // month and day
-          if (this.freezingDateFormat.month_position === 1) {
-            if (this.freezingDateFormat.month_format === 0) {
+          if (df.format.month_position === 1) {
+            if (df.format.month_format === 0) {
               // number
               if (left.length === 2) {
                 // 11
@@ -536,8 +537,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               day = left_copy.replace(/\D/g, '');
             }
           }
-          if (this.freezingDateFormat.month_position === 2) {
-            if (this.freezingDateFormat.month_format === 0) {
+          if (df.format.month_position === 2) {
+            if (df.format.month_format === 0) {
               // number
               if (left.startsWith('0')) {
                 day = left.substring(0, 2);
@@ -569,6 +570,209 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     return '';
   }
+  // parseDate (freezing_date: string): string {
+  //   const join_symbol = this.freezingDateFormat.join_symbol;
+  //   let year_final: string;
+  //   let month_final: string;
+  //   let day_final: string;
+  //   if (join_symbol !== '') {
+  //     if (freezing_date.indexOf(join_symbol) !== -1 &&  freezing_date.split(join_symbol).length === 3) {
+  //       // splite
+  //       const dArray = freezing_date.split(join_symbol);
+  //       let year_valid = false;
+  //       let month_valid = false;
+  //       let day_valid = false;
+  //       // get the year
+  //       const year = dArray[this.freezingDateFormat.year_position - 1];
+  //       if (this.freezingDateFormat.year_format === 0) {
+  //         // yyyy
+  //         year_valid = (/^([0-9]+){4}$/.test(year));
+  //         if (year_valid) {
+  //           year_final = year;
+  //         }
+  //       } else {
+  //         // yy
+  //         year_valid = (/^([0-9]+){2}$/.test(year));
+  //         if (year_valid) {
+  //           year_final = 20 + year;
+  //         }
+  //       }
+  //       // get the month
+  //       const month = dArray[this.freezingDateFormat.month_position - 1];
+  //       if (this.freezingDateFormat.month_format === 0) {
+  //         // number
+  //         month_valid = (/^([0-9]+){1,2}$/.test(month)) && +month > 0 && + month < 13;
+  //         if (month_valid) {
+  //           month_final = month.length === 2 ? month : '0' + month;
+  //         }
+  //       } else {
+  //         // 3 or 5 letters
+  //         month_valid = (/^([a-zA-Z]+){3,9}$/.test(month)) && +month > 0 && + month < 13;
+  //         if (month_valid) {
+  //           const month_number = this.utilityService.getMonthNumber(month);
+  //           if (month_number !== -1) {
+  //             const monthStrng = month_number + '';
+  //             month_final = monthStrng.length === 2 ? monthStrng : '0' + monthStrng;
+  //           } else {
+  //             month_valid = false;
+  //           }
+  //         }
+  //       }
+  //       // get the day
+  //       const day = dArray[this.freezingDateFormat.day_position - 1];
+  //       day_valid = (/^([0-9]+){1,2}$/.test(day)) && +day > 0 && +day < 32;
+  //       if (day_valid) {
+  //         day_final = day.length === 2 ? day : '0' + day;
+  //       }
+  //       if (year_valid && month_valid && day_valid) {
+  //         return year_final + '-' + month_final + '-' + day_final;
+  //       }
+  //     }
+  //   } else {
+  //     // join === ''
+  //       // check the year since it number
+  //       let year = '';
+  //       let month = '';
+  //       let day = '';
+  //       if ((freezing_date.length < 6 && this.freezingDateFormat.year_format === 0)
+  //       ||  (freezing_date.length < 4 && this.freezingDateFormat.year_format === 1)) {
+  //         return '';
+  //       }
+  //       // join_symbol === ''
+  //       let left = '';
+  //       // year in the beginning
+  //       if (this.freezingDateFormat.year_position === 1) {
+  //         if (this.freezingDateFormat.year_format === 0) {
+  //           // yyyy
+  //           year = freezing_date.substring(0, 4);
+  //           left = freezing_date.substring(4);
+  //         } else {
+  //           // 2
+  //           year = 20 + freezing_date.substring(0, 2);
+  //           left = freezing_date.substring(2);
+  //         }
+  //         // month and day
+  //         if (this.freezingDateFormat.month_position === 2) {
+  //           if (this.freezingDateFormat.month_format === 0) {
+  //             // number
+  //             if (left.length === 2) {
+  //               // 11
+  //               month = left.substring(0, 1);
+  //               day = left.substring(1);
+  //             } else if (left.length === 3) {
+  //                 if (left.startsWith('0')) {
+  //                   month = left.substring(0, 2);
+  //                   day = left.substring(2);
+  //                 }
+  //                 if (left.endsWith('0')) {
+  //                   month = left.substring(0, 1);
+  //                   day = left.substring(1);
+  //                 }
+  //             } else {
+  //               // 4
+  //               month = left.substring(0, 2);
+  //               day = left.substring(2);
+  //             }
+  //           } else {
+  //             // letter
+  //             const left_copy = left;
+  //             month = left.replace(/[0-9]/g, '');
+  //             month = this.utilityService.getMonthNumber(month) + '';
+  //             day = left_copy.replace(/\D/g, '');
+  //           }
+  //         }
+  //         if (this.freezingDateFormat.month_position === 3) {
+  //           if (this.freezingDateFormat.month_format === 0) {
+  //             // number
+  //             if (left.startsWith('0')) {
+  //               day = left.substring(0, 2);
+  //               month = left.substring(2);
+  //             }
+  //             if (left.endsWith('0')) {
+  //               day = left.substring(0, 1);
+  //               month = left.substring(1);
+  //             }
+  //           } else {
+  //             // letter
+  //             const left_copy = left;
+  //             month = left.replace(/[0-9]/g, '');
+  //             month = this.utilityService.getMonthNumber(month) + '';
+  //             day = left_copy.replace(/\D/g, '');
+  //           }
+  //         }
+  //       } else if (this.freezingDateFormat.year_position === 3) {
+  //         if (this.freezingDateFormat.year_format === 0) {
+  //           // yyyy
+  //           year = freezing_date.substring(freezing_date.length - 4, freezing_date.length);
+  //           left = freezing_date.substring(0, freezing_date.length - 4);
+  //         } else {
+  //           // 2
+  //           year = 20 + freezing_date.substring(freezing_date.length - 2, freezing_date.length);
+  //           left = freezing_date.substring(0, freezing_date.length - 2);
+  //         }
+  //         // month and day
+  //         if (this.freezingDateFormat.month_position === 1) {
+  //           if (this.freezingDateFormat.month_format === 0) {
+  //             // number
+  //             if (left.length === 2) {
+  //               // 11
+  //               month = left.substring(0, 1);
+  //               day = left.substring(1);
+  //             } else if (left.length === 3) {
+  //                 if (left.startsWith('0')) {
+  //                   month = left.substring(0, 2);
+  //                   day = left.substring(2);
+  //                 }
+  //                 if (left.endsWith('0')) {
+  //                   month = left.substring(0, 1);
+  //                   day = left.substring(1);
+  //                 }
+  //             } else {
+  //               // 4
+  //               month = left.substring(0, 2);
+  //               day = left.substring(2);
+  //             }
+  //           } else {
+  //             // letter
+  //             const left_copy = left;
+  //             month = left.replace(/[0-9]/g, '');
+  //             month = this.utilityService.getMonthNumber(month) + '';
+  //             day = left_copy.replace(/\D/g, '');
+  //           }
+  //         }
+  //         if (this.freezingDateFormat.month_position === 2) {
+  //           if (this.freezingDateFormat.month_format === 0) {
+  //             // number
+  //             if (left.startsWith('0')) {
+  //               day = left.substring(0, 2);
+  //               month = left.substring(2);
+  //             }
+  //             if (left.endsWith('0')) {
+  //               day = left.substring(0, 1);
+  //               month = left.substring(1);
+  //             }
+  //           } else {
+  //             // letter
+  //             const left_copy = left;
+  //             month = left.replace(/[0-9]/g, '');
+  //             month = this.utilityService.getMonthNumber(month) + '';
+  //             day = left_copy.replace(/\D/g, '');
+  //           }
+  //         }
+  //       } else {
+  //         // year in the middle
+  //         // donot support this
+  //       }
+  //       if (year !== '' && month !== '' && day !== '' ) {
+  //         if (  (/^([0-9]+){2,4}$/.test(year))
+  //             && ((/^([0-9]+){1,2}$/.test(month)) && +month > 0 && + month < 13)
+  //             && ((/^([0-9]+){1,2}$/.test(day)) && +day > 0 && +day < 32) ) {
+  //           return year_final + '-' + month_final + '-' + day_final;
+  //         }
+  //       }
+  //   }
+  //   return '';
+  // }
   // general clean the data after all validation
   // format all other columns
   formatData() {
@@ -1276,8 +1480,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   validSampleLabel2Col(): boolean {
     let has_warning = false;
     // SamplePosition_Row and SamplePosition_Column
-    const sample_label_row = this.getColumnByHeader(this.SAMPLEPOSITION + '_Row');
-    const sample_label_col = this.getColumnByHeader(this.SAMPLEPOSITION + '_Column');
+    const sample_label_row = this.USE_CSAMPLE
+    ? this.getColumnByHeader(this.SAMPLEPOSITION + 'ROW')
+    : this.getColumnByHeader(this.SAMPLEPOSITION + '_Row');
+    const sample_label_col = this.USE_CSAMPLE 
+    ? this.getColumnByHeader(this.SAMPLEPOSITION + '_COLUMN') 
+    : this.getColumnByHeader(this.SAMPLEPOSITION + '_Column');
     // get the max sample in a box
     const max_sample_count = this.getMaxSamplePerBox();
     this.data.forEach((d , i) => {

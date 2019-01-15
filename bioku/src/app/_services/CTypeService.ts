@@ -374,6 +374,22 @@ export class CTypeService {
         }
         return pdateattrs;
     }
+    // get attr label from attr name
+    getCTypesAttrLabelFromName(type: string, ctypes: Array<CType>, attr_name: string): string {;
+        const ctype = ctypes.find((t: CType)=> {
+            return t.type.toUpperCase() === type.toUpperCase();
+        });
+        if (ctype !== undefined) {
+            const attrs: Array<CTypeAttr> = ctype.attrs;
+            const attr = attrs.find((a:CTypeAttr) => {
+                return a.attr_name === attr_name;
+            });
+            if (attr !== undefined) {
+                return attr.attr_label;
+            }
+        } 
+        return '';
+    }
     // get common full sample attrs
     getCTypesByNames(ctype_names: Array<string>, all_ctypes: Array<CType>): Array<CType> {
         const ctypes: Array<CType> = new Array<CType>();

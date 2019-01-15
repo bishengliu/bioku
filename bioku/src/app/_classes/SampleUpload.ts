@@ -42,6 +42,7 @@ export class SampleExcelHeaders {
 
 export class SampleUploadDateFormat {
     date_attr_label: string;
+    date_attr_name: string;
     date_attr_index: number;
     date_date_included: boolean;
     date_format_is_set: boolean;

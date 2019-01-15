@@ -471,6 +471,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       // storage date
       const sotrage_date_format = new SampleUploadDateFormat();
       sotrage_date_format.date_attr_label = this.utilityService.getCustomizedSampleAttrLabel('storage_date');
+      sotrage_date_format.date_attr_name = 'storage_date';
       sotrage_date_format.date_date_included = false;
       sotrage_date_format.date_format_is_set = false;
       sotrage_date_format.date_attr_index = this.getCSampleLabelIndex(this.utilityService.getCustomizedSampleAttrLabel('storage_date'));
@@ -478,19 +479,24 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
       date_formats.push(sotrage_date_format);
       // extra date fields
       // get ctype parental data attr labels
-      const ctype_pattrs: Array<string> = this.ctypeService.getCTypsPDateAttrs(this.sample_type, this.ctypes, false); // false is to load labels
+      const ctype_pattrs: Array<string> = this.ctypeService.getCTypsPDateAttrs(this.sample_type, this.ctypes, true); // true is to load name
       ctype_pattrs.forEach((a: string) => {
+        // a is the attr name
+        // get the label 
+        const date_attr_label = this.ctypeService.getCTypesAttrLabelFromName(this.sample_type, this.ctypes, a);
         const date_format = new SampleUploadDateFormat();
-        date_format.date_attr_label = a;
+        date_format.date_attr_label = date_attr_label;
+        date_format.date_attr_name = a;
         date_format.date_date_included = false;
         date_format.date_format_is_set = false;
-        date_format.date_attr_index = this.getCSampleLabelIndex(a);
+        date_format.date_attr_index = this.getCSampleLabelIndex(date_attr_label);
         date_format.format = this.setDefaultDateFormat();
         date_formats.push(date_format);
       })
     } else {
       const freezing_date_format = new SampleUploadDateFormat();
       freezing_date_format.date_attr_label = this.FREEZING_DATE;
+      freezing_date_format.date_attr_name = 'freezing_date';
       freezing_date_format.date_date_included = false;
       freezing_date_format.date_format_is_set = false;
       freezing_date_format.date_attr_index = this.getFreezingDateSampleModelIndex();
