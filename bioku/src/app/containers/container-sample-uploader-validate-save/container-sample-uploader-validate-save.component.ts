@@ -17,6 +17,9 @@ import { XlsxHelperService } from '../../_services/XlsxHelperService';
 import { ContainerService } from '../../_services/ContainerService';
 import { AlertService } from '../../_services/AlertService';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
+// ctype
+import { CType, CTypeAttr, CTypeSubAttr } from '../../_classes/CType';
+import { CTypeService } from '../../_services/CTypeService';
 @Component({
   selector: 'app-container-sample-uploader-validate-save',
   templateUrl: './container-sample-uploader-validate-save.component.html',
@@ -27,7 +30,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   @Input() bLabel: BoxLabel;
   @Input() excelData: Array<Array<any>>;
   @Input() excelColAttrs: Array<ColumnAttr>;
-  @Input() freezingDateFormat: SampleDateFormat;
+  // @Input() freezingDateFormat: SampleDateFormat;
   @Input() dateFormats: Array<SampleUploadDateFormat>;
   @Input() startValidation: Boolean;
   @Input() excelFileHeader: Boolean;
@@ -76,9 +79,19 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
   col_offset = 0; // for get the correct col number
   allow_save_2_json = false;
-  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService, private alertService: AlertService,
-              private excelUploadLoadService: ExcelUploadLoadService, private containerService: ContainerService,
-              private router: Router, private xlsxHelperService: XlsxHelperService, @Inject(APP_CONFIG) private appSetting: any) {
+  // ctype
+  ctypes: Array<CType> = new Array<CType>();
+  USE_CSAMPLE = true;
+  constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService,
+    private alertService: AlertService, private excelUploadLoadService: ExcelUploadLoadService,
+    private containerService: ContainerService,private ctypeService: CTypeService, private router: Router,
+    private xlsxHelperService: XlsxHelperService, @Inject(APP_CONFIG) private appSetting: any) {
+    // use csample
+    this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    if (this.USE_CSAMPLE) {
+      this.SAMPLEPOSITION = 'SAMPLE_POSITION';
+      this.BOXPOSITION = 'BOX_POSITION';
+    }
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -109,101 +122,101 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }, () => {});
    }
 
-  ngOnInit() {}
-  updateState() {
-    const state = this.appStore.getState();
-    if (state.containerInfo && state.containerInfo.currentContainer) {
-      this.container = state.containerInfo.currentContainer;
-    }
-  }
-  ngOnChanges() {
-    if (this.startValidation) {
-      // console.log(this.freezingDateFormat);
-      // console.log(this.excelColAttrs);
-      // console.log(this.excelData);
-      this.data = this.excelData;
-      this.sampleValidation();
-    }
-  }
-  // box label validation
-  // aim is to check box labels and return the valid boxes, boxes to create, row_index_to_remove
-  sampleValidation () {
-    // trim the top empty rows data and get row_offset
-    this.trimDataCalOffset();
-    // excel file header
-    if (this.excelFileHeader) {
-      this.data[0]['invalid'] = true;
-      this.col_offset += 1;
-    };
-    ///////////////////////////////// validate initial data set ///////////////////////////////
-    // if this.data.length === 0
-    this.validateDataLength(true); // inital data set validation
-    ///////////////////////////////// validate sample name ////////////////////////////////////
-    // validate name col
-    if (!this.validator_failed && this.data.length > 0) {
-      this.validateSampleName();
-    }
-    ///////////////////////////////// validate box label ////////////////////////////////////////
-    // only when the file has box label
-    if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
-      // step one check box label
-      this.validateBoxLabel();
-    }
-    if (!this.validator_failed && !this.bLabel.box_has_label) {
-      // no box validation is required
-      // sample label is labeled with the increaing number
-      const message = 'your samples have no box labels, box label validation is skipped.';
-      this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 3, message);
-    }
-    ///////////////////////////////// validate sample label ////////////////////////////////////////
-    if (!this.validator_failed && this.data.length > 0) {
-      // valid sample labels after box label
-      this.validateSampleLabel();
-    }
-    // valiate date format /////////////
-    // check whether there is freezing_date has been included
-    if (!this.validator_failed && this.data.length > 0) {
-      this.formatFreezingDate();
-      // format all other columns to upload
-      this.formatData(); // format and clean data
-    }
-    // filter the data
-    this.data = this.filterValidSamples(this.data);
-    this.validateDataLength(false);
-    // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
-    if (!this.validator_failed && this.data.length > 0) {
-      this.final_boxes_to_create = this.collectBoxes2Create();
-      this.validateFinalBoxes2Create();
-      // format for saving
-      this.format4Saving();
-    }
-    this.passAllValidation();
-  }
-  trimDataCalOffset() {
-    const ori_len = this.data.length;
-    // get beginning empty rows
-    const beginning_empty_rows = this.getBeginningEmptyRows();
-    this.col_offset +=  beginning_empty_rows;
-    // trim data
-    this.data = this.trimData(this.data);
-  }
-  getBeginningEmptyRows(): number {
-    const ori_len = this.data.length;
-    let count = 0;
-    for (let i = 0; i < ori_len; i++) {
-      if (this.data[i].length === 0) {
-        count++;
-      } else {
-        break;
+    ngOnInit() {}
+    updateState() {
+      const state = this.appStore.getState();
+      if (state.containerInfo && state.containerInfo.currentContainer) {
+        this.container = state.containerInfo.currentContainer;
       }
     }
-    return count;
-  }
-  trimData (data: Array<Array<any>>): Array<Array<any>> {
-    return data.filter((d: Array<any>) => {
-      return d.length > 0;
-    })
-  }
+    ngOnChanges() {
+      if (this.startValidation) {
+        console.log(this.dateFormats);
+        console.log(this.excelColAttrs);
+        console.log(this.excelData);
+        this.data = this.excelData;
+        this.sampleValidation();
+      }
+    }
+    // box label validation
+    // aim is to check box labels and return the valid boxes, boxes to create, row_index_to_remove
+    sampleValidation () {
+      // trim the top empty rows data and get row_offset
+      this.trimDataCalOffset();
+      // excel file header
+      if (this.excelFileHeader) {
+        this.data[0]['invalid'] = true;
+        this.col_offset += 1;
+      };
+      ///////////////////////////////// validate initial data set ///////////////////////////////
+      // if this.data.length === 0
+      this.validateDataLength(true); // inital data set validation
+      ///////////////////////////////// validate sample name ////////////////////////////////////
+      // validate name col
+      if (!this.validator_failed && this.data.length > 0) {
+        this.validateSampleName();
+      }
+      ///////////////////////////////// validate box label ////////////////////////////////////////
+      // only when the file has box label
+      if (!this.validator_failed && this.bLabel.box_has_label && this.data.length > 0) {
+        // step one check box label
+        this.validateBoxLabel();
+      }
+      if (!this.validator_failed && !this.bLabel.box_has_label) {
+        // no box validation is required
+        // sample label is labeled with the increaing number
+        const message = 'your samples have no box labels, box label validation is skipped.';
+        this.emitValidationOutput(this.VALIDATION_BOX_LABEL, 3, message);
+      }
+      ///////////////////////////////// validate sample label ////////////////////////////////////////
+      if (!this.validator_failed && this.data.length > 0) {
+        // valid sample labels after box label
+        this.validateSampleLabel();
+      }
+      // valiate date format /////////////
+      // check whether there is freezing_date has been included
+      if (!this.validator_failed && this.data.length > 0) {
+        this.formatFreezingDate();
+        // format all other columns to upload
+        this.formatData(); // format and clean data
+      }
+      // filter the data
+      this.data = this.filterValidSamples(this.data);
+      this.validateDataLength(false);
+      // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
+      if (!this.validator_failed && this.data.length > 0) {
+        this.final_boxes_to_create = this.collectBoxes2Create();
+        this.validateFinalBoxes2Create();
+        // format for saving
+        this.format4Saving();
+      }
+      this.passAllValidation();
+    }
+    trimDataCalOffset() {
+      const ori_len = this.data.length;
+      // get beginning empty rows
+      const beginning_empty_rows = this.getBeginningEmptyRows();
+      this.col_offset +=  beginning_empty_rows;
+      // trim data
+      this.data = this.trimData(this.data);
+    }
+    getBeginningEmptyRows(): number {
+      const ori_len = this.data.length;
+      let count = 0;
+      for (let i = 0; i < ori_len; i++) {
+        if (this.data[i].length === 0) {
+          count++;
+        } else {
+          break;
+        }
+      }
+      return count;
+    }
+    trimData (data: Array<Array<any>>): Array<Array<any>> {
+      return data.filter((d: Array<any>) => {
+        return d.length > 0;
+      })
+    }
   // validate samle names
   validateSampleName () {
     // set pointer
@@ -244,10 +257,17 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.emitValidationOutput(message_step, 3, message);
       } else {
         // 3 columns
-        message = 'your box labels are stored in three columns (tower in column '
-        + this.getColumnByHeader(this.BOXPOSITION + '_Tower') + ', '
-        + 'shelf in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Shelf') + ', '
-        + 'box in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Box') + ')';
+        if(this.USE_CSAMPLE) {
+          message = 'your box labels are stored in three columns (tower in column '
+          + this.getColumnByHeader(this.BOXPOSITION + '_TOWER') + ', '
+          + 'shelf in column ' + this.getColumnByHeader(this.BOXPOSITION + '_SHELF') + ', '
+          + 'box in column ' + this.getColumnByHeader(this.BOXPOSITION + '_BOX') + ')';
+        } else {
+          message = 'your box labels are stored in three columns (tower in column '
+          + this.getColumnByHeader(this.BOXPOSITION + '_Tower') + ', '
+          + 'shelf in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Shelf') + ', '
+          + 'box in column ' + this.getColumnByHeader(this.BOXPOSITION + '_Box') + ')';
+        }
         this.emitValidationOutput(message_step, 3, message);
       }
     } else {
@@ -642,7 +662,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   parseSampleName(): number {
     let output = 0; // default passed
-    const sample_name_col = this.getColumnByHeader('Name'); // sample name is required
+    // get name label
+    const sample_name_col = this.USE_CSAMPLE
+    ? this.getColumnByHeader(this.utilityService.getCustomizedSampleAttrLabel('name'))
+    : this.getColumnByHeader('Name');     
     // emit message
     // one cloumn
     const message = 'the sample names are stored in column ' + sample_name_col + '.';
