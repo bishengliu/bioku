@@ -349,10 +349,23 @@ export class CTypeService {
                         pattrs.push(a.attr_name);
                     } else {
                         pattrs.push(a.attr_label);
-                    }                
+                    }                                    
                 }                
             })
         }
+        return pattrs;
+    }
+    getCTypeNonDatePAttrs(ctype: CType, attr_name: boolean): Array<string>  {
+        const pattrs: Array<string> = new Array<string>();
+        ctype.attrs.forEach((a:CTypeAttr)=> {
+            if(+a.attr_value_type !== 3 && !a.has_sub_attr && +a.attr_value_type !== 4) {
+                if(attr_name) {
+                    pattrs.push(a.attr_name);
+                } else {
+                    pattrs.push(a.attr_label);
+                }                                   
+            }                
+        })
         return pattrs;
     }
     getCTypsPDateAttrs(type: string, ctypes: Array<CType>, attr_name: boolean): Array<string> {

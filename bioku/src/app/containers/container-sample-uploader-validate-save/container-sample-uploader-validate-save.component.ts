@@ -782,10 +782,12 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     };
     // match data col to sample model attrs
     // the col attr to ignore for the final data format
-    // freezing date is always excluded
+    // dates is always excluded, even not selected
     this.excludedColumns4DataFormat = this.getExcludedColumns4DataFormat();
-    // get all the sample mode attrs
-    const sampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
+    // get all the sample mode attr names
+    const sampleModelAttrs: Array<string> = this.USE_CSAMPLE
+    ? this.excelUploadLoadService.getAllCTypeModelAttrNames(this.sampleType, this.ctypes)
+    : this.excelUploadLoadService.getAllSampleModelAttrs();
     // format data
     this.excelColAttrs.forEach((c: ColumnAttr, i: number) => {
       if (this.excludedColumns4DataFormat.indexOf(c.col_header) === -1) {
@@ -804,19 +806,31 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
             if ( this.utilityService.isSpaceCheck(ori_value) ) {
               d[sample_model_attr] = null;
             }
-            // deal with decimal
-            if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
-              d['quantity'] = this.utilityService.convert2Float(d['quantity'], 10, 3);
-            }
-            if (sample_model_attr.toLowerCase() === 'oligo_gc' && d['oligo_GC'] != null) {
-              d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'], 10, 2);
-            }
-            if (sample_model_attr.toLowerCase() === 'against_260_280' && d['against_260_280'] != null) {
-              d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'], 10, 2);
-            }
-            if (sample_model_attr.toLowerCase() === 'oligo_length' && d['oligo_length'] != null) {
-              d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length']);
-            }
+            if(!this.USE_CSAMPLE){
+              // deal with decimal
+              if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
+                d['quantity'] = this.utilityService.convert2Float(d['quantity'], 10, 3);
+              }
+              if (sample_model_attr.toLowerCase() === 'oligo_gc' && d['oligo_GC'] != null) {
+                d['oligo_GC'] = this.utilityService.convert2Float(d['oligo_GC'], 10, 2);
+              }
+              if (sample_model_attr.toLowerCase() === 'against_260_280' && d['against_260_280'] != null) {
+                d['against_260_280'] = this.utilityService.convert2Float(d['against_260_280'], 10, 2);
+              }
+              if (sample_model_attr.toLowerCase() === 'oligo_length' && d['oligo_length'] != null) {
+                d['oligo_length'] = this.utilityService.convert2Integer(d['oligo_length']);
+              }
+            } else {
+              // csample attr validation ////////////////////////
+              const ctype = this.ctypes.find((t: CType)=> {
+                return t.type.toUpperCase() === this.sampleType.toUpperCase();
+              });
+              if (ctype !== undefined) {
+                // get formats
+                // mainly format decimal
+                ////////////////////////////////////////////////here continue /////////////////////////////////////////
+              }
+            }          
           }
         })
       }
@@ -1814,14 +1828,31 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }
     })
   }
-  getExcludedColumns4DataFormat() {
-    const sampleExcelHeaders: Array<SampleExcelHeaders> = this.excelUploadLoadService.getAllExcelHeaders();
-    let box_label_headers = [];
+  // exclude the fields for final data validation
+  getExcludedColumns4DataFormat(): Array<string>{
+    let excluded_headers: Array<string> = new Array<string>();
+    let box_label_headers: Array<string> = new Array<string>();
+    let sample_label_headers: Array<string> = new Array<string>();
+    const shared_headers: Array<SampleExcelHeaders> = this.USE_CSAMPLE
+    ? this.excelUploadLoadService.getSharedExcelHeaders()
+    : this.excelUploadLoadService.getAllExcelHeaders();
     if (this.bLabel.box_has_label) {
-      box_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'box_position')[0].headers;
+      box_label_headers = shared_headers.find(h => h.header_type === 'box_position').headers;
     }
-    const sample_label_headers = sampleExcelHeaders.filter(h => h.header_type === 'sample_position')[0].headers;
-    return [...box_label_headers, ...sample_label_headers, 'Name', this.FREEZING_DATE];
+    sample_label_headers = shared_headers.find(h => h.header_type === 'sample_position').headers;
+    excluded_headers = this.USE_CSAMPLE
+    ? [ ...box_label_headers,
+        ...sample_label_headers, 
+        this.utilityService.getCustomizedSampleAttrLabel('name'), 
+        ...this.dateFormats.map((df: SampleUploadDateFormat) => {return df.date_attr_label;})
+      ]
+    : [ ...box_label_headers,
+        ...sample_label_headers,
+        'Name',
+        this.FREEZING_DATE
+      ];
+    
+    return excluded_headers;
   }
   saveSamples() {
     this.saving_samples = true;

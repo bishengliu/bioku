@@ -439,8 +439,9 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
 
   setDefaultColumnAttrs (): void {
     this.excelColAttrs = [];
+    // should be all the lables
     const defaultColumnHeaders = this.USE_CSAMPLE
-    ? this.updateCTypeColumnHeaders(this.sample_type, this.ctypes, this.bLabel, this.sLabel)
+    ? this.excelUploadLoadService.getAllCTypeExcelHeaderLabels(this.sample_type, this.ctypes)
     : this.excelUploadLoadService.getAllColumnHeaders();
     this.column_headers.forEach((h: string) => {
       // get the index of current header

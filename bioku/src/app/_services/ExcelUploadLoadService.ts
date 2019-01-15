@@ -136,6 +136,38 @@ export class ExcelUploadLoadService {
     shared_attrs = [...box_position_headers, ...sample_position_headers, ...minimal_attrs];
     return shared_attrs;
   }
+  // only parental attrs and exlcude all the date attr
+  // only for csample
+  getAllCTypeExcelHeaderLabels(type: string, ctypes: Array<CType>): Array<string> {
+    let all_header_labels: Array<string> = new Array<string>();
+    // shared
+    const shared_headers = this.getSharedExcelHeaders();
+    const box_label_headers: Array<string> = shared_headers.find(h => h.header_type === 'box_position').headers;
+    const sample_label_headers: Array<string> = shared_headers.find(h => h.header_type === 'sample_position').headers;
+    const minimal_headers: Array<string> = shared_headers.find(h => h.header_type === 'minimal_attrs').headers;
+    // ctype specific, parental attr only and non date attrs
+    const ctype = ctypes.find((t: CType)=> {
+      return t.type.toUpperCase() === type.toUpperCase();
+    });
+    const ctype_attr_labels: Array<string> = this.ctypeService.getCTypePAttrs(type, ctypes, false); // get the labels
+    all_header_labels = [...box_label_headers, ...sample_label_headers, ...minimal_headers, ...ctype_attr_labels];
+    return all_header_labels;
+  }
+  getAllCTypeModelAttrNames(type: string, ctypes: Array<CType>) {
+    let all_attr_names: Array<string> = new Array<string>();
+    // shared
+    const shared_attr_names = this.getSharedSampleModelAttrs();
+    // ctype specific, parental attr only and non date attrs
+    const ctype = ctypes.find((t: CType)=> {
+      return t.type.toUpperCase() === type.toUpperCase();
+    });
+    const ctype_attr_names: Array<string> = this.ctypeService.getCTypePAttrs(type, ctypes, true); // get the names;
+    if (ctype !== undefined) {
+      
+    }
+    all_attr_names = [...shared_attr_names, ...ctype_attr_names];
+    return all_attr_names;
+  }
   displayFreezingDate(freezing_date_format: SampleDateFormat) {
     if (freezing_date_format !== undefined) {
       const fArray: Array<string> = [];
