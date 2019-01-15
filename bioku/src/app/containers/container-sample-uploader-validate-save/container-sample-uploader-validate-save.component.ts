@@ -830,9 +830,15 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   validNormal3Col(): boolean {
     let has_warning = false;
-    const box_label_tower = this.getColumnByHeader(this.BOXPOSITION + '_Tower');
-    const box_label_shelf = this.getColumnByHeader(this.BOXPOSITION + '_Shelf');
-    const box_label_box = this.getColumnByHeader(this.BOXPOSITION + '_Box');
+    const box_label_tower = this.USE_CSAMPLE 
+    ? this.getColumnByHeader(this.BOXPOSITION + '_TOWER')
+    : this.getColumnByHeader(this.BOXPOSITION + '_Tower');
+    const box_label_shelf = this.USE_CSAMPLE 
+    ? this.getColumnByHeader(this.BOXPOSITION + '_SHELF')
+    : this.getColumnByHeader(this.BOXPOSITION + '_Shelf');
+    const box_label_box = this.USE_CSAMPLE
+    ? this.getColumnByHeader(this.BOXPOSITION + '_BOX')
+    : this.getColumnByHeader(this.BOXPOSITION + '_Box');
     this.data.forEach( (d: Array<any>, i) => {
       if ( d[( '' + (box_label_tower - 1) )] === null || d[( '' + (box_label_tower - 1) )] === undefined
         || d[( '' + (box_label_shelf - 1) )] === null || d[( '' + (box_label_shelf - 1) )] === undefined
