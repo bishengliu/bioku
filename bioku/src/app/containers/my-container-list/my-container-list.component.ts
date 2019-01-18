@@ -51,7 +51,7 @@ export class MyContainerListComponent implements OnInit {
       this.refreshService.dumpContainerState(this.appStore.getState().containerInfo);
       this.router.navigate(['/containers', container_pk]);
     }else {
-      this.alertService.error( 'Container not found!', true);
+      this.alertService.error('Container not found!', true);
     }
   }
 

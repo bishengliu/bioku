@@ -192,6 +192,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.format4Saving();
       }
       this.passAllValidation();
+      // 
+      console.log(this.data);
     }
     trimDataCalOffset() {
       const ori_len = this.data.length;
