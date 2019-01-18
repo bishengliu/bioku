@@ -180,7 +180,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         this.formatAllDates();
         // format all other columns to upload
         this.formatData(); // format and clean data
-        // apply for sample attr validations
       }
       // filter the data
       this.data = this.filterValidSamples(this.data);
@@ -826,8 +825,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
                 return t.type.toUpperCase() === this.sampleType.toUpperCase();
               });
               if (ctype !== undefined) {
-                // get formats
-                // mainly format decimal
+                // format data
+                d[sample_model_attr] = this.ctypeService.formatCtypePAttrValue(d[sample_model_attr], ctype, sample_model_attr);
                 ////////////////////////////////////////////////here continue /////////////////////////////////////////
               }
             }          

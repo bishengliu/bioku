@@ -315,7 +315,7 @@ export class UtilityService {
     // validation for edit sample attr or subattr
     preSaveSampleDataValidation(value: any, attr: MCTypeAttr | MCTypeSubAttr) {
         // if have sub attr, skip
-        if (attr.attr_value_type === 3) {
+        if (+attr.attr_value_type === 3) {
             return '';
         }
         let msg = '';
@@ -323,22 +323,22 @@ export class UtilityService {
             msg = attr.attr_label + ' is required!';
             return msg;
         }
-        if (attr.attr_value_type === 0 ) {
+        if (+attr.attr_value_type === 0 ) {
             // string
             if (attr.attr_value_text_max_length !== null && value.length > attr.attr_value_text_max_length) {
                 msg = attr.attr_label + ' is too long!';
                 return msg;
             }
-        } else if (attr.attr_value_type === 1) {
+        } else if (+attr.attr_value_type === 1) {
             // digit
-            if (isNaN(+value) || +value.toString().split('.') !== -1) {
+            if (isNaN(+value) || +value.toString().indexOf('.') !== -1) {
                 msg = attr.attr_label + ' is invalid!';
                 return msg;
             }
-        } else if (attr.attr_value_type === 2) {
+        } else if (+attr.attr_value_type === 2) {
             // float
-            const total_digit = attr.attr_value_decimal_total_digit;
-            const decimal_point = attr.attr_value_decimal_point;
+            const total_digit = +attr.attr_value_decimal_total_digit || 5;
+            const decimal_point = +attr.attr_value_decimal_point || 2;
             const is_postive = true;
             if (isNaN(+value)
             || (is_postive && +value < 0)

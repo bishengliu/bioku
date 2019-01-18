@@ -136,7 +136,7 @@ export class ExcelUploadLoadService {
     shared_attrs = [...box_position_headers, ...sample_position_headers, ...minimal_attrs];
     return shared_attrs;
   }
-  // only parental attrs and exlcude all the date attr
+  // only parental attrs
   // only for csample
   getAllCTypeExcelHeaderLabels(type: string, ctypes: Array<CType>): Array<string> {
     let all_header_labels: Array<string> = new Array<string>();
@@ -153,6 +153,8 @@ export class ExcelUploadLoadService {
     all_header_labels = [...box_label_headers, ...sample_label_headers, ...minimal_headers, ...ctype_attr_labels];
     return all_header_labels;
   }
+  // only parental attrs
+  // only for csample
   getAllCTypeModelAttrNames(type: string, ctypes: Array<CType>) {
     let all_attr_names: Array<string> = new Array<string>();
     // shared

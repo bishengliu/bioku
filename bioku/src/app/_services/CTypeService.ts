@@ -555,6 +555,60 @@ export class CTypeService {
             return a.attr_value_type === 3 && a.has_sub_attr && a.subattrs.length > 0;
         })
     }
+    //format pattr by attr name
+    formatCtypePAttrValue(value: any, ctype:CType, pattr_name: string) {
+        if (value === undefined || null) {
+            return null;
+        }
+        // get attr
+        const attr: CTypeAttr = ctype.attrs.find( (a:CTypeAttr) => {
+            return a.attr_name === pattr_name && (a.attr_value_type !== 3 && !a.has_sub_attr);
+        } )
+        if (attr !== undefined) {
+            if (+attr.attr_value_type === 0 ) {
+                // string
+                if (+attr.attr_value_text_max_length !== null && value.length > +attr.attr_value_text_max_length) {
+                    return value.substr(0 +attr.attr_value_text_max_length);
+                } 
+                return value;
+            } else if(+attr.attr_value_type === 1) {
+                // digit
+                if (isNaN(+value)) {
+                    return null;
+                } else {
+                    value = Math.abs(+value);
+                    if(+value.toString().indexOf('.') !== -1) {
+                        // float, get the
+                        const array = value.toString().split('.');
+                        return array[0];
+                    }
+                    return value;
+                }
+            }
+            else if (+attr.attr_value_type === 2) {
+                // float
+                if (isNaN(+value)) {
+                    return null;
+                } else {
+                    value = Math.abs(+value);
+                    if(+value.toString().indexOf('.') !== -1) {
+                        const decimal_point = Math.abs(+attr.attr_value_decimal_point || 2);
+                        const array = value.toString().split('.');
+                        if(array.length === 2){
+                            if(array[1].length > decimal_point) {
+                                return +(array[0] + '.' + array[1].substr(0, decimal_point));
+                            }
+                        }
+                    }
+                    return value;
+                }
+            } else {
+                // date
+                return '';
+            }            
+        } 
+        return null;
+    } 
     // apply change tag
     // apply only to the parent attr
     genMCTypeAttr(ctype_attrs: Array<CTypeAttr>):  Array<MCTypeAttr> {
