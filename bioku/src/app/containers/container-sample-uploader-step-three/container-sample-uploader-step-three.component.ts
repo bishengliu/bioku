@@ -255,6 +255,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
         this.parsing_file = false;
         // console.log(this.data);
+        // console.log(this.excelRawData);
       },
       (err: string) => {
         // console.log(err);

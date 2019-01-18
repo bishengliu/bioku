@@ -342,9 +342,11 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     const date_col = this.getColumnByHeader(df.date_attr_label);
     this.data.forEach((d: Array<any>, i) => {
       const unformatted_date = d[( '' + (date_col - 1) )];
+      // console.log(d);
+      // console.log(unformatted_date)
       if (unformatted_date === undefined || unformatted_date === null  || unformatted_date === '') {
         has_warning = true;
-        d[df.date_attr_name] = null;
+        d[df.date_attr_name] = this.utilityService.getTodayFormat();
         output = 1;
         // emit warning
         const message = 'invalid date or date not recognizable for row ' + (i + 1 ) +
@@ -356,9 +358,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         if (parsedDate === '') {
           has_warning = true;
           output = 1;
-          d[df.date_attr_name] = this.utilityService.getTodayFormat;
+          d[df.date_attr_name] = this.utilityService.getTodayFormat();
           // emit warning
-          const message = 'invalid date or date not recognizable  for row ' + (i + 1 ) +
+          const message = 'invalid date or date not recognizable for row ' + (i + 1 ) +
                           ', this sample will be saved with the date of today!';
           this.emitValidationOutput(this.VALIDAITON_DATEFORMAT, 1, message);
         } else {

@@ -47,6 +47,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
 
   captureExcelData(data: Array<Array<any>>) {
     this.excelData = data;
+    // console.log(this.excelData);
     this.start_validation_save = true;
   }
   captureExcelCOlAttrs(excelColAttrs: Array<ColumnAttr>) {
