@@ -148,6 +148,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // excel file header
       if (this.excelFileHeader) {
         this.data[0]['invalid'] = true;
+        this.data = this.filterValidSamples(this.data);
         this.col_offset += 1;
       };
       ///////////////////////////////// validate initial data set ///////////////////////////////
@@ -187,13 +188,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       // filter the data
       this.data = this.filterValidSamples(this.data);
       this.validateDataLength(false);
-      // // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
-      // if (!this.validator_failed && this.data.length > 0) {
-      //   this.final_boxes_to_create = this.collectBoxes2Create();
-      //   this.validateFinalBoxes2Create();
-      //   // format for saving
-      //   this.format4Saving();
-      // }
+      // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
+      if (!this.validator_failed && this.data.length > 0) {
+        this.final_boxes_to_create = this.collectBoxes2Create();
+        this.validateFinalBoxes2Create();
+        // format for saving
+        this.format4Saving();
+      }
       this.passAllValidation();
       // 
       console.log(this.data);
@@ -783,10 +784,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   // general clean the data after all validation
   // format all other columns
   formatData() {
-    // remove header
-    if (this.excelFileHeader) {
-      this.data[0]['invalid'] = true;
-    };
     // match data col to sample model attrs
     // the col attr to ignore for the final data format
     // dates is always excluded, even not selected
@@ -801,21 +798,19 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const data_excel_col = c.col_number;
         // sample model attr
         const sample_model_attr = sampleModelAttrs[c.sample_attr_index];
-        console.log(sample_model_attr);
         this.data.forEach(d => {
           const data_col = d[('' + (data_excel_col - 1))];
-          console.log(data_col);
           if (data_col === '' || data_col === null || data_col === undefined) {
             // add attr
             d[sample_model_attr] = null;
-          } else {
+          } else {            
             d[sample_model_attr] = this.utilityService.removeSpecialCharacters(data_col);
             // deal with space
-            const ori_value = d[sample_model_attr] + '';
-            if ( this.utilityService.isSpaceCheck(ori_value) ) {
+            const ori_value = (d[sample_model_attr] || '') + '';
+            if (this.utilityService.isSpaceCheck(ori_value)) {
               d[sample_model_attr] = null;
             }
-            if(!this.USE_CSAMPLE){
+            if(!this.USE_CSAMPLE) {
               // deal with decimal
               if (sample_model_attr.toLowerCase() === 'quantity' && d['quantity'] != null) {
                 d['quantity'] = this.utilityService.convert2Float(d['quantity'], 10, 3);
@@ -836,7 +831,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               });
               if (ctype !== undefined) {
                 // format data
-                d[sample_model_attr] = d[sample_model_attr] === null 
+                d[sample_model_attr] = 
+                d[sample_model_attr] === null 
                 ? null
                 : this.ctypeService.formatCtypePAttrValue(d[sample_model_attr], ctype, sample_model_attr);
                 ////////////////////////////////////////////////here continue /////////////////////////////////////////

@@ -591,7 +591,7 @@ export class CTypeService {
                     return null;
                 } else {
                     value = Math.abs(+value);
-                    if(+value.toString().indexOf('.') !== -1) {
+                    if(value.toString().indexOf('.') !== -1) {
                         const decimal_point = Math.abs(+attr.attr_value_decimal_point || 2);
                         const array = value.toString().split('.');
                         if(array.length === 2){
