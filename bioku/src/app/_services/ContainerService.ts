@@ -491,7 +491,7 @@ export class ContainerService {
             .catch((error: any) => Observable.throw(error || 'Server error'));
     }
     // upload samples to container
-    uploadSample2Container(data: Array<UploadSample>, container_pk: number) {
+    uploadSample2Container(data: Array<any>, container_pk: number) {
         this.updateState();
         const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
         container_pk + '/upload_samples/';

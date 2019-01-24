@@ -55,7 +55,7 @@ export class XlsxHelperService {
         saveAs(new Blob([this.string2ArrayBuffer(wbout)]), fileName);
     }
     // save 2 local json
-    export2Json(samples: Array<UploadSample>) {
+    export2Json(samples: Array<any>) {
         const array = [];
         const filContent: string = JSON.stringify(samples);
         array.push(filContent);

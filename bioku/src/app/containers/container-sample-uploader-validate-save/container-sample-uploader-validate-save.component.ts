@@ -1864,7 +1864,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     this.saving_samples = true;
     this.saving_samples_failed = false;
     // convert data
-    const samples: Array<UploadSample> = this.convertData2Samples();
+    const samples: Array<any> = this.convertData2Samples();
     this.containerService.uploadSample2Container(samples, this.container.pk)
     .subscribe(() => {
       this.saving_samples = false;
@@ -1881,23 +1881,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   }
   save2Json() {
     // convert data
-    const samples: Array<UploadSample> = this.convertData2Samples();
+    const samples: Array<any> = this.convertData2Samples();
     this.xlsxHelperService.export2Json(samples);
   }
   // convert to samples
   convertData2Samples() {
-    const samples: Array<UploadSample> = new Array<UploadSample>();
+    const samples: Array<any> = new Array<any>();
     // get all headers
     const allSampleModelAttrs: Array<string> = this.USE_CSAMPLE 
-    ? this.excelUploadLoadService.getAllCTypeModelAttrNames(this.sampleType, this.ctypes)
+    ? this.ctypeService.getCTypePAttrs(this.sampleType, this.ctypes, true)
     : this.excelUploadLoadService.getAllSampleModelAttrs();
     const allAttrs: Array<string> = this.USE_CSAMPLE 
-    ? ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
+    ? ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type', 'name', 'storage_date', 'date_out',
                                     'vposition', 'hposition', ...allSampleModelAttrs]
     : ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
                                     'freezing_date', 'vposition', 'hposition', ...allSampleModelAttrs];
     this.data.forEach(d => {
-      const sample: UploadSample = new UploadSample();
+      let sample: any = {};
       allAttrs.forEach(a => {
         if (d[a] !== undefined) {
           sample[a] = d[a];
@@ -1910,15 +1910,48 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         if (d['storage_date'] === '' || d['storage_date'] === null) {
           sample['storage_date']  = this.utilityService.getTodayFormat();
         }
+        // convert attr name to attr_pk
+        // convert type name to pk
+        // only for csample
+        sample = this.convertName2PK(sample);
+        // console.log(sample); 
       } else {
         if (d['freezing_date'] === '' || d['freezing_date'] === null) {
           sample['freezing_date']  = this.utilityService.getTodayFormat();
         }
-      }     
+      }      
       samples.push(sample);
     })
-    // convert attrname to attr pks for saving
     return samples;
+  }
+  // convert attr name to attr_pk
+  // convert type name to pk
+  // only for csample
+  convertName2PK(sample: any) {
+    // get ctype pk
+    const ctype : CType = this.ctypes.find((t: CType) => { return t.type === this.sampleType; });
+    if (ctype !== undefined) {
+      // // get the csample fixed attr name
+      // const fixed_csample_attrs = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'vposition', 'hposition',
+      //                               'name', 'occupied', 'color', 'date_in', 'date_out', 'storage_date'];
+      const ctype_pattrs: Array<CTypeAttr> = ctype.attrs.filter((a: CTypeAttr) => { return a.attr_value_type !== 3 && !a.has_sub_attr;})   
+      // update type
+      sample['ctype_pk'] = ctype.pk;
+      const subdata: Array<any> = new Array<any>();
+      ctype_pattrs.forEach((a: CTypeAttr) => {
+        if (sample[a.attr_name] !== undefined) {
+          const ditem: any = {
+            ctype_sub_attr_pk: a.pk,
+            ctype_sub_attr_value_id: 0,
+            ctype_sub_attr_value_part1: sample[a.attr_name]
+          };
+          subdata.push(ditem);
+          delete sample[a.attr_name];
+        }          
+      })
+      sample['subdata'] = subdata;
+    }
+    return sample;
   }
   // download for 2 checking
   format4Download(data: Array<Array<any>>) {
