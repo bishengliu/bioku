@@ -132,8 +132,8 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
     }
     ngOnChanges() {
       if (this.startValidation) {
-        console.log(this.dateFormats);
-        console.log(this.excelColAttrs);
+        // console.log(this.dateFormats);
+        // console.log(this.excelColAttrs);
         // console.log(this.excelData);
         this.data = this.excelData;
         // console.log(this.data);
@@ -835,7 +835,6 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
                 d[sample_model_attr] === null 
                 ? null
                 : this.ctypeService.formatCtypePAttrValue(d[sample_model_attr], ctype, sample_model_attr);
-                ////////////////////////////////////////////////here continue /////////////////////////////////////////
               }
             }          
           }
@@ -1889,8 +1888,13 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   convertData2Samples() {
     const samples: Array<UploadSample> = new Array<UploadSample>();
     // get all headers
-    const allSampleModelAttrs: Array<string> = this.excelUploadLoadService.getAllSampleModelAttrs();
-    const allAttrs: Array<string> = ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
+    const allSampleModelAttrs: Array<string> = this.USE_CSAMPLE 
+    ? this.excelUploadLoadService.getAllCTypeModelAttrNames(this.sampleType, this.ctypes)
+    : this.excelUploadLoadService.getAllSampleModelAttrs();
+    const allAttrs: Array<string> = this.USE_CSAMPLE 
+    ? ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
+                                    'vposition', 'hposition', ...allSampleModelAttrs]
+    : ['box_horizontal', 'box_vertical', 'tower', 'shelf', 'box', 'type',
                                     'freezing_date', 'vposition', 'hposition', ...allSampleModelAttrs];
     this.data.forEach(d => {
       const sample: UploadSample = new UploadSample();
@@ -1902,11 +1906,18 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         }
       });
       // force the default freezing date
-      if ( d['freezing_date'] === '' || d['freezing_date'] === null) {
-        sample['freezing_date']  = this.utilityService.getTodayFormat();
-      }
+      if (this.USE_CSAMPLE) {
+        if (d['storage_date'] === '' || d['storage_date'] === null) {
+          sample['storage_date']  = this.utilityService.getTodayFormat();
+        }
+      } else {
+        if (d['freezing_date'] === '' || d['freezing_date'] === null) {
+          sample['freezing_date']  = this.utilityService.getTodayFormat();
+        }
+      }     
       samples.push(sample);
     })
+    // convert attrname to attr pks for saving
     return samples;
   }
   // download for 2 checking
