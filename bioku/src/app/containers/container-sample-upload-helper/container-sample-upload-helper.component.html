@@ -26,6 +26,7 @@
 (dateFormats)="captureDateFormats($event)"
 (excelHasFileHeader)="captureExcelHasFileHeader($event)"
 (sampleType)="captureSampleType($event)"
+(allCTypes)="captureCTypes($event)"
 [ngClass]="{'hidden': activeStep !== 3 }">
 </app-container-sample-uploader-step-three>
 <!-- (freezingDateFormat)="captureFreezingDateFormat($event)" -->
@@ -39,7 +40,8 @@
 [dateFormats]="date_formats"
 [startValidation]="start_validation_save"
 [excelFileHeader]="excelFileHeader"
-[sampleType]="sampleType">
+[sampleType]="sampleType"
+[ctypes]="ctypes">
 </app-container-sample-uploader-validate-save>
 
 <!-- [freezingDateFormat]="freezingDateFormat" -->

@@ -164,9 +164,6 @@ export class ExcelUploadLoadService {
       return t.type.toUpperCase() === type.toUpperCase();
     });
     const ctype_attr_names: Array<string> = this.ctypeService.getCTypePAttrs(type, ctypes, true); // get the names;
-    if (ctype !== undefined) {
-      
-    }
     all_attr_names = [...shared_attr_names, ...ctype_attr_names];
     return all_attr_names;
   }

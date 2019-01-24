@@ -6,6 +6,7 @@ import { AppSetting} from '../../_config/AppSetting';
 import { APP_CONFIG } from '../../_providers/AppSettingProvider';
 import { UtilityService } from '../../_services/UtilityService';
 import { BoxLabel, SampleLabel, ColumnAttr, SampleDateFormat, SampleUploadDateFormat} from '../../_classes/SampleUpload';
+import { CType } from 'app/_classes/CType';
 @Component({
   selector: 'app-container-sample-upload-helper',
   templateUrl: './container-sample-upload-helper.component.html',
@@ -24,6 +25,7 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   date_formats: Array<SampleUploadDateFormat> = new Array<SampleUploadDateFormat>();
   excelFileHeader: Boolean = false;
   sampleType: string;
+  ctypes: Array<CType> = new Array<CType>();
   // validate and save
   start_validation_save: Boolean = false;
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
@@ -64,6 +66,9 @@ export class ContainerSampleUploadHelperComponent implements OnInit, OnChanges {
   }
   captureSampleType(sample_type: string) {
     this.sampleType = sample_type;
+  }
+  captureCTypes(ctypes: Array<CType>) {
+    this.ctypes = ctypes;
   }
   ngOnInit() {
     // BoxLabel default

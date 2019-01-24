@@ -27,6 +27,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   @Output() dateFormats: EventEmitter<Array<SampleUploadDateFormat>> = new EventEmitter<Array<SampleUploadDateFormat>> ();
   @Output() excelHasFileHeader: EventEmitter<Boolean> = new EventEmitter<Boolean> ();
   @Output() sampleType: EventEmitter<string> = new EventEmitter<string> ();
+  @Output() allCTypes: EventEmitter<Array<CType>> = new EventEmitter<Array<CType>> ();
   @Input() sLabel: SampleLabel;
   @Input() bLabel: BoxLabel;
   @Input() uploadMode: number;
@@ -255,7 +256,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
         this.data_to_display = this.data.length > 100 ? 100 : this.data.length;
         this.parsing_file = false;
         // console.log(this.data);
-        // console.log(this.excelRawData);
       },
       (err: string) => {
         // console.log(err);
@@ -634,6 +634,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.dateFormats.emit(this.date_formats.filter((df: SampleUploadDateFormat)=> {return df.date_date_included}))
     this.excelHasFileHeader.emit(this.excel_file_has_header);
     this.sampleType.emit(this.sample_type);
+    this.allCTypes.emit(this.ctypes);
   }
 }
 // need to check these

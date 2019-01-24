@@ -35,6 +35,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   @Input() startValidation: Boolean;
   @Input() excelFileHeader: Boolean;
   @Input() sampleType: string;
+  @Input() ctypes: Array<CType>;
   container: Container;
   row_indexes_to_remove: Array<number> = []; // rows that failed the validation, only for validaiton messages
   boxes_to_create: Array<Array<number>> = []; // for following tower-shelf-box
@@ -80,7 +81,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   col_offset = 0; // for get the correct col number
   allow_save_2_json = false;
   // ctype
-  ctypes: Array<CType> = new Array<CType>();
+  // ctypes: Array<CType> = new Array<CType>();
   USE_CSAMPLE = true;
   constructor(@Inject(AppStore) private appStore, private utilityService: UtilityService,
     private alertService: AlertService, private excelUploadLoadService: ExcelUploadLoadService,
@@ -133,8 +134,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       if (this.startValidation) {
         console.log(this.dateFormats);
         console.log(this.excelColAttrs);
-        console.log(this.excelData);
+        // console.log(this.excelData);
         this.data = this.excelData;
+        // console.log(this.data);
         this.sampleValidation();
       }
     }
@@ -181,21 +183,23 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         // format all other columns to upload
         this.formatData(); // format and clean data
       }
+      // console.log(this.data);
       // filter the data
       this.data = this.filterValidSamples(this.data);
       this.validateDataLength(false);
-      // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
-      if (!this.validator_failed && this.data.length > 0) {
-        this.final_boxes_to_create = this.collectBoxes2Create();
-        this.validateFinalBoxes2Create();
-        // format for saving
-        this.format4Saving();
-      }
+      // // //////////////////////////re-gen the boxes to create///////////////////////////////////////////
+      // if (!this.validator_failed && this.data.length > 0) {
+      //   this.final_boxes_to_create = this.collectBoxes2Create();
+      //   this.validateFinalBoxes2Create();
+      //   // format for saving
+      //   this.format4Saving();
+      // }
       this.passAllValidation();
       // 
       console.log(this.data);
     }
     trimDataCalOffset() {
+      this.data = this.data || []; 
       const ori_len = this.data.length;
       // get beginning empty rows
       const beginning_empty_rows = this.getBeginningEmptyRows();
@@ -797,8 +801,10 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
         const data_excel_col = c.col_number;
         // sample model attr
         const sample_model_attr = sampleModelAttrs[c.sample_attr_index];
+        console.log(sample_model_attr);
         this.data.forEach(d => {
           const data_col = d[('' + (data_excel_col - 1))];
+          console.log(data_col);
           if (data_col === '' || data_col === null || data_col === undefined) {
             // add attr
             d[sample_model_attr] = null;
@@ -830,7 +836,9 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
               });
               if (ctype !== undefined) {
                 // format data
-                d[sample_model_attr] = this.ctypeService.formatCtypePAttrValue(d[sample_model_attr], ctype, sample_model_attr);
+                d[sample_model_attr] = d[sample_model_attr] === null 
+                ? null
+                : this.ctypeService.formatCtypePAttrValue(d[sample_model_attr], ctype, sample_model_attr);
                 ////////////////////////////////////////////////here continue /////////////////////////////////////////
               }
             }          
