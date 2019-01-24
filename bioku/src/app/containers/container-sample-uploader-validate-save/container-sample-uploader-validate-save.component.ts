@@ -197,7 +197,7 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
       }
       this.passAllValidation();
       // 
-      console.log(this.data);
+      // console.log(this.data);
     }
     trimDataCalOffset() {
       this.data = this.data || []; 
@@ -1913,10 +1913,16 @@ export class ContainerSampleUploaderValidateSaveComponent implements OnInit, OnC
   format4Download(data: Array<Array<any>>) {
     let formated4Download: Array<Array<any>> = [];
     // get all the sample mode attrs
-    const sampleModelAttrs: Array<string> = ['tower', 'shelf', 'box', 'vposition', 'hposition',
+    const sampleModelAttrs: Array<string> = this.USE_CSAMPLE
+    ? ['tower', 'shelf', 'box', 'vposition', 'hposition',
+                                          ...this.excelUploadLoadService.getAllCTypeModelAttrNames(this.sampleType, this.ctypes)]
+    : ['tower', 'shelf', 'box', 'vposition', 'hposition',
                                               ...this.excelUploadLoadService.getAllSampleModelAttrs() ];
     // get all col headers
-    const all_col_headers: Array<string> = ['Tower', 'Shelf', 'Box', 'Sample Row', 'Sample Column',
+    const all_col_headers: Array<string> = this.USE_CSAMPLE
+    ? ['TOWER', 'SHELF', 'BOX', 'ROW', 'COLUMN',
+                                            ...this.excelUploadLoadService.getAllCTypeExcelHeaderLabels(this.sampleType, this.ctypes)]
+    : ['TOWER', 'SHELF', 'BOX', 'ROW', 'COLUMN',
                                             ...this.excelUploadLoadService.getAllColumnHeaders()];
     // get all the sample model attr in data
     const data_keys = this.getDataKeys(data[0], sampleModelAttrs); // this.data should be out put of this.formatData()
