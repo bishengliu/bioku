@@ -1,4 +1,4 @@
-<div class="ui grid row medium_bottom">
+<div class="ui grid row medium_bottom" *ngIf="!no_ctype_defined">
     <div class="sixteen wide column">
       <!-- info -->
       <div class="ui visible warning top attached icon message" *ngIf="!all_set_start_to_upload_file">
@@ -298,4 +298,11 @@
         <!-- end sample parses-->
         <!-- ////////////////////////////////// -->
     </div>
-  </div>
+</div>
+
+<div class="ui tertiary segment center aligned" *ngIf="no_ctype_defined">
+  <br/><br/><br/>
+  <p><i class="ui massive warning sign icon red"></i></p>
+  <h3 class="ui red header">No sample type found! Please define a type before uploading samples!</h3>
+  <br/><br/><br/>
+</div>

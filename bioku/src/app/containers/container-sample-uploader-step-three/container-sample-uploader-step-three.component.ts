@@ -102,6 +102,7 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
   // ctype
   ctypes: Array<CType> = new Array<CType>();
   USE_CSAMPLE = true;
+  no_ctype_defined = false;
   // all dates need to format to '2017-05-01',
   constructor(@Inject(APP_CONFIG) private appSetting: any, private utilityService: UtilityService,
               private excelUploadLoadService: ExcelUploadLoadService, private ctypeService: CTypeService,
@@ -110,9 +111,13 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     this.short_months = this.utilityService.getShortMonthNames();
     this.long_months = this.utilityService.getLongMonthNames();
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    this.no_ctype_defined = false;
     if (this.USE_CSAMPLE) {
       // ctypes
       this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+      if (this.sample_types.length === 0) {
+        this.no_ctype_defined = true;
+      }
     } else {
       this.sample_types = this.appSetting.SAMPLE_TYPE;
     }

@@ -85,6 +85,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   // add or remove function
   subattr_handler = {};
   date_regex = 'DD-MM-YYYY';
+  no_ctype_defined = false;
   private customized_attrs: Array<any> = new Array<any> ();
   constructor(@Inject(APP_CONFIG) private appSetting: any, private containerService: ContainerService, private ctypeService: CTypeService,
               private cValidators: CustomFormValidators, private alertService: AlertService, private router: Router,
@@ -98,6 +99,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
     this.failed = false;
     this.customized_attrs = this.appSetting.CUSTOMIZED_ATTRS;
     this.date_regex = this.appSetting.DATE_REGEX;
+    this.no_ctype_defined = false;
     // get all sample ctypes
     if (this.USE_CSAMPLE) {
       this.ctypeService.getCTypes()
@@ -105,6 +107,9 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         this.all_ctypes = ctypes;
         // console.log(this.all_ctypes);
         this.all_sample_types = this.all_ctypes.map((ctype: CType) => ctype.type);
+        if (this.all_sample_types === undefined || this.all_sample_types.length === 0) {
+          this.no_ctype_defined = true;
+        }
       },
       () => {
         this.failed = true;

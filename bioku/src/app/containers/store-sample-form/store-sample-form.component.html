@@ -376,7 +376,7 @@
   </div>
 </div>
 <!--CTYPE-->
-<div *ngIf="USE_CSAMPLE && !saving">
+<div *ngIf="USE_CSAMPLE && !saving && !no_ctype_defined">
   <!-- form need to render the form-->
   <form *ngIf="USE_CSAMPLE" [formGroup]="sampleForm" 
   class="ui large form" (ngSubmit)="onCreate(sampleForm.value)" 
@@ -729,6 +729,14 @@
       </div>
     </div>
   </form>
+</div>
+<div *ngIf="USE_CSAMPLE && !saving && no_ctype_defined">
+  <div class="ui tertiary segment center aligned">
+    <br/><br/><br/>
+    <p><i class="ui massive warning sign icon red"></i></p>
+    <h3 class="ui red header">No sample type found! Please define a type before storing samples!</h3>
+    <br/><br/><br/>
+  </div>
 </div>
 <!-- saving-->
 <!--loading info-->

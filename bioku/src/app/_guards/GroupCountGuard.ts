@@ -1,10 +1,10 @@
 import { Injectable , Inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AlertService } from '../_services/AlertService';
-import { AppSetting} from '../_config/AppSetting';
+import { AppSetting } from '../_config/AppSetting';
 import { APP_CONFIG } from '../_providers/AppSettingProvider';
 import { AppStore } from '../_providers/ReduxProviders';
-import {GroupService} from '../_services/GroupService';
+import { GroupService } from '../_services/GroupService';
 import { Observable } from 'rxjs';
 
 @Injectable()

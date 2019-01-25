@@ -67,6 +67,11 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
   dragulaOptions: any = {
     revertOnSpill: true
   }
+  // FOR RENDERING SAMPLE NAME
+  SHOW_ORIGINAL_NAME: false;
+  NAME_MIN_LENGTH: 15;
+  NAME_MIN_right_LENGTH: 10;
+  NAME_SYMBOL: '...';
   constructor(@Inject(APP_CONFIG) private appSetting: any, @Inject(AppStore) private appStore,
               private localStorageService: LocalStorageService, private utilityService: UtilityService,
               private containerService: ContainerService, private alertService: AlertService, private router: Router,
@@ -75,6 +80,11 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
     this.show_user_defined_label = this.appSetting.SHOW_BOX_LABEL;
     this.box_letters = this.appSetting.BOX_POSITION_LETTERS;
     this.USE_CSAMPLE = this.appSetting.USE_CSAMPLE;
+    // for redering sample name
+    this.SHOW_ORIGINAL_NAME = this.appSetting.SHOW_ORIGINAL_NAME;
+    this.NAME_MIN_LENGTH = this.appSetting.NAME_MIN_LENGTH;
+    this.NAME_MIN_right_LENGTH = this.appSetting.NAME_MIN_right_LENGTH;
+    this.NAME_SYMBOL = this.appSetting.NAME_SYMBOL;
     // subscribe store state changes
     appStore.subscribe(() => this.updateState());
     this.updateState();
@@ -289,6 +299,12 @@ export class MoveSampleComponent implements OnInit, OnDestroy {
     }
   }
 
+  // render sample name
+  renderSampleName(sampleName: string) {
+    return this.utilityService.renderSampleName(sampleName, this.SHOW_ORIGINAL_NAME,
+      this.NAME_MIN_LENGTH, this.NAME_MIN_right_LENGTH, this.NAME_SYMBOL);
+  }
+  
   parseDropSlot(source_slot: string, target_slot: string): MoveSample {
     const obj: MoveSample = new MoveSample();
 
