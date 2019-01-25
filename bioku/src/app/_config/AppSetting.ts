@@ -28,7 +28,7 @@ export const AppSetting = {
     // allow upload samples newly created freezer?
     'ALLOW_UPLOAD_SAMPLES_2_CONTAINER': true,
     // if this is true, post upload samples is disabled
-    'ALLOW_UPLOAD_SAMPLE_2_JSON': true,
+    'ALLOW_UPLOAD_SAMPLE_2_JSON': false,
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////// DO NOT CHANGE BE IF NOT SURE ////////////////////////
     'APP_USER_VERIFICATION': false,

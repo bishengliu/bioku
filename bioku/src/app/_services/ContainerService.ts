@@ -495,6 +495,7 @@ export class ContainerService {
         this.updateState();
         const query_url: string  = this.appSetting.URL + this.appSetting.ALL_CONTAINERS +
         container_pk + '/upload_samples/';
+        // console.log(data)
         const body: string = JSON.stringify(data);
         return this.http.post(query_url, body, this.options)
         .map((response: Response) => response.json())
