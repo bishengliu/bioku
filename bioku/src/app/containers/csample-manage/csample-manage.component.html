@@ -35,8 +35,8 @@
                     <span [style.color]="display_sample.color">{{ renderSampleName(display_sample[attr.attr_label]) }}</span>
                     <span *ngIf="display_sample.type" class="ui mini circular label">{{ display_sample.type | slice:0:3 }}</span>
                   </span>
-                <span *ngIf="attr.attr_value_type === 4">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
-                <span *ngIf="attr.attr_value_type !== 4 && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
+                <span *ngIf="attr.attr_value_type + '' === '4'">{{display_sample[attr.attr_label] | date: 'yyyy-MM-dd'}}</span>
+                <span *ngIf="attr.attr_value_type + '' !== '4' && attr.attr_name != 'name'">{{display_sample[attr.attr_label]}}</span>
                 <!--changable-->
                 <i class="icon teal edit layout right floated clickable" *ngIf="attr.is_changable" (click)="toggleChange(attr)"></i>
                 <!--attr with children-->
@@ -45,7 +45,7 @@
             <div *ngIf="attr.is_changing">
               <!--need to work here for input type and validaiton-->
               <!--non date type-->
-                <div class="ui icon input wide-form" *ngIf="attr.attr_value_type !== '4'">
+                <div class="ui icon input wide-form" *ngIf="attr.attr_value_type + '' !== '4'">
                   <input class="" 
                   type="{{attr.input_attr.type}}" 
                   step="{{attr.input_attr.step}}"
@@ -56,7 +56,7 @@
                 </div>
                 <!--date type-->
                 <div class="store_sample">
-                  <my-date-picker name="attr.name" *ngIf="attr.attr_value_type === '4'"
+                  <my-date-picker name="attr.name" *ngIf="attr.attr_value_type + '' === '4'"
                   [options]="myDatePickerOptions" 
                   [(ngModel)]="date_attrs[attr.attr_name]" 
                   (ngModelChange)="preSaveSampleData($event, attr)">
