@@ -115,9 +115,6 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
     if (this.USE_CSAMPLE) {
       // ctypes
       this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
-      if (this.sample_types.length === 0) {
-        this.no_ctype_defined = true;
-      }
     } else {
       this.sample_types = this.appSetting.SAMPLE_TYPE;
     }
@@ -135,6 +132,10 @@ export class ContainerSampleUploaderStepThreeComponent implements OnInit, OnDest
           this.ctypes = ctypes;
           // update ctypes
           this.sample_types = this.ctypes.map((ctype: CType) => ctype.type);
+          // validate whether ctypes already defined
+          if (this.sample_types.length === 0) {
+            this.no_ctype_defined = true;
+          }
           if (this.USE_CSAMPLE && this.sample_types.length > 0){
             this.sample_type = this.sample_types[0];
             // update again
