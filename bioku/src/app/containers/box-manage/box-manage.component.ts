@@ -131,7 +131,9 @@ export class BoxManageComponent implements OnInit, OnDestroy {
         this.box = box;
         if (this.box != null) {
           // get samples
-          this.samples = this.box.samples
+          this.samples = this.box.samples === undefined 
+          ? new Array<Sample>()
+          : this.box.samples
             .sort(this.utilityService.sortArrayByMultipleProperty('vposition', 'hposition'))
             .sort(this.utilityService.sortArrayBySingleProperty('-occupied'));
           this.color = this.box.color == null ? '#ffffff' : this.box.color;
