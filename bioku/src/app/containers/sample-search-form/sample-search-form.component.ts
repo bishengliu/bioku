@@ -296,7 +296,7 @@ export class SampleSearchFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   onSearch(values: any) {
-    // console.log(values);
+    values.type = this.sample_types;
     // need to update search obj
     values.freezing_date_from = this.freezing_date_from;
     values.freezing_date_to = this.freezing_date_to;

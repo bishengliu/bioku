@@ -43,6 +43,7 @@ export class SampleSearchComponent implements OnInit {
 ngOnInit() {}
 
 captureSearchObj(obj: any) {
+  console.log(obj);
   this.searchObj = obj;
   this.samples = null;
   this.searching = true;
