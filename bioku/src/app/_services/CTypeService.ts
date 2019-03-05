@@ -780,6 +780,8 @@ export class CTypeService {
                             subattr_pks.push(item.ctype_sub_attr_id);
                         }
                     })
+                    // sort subattr_pk
+                    subattr_pks.sort();
                     subattr_pks.forEach((s_pk: number) => {
                         const sdata: Array<CSampleSubData> = pdata.filter((item: CSampleSubData) => {
                             return item.ctype_sub_attr_id === s_pk;
