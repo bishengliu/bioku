@@ -325,13 +325,20 @@ export class UtilityService {
         }
         if (+attr.attr_value_type === 0 ) {
             // string
-            if (attr.attr_value_text_max_length !== null && value.length > attr.attr_value_text_max_length) {
+            if (value !== undefined && value !== null
+                && attr.attr_value_text_max_length !== null 
+                && value.length > attr.attr_value_text_max_length) {
                 msg = attr.attr_label + ' is too long!';
                 return msg;
             }
         } else if (+attr.attr_value_type === 1) {
             // digit
-            if (isNaN(+value) || +value.toString().indexOf('.') !== -1) {
+            if (isNaN(+value) 
+            || (
+                value !== undefined 
+                && value !== null 
+                && +value.toString().indexOf('.') !== -1)
+                ) {
                 msg = attr.attr_label + ' is invalid!';
                 return msg;
             }
