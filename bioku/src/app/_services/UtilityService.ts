@@ -296,7 +296,7 @@ export class UtilityService {
             ) {
             obj['maxlength'] = +attr.attr_value_text_max_length;
         } else {
-            obj['maxlength'] = null;
+            obj['maxlength'] = 999;
         }
         // step for float/decimal
         if (+attr.attr_value_type === 2) {
@@ -327,7 +327,7 @@ export class UtilityService {
             // string
             if (value !== undefined && value !== null
                 && attr.attr_value_text_max_length !== null 
-                && value.length > attr.attr_value_text_max_length) {
+                && +value.length > +attr.attr_value_text_max_length) {
                 msg = attr.attr_label + ' is too long!';
                 return msg;
             }

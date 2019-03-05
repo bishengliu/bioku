@@ -386,12 +386,18 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
       // attr_value_text_max_length
       obj[attr.attr_name]  = attr.attr_required
       ? (
-          attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+          attr.attr_value_text_max_length !== undefined 
+          && attr.attr_value_text_max_length !== null
+          && !isNaN(+attr.attr_value_text_max_length)
+          && +attr.attr_value_text_max_length > 0
           ? [, Validators.compose([Validators.required, Validators.maxLength(+attr.attr_value_text_max_length)])]
           : [, Validators.required]
         )
       : (
-          attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+          attr.attr_value_text_max_length !== undefined 
+          && attr.attr_value_text_max_length !== null
+          && !isNaN(+attr.attr_value_text_max_length)
+          && +attr.attr_value_text_max_length > 0
           ? [, Validators.maxLength(+attr.attr_value_text_max_length)]
           : [, ]
         );
@@ -430,12 +436,18 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
         // attr_value_text_max_length
         obj[attr.attr_name]  = attr.attr_required
         ? (
-            attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+            attr.attr_value_text_max_length !== undefined 
+            && attr.attr_value_text_max_length !== null
+            && !isNaN(+attr.attr_value_text_max_length)
+            && +attr.attr_value_text_max_length > 0
             ? [, Validators.compose([Validators.required, Validators.maxLength(+attr.attr_value_text_max_length)])]
             : [, Validators.required]
           )
         : (
-            attr.attr_value_text_max_length !== undefined && attr.attr_value_text_max_length !== null
+            attr.attr_value_text_max_length !== undefined 
+            && attr.attr_value_text_max_length !== null
+            && !isNaN(+attr.attr_value_text_max_length)
+            && +attr.attr_value_text_max_length > 0
             ? [, Validators.maxLength(+attr.attr_value_text_max_length)]
             : [, ]
           );
@@ -521,6 +533,7 @@ export class StoreSampleFormComponent implements OnInit, OnChanges {
   }
   updateStorageDate(value: any) {
     this.storage_date = value.formatted;
+    console.log(this.sampleForm);
   }
   updateDate(value: any, attr: any) {
     this.date_attrs[attr.name] = value.formatted;
