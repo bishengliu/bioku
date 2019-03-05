@@ -730,7 +730,7 @@ export class CTypeService {
                       );
             } else {
               // check subdata
-              const found_subdata: CSampleSubData = sample.csample_subdata.find( (d: CSampleSubData) => {
+              const found_subdata: CSampleSubData = sample.csample_subdata.reverse().find( (d: CSampleSubData) => {
                 return d.ctype_sub_attr.parent_attr === key.toLowerCase();
               })
               if (found_subdata !== undefined) {
