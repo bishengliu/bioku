@@ -6,5 +6,7 @@ rxjs
 redux
 
 -- build notes: change to made in node_modules ---
-1. remove the node_modules in ng2-color-picker module
-2. change index.d.ts to index.d.ts.backup in @types/popper.js
+- install node-v10.22.1-x64, python-2.7.18.amd64, vs_Community2017;
+- npm install --save node-sass;
+- npm install;
+- remove the node_modules in ng2-color-picker module
