@@ -30,6 +30,7 @@
     "ng2-dragula": "^1.5.0",
     "ng2-semantic-ui": "^0.9.6",
     "ngx-bootstrap": "^1.9.1",
+    "node-sass": "^4.14.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "rxjs": "^5.0.1",
